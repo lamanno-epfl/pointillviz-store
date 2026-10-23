@@ -1,0 +1,2284 @@
+/* ==========================================================================
+   PointillViz design system · pv.css · v1 (2026-10-22)
+
+   One stylesheet for pointillviz.com, store.pointillviz.com and
+   docs.pointillviz.com. Source of truth: WEB/shared/pv/. Never edit a site's
+   assets/pv/ copy; run tools/sync.sh. Guide: WEB/shared/DESIGN_SYSTEM.md.
+
+   1  Tokens: primitives             7  Layout
+   2  Theme: dark (default)          8  Chrome: top bar, drawer, footer
+   3  Theme: light (docs reading)    9  Components
+   4  Cases                          10 Prose
+   5  Motion preferences             11 Utilities
+   6  Base                           12 Print
+
+   Selectors stay at one class so a site's own CSS overrides them without a
+   specificity fight. Base element rules use :where() (specificity 0).
+   ========================================================================== */
+
+
+/* 1 · Tokens: primitives ================================================== */
+
+:root {
+  /* Ink: the dark grounds (app home + paper figures). */
+  --pv-ink-0: #06070D;
+  --pv-ink-1: #0A0C18;
+  --pv-ink-2: #10132A;
+  --pv-ink-3: #171B38;
+  --pv-ink-4: #222850;
+
+  /* Cream: text on ink. 2 and 3 are solid, not alpha, so contrast holds on
+     every ground (cream-3 is 4.9:1 on ink-3, the lowest ground it meets). */
+  --pv-cream: #EFE6D2;
+  --pv-cream-2: #B9B1A0;
+  --pv-cream-3: #918A7B;
+
+  /* Paper: the light reading theme (app's calibrated cream). */
+  --pv-paper-0: #FBF7EE;
+  --pv-paper-1: #F3EDE0;
+  --pv-paper-2: #FFFDF8;
+  --pv-paper-3: #EEE6D4;
+  --pv-umber: #211C14;
+  --pv-umber-2: #4A4335;
+  --pv-umber-3: #685F4F;
+
+  /* Brand and accents (app + paper). */
+  --pv-mint: #6FE0BD;            /* phosphor: live / interactive */
+  --pv-mint-hi: #8EEBCF;
+  --pv-mint-deep: #17715A;       /* mint on paper */
+  --pv-gold: #E2B25A;            /* edition, 2D, citation */
+  --pv-gold-deep: #7E5B0E;
+  --pv-indigo: #5B7BFF;
+  --pv-purple: #662D91;          /* paper purple (wordmark, panel frames) */
+  --pv-lavender: #8B57D5;        /* purple tinted for ink */
+  --pv-blue: #5B8CFF;
+  --pv-orange: #FF8A3D;
+  --pv-pink: #FF5FA2;
+  --pv-yellow: #F2D14B;
+  --pv-violet: #A77BFF;
+  --pv-cyan: #43C7F0;
+  --pv-red: #FF5A5A;
+  --pv-coral: #FF7A6B;
+
+  /* Type */
+  --pv-font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --pv-font-serif: "Fraunces", ui-serif, "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --pv-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --pv-font-dots: "Codystar", var(--pv-font-mono);
+
+  /* Fluid scale, 360 px → 1440 px. Few steps, far apart. */
+  --pv-text-display: clamp(2.5rem, 1.5rem + 4.444vw, 5.5rem);    /* 40 → 88 */
+  --pv-text-title:   clamp(2rem, 1.5rem + 2.222vw, 3.5rem);      /* 32 → 56 */
+  --pv-text-h2:      clamp(1.625rem, 1.375rem + 1.111vw, 2.375rem); /* 26 → 38 */
+  --pv-text-h3:      clamp(1.25rem, 1.125rem + 0.556vw, 1.625rem);  /* 20 → 26 */
+  --pv-text-h4:      clamp(1.125rem, 1.0625rem + 0.278vw, 1.3125rem); /* 18 → 21 */
+  --pv-text-lede:    clamp(1.0625rem, 1rem + 0.278vw, 1.25rem);  /* 17 → 20 */
+  --pv-text-base: 1rem;      /* 16 */
+  --pv-text-read: 1.0625rem; /* 17, docs reading column */
+  --pv-text-sm: 0.875rem;    /* 14 */
+  --pv-text-xs: 0.75rem;     /* 12, mono labels */
+  --pv-text-2xs: 0.6875rem;  /* 11, the floor; mono caps only */
+
+  --pv-track-display: -0.022em;
+  --pv-track-heading: -0.016em;
+  --pv-track-cap: 0.08em;    /* mono, mixed case */
+  --pv-track-label: 0.14em;  /* mono caps labels, nav */
+  --pv-track-eye: 0.22em;    /* eyebrow chip, case labels */
+
+  /* Space: 4 px base */
+  --pv-space-1: 4px;
+  --pv-space-2: 8px;
+  --pv-space-3: 12px;
+  --pv-space-4: 16px;
+  --pv-space-5: 20px;
+  --pv-space-6: 24px;
+  --pv-space-8: 32px;
+  --pv-space-10: 40px;
+  --pv-space-12: 48px;
+  --pv-space-16: 64px;
+  --pv-space-20: 80px;
+  --pv-space-24: 96px;
+  --pv-space-32: 128px;
+  --pv-gutter: clamp(16px, 4vw, 40px);
+  --pv-gap: clamp(16px, 0.9rem + 0.56vw, 24px);
+  --pv-section: clamp(64px, 2.5rem + 6vw, 136px);
+  --pv-page: 1240px;
+  --pv-page-wide: 1440px;
+  --pv-measure: 68ch;
+  --pv-topbar-h: 64px;
+  /* Large screens. Above 1440 x 900 the chrome (top bar, footer, toasts) is
+     drawn --k times larger, at most 1.6 (2560 x 1440): the head script of
+     CHROME.md §1 sets --k before the first paint, pv.js keeps it on resize.
+     --pv-topbar-block is the room the bar takes on screen (its height times
+     --k): sticky parts sit under it, and anchors and focus land below it
+     (--pv-scroll-offset, section 6). Use these, never --pv-topbar-h, outside
+     the bar. */
+  --k: 1;
+  --pv-topbar-block: calc(var(--pv-topbar-h) * var(--k));
+  --pv-scroll-offset: calc(var(--pv-topbar-block) + 16px);
+  /* Chrome ground. Declared here and in the light theme only, never in the
+     dark island list, so the ink bar is glass over ink and solid over paper. */
+  --pv-topbar-bg: rgba(6, 7, 13, 0.82);
+
+  /* Shape: bigger containers, bigger radii */
+  --pv-radius-xs: 4px;
+  --pv-radius-sm: 6px;
+  --pv-radius-md: 10px;
+  --pv-radius-lg: 16px;
+  --pv-radius-xl: 24px;
+  --pv-radius-pill: 999px;
+
+  /* Motion */
+  --pv-ease-out: cubic-bezier(0.22, 1, 0.36, 1);     /* UI under 600 ms */
+  --pv-ease-expo: cubic-bezier(0.16, 1, 0.3, 1);     /* reveals, 800 ms+ */
+  --pv-ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);  /* things that travel while visible */
+  --pv-ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);  /* drawer, sheet */
+  --pv-ease-exit: cubic-bezier(0.64, 0, 0.78, 0);    /* leaving for good, short */
+  --pv-dur-press: 120ms;
+  --pv-dur-hover: 180ms;
+  --pv-dur-ui: 260ms;
+  --pv-dur-panel: 420ms;
+  --pv-dur-reveal: 800ms;
+  --pv-dur-scene: 1200ms;
+  --pv-stagger: 70ms;
+  /* Travel. Zeroed under reduced motion (section 5); fades and colour stay. */
+  --pv-rise: 18px;
+  --pv-press: 0.97;
+  --pv-shift: 100%;
+  --pv-dur-travel: 320ms;
+
+  /* Layers */
+  --pv-z-raised: 10;
+  --pv-z-sticky: 100;
+  --pv-z-topbar: 200;
+  --pv-z-drawer: 300;
+  --pv-z-toast: 400;
+  --pv-z-skip: 500;
+}
+
+
+/* 2 · Theme: dark (default) ===============================================
+   Also declared on the chrome (top bar, drawer, footer, toasts): they stay
+   ink in the light theme. The frame is ink; the reading column is paper. */
+
+:root,
+[data-theme="dark"],
+.pv-topbar,
+.pv-drawer,
+.pv-footer,
+.pv-toaster {
+  color-scheme: dark;
+
+  --pv-bg: var(--pv-ink-0);
+  --pv-bg-2: var(--pv-ink-1);
+  --pv-surface: var(--pv-ink-2);
+  --pv-surface-2: var(--pv-ink-3);
+  --pv-surface-3: var(--pv-ink-4);
+  --pv-field: rgba(6, 7, 13, 0.55);
+
+  --pv-text: var(--pv-cream);
+  --pv-text-2: var(--pv-cream-2);
+  --pv-text-3: var(--pv-cream-3);
+
+  --pv-line: rgba(239, 230, 210, 0.12);
+  --pv-line-2: rgba(239, 230, 210, 0.22);
+  --pv-line-soft: rgba(239, 230, 210, 0.06);
+  --pv-dot: rgba(239, 230, 210, 0.28);          /* dotted rules */
+  --pv-tint: rgba(239, 230, 210, 0.05);         /* hover wash */
+
+  --pv-accent: var(--pv-mint);
+  --pv-accent-hi: var(--pv-mint-hi);
+  --pv-accent-ink: var(--pv-ink-0);
+  --pv-accent-soft: rgba(111, 224, 189, 0.12);
+  --pv-accent-line: rgba(111, 224, 189, 0.40);
+  --pv-accent-glow: rgba(111, 224, 189, 0.50);
+  --pv-link: var(--pv-mint);
+  --pv-focus: var(--pv-mint);
+  --pv-select: rgba(111, 224, 189, 0.28);
+
+  --pv-brand: var(--pv-lavender);
+  --pv-edition: var(--pv-gold);
+  --pv-output: #A9B8FF;                         /* indigo, readable on ink */
+
+  --pv-note: var(--pv-blue);
+  --pv-tip: var(--pv-mint);
+  --pv-caution: var(--pv-gold);
+  --pv-danger: var(--pv-coral);
+
+  --pv-case-2d: var(--pv-gold);
+  --pv-case-3d: var(--pv-violet);
+  --pv-case-atlas: var(--pv-cyan);
+  --pv-case-omics: var(--pv-pink);
+
+  --pv-em-gradient: linear-gradient(90deg, #E2B25A 0%, #D9CBA6 34%, #A9B9F2 68%, #A77BFF 100%);
+
+  --pv-code-bg: #0B0D1C;
+  --pv-code-head: rgba(239, 230, 210, 0.035);
+  --pv-code-text: #E6DDC8;
+  --pv-code-k: #B79BFF;   /* keyword */
+  --pv-code-f: #7FAFFF;   /* function */
+  --pv-code-s: #6FE0BD;   /* string */
+  --pv-code-n: #E2B25A;   /* number, constant */
+  --pv-code-c: #8F897A;   /* comment */
+  --pv-code-a: #FF8CC0;   /* key, attribute */
+  --pv-code-t: #6FD3F5;   /* type */
+  --pv-code-p: #ABA391;   /* punctuation */
+
+  --pv-glass-bg:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02) 46%, rgba(255, 255, 255, 0.012)),
+    rgba(10, 12, 24, 0.58);
+  --pv-glass-line: rgba(255, 255, 255, 0.12);
+  --pv-glass-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 18px 40px -22px rgba(0, 0, 0, 0.7);
+  --pv-glass-filter: blur(18px) saturate(140%);
+
+  --pv-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.40), 0 6px 16px -8px rgba(0, 0, 0, 0.55);
+  --pv-shadow-2: 0 2px 6px rgba(0, 0, 0, 0.40), 0 18px 40px -16px rgba(0, 0, 0, 0.70);
+  --pv-shadow-3: 0 4px 12px rgba(0, 0, 0, 0.45), 0 32px 72px -20px rgba(0, 0, 0, 0.80);
+  --pv-glow-accent: 0 10px 30px -10px rgba(111, 224, 189, 0.55);
+  --pv-glow-gold: 0 10px 30px -12px rgba(226, 178, 90, 0.50);
+
+  --pv-skel-bg: rgba(239, 230, 210, 0.035);
+  --pv-skel-dot: rgba(239, 230, 210, 0.13);
+  --pv-skel-sweep: rgba(111, 224, 189, 0.10);
+
+  --pv-chip-bg: rgba(10, 12, 24, 0.55);
+  --pv-cite-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 12px 30px -14px rgba(127, 227, 191, 0.55);
+}
+
+
+/* 3 · Theme: light (docs reading theme) ===================================
+   Set by pv.js on <html data-theme="light">. Composed, not inverted: deeper
+   accents so every text role clears 4.5:1 on every paper ground. */
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --pv-bg: var(--pv-paper-0);
+  --pv-bg-2: var(--pv-paper-1);
+  --pv-surface: var(--pv-paper-2);
+  --pv-surface-2: #F7F1E5;
+  --pv-surface-3: var(--pv-paper-3);
+  --pv-field: var(--pv-paper-2);
+
+  --pv-text: var(--pv-umber);
+  --pv-text-2: var(--pv-umber-2);
+  --pv-text-3: var(--pv-umber-3);
+
+  --pv-line: rgba(33, 28, 20, 0.14);
+  --pv-line-2: rgba(33, 28, 20, 0.26);
+  --pv-line-soft: rgba(33, 28, 20, 0.07);
+  --pv-dot: rgba(33, 28, 20, 0.30);
+  --pv-tint: rgba(33, 28, 20, 0.04);
+
+  --pv-accent: var(--pv-mint-deep);
+  --pv-accent-hi: #125E4A;
+  --pv-accent-ink: #FFFFFF;
+  --pv-accent-soft: rgba(23, 113, 90, 0.10);
+  --pv-accent-line: rgba(23, 113, 90, 0.40);
+  --pv-accent-glow: rgba(23, 113, 90, 0.30);
+  --pv-link: var(--pv-mint-deep);
+  --pv-focus: var(--pv-mint-deep);
+  --pv-select: rgba(23, 113, 90, 0.18);
+
+  --pv-brand: var(--pv-purple);
+  --pv-edition: var(--pv-gold-deep);
+  --pv-output: #3A4FC4;
+
+  --pv-note: #2F5BD8;
+  --pv-tip: var(--pv-mint-deep);
+  --pv-caution: var(--pv-gold-deep);
+  --pv-danger: #A93A2A;
+
+  --pv-case-2d: var(--pv-gold-deep);
+  --pv-case-3d: #6B3FC4;
+  --pv-case-atlas: #076A8E;
+  --pv-case-omics: #B8326F;
+
+  --pv-em-gradient: linear-gradient(90deg, #7E5B0E 0%, #5C5A3A 34%, #3F55B8 68%, #6B3FC4 100%);
+
+  --pv-code-bg: #F3EDDF;
+  --pv-code-head: rgba(33, 28, 20, 0.035);
+  --pv-code-text: #2A241A;
+  --pv-code-k: #5B32B5;
+  --pv-code-f: #1F55C9;
+  --pv-code-s: #17715A;
+  --pv-code-n: #7E5B0E;
+  --pv-code-c: #6E6656;
+  --pv-code-a: #A82D64;
+  --pv-code-t: #0A6A8C;
+  --pv-code-p: #5C5446;
+
+  --pv-glass-bg:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.6)),
+    rgba(251, 247, 238, 0.6);
+  --pv-glass-line: rgba(33, 28, 20, 0.10);
+  --pv-glass-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 14px 32px -18px rgba(60, 45, 20, 0.28);
+
+  --pv-shadow-1: 0 1px 2px rgba(60, 45, 20, 0.08), 0 6px 16px -8px rgba(60, 45, 20, 0.16);
+  --pv-shadow-2: 0 2px 6px rgba(60, 45, 20, 0.08), 0 18px 40px -16px rgba(60, 45, 20, 0.22);
+  --pv-shadow-3: 0 4px 12px rgba(60, 45, 20, 0.10), 0 32px 72px -20px rgba(60, 45, 20, 0.30);
+  --pv-glow-accent: 0 10px 26px -12px rgba(23, 113, 90, 0.45);
+  --pv-glow-gold: 0 10px 26px -12px rgba(126, 91, 14, 0.40);
+
+  --pv-skel-bg: rgba(33, 28, 20, 0.035);
+  --pv-skel-dot: rgba(33, 28, 20, 0.14);
+  --pv-skel-sweep: rgba(23, 113, 90, 0.08);
+
+  --pv-chip-bg: rgba(255, 253, 248, 0.72);
+  --pv-topbar-bg: #0A0C18;
+  --pv-cite-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 10px 24px -14px rgba(60, 45, 20, 0.45);
+}
+
+
+/* 4 · Cases ===============================================================
+   Four kinds of data, four colours (braindev's gold/purple cases, extended).
+   Put data-case on any element; components read --pv-case and friends.
+   The derived tokens are declared here, on the same element, so they follow
+   the case (a token composed on :root would freeze the default). */
+
+:root,
+[data-case] {
+  --pv-case: var(--pv-accent);
+}
+[data-case="2d"]    { --pv-case: var(--pv-case-2d); }
+[data-case="3d"]    { --pv-case: var(--pv-case-3d); }
+[data-case="atlas"] { --pv-case: var(--pv-case-atlas); }
+[data-case="omics"] { --pv-case: var(--pv-case-omics); }
+:root,
+[data-case] {
+  --pv-case-soft: color-mix(in srgb, var(--pv-case) 14%, transparent);
+  --pv-case-line: color-mix(in srgb, var(--pv-case) 52%, transparent);
+  --pv-case-glow: 0 12px 32px -12px color-mix(in srgb, var(--pv-case) 60%, transparent);
+  --pv-case-wash: radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--pv-case) 16%, transparent), transparent 62%);
+}
+
+
+/* 5 · Motion preferences ================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --pv-rise: 0px;
+    --pv-press: 1;
+    --pv-shift: 0%;
+    --pv-dur-travel: 0ms;
+    --pv-stagger: 0ms;
+  }
+  html:focus-within { scroll-behavior: auto; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root { --pv-glass-filter: none; }
+}
+
+
+/* 6 · Base =============================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scrollbar-color: var(--pv-line-2) transparent;
+  caret-color: var(--pv-accent);
+  accent-color: var(--pv-accent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  html:focus-within { scroll-behavior: smooth; }
+}
+
+/* Anchors and focus land below the top bar. The offset sits on the targets,
+   not on the page: with a scroll-padding, Chrome scrolls a sticky bar's place
+   in the flow into view whenever one of its links takes focus (tabbing back
+   into the bar, or the menu button taking focus as the drawer closes), and
+   the page jumps. A page can set its own --pv-scroll-offset. */
+:where(#main, main [id], main a[href], main button, main input, main select, main textarea, main summary, main [tabindex], footer a[href]) {
+  scroll-margin-top: var(--pv-scroll-offset);
+}
+
+/* Taps act at once (no wait for a double tap) and without the browser's grey
+   flash: the controls answer a press themselves (:active). */
+:where(a, button, summary, label, input, select, textarea) { touch-action: manipulation; }
+:where(a, button, summary, label) { -webkit-tap-highlight-color: transparent; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--pv-bg);
+  color: var(--pv-text);
+  font-family: var(--pv-font-sans);
+  font-size: var(--pv-text-base);
+  font-weight: 400;
+  line-height: 1.6;
+  font-optical-sizing: auto;
+  font-kerning: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:where(h1, h2, h3, h4, h5, h6) {
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: var(--pv-track-heading);
+  text-wrap: balance;
+}
+:where(p, blockquote, figure, dl, dd, pre) { margin: 0; }
+:where(p, li, dd, figcaption) { text-wrap: pretty; }
+:where(ul, ol)[class], :where(nav) :where(ul, ol) { margin: 0; padding: 0; list-style: none; }
+:where(img, svg, video, canvas, picture) { display: block; max-width: 100%; }
+:where(img, video) { height: auto; }
+:where(a) { color: inherit; text-decoration: none; }
+:where(button, input, select, textarea) { font: inherit; color: inherit; letter-spacing: inherit; }
+:where(button) { cursor: pointer; }
+:where(code, kbd, samp, pre) { font-family: var(--pv-font-mono); font-size: 0.92em; font-variant-ligatures: none; }
+:where(strong, b) { font-weight: 600; }
+:where(hr) { border: 0; height: 1px; background: var(--pv-line); margin: 0; }
+:where(table) { border-collapse: collapse; }
+:where(abbr[title]) { text-decoration: underline dotted; text-underline-offset: 3px; }
+[hidden] { display: none !important; }
+
+::selection { background: var(--pv-select); color: var(--pv-text); }
+
+:focus { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--pv-focus);
+  outline-offset: 3px;
+}
+
+/* Thin, quiet scrollbars inside components (the page keeps the native one). */
+.pv-scroll, .pv-code pre, .pv-table-wrap, .pv-tabs__list {
+  scrollbar-width: thin;
+  scrollbar-color: var(--pv-line-2) transparent;
+}
+
+
+/* 7 · Layout ============================================================= */
+
+.pv-container {
+  width: 100%;
+  max-width: calc(var(--pv-page) + 2 * var(--pv-gutter));
+  margin-inline: auto;
+  padding-inline: var(--pv-gutter);
+}
+.pv-container--wide { max-width: calc(var(--pv-page-wide) + 2 * var(--pv-gutter)); }
+.pv-container--read { max-width: calc(46rem + 2 * var(--pv-gutter)); }
+
+.pv-section { padding-block: var(--pv-section); }
+
+.pv-grid {
+  display: grid;
+  gap: var(--pv-grid-gap, var(--pv-gap));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--pv-grid-min, 280px)), 1fr));
+}
+
+.pv-stack > * + * { margin-top: var(--pv-stack, var(--pv-space-4)); }
+
+.pv-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--pv-cluster-gap, var(--pv-space-3));
+}
+
+/* A stage for real data: the instrument's faint dot grid (app plate grid). */
+.pv-dotfield {
+  background-color: var(--pv-bg);
+  background-image: radial-gradient(circle at center, var(--pv-line) 1px, transparent 1.5px);
+  background-size: 24px 24px;
+  background-position: center;
+}
+
+/* The case tint under a stage (braindev's coloured halves). */
+.pv-case-wash { background-image: var(--pv-case-wash); }
+
+
+/* 8 · Chrome =============================================================== */
+
+/* Large screens: the chrome is drawn --k times larger (section 1, CHROME.md
+   §1), the same on every page of the three sites. The drawer needs no zoom:
+   it only opens under 760 px, where --k is 1. */
+.pv-topbar,
+.pv-footer,
+.pv-toaster { zoom: var(--k); }
+
+/* -- Top bar ---------------------------------------------------------------
+   Sticky ink bar. The dotted rule along its foot is the system's pointillist
+   divider. .pv-topbar--overlay floats over a hero (fixed, transparent at the
+   top, glass once pv.js sets .is-scrolled). */
+
+.pv-topbar {
+  position: sticky;
+  top: 0;
+  z-index: var(--pv-z-topbar);
+  color: var(--pv-text);
+  background: var(--pv-topbar-bg);
+  -webkit-backdrop-filter: var(--pv-glass-filter);
+  backdrop-filter: var(--pv-glass-filter);
+}
+.pv-topbar::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -2px;
+  height: 3px;
+  background-image: radial-gradient(circle at center, var(--pv-dot) 1px, transparent 1.4px);
+  background-size: 6px 3px;
+  background-repeat: repeat-x;
+  pointer-events: none;
+  transition: opacity var(--pv-dur-ui) ease;
+}
+.pv-topbar--overlay {
+  position: fixed;
+  inset: 0 0 auto;
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  transition: background-color var(--pv-dur-ui) ease;
+}
+.pv-topbar--overlay::after { opacity: 0; }
+.pv-topbar--overlay.is-scrolled {
+  background: var(--pv-topbar-bg);
+  -webkit-backdrop-filter: var(--pv-glass-filter);
+  backdrop-filter: var(--pv-glass-filter);
+}
+.pv-topbar--overlay.is-scrolled::after { opacity: 1; }
+
+.pv-topbar__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--pv-space-6);
+  height: var(--pv-topbar-h);
+  max-width: calc(var(--pv-page-wide) + 2 * var(--pv-gutter));
+  margin-inline: auto;
+  padding-inline: var(--pv-gutter);
+}
+.pv-topbar__brand {
+  display: flex;
+  align-items: center;
+  flex: none;
+  padding: 8px 2px;
+  margin-inline-start: -2px;
+  border-radius: var(--pv-radius-sm);
+}
+.pv-topbar__brand img { height: 20px; width: auto; }
+.pv-topbar__nav { margin-inline-start: auto; }
+.pv-topbar__nav ul {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pv-topbar__nav a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding-inline: 12px;
+  border-radius: var(--pv-radius-pill);
+  font: 500 var(--pv-text-xs) / 1 var(--pv-font-mono);
+  letter-spacing: var(--pv-track-label);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--pv-text-2);
+  transition: color var(--pv-dur-hover) ease, background-color var(--pv-dur-hover) ease;
+}
+/* Tablets: the bar tightens, so that the four links, Paper's "Coming soon"
+   and the docs' theme toggle keep to one line from 760 px. */
+@media (min-width: 760px) and (max-width: 1023.98px) {
+  .pv-topbar__inner { gap: var(--pv-space-4); }
+  .pv-topbar__nav a { padding-inline: 9px; }
+}
+@media (hover: hover) and (pointer: fine) {
+  .pv-topbar__nav a:hover { color: var(--pv-text); background: var(--pv-tint); }
+}
+.pv-topbar__nav a:active { background: var(--pv-tint); }
+/* "You are here": one lit point, on the current site. aria-current="page" on
+   the site's home page, "true" on its other pages and its 404 (the site is
+   current, the page is not the one the link opens). */
+.pv-topbar__nav a:is([aria-current="page"], [aria-current="true"]) { color: var(--pv-text); }
+.pv-topbar__nav a:is([aria-current="page"], [aria-current="true"])::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pv-accent);
+  box-shadow: 0 0 10px var(--pv-accent-glow);
+}
+.pv-topbar__end {
+  display: flex;
+  align-items: center;
+  gap: var(--pv-space-2);
+  flex: none;
+  margin-inline-start: auto;
+}
+.pv-topbar__nav ~ .pv-topbar__end { margin-inline-start: 0; }
+/* On wide screens an end slot holding only the menu button takes no room, and
+   the last nav label lines up with the gutter (its pill padding hangs out). */
+@media (min-width: 760px) {
+  .pv-topbar__end:not(:has(> :not(.pv-topbar__menu))) { display: none; }
+  .pv-topbar__inner:not(:has(.pv-topbar__end > :not(.pv-topbar__menu))) .pv-topbar__nav { margin-inline-end: -12px; }
+}
+@media (min-width: 760px) and (max-width: 1023.98px) {
+  .pv-topbar__inner:not(:has(.pv-topbar__end > :not(.pv-topbar__menu))) .pv-topbar__nav { margin-inline-end: -9px; }
+}
+
+/* Menu button: a 3 × 3 field of points. */
+.pv-topbar__menu {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-inline-end: -6px;
+  border: 0;
+  border-radius: var(--pv-radius-md);
+  background: transparent;
+  color: var(--pv-text);
+  transition: background-color var(--pv-dur-hover) ease;
+}
+.pv-topbar__menu:active { background: var(--pv-tint); }
+.pv-topbar__menu svg { width: 20px; height: 20px; }
+
+@media (max-width: 759.98px) {
+  :root { --pv-topbar-h: 56px; }
+  .pv-topbar__nav { display: none; }
+  .pv-topbar__menu { display: inline-flex; }
+  .pv-topbar__nav ~ .pv-topbar__end { margin-inline-start: auto; }
+  .pv-topbar__brand img { height: 18px; }
+}
+
+/* Theme toggle (docs): a disc half in shadow. */
+.pv-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--pv-line);
+  border-radius: var(--pv-radius-pill);
+  background: transparent;
+  color: var(--pv-text-2);
+  transition: color var(--pv-dur-hover) ease, border-color var(--pv-dur-hover) ease, background-color var(--pv-dur-hover) ease;
+}
+.pv-theme-toggle svg { width: 18px; height: 18px; transition: transform var(--pv-dur-travel) var(--pv-ease-out); }
+/* The disc turns with the page's theme. The toggle's name says what a press
+   does ("Switch to dark theme"), so it carries no aria-pressed (pv.js). */
+:root[data-theme="light"] .pv-theme-toggle svg { transform: rotate(180deg); }
+@media (hover: hover) and (pointer: fine) {
+  .pv-theme-toggle:hover { color: var(--pv-text); border-color: var(--pv-line-2); background: var(--pv-tint); }
+}
+.pv-theme-toggle:active { background: var(--pv-tint); }
+@media (pointer: coarse) {
+  .pv-theme-toggle { width: 44px; height: 44px; }
+}
+
+/* -- Drawer (mobile navigation, a native <dialog>) -------------------------- */
+
+.pv-drawer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--pv-text);
+  overflow: hidden;
+}
+.pv-drawer::backdrop {
+  background: rgba(3, 4, 8, 0.62);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  transition: opacity var(--pv-dur-ui) ease;
+}
+.pv-drawer__panel {
+  position: absolute;
+  inset: 0 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--pv-space-6);
+  width: min(88vw, 380px);
+  padding: 10px var(--pv-gutter) calc(24px + env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--pv-bg-2);
+  border-inline-start: 1px solid var(--pv-line);
+  box-shadow: var(--pv-shadow-3);
+  transition:
+    transform var(--pv-dur-panel) var(--pv-ease-drawer),
+    opacity var(--pv-dur-ui) ease;
+}
+@starting-style {
+  .pv-drawer[open] .pv-drawer__panel { transform: translateX(var(--pv-shift)); opacity: 0; }
+  .pv-drawer[open]::backdrop { opacity: 0; }
+}
+.pv-drawer.is-closing .pv-drawer__panel {
+  transform: translateX(var(--pv-shift));
+  opacity: 0;
+  transition:
+    transform var(--pv-dur-ui) var(--pv-ease-exit),
+    opacity var(--pv-dur-ui) ease;
+}
+.pv-drawer.is-closing::backdrop { opacity: 0; }
+/* The head stays in place when a long panel scrolls (a phone held sideways),
+   so Close, which takes focus on opening, is always on screen. */
+.pv-drawer__head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  background: var(--pv-bg-2);
+}
+.pv-drawer__head img { height: 18px; width: auto; }
+.pv-drawer__nav { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.pv-drawer__nav a {
+  display: grid;
+  gap: 2px;
+  padding: 14px 14px 14px 16px;
+  border-radius: var(--pv-radius-md);
+  transition: background-color var(--pv-dur-hover) ease;
+}
+.pv-drawer__nav a:active, .pv-drawer__nav a:is([aria-current="page"], [aria-current="true"]) { background: var(--pv-tint); }
+.pv-drawer__name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.pv-drawer__nav a:is([aria-current="page"], [aria-current="true"]) .pv-drawer__name::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pv-accent);
+  box-shadow: 0 0 10px var(--pv-accent-glow);
+}
+.pv-drawer__host {
+  font: 500 var(--pv-text-xs) / 1.3 var(--pv-font-mono);
+  letter-spacing: var(--pv-track-cap);
+  color: var(--pv-text-3);
+}
+.pv-drawer__foot {
+  margin-top: auto;
+  display: grid;
+  gap: var(--pv-space-4);
+  padding-top: var(--pv-space-6);
+  position: relative;
+  font-size: var(--pv-text-sm);
+  color: var(--pv-text-3);
+}
+.pv-drawer__foot::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background-image: radial-gradient(circle at center, var(--pv-dot) 1px, transparent 1.4px);
+  background-size: 6px 3px;
+  background-repeat: repeat-x;
+}
+.pv-drawer__row { display: flex; align-items: center; justify-content: space-between; gap: var(--pv-space-3); }
+
+/* While the drawer is open the page does not scroll behind it. */
+html.pv-scroll-lock { overflow: hidden; }
+
+/* -- Footer ----------------------------------------------------------------- */
+
+.pv-footer {
+  position: relative;
+  color: var(--pv-text-2);
+  background: var(--pv-bg);
+  font-size: var(--pv-text-sm);
+}
+.pv-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background-image: radial-gradient(circle at center, var(--pv-dot) 1px, transparent 1.4px);
+  background-size: 6px 3px;
+  background-repeat: repeat-x;
+}
+.pv-footer__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "brand sites"
+    "pub   copy";
+  gap: var(--pv-space-8) var(--pv-space-10);
+  align-items: start;
+  max-width: calc(var(--pv-page-wide) + 2 * var(--pv-gutter));
+  margin-inline: auto;
+  padding: clamp(32px, 4vw, 48px) var(--pv-gutter) clamp(28px, 3vw, 40px);
+}
+/* The brand link hugs its mark and name, and so does its focus ring. */
+.pv-footer__brand {
+  grid-area: brand;
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--pv-text);
+  font-weight: 600;
+  font-size: var(--pv-text-base);
+  letter-spacing: -0.01em;
+}
+.pv-footer__brand img { width: 28px; height: 28px; }
+.pv-footer__sites { grid-area: sites; }
+.pv-footer__sites ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pv-space-2) var(--pv-space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pv-footer__sites a {
+  display: grid;
+  gap: 4px;
+  padding: 4px 0;
+  border-radius: var(--pv-radius-xs);
+}
+.pv-footer__site {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 var(--pv-text-xs) / 1 var(--pv-font-mono);
+  letter-spacing: var(--pv-track-label);
+  text-transform: uppercase;
+  color: var(--pv-text);
+}
+.pv-footer__host {
+  font: 400 var(--pv-text-xs) / 1.2 var(--pv-font-mono);
+  letter-spacing: 0.02em;
+  color: var(--pv-text-3);
+  transition: color var(--pv-dur-hover) ease;
+}
+.pv-footer__sites a:is([aria-current="page"], [aria-current="true"]) .pv-footer__site::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--pv-accent);
+}
+@media (hover: hover) and (pointer: fine) {
+  .pv-footer__sites a:hover .pv-footer__host { color: var(--pv-link); }
+}
+.pv-footer__sites a:active .pv-footer__host { color: var(--pv-link); }
+/* The publication line (CHROME.md §5): "Preprint: Authors et al., bioRxiv ·
+   Coming soon", the last words a placeholder link. */
+.pv-footer__pub {
+  grid-area: pub;
+  max-width: 72ch;
+  color: var(--pv-text-3);
+  line-height: 1.55;
+}
+.pv-footer__pub cite { font-style: normal; color: var(--pv-text-2); }
+.pv-footer__pub a {
+  padding-block: 3px;            /* a 24 px target on the line */
+  color: var(--pv-text-2);
+  text-decoration: underline;
+  text-decoration-color: var(--pv-line-2);
+  text-underline-offset: 3px;
+}
+.pv-footer__pub a:active { color: var(--pv-text); }
+.pv-footer__copy {
+  grid-area: copy;
+  align-self: end;
+  font: 500 var(--pv-text-xs) / 1.4 var(--pv-font-mono);
+  letter-spacing: var(--pv-track-cap);
+  color: var(--pv-text-3);
+  white-space: nowrap;
+}
+/* Phones: the brand and the copyright on one row, the three sites in one row
+   (their names only: the hosts are in the drawer), then the publication. */
+@media (max-width: 759.98px) {
+  .pv-footer__inner {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "brand copy" "sites sites" "pub pub";
+    align-items: center;
+    gap: 18px 16px;
+    padding-top: 28px;
+    padding-bottom: 24px;
+  }
+  .pv-footer__copy { align-self: center; }
+  .pv-footer__sites ul { gap: 8px 24px; }
+  .pv-footer__host { display: none; }
+}
+
+/* Phones without JavaScript: the menu button cannot open its drawer, so a
+   <noscript> row of the sites' links takes its place under the bar
+   (CHROME.md §3; the head's <noscript> style hides the button). */
+.pv-nojs-nav { display: none; }
+@media (max-width: 759.98px) {
+  .pv-nojs-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 20px;
+    padding: 0 var(--pv-gutter) 8px;
+    font: 500 var(--pv-text-xs) / 1.3 var(--pv-font-mono);
+    letter-spacing: var(--pv-track-label);
+    text-transform: uppercase;
+    color: var(--pv-text-2);
+  }
+  .pv-nojs-nav a { padding-block: 4px; }
+  .pv-nojs-nav a:is([aria-current="page"], [aria-current="true"]) { color: var(--pv-accent); }
+}
+
+
+/* 9 · Components =========================================================== */
+
+/* -- Type roles ------------------------------------------------------------- */
+
+.pv-display {
+  font-family: var(--pv-font-serif);
+  font-weight: 600;
+  font-size: var(--pv-text-display);
+  line-height: 1.02;
+  letter-spacing: var(--pv-track-display);
+  color: var(--pv-text);
+  text-wrap: balance;
+}
+.pv-title {
+  font-family: var(--pv-font-serif);
+  font-weight: 600;
+  font-size: var(--pv-text-title);
+  line-height: 1.08;
+  letter-spacing: -0.018em;
+  color: var(--pv-text);
+  text-wrap: balance;
+}
+.pv-h2 { font-size: var(--pv-text-h2); font-weight: 600; line-height: 1.14; letter-spacing: -0.022em; text-wrap: balance; }
+.pv-h3 { font-size: var(--pv-text-h3); font-weight: 600; line-height: 1.24; letter-spacing: -0.014em; text-wrap: balance; }
+.pv-h4 { font-size: var(--pv-text-h4); font-weight: 600; line-height: 1.3; letter-spacing: -0.008em; }
+.pv-lede {
+  font-size: var(--pv-text-lede);
+  line-height: 1.55;
+  color: var(--pv-text-2);
+  max-width: 60ch;
+  text-wrap: pretty;
+}
+.pv-small { font-size: var(--pv-text-sm); line-height: 1.5; color: var(--pv-text-2); }
+.pv-label {
+  font: 500 var(--pv-text-xs) / 1.3 var(--pv-font-mono);
+  letter-spacing: var(--pv-track-label);
+  text-transform: uppercase;
+  color: var(--pv-text-3);
+}
+.pv-mono { font-family: var(--pv-font-mono); font-variant-ligatures: none; }
+.pv-num { font-variant-numeric: tabular-nums; }
+.pv-muted { color: var(--pv-text-2); }
+.pv-faint { color: var(--pv-text-3); }
+
+/* braindev's gradient emphasis: the second line of one hero headline,
+   set in the product voice. Once per page. */
+.pv-em-gradient {
+  font-family: var(--pv-font-sans);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: var(--pv-case-2d);
+}
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .pv-em-gradient {
+    background-image: var(--pv-em-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
+/* The app's pointillist display face. Ornament only: aria-hidden, never text
+   a reader needs. */
+.pv-dots-type {
+  font-family: var(--pv-font-dots);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  line-height: 0.95;
+  color: var(--pv-text);
+  text-shadow: 0 0 14px rgba(111, 224, 189, 0.45), 0 0 40px rgba(111, 224, 189, 0.22);
+}
+
+/* -- Icons (icons.svg sprite or inline SVG; 20 × 20 grid, 1.6 stroke) -------- */
+
+.pv-icon { width: 1.25em; height: 1.25em; flex: none; display: inline-block; vertical-align: -0.25em; }
+
+/* -- Links ------------------------------------------------------------------- */
+
+.pv-link {
+  color: var(--pv-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, var(--pv-link) 45%, transparent);
+  text-underline-offset: 0.22em;
+  transition: text-decoration-color var(--pv-dur-hover) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .pv-link:hover { text-decoration-color: currentColor; }
+}
+.pv-link:active { text-decoration-color: currentColor; }
+
+/* -- Buttons ------------------------------------------------------------------
+   One shape, five voices. Each variant only sets the four private custom
+   properties; the base rule draws. */
+
+.pv-btn {
+  --_bg: transparent;
+  --_fg: var(--pv-text);
+  --_line: var(--pv-line-2);
+  --_icon: currentColor;
+  --_shadow: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 0 18px;
+  border: 1px solid var(--_line);
+  border-radius: var(--pv-radius-md);
+  background: var(--_bg);
+  color: var(--_fg);
+  box-shadow: var(--_shadow);
+  font: 500 0.9375rem / 1.15 var(--pv-font-sans);
+  letter-spacing: -0.005em;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--pv-dur-hover) ease,
+    border-color var(--pv-dur-hover) ease,
+    color var(--pv-dur-hover) ease,
+    box-shadow var(--pv-dur-ui) var(--pv-ease-out),
+    transform var(--pv-dur-press) var(--pv-ease-out);
+}
+.pv-btn svg { width: 16px; height: 16px; flex: none; color: var(--_icon); }
+.pv-btn:active { transform: scale(var(--pv-press)); }
+.pv-btn[disabled], .pv-btn[aria-disabled="true"] { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+.pv-btn--primary {
+  --_bg: var(--pv-accent);
+  --_fg: var(--pv-accent-ink);
+  --_line: transparent;
+  --_shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), var(--pv-glow-accent);
+  font-weight: 600;
+}
+.pv-btn--secondary { --_bg: var(--pv-tint); --_line: var(--pv-line-2); }
+.pv-btn--ghost { --_line: transparent; --_fg: var(--pv-text-2); }
+.pv-btn--case {
+  --_bg: linear-gradient(180deg, color-mix(in srgb, var(--pv-case) 20%, transparent), color-mix(in srgb, var(--pv-case) 7%, transparent));
+  --_line: var(--pv-case-line);
+  --_icon: var(--pv-case);
+}
+.pv-btn--case[aria-pressed="true"], .pv-btn--case.is-active {
+  --_bg: linear-gradient(180deg, color-mix(in srgb, var(--pv-case) 32%, transparent), color-mix(in srgb, var(--pv-case) 14%, transparent));
+  --_line: var(--pv-case);
+  --_shadow: var(--pv-case-glow);
+}
+@media (hover: hover) and (pointer: fine) {
+  .pv-btn--primary:hover { --_bg: var(--pv-accent-hi); --_shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32), 0 14px 36px -10px var(--pv-accent-glow); }
+  .pv-btn--secondary:hover { --_bg: var(--pv-line-soft); --_line: color-mix(in srgb, var(--pv-text) 42%, transparent); }
+  .pv-btn--ghost:hover { --_bg: var(--pv-tint); --_fg: var(--pv-text); }
+  .pv-btn--case:hover { --_line: var(--pv-case); --_shadow: var(--pv-case-glow); }
+}
+
+.pv-btn--sm { min-height: 36px; padding: 0 14px; gap: 8px; border-radius: var(--pv-radius-sm); font-size: 0.875rem; }
+.pv-btn--lg { min-height: 52px; padding: 0 24px; border-radius: 12px; font-size: 1rem; }
+.pv-btn--icon { width: 44px; padding: 0; }
+.pv-btn--icon.pv-btn--sm { width: 36px; }
+.pv-btn--mono {
+  font: 500 var(--pv-text-xs) / 1 var(--pv-font-mono);
+  letter-spacing: var(--pv-track-label);
+  text-transform: uppercase;
+}
+
+/* Citation button: braindev's gold → mint "Download data" button, kept for
+   the citation card only. */
+.pv-btn--cite {
+  --_bg: linear-gradient(100deg, #E9C46A 0%, #C9CF84 48%, #7FE3BF 100%);
+  --_fg: #0A0C18;
+  --_line: transparent;
+  --_shadow: var(--pv-cite-shadow);
+  min-height: 48px;
+  padding: 0 20px 0 16px;
+  gap: 12px;
+  text-align: start;
+  font-weight: 600;
+}
+.pv-btn--cite svg { width: 18px; height: 18px; }
+/* While the preprint is a placeholder the citation button stays quiet: the
+   gold-to-mint as an edge, not a fill, so it never competes with the page's
+   one primary action. */
+.pv-btn--cite[data-placeholder] {
+  --_bg: linear-gradient(var(--pv-bg-2), var(--pv-bg-2)) padding-box, linear-gradient(100deg, #E9C46A, #C9CF84 48%, #7FE3BF) border-box;
+  --_fg: var(--pv-text);
+  --_line: transparent;
+  --_shadow: none;
+  --_icon: var(--pv-edition);
+  font-weight: 500;
+}
+@media (hover: hover) and (pointer: fine) {
+  .pv-btn--cite[data-placeholder]:hover { --_bg: linear-gradient(var(--pv-surface), var(--pv-surface)) padding-box, linear-gradient(100deg, #E9C46A, #C9CF84 48%, #7FE3BF) border-box; }
+}
+/* A second line under a button's name: its state ("Coming soon") or a note. */
+.pv-btn__stack { display: grid; gap: 3px; }
+.pv-btn__sub {
+  font: 500 var(--pv-text-2xs) / 1 var(--pv-font-mono);
+  letter-spacing: var(--pv-track-label);
+  text-transform: uppercase;
+  opacity: 0.72;
+}
+
+/* Placeholder links (data-placeholder): the "Coming soon" state is visible,
+   never a surprise, and pv.js answers the click with a toast. A button shows
+   it as a chip after its name, or under its name when it has a .pv-btn__stack
+   (then it takes no chip). Anywhere else, write <span class="pv-soon">Coming
+   soon</span>. */
+.pv-btn[data-placeholder]:not(.pv-btn--cite)::after { content: "Coming soon"; }
+.pv-btn[data-placeholder]:has(> .pv-btn__stack)::after { content: none; }
+.pv-btn[data-placeholder] .pv-btn__sub { color: var(--pv-text-3); opacity: 1; }
+.pv-btn[data-placeholder]:not(.pv-btn--cite)::after,
+.pv-soon {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: var(--pv-radius-pill);
+  background: color-mix(in srgb, currentColor 12%, transparent);
+  font: 500 var(--pv-text-2xs) / 1 var(--pv-font-mono);
+  letter-spacing: var(--pv-track-cap);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+/* Paper in the top bar and the drawer. */
+.pv-topbar__nav a[data-placeholder]::after,
+.pv-drawer__nav a[data-placeholder] .pv-drawer__name::before {
+  content: "Coming soon";
+  font: 500 var(--pv-text-2xs) / 1 var(--pv-font-mono);
+  letter-spacing: var(--pv-track-cap);
+  padding: 3px 6px;
+  border-radius: var(--pv-radius-pill);
+  color: var(--pv-text-3);
+  border: 1px solid var(--pv-line);
+  white-space: nowrap;
+}
+.pv-drawer__nav a[data-placeholder] .pv-drawer__name::before { order: 2; }
+
+/* -- Eyebrow chip -------------------------------------------------------------
+   One per page, in a hero, carrying real information (field · subject). */
+
+.pv-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+  padding: 7px 14px 7px 12px;
+  border: 1px solid var(--pv-line);
+  border-radius: var(--pv-radius-pill);
+  background: var(--pv-chip-bg);
+  -webkit-backdrop-filter: var(--pv-glass-filter);
+  backdrop-filter: var(--pv-glass-filter);
+  font: 500 var(--pv-text-2xs) / 1.3 var(--pv-font-mono);
+  letter-spacing: var(--pv-track-eye);
+  text-transform: uppercase;
+  color: var(--pv-text-2);
+}
+.pv-eyebrow::before {
+  content: "";
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pv-dot-color, var(--pv-edition));
+  box-shadow: 0 0 10px var(--pv-dot-color, var(--pv-edition));
+}
+.pv-eyebrow[data-case] { --pv-dot-color: var(--pv-case); }
+@media (max-width: 519.98px) {
+  .pv-eyebrow { letter-spacing: 0.14em; padding-inline: 11px 12px; }
+}
+
+/* -- Case marks ---------------------------------------------------------------- */
+
+.pv-case-dot {
+  display: inline-block;
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pv-case);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--pv-case) 70%, transparent);
+  vertical-align: middle;
+}
+
+/* Corner label (braindev): case line in the case colour, meta line under it. */
+.pv-caselabel { display: grid; gap: 6px; font-family: var(--pv-font-mono); }
+.pv-caselabel__title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: var(--pv-text-xs);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: var(--pv-track-eye);
+  text-transform: uppercase;
+  color: var(--pv-case);
+}
+.pv-caselabel__title::before {
+  content: "";
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pv-case);
+  box-shadow: 0 0 10px var(--pv-case);
+}
+.pv-caselabel__meta {
+  font-size: var(--pv-text-xs);
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+  color: var(--pv-text-3);
+}
+.pv-caselabel--end { justify-items: end; text-align: end; }
+.pv-caselabel--end .pv-caselabel__title { flex-direction: row-reverse; }
+
+/* -- Stat tiles ------------------------------------------------------------------
+   <dl class="pv-stats"><div class="pv-stat"><dt>Cells</dt><dd>135,232</dd></div></dl>
+   The label is read first, the number is seen first. */
+
+.pv-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+}
+.pv-stat {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 92px;
+  padding: 12px 16px 11px;
+  border: 1px solid var(--pv-line);
+  border-radius: var(--pv-radius-md);
+  background: var(--pv-glass-bg);
+  box-shadow: var(--pv-glass-shadow);
+  text-align: center;
+}
+.pv-stat dd {
+  margin: 0;
+  font: 500 clamp(1.25rem, 1.05rem + 0.56vw, 1.625rem) / 1 var(--pv-font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--pv-text);
+}
+.pv-stat dt {
+  font: 500 var(--pv-text-2xs) / 1.2 var(--pv-font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pv-text-3);
+}
+.pv-stat[data-case] dd { color: var(--pv-case); }
+.pv-stats--left .pv-stat { align-items: flex-start; text-align: start; }
+@media (max-width: 519.98px) {
+  .pv-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
+  .pv-stat { min-width: 0; }
+}
+
+/* -- Cards ------------------------------------------------------------------------
+   Cards hug their content. Plain on the page ground; glass only over imagery
+   or a canvas. A linked card answers with its edge, never with a lift. */
+
+.pv-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--pv-space-3);
+  padding: var(--pv-card-pad, 20px);
+  border: 1px solid var(--pv-line);
+  border-radius: var(--pv-card-radius, var(--pv-radius-lg));
+  background: var(--pv-surface);
+  color: var(--pv-text);
+}
+.pv-card--glass {
+  background: var(--pv-glass-bg);
+  border-color: var(--pv-glass-line);
+  box-shadow: var(--pv-glass-shadow);
+  -webkit-backdrop-filter: var(--pv-glass-filter);
+  backdrop-filter: var(--pv-glass-filter);
+}
+.pv-card--flat { background: transparent; }
+a.pv-card, .pv-card--link {
+  transition: border-color var(--pv-dur-hover) ease, background-color var(--pv-dur-hover) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  a.pv-card:hover, .pv-card--link:hover { border-color: var(--pv-line-2); background-color: var(--pv-surface-2); }
+  .pv-card--glass.pv-card--link:hover { background-color: transparent; border-color: rgba(255, 255, 255, 0.22); }
+}
+a.pv-card:active, .pv-card--link:active { border-color: var(--pv-line-2); background-color: var(--pv-surface-2); }
+.pv-card--link:focus-within { border-color: var(--pv-line-2); }
+/* Stretched link: the title link covers the card, other links stay on top.
+   Its focus ring follows the card's corners (--pv-card-radius). */
+.pv-card__link { color: inherit; }
+.pv-card__link::after { content: ""; position: absolute; inset: 0; border-radius: var(--pv-card-radius, var(--pv-radius-lg)); }
+.pv-card__link:focus-visible { outline: none; }
+.pv-card__link:focus-visible::after { outline: 2px solid var(--pv-focus); outline-offset: 3px; }
+.pv-card :is(a, button):not(.pv-card__link) { position: relative; z-index: 1; }
+/* A case card carries its colour along the top edge (as the store cards). */
+.pv-card[data-case]::before {
+  content: "";
+  position: absolute;
+  inset: -1px -1px auto;
+  height: 2px;
+  border-radius: var(--pv-card-radius, var(--pv-radius-lg)) var(--pv-card-radius, var(--pv-radius-lg)) 0 0;
+  background: linear-gradient(90deg, var(--pv-case), transparent 78%);
+}
+.pv-card__media {
+  overflow: hidden;
+  margin: calc(var(--pv-card-pad, 20px) * -0.6) calc(var(--pv-card-pad, 20px) * -0.6) var(--pv-space-1);
+  border-radius: calc(var(--pv-radius-lg) - 6px);
+  background: var(--pv-bg-2);
+  aspect-ratio: var(--pv-media-ratio, 16 / 10);
+}
+.pv-card__media > img, .pv-card__media > video { width: 100%; height: 100%; object-fit: cover; }
+.pv-card__title { font-size: var(--pv-text-h4); font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; }
+.pv-card__meta {
+  font: 400 var(--pv-text-xs) / 1.4 var(--pv-font-mono);
+  letter-spacing: 0.02em;
+  color: var(--pv-text-3);
+}
+.pv-card__body { font-size: 0.9375rem; line-height: 1.55; color: var(--pv-text-2); }
+.pv-card__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--pv-space-3);
+  margin-top: auto;
+  padding-top: var(--pv-space-3);
+  border-top: 1px solid var(--pv-line-soft);
+  font: 400 var(--pv-text-xs) / 1.2 var(--pv-font-mono);
+  color: var(--pv-text-3);
+}
+
+/* -- Citation card (braindev) ---------------------------------------------------- */
+
+.pv-cite {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px 20px;
+  max-width: 880px;
+  padding: 18px 20px 18px 22px;
+  border: 1px solid var(--pv-glass-line);
+  border-radius: var(--pv-radius-lg);
+  background: var(--pv-glass-bg);
+  box-shadow: var(--pv-glass-shadow);
+  -webkit-backdrop-filter: var(--pv-glass-filter);
+  backdrop-filter: var(--pv-glass-filter);
+}
+.pv-cite__mark { width: 24px; height: 24px; align-self: start; margin-top: 2px; color: var(--pv-edition); }
+.pv-cite__body { display: grid; gap: 5px; min-width: 0; }
+.pv-cite__eyebrow {
+  font: 500 var(--pv-text-2xs) / 1.3 var(--pv-font-mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--pv-text-3);
+}
+.pv-cite__title {
+  font-family: var(--pv-font-serif);
+  font-style: normal;
+  font-weight: 600;
+  font-size: clamp(1.0625rem, 1rem + 0.28vw, 1.25rem);
+  line-height: 1.24;
+  letter-spacing: -0.01em;
+  color: var(--pv-text);
+  text-wrap: balance;
+}
+.pv-cite__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 14px;
+  font-size: var(--pv-text-sm);
+  color: var(--pv-text-2);
+}
+.pv-cite__venue {
+  font: 400 var(--pv-text-xs) / 1.4 var(--pv-font-mono);
+  letter-spacing: 0.04em;
+  color: var(--pv-text-3);
+}
+@media (max-width: 639.98px) {
+  .pv-cite { grid-template-columns: auto minmax(0, 1fr); padding: 16px; }
+  .pv-cite > .pv-btn { grid-column: 1 / -1; width: 100%; }
+}
+
+/* -- Tabs ------------------------------------------------------------------------
+   role=tablist inside [data-pv-tabs]. Without JS the selected tab is
+   underlined by its own shadow; with JS a single bar slides between tabs. */
+
+.pv-tabs__list {
+  position: relative;
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--pv-line);
+  scrollbar-width: none;
+}
+.pv-tabs__list::-webkit-scrollbar { display: none; }
+.pv-tabs__tab {
+  flex: none;
+  padding: 12px 12px 13px;
+  border: 0;
+  border-radius: var(--pv-radius-sm) var(--pv-radius-sm) 0 0;
+  background: transparent;
+  color: var(--pv-text-3);
+  font: 500 0.8125rem / 1 var(--pv-font-mono);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  transition: color var(--pv-dur-hover) ease, background-color var(--pv-dur-hover) ease;
+}
+.pv-tabs__tab:focus-visible { outline-offset: -2px; }
+@media (hover: hover) and (pointer: fine) {
+  .pv-tabs__tab:hover { color: var(--pv-text-2); background: var(--pv-tint); }
+}
+.pv-tabs__tab[aria-selected="true"] { color: var(--pv-text); box-shadow: inset 0 -2px 0 var(--pv-accent); }
+.pv-tabs__list.is-ready .pv-tabs__tab[aria-selected="true"] { box-shadow: none; }
+.pv-tabs__ind {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1px;
+  height: 2px;
+  background: var(--pv-accent);
+  transform-origin: 0 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform var(--pv-dur-travel) var(--pv-ease-out);
+}
+.pv-tabs__list.is-ready .pv-tabs__ind { opacity: 1; }
+.pv-tabs__panel { padding-top: var(--pv-space-5); }
+
+/* -- Segmented control -------------------------------------------------------------
+   Buttons with aria-pressed in [data-pv-seg]. pv.js slides one thumb. */
+
+.pv-seg {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  gap: 2px;
+  max-width: 100%;
+  padding: 3px;
+  border: 1px solid var(--pv-line);
+  border-radius: var(--pv-radius-pill);
+  background: var(--pv-field);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.pv-seg::-webkit-scrollbar { display: none; }
+.pv-seg > button {
+  flex: none;
+  min-height: 32px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--pv-radius-pill);
+  background: transparent;
+  color: var(--pv-text-3);
+  font: 500 var(--pv-text-xs) / 1 var(--pv-font-mono);
+  letter-spacing: var(--pv-track-label);
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color var(--pv-dur-hover) ease, background-color var(--pv-dur-hover) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .pv-seg > button:hover { color: var(--pv-text); }
+}
+.pv-seg > button:focus-visible { outline-offset: 0; }
+.pv-seg > button[aria-pressed="true"],
+.pv-seg__thumb {
+  color: var(--pv-text);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--pv-accent) 28%, transparent), color-mix(in srgb, var(--pv-accent) 12%, transparent));
+  box-shadow: inset 0 0 0 1px var(--pv-accent-line), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.pv-seg.is-ready > button[aria-pressed="true"] { background: transparent; box-shadow: none; }
+.pv-seg__thumb {
+  position: absolute;
+  z-index: -1;
+  top: 3px;
+  bottom: 3px;
+  left: 0;
+  width: 0;
+  border-radius: var(--pv-radius-pill);
+  pointer-events: none;
+  transition: transform var(--pv-dur-travel) var(--pv-ease-out), width var(--pv-dur-travel) var(--pv-ease-out);
+}
+
+/* -- Tags and filter chips ----------------------------------------------------------- */
+
+.pv-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.pv-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px;
+  border: 1px solid var(--pv-line);
+  border-radius: var(--pv-radius-pill);
+  font: 500 var(--pv-text-2xs) / 1 var(--pv-font-mono);
+  letter-spacing: 0.04em;
+  color: var(--pv-text-2);
+  white-space: nowrap;
+}
+.pv-tag--ver { color: var(--pv-edition); }
+.pv-tag--out { color: var(--pv-output); border-color: color-mix(in srgb, var(--pv-output) 40%, transparent); }
+.pv-tag[data-case] { color: var(--pv-case); border-color: var(--pv-case-line); background: var(--pv-case-soft); }
+.pv-tag[data-case]::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+/* Positioned, so that its visually hidden text stays inside a rail that
+   scrolls sideways (it would widen the page). */
+.pv-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 0 12px 0 10px;
+  border: 1px solid var(--pv-line);
+  border-radius: var(--pv-radius-pill);
+  background: transparent;
+  color: var(--pv-text-2);
+  font: 500 var(--pv-text-xs) / 1 var(--pv-font-mono);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: color var(--pv-dur-hover) ease, border-color var(--pv-dur-hover) ease, background-color var(--pv-dur-hover) ease, transform var(--pv-dur-press) var(--pv-ease-out);
+}
+/* Off: a hollow point. On: a filled one. The shape changes, not only the hue. */
+.pv-chip::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  opacity: 0.7;
+  transition: background-color var(--pv-dur-hover) ease;
+}
+.pv-chip[aria-pressed="true"] {
+  color: var(--pv-accent);
+  border-color: var(--pv-accent-line);
+  background: var(--pv-accent-soft);
+}
+.pv-chip[aria-pressed="true"]::before { background: currentColor; opacity: 1; }
+.pv-chip:active { transform: scale(var(--pv-press)); }
+@media (hover: hover) and (pointer: fine) {
+  .pv-chip:hover { color: var(--pv-text); border-color: var(--pv-line-2); }
+  .pv-chip[aria-pressed="true"]:hover { color: var(--pv-accent); border-color: var(--pv-accent); }
+}
+.pv-chip__count { color: var(--pv-text-3); font-variant-numeric: tabular-nums; }
+
+/* -- Status chip ---------------------------------------------------------------------------
+   What a page is waiting for, in words: <p class="pv-status">Tutorial in
+   preparation</p>. Gold, as the eyebrow's point and the editions: a state of
+   the publication, not an error. Its point is a target, not a filled dot. */
+
+.pv-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 28px;
+  padding: 0 12px 0 10px;
+  border: 1px solid color-mix(in srgb, var(--pv-edition) 42%, transparent);
+  border-radius: var(--pv-radius-pill);
+  background: color-mix(in srgb, var(--pv-edition) 9%, transparent);
+  font: 500 var(--pv-text-2xs) / 1.2 var(--pv-font-mono);
+  letter-spacing: var(--pv-track-label);
+  text-transform: uppercase;
+  color: var(--pv-edition);
+}
+.pv-status::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  background: radial-gradient(circle, currentColor 0 1.5px, transparent 2px);
+}
+
+/* -- Verified badge and the nine gates -------------------------------------------------- */
+
+.pv-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 10px 0 7px;
+  border: 1px solid var(--pv-accent-line);
+  border-radius: var(--pv-radius-pill);
+  background: var(--pv-accent-soft);
+  color: var(--pv-accent);
+  font: 500 var(--pv-text-xs) / 1 var(--pv-font-mono);   /* the trust badge reads at 12 px */
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.pv-verified svg { width: 13px; height: 13px; }
+
+/* <ol class="pv-gates"> of nine <li class="pv-gate" data-state="pass|advisory|fail|pending">.
+   Nine in a row while every name fits on one line, else three rows of three,
+   so that no name breaks inside a word: the longest, "determinism" and
+   "no_mutation", are 77 px at 11 px, so nine columns need about 710 px. The
+   switch reads the strip's own width, not the screen's: each column's least
+   width is a ninth of the strip above --pv-gates-break and a third under it
+   (the clamp() flips on the sign of break - 100%). */
+.pv-gates {
+  --pv-gates-break: 712px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(calc(100% / 9 - 6px), calc((var(--pv-gates-break) - 100%) * 999), calc(100% / 3 - 6px)), 1fr));
+  gap: 14px 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: pv-gate;
+}
+.pv-gate {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  min-width: 0;
+  font: 500 var(--pv-text-2xs) / 1.2 var(--pv-font-mono);
+  letter-spacing: 0;
+  color: var(--pv-text-3);
+  text-align: center;
+}
+.pv-gate::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1.5px solid var(--pv-line-2);
+}
+.pv-gate[data-state="pass"]::before { background: var(--pv-accent); border-color: var(--pv-accent); box-shadow: 0 0 8px var(--pv-accent-glow); }
+.pv-gate[data-state="advisory"]::before { border-color: var(--pv-caution); background: radial-gradient(circle, var(--pv-caution) 0 2.5px, transparent 3px); }
+.pv-gate[data-state="fail"]::before { background: var(--pv-danger); border-color: var(--pv-danger); }
+/* data-adv marks the advisory gate (imports): when it passed, a mint ring. */
+.pv-gate[data-adv][data-state="pass"]::before { background: none; box-shadow: none; }
+.pv-gate__name { overflow-wrap: anywhere; }
+
+/* -- Code block ---------------------------------------------------------------------------- */
+
+.pv-code {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--pv-line);
+  border-radius: 12px;
+  background: var(--pv-code-bg);
+  color: var(--pv-code-text);
+}
+.pv-code__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pv-space-3);
+  min-height: 40px;
+  padding: 4px 6px 4px 14px;
+  border-bottom: 1px solid var(--pv-line-soft);
+  background: var(--pv-code-head);
+}
+.pv-code__title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 500 var(--pv-text-xs) / 1 var(--pv-font-mono);
+  letter-spacing: 0.04em;
+  color: var(--pv-text-3);
+}
+.pv-code__copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: var(--pv-radius-sm);
+  background: transparent;
+  color: var(--pv-text-3);
+  font: 500 var(--pv-text-2xs) / 1 var(--pv-font-mono);
+  letter-spacing: var(--pv-track-label);
+  text-transform: uppercase;
+  transition: color var(--pv-dur-hover) ease, background-color var(--pv-dur-hover) ease, border-color var(--pv-dur-hover) ease;
+}
+.pv-code__copy svg { width: 14px; height: 14px; }
+.pv-code__copy .pv-i-check { display: none; }
+.pv-code__copy[data-copied="true"] { color: var(--pv-accent); border-color: var(--pv-accent-line); background: var(--pv-accent-soft); }
+.pv-code__copy[data-copied="true"] .pv-i-copy { display: none; }
+.pv-code__copy[data-copied="true"] .pv-i-check { display: block; }
+.pv-code__copy[data-copied="false"] { color: var(--pv-danger); }
+@media (hover: hover) and (pointer: fine) {
+  .pv-code__copy:hover { color: var(--pv-text); background: var(--pv-tint); }
+}
+.pv-code pre {
+  margin: 0;
+  padding: 16px 18px 18px;
+  overflow-x: auto;
+  font: 400 0.84375rem / 1.7 var(--pv-font-mono);
+  font-variant-ligatures: none;
+  tab-size: 4;
+  color: var(--pv-code-text);
+}
+.pv-code pre:focus-visible { outline-offset: -2px; }
+.pv-code code { font: inherit; }
+.pv-code--bare .pv-code__head { display: none; }
+.tk-k { color: var(--pv-code-k); }
+.tk-f { color: var(--pv-code-f); }
+.tk-s { color: var(--pv-code-s); }
+.tk-n { color: var(--pv-code-n); }
+.tk-c { color: var(--pv-code-c); font-style: italic; }
+.tk-a { color: var(--pv-code-a); }
+.tk-t { color: var(--pv-code-t); }
+.tk-p { color: var(--pv-code-p); }
+
+/* Inline code and keys. */
+.pv-code-inline, .pv-prose :not(pre) > code {
+  padding: 0.12em 0.4em;
+  border: 1px solid var(--pv-line-soft);
+  border-radius: 5px;
+  background: var(--pv-tint);
+  font-size: 0.86em;
+  color: var(--pv-text);
+  overflow-wrap: anywhere;
+}
+.pv-kbd, .pv-prose kbd {
+  display: inline-block;
+  min-width: 1.6em;
+  padding: 0.1em 0.45em;
+  border: 1px solid var(--pv-line-2);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  background: var(--pv-surface);
+  font: 500 0.78em / 1.5 var(--pv-font-mono);
+  text-align: center;
+  color: var(--pv-text);
+}
+
+/* -- Callouts -------------------------------------------------------------------------------
+   A tinted field, a lit point and a word. No coloured side bar. */
+
+.pv-callout {
+  --_c: var(--pv-note);
+  display: grid;
+  gap: 6px;
+  padding: 14px 18px 16px;
+  border: 1px solid color-mix(in srgb, var(--_c) 30%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--_c) 7%, var(--pv-surface));
+  color: var(--pv-text);
+  font-size: 0.9688rem;
+  line-height: 1.6;
+}
+.pv-callout--note { --_c: var(--pv-note); }
+.pv-callout--tip { --_c: var(--pv-tip); }
+.pv-callout--caution { --_c: var(--pv-caution); }
+.pv-callout--danger { --_c: var(--pv-danger); }
+.pv-callout__title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font: 500 var(--pv-text-2xs) / 1.3 var(--pv-font-mono);
+  letter-spacing: var(--pv-track-label);
+  text-transform: uppercase;
+  color: var(--_c);
+}
+.pv-callout__title::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--_c);
+  box-shadow: 0 0 9px color-mix(in srgb, var(--_c) 70%, transparent);
+}
+.pv-callout > :not(.pv-callout__title) { color: var(--pv-text); }
+.pv-callout a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, var(--_c) 60%, transparent); }
+
+/* -- Table ------------------------------------------------------------------------------------ */
+
+.pv-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--pv-line);
+  border-radius: 12px;
+  background: var(--pv-surface);
+}
+.pv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.90625rem;
+  line-height: 1.45;
+}
+.pv-table th {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--pv-line);
+  background: var(--pv-bg-2);
+  font: 500 var(--pv-text-2xs) / 1.3 var(--pv-font-mono);
+  letter-spacing: var(--pv-track-label);
+  text-transform: uppercase;
+  text-align: start;
+  color: var(--pv-text-3);
+  white-space: nowrap;
+}
+.pv-table td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--pv-line-soft);
+  vertical-align: top;
+  color: var(--pv-text-2);
+}
+.pv-table td:first-child { color: var(--pv-text); }
+.pv-table tr:last-child td { border-bottom: 0; }
+.pv-table code { font-size: 0.86em; color: var(--pv-text); }
+.pv-table .num { text-align: end; font-family: var(--pv-font-mono); font-variant-numeric: tabular-nums; }
+.pv-table--compact th, .pv-table--compact td { padding-block: 8px; }
+@media (hover: hover) and (pointer: fine) {
+  .pv-table tbody tr { transition: background-color var(--pv-dur-hover) ease; }
+  .pv-table tbody tr:hover { background: var(--pv-tint); }
+}
+
+/* -- Search ----------------------------------------------------------------------------------- */
+
+.pv-search { position: relative; display: flex; align-items: center; width: 100%; }
+.pv-search__icon {
+  position: absolute;
+  left: 16px;
+  width: 17px;
+  height: 17px;
+  color: var(--pv-text-3);
+  pointer-events: none;
+}
+.pv-search__input {
+  width: 100%;
+  height: 46px;
+  padding: 0 48px 0 44px;
+  border: 1px solid var(--pv-line);
+  border-radius: var(--pv-radius-pill);
+  background: var(--pv-field);
+  color: var(--pv-text);
+  font-size: 0.9375rem;
+  transition: border-color var(--pv-dur-hover) ease, box-shadow var(--pv-dur-ui) var(--pv-ease-out), background-color var(--pv-dur-hover) ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.pv-search__input::placeholder { color: var(--pv-text-3); opacity: 1; }
+.pv-search__input::-webkit-search-decoration { -webkit-appearance: none; }
+.pv-search__input:hover { border-color: var(--pv-line-2); }
+.pv-search__input:focus { outline: none; }
+/* The system's 2 px ring and a solid accent edge (a soft halo alone measured
+   2.7:1 on ink and 1.8:1 on paper). */
+.pv-search__input:focus-visible {
+  outline: 2px solid var(--pv-focus);
+  outline-offset: 2px;
+  border-color: var(--pv-accent);
+  box-shadow: none;
+}
+.pv-search__kbd {
+  position: absolute;
+  right: 12px;
+  pointer-events: none;
+  transition: opacity var(--pv-dur-hover) ease;
+}
+.pv-search:focus-within .pv-search__kbd { opacity: 0; }
+.pv-search--lg .pv-search__input { height: 56px; font-size: 1.0625rem; padding-left: 50px; }
+.pv-search--lg .pv-search__icon { left: 19px; width: 19px; height: 19px; }
+
+/* -- Skeleton -----------------------------------------------------------------------------------
+   Unsampled tissue: a faint field of points, swept once as it comes into view.
+   The ground is painted as a layer of its own under the points: as a
+   background-color under a small tiled image in a rounded box that clips,
+   Chromium drops it or splits it along a raster tile edge. */
+
+.pv-skeleton {
+  position: relative;
+  overflow: hidden;
+  width: var(--w, 100%);
+  height: 0.85em;
+  border-radius: var(--pv-radius-sm);
+  background:
+    radial-gradient(circle at center, var(--pv-skel-dot) 1px, transparent 1.4px) 3px 3px / 7px 7px,
+    linear-gradient(var(--pv-skel-bg), var(--pv-skel-bg));
+}
+.pv-skeleton--title { height: 1.6em; width: var(--w, 62%); border-radius: var(--pv-radius-sm); }
+.pv-skeleton--block { height: auto; aspect-ratio: var(--ratio, 16 / 9); border-radius: 12px; }
+.pv-skeleton--circle { width: var(--w, 40px); height: auto; aspect-ratio: 1; border-radius: 50%; }
+.pv-skeleton-lines { display: grid; gap: 0.75em; }
+.pv-skeleton-lines > .pv-skeleton:last-child { width: var(--w-last, 64%); }
+@media (prefers-reduced-motion: no-preference) {
+  .pv-skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, transparent 30%, var(--pv-skel-sweep) 50%, transparent 70%);
+    transform: translateX(-100%);
+  }
+  /* One sweep, once the block is in view (pv.js adds .is-in); then it rests. */
+  .pv-skeleton.is-in::after { animation: pv-sweep 1.8s var(--pv-ease-in-out) 0.1s 1 both; }
+}
+@keyframes pv-sweep {
+  0% { transform: translateX(-100%); }
+  60%, 100% { transform: translateX(100%); }
+}
+
+/* -- Toast ----------------------------------------------------------------------------------------
+   pv.js builds these (PV.toast()). Ink in both themes. */
+
+.pv-toaster {
+  position: fixed;
+  z-index: var(--pv-z-toast);
+  left: 50%;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  display: grid;
+  gap: 8px;
+  width: min(420px, calc(100vw - 32px));
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.pv-toast {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 12px;
+  padding: 12px 8px 12px 16px;
+  border: 1px solid var(--pv-line-2);
+  border-radius: 14px;
+  background: rgba(16, 19, 42, 0.94);
+  -webkit-backdrop-filter: var(--pv-glass-filter);
+  backdrop-filter: var(--pv-glass-filter);
+  box-shadow: var(--pv-shadow-3);
+  color: var(--pv-text);
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(var(--pv-rise));
+  transition: opacity var(--pv-dur-ui) var(--pv-ease-out), transform var(--pv-dur-panel) var(--pv-ease-expo);
+}
+.pv-toast.is-in { opacity: 1; transform: none; }
+.pv-toast.is-out {
+  opacity: 0;
+  transform: translateY(calc(var(--pv-rise) / 3));
+  transition: opacity 180ms var(--pv-ease-exit), transform 180ms var(--pv-ease-exit);
+}
+.pv-toast__dot {
+  width: 8px;
+  height: 8px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: var(--pv-edition);
+  box-shadow: 0 0 10px var(--pv-glow, rgba(226, 178, 90, 0.6));
+}
+.pv-toast[data-tone="ok"] .pv-toast__dot { background: var(--pv-accent); --pv-glow: var(--pv-accent-glow); }
+.pv-toast[data-tone="error"] .pv-toast__dot { background: var(--pv-danger); --pv-glow: rgba(255, 122, 107, 0.6); }
+.pv-toast__title { font-weight: 600; font-size: 0.9375rem; line-height: 1.35; }
+.pv-toast__msg { margin-top: 2px; font-size: 0.875rem; line-height: 1.45; color: var(--pv-text-2); }
+.pv-toast__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-top: -4px;
+  border: 0;
+  border-radius: var(--pv-radius-sm);
+  background: transparent;
+  color: var(--pv-text-3);
+  transition: color var(--pv-dur-hover) ease, background-color var(--pv-dur-hover) ease;
+}
+.pv-toast__close svg { width: 14px; height: 14px; }
+@media (hover: hover) and (pointer: fine) {
+  .pv-toast__close:hover { color: var(--pv-text); background: var(--pv-tint); }
+}
+
+/* -- Figure frame and scale bar ----------------------------------------------------------------------
+   For real captures and renders: registration brackets in the corners (the
+   app's specimen frame), a caption that names technology, tissue and scale. */
+
+.pv-figure { display: grid; gap: var(--pv-space-3); }
+.pv-figure__stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--pv-bg-2);
+  border: 1px solid var(--pv-line-soft);
+}
+.pv-figure__stage > img, .pv-figure__stage > video, .pv-figure__stage > canvas { width: 100%; height: 100%; object-fit: cover; }
+.pv-figure__stage::after {
+  --_b: rgba(239, 230, 210, 0.6);
+  content: "";
+  position: absolute;
+  inset: 10px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--_b), var(--_b)) top left / 14px 1.5px no-repeat,
+    linear-gradient(var(--_b), var(--_b)) top left / 1.5px 14px no-repeat,
+    linear-gradient(var(--_b), var(--_b)) top right / 14px 1.5px no-repeat,
+    linear-gradient(var(--_b), var(--_b)) top right / 1.5px 14px no-repeat,
+    linear-gradient(var(--_b), var(--_b)) bottom left / 14px 1.5px no-repeat,
+    linear-gradient(var(--_b), var(--_b)) bottom left / 1.5px 14px no-repeat,
+    linear-gradient(var(--_b), var(--_b)) bottom right / 14px 1.5px no-repeat,
+    linear-gradient(var(--_b), var(--_b)) bottom right / 1.5px 14px no-repeat;
+}
+.pv-figure--plain .pv-figure__stage::after { content: none; }
+.pv-figure__caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+  font-size: var(--pv-text-sm);
+  line-height: 1.5;
+  color: var(--pv-text-2);
+}
+.pv-figure__meta {
+  font: 400 var(--pv-text-xs) / 1.4 var(--pv-font-mono);
+  letter-spacing: 0.04em;
+  color: var(--pv-text-3);
+}
+/* <span class="pv-scalebar" style="--pv-bar: 64px">100 µm</span>, on a stage. */
+.pv-scalebar {
+  position: absolute;
+  left: 22px;
+  bottom: 20px;
+  display: grid;
+  gap: 5px;
+  font: 500 var(--pv-text-2xs) / 1 var(--pv-font-mono);
+  letter-spacing: 0.04em;
+  color: #F4EEE2;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+.pv-scalebar::before {
+  content: "";
+  width: var(--pv-bar, 64px);
+  height: 3px;
+  border-radius: 2px;
+  background: #F4EEE2;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* -- Numbered steps ------------------------------------------------------------------------------------
+   For real sequences only. Mint numbered points, as in the paper's figures,
+   joined by a dotted line. */
+
+.pv-steps { display: grid; gap: var(--pv-space-6); margin: 0; padding: 0; list-style: none; counter-reset: pv-step; }
+.pv-steps > li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: var(--pv-space-4);
+  counter-increment: pv-step;
+}
+.pv-steps > li::before {
+  content: counter(pv-step);
+  grid-row: 1 / span 9;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--pv-accent);
+  color: var(--pv-accent-ink);
+  font: 600 var(--pv-text-xs) / 1 var(--pv-font-mono);
+}
+.pv-steps > li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: 34px;
+  bottom: calc(var(--pv-space-6) * -1 + 6px);
+  width: 2px;
+  background-image: radial-gradient(circle at center, var(--pv-dot) 1px, transparent 1.4px);
+  background-size: 2px 6px;
+  background-repeat: repeat-y;
+}
+.pv-steps__title { font-size: var(--pv-text-h4); font-weight: 600; line-height: 1.35; padding-top: 2px; }
+.pv-steps > li > :not(.pv-steps__title) { color: var(--pv-text-2); margin-top: 6px; }
+.pv-steps--inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pv-space-3) var(--pv-space-6);
+}
+.pv-steps--inline > li { grid-template-columns: 22px auto; column-gap: 10px; align-items: center; font-size: var(--pv-text-sm); color: var(--pv-text-2); }
+.pv-steps--inline > li::before { width: 22px; height: 22px; font-size: var(--pv-text-2xs); grid-row: auto; }
+.pv-steps--inline > li:not(:last-child)::after { content: none; }
+
+/* -- Dotted rule ---------------------------------------------------------------------------------------- */
+
+.pv-dotrule {
+  height: 3px;
+  margin: 0;
+  border: 0;
+  background-color: transparent;
+  background-image: radial-gradient(circle at center, var(--pv-dot) 1px, transparent 1.4px);
+  background-size: 6px 3px;
+  background-repeat: repeat-x;
+}
+
+/* -- Not found (404) -------------------------------------------------------------------------------------
+   One pattern on the three sites: the dotted 404, a headline that ends with a
+   full stop, one line, then a search, or the way back, or both.
+     <main id="main" class="pv-404">
+       <p class="pv-dots-type pv-404__mark" aria-hidden="true">404</p>
+       <h1 class="pv-title pv-404__title">No page at this address.</h1>
+       <p class="pv-lede pv-404__line">…</p>
+       <div class="pv-404__search">…</div>       (optional)
+       <p class="pv-404__actions">…</p>
+     </main>
+   The page needs Codystar (CHROME.md §1). The footer keeps to the foot of a
+   tall screen. */
+
+body:has(> .pv-404) { display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; }
+.pv-404 {
+  flex: 1 0 auto;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  width: 100%;
+  max-width: calc(40rem + 2 * var(--pv-gutter));
+  margin-inline: auto;
+  padding: clamp(40px, 6vw, 88px) var(--pv-gutter) clamp(56px, 7vw, 104px);
+  text-align: center;
+}
+.pv-404:focus { outline: none; }
+.pv-404__mark {
+  font-size: clamp(5.5rem, 3rem + 11vw, 11rem);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  user-select: none;
+}
+.pv-404__title { margin-top: 26px; }
+.pv-404__line { margin-top: 14px; margin-inline: auto; }
+.pv-404__search { width: 100%; max-width: 520px; margin-top: 32px; text-align: start; }
+.pv-404__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 12px; margin-top: 28px; }
+
+
+/* 10 · Prose ================================================================
+   The docs reading column. A calm measure; the world stays in the frame. */
+
+.pv-prose {
+  max-width: var(--pv-measure);
+  font-size: var(--pv-text-read);
+  line-height: 1.7;
+  color: var(--pv-text);
+}
+.pv-prose > * + * { margin-top: 1.1em; }
+.pv-prose > :is(h2, h3, h4) + * { margin-top: 0.6em; }
+.pv-prose h2 { margin-top: 2.2em; font-size: var(--pv-text-h2); line-height: 1.15; letter-spacing: -0.02em; }
+.pv-prose h3 { margin-top: 1.8em; font-size: var(--pv-text-h3); line-height: 1.25; }
+.pv-prose h4 { margin-top: 1.6em; font-size: var(--pv-text-h4); }
+.pv-prose :is(ul, ol) { padding-inline-start: 1.3em; }
+.pv-prose li + li { margin-top: 0.4em; }
+.pv-prose li::marker { color: var(--pv-text-3); }
+.pv-prose ul > li::marker { content: "•  "; color: var(--pv-accent); }
+.pv-prose a:not([class]) {
+  color: var(--pv-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, var(--pv-link) 45%, transparent);
+  text-underline-offset: 0.22em;
+  transition: text-decoration-color var(--pv-dur-hover) ease;
+}
+.pv-prose a:not([class]):is(:hover, :active) { text-decoration-color: currentColor; }
+.pv-prose strong { color: var(--pv-text); }
+.pv-prose blockquote {
+  padding: 2px 0 2px 1.1em;
+  border-inline-start: 1px solid var(--pv-line-2);
+  color: var(--pv-text-2);
+}
+.pv-prose hr {
+  height: 3px;
+  margin-block: 2.4em;
+  background: radial-gradient(circle at center, var(--pv-dot) 1px, transparent 1.4px) 0 0 / 6px 3px repeat-x;
+}
+.pv-prose :is(.pv-code, .pv-callout, .pv-table-wrap, .pv-figure) { margin-top: 1.6em; }
+.pv-prose :is(.pv-code, .pv-callout, .pv-table-wrap, .pv-figure) + * { margin-top: 1.6em; }
+
+
+/* 11 · Utilities ============================================================ */
+
+.pv-sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+.pv-skip {
+  position: fixed;
+  z-index: var(--pv-z-skip);
+  top: 10px;
+  left: 10px;
+  padding: 10px 16px;
+  border-radius: var(--pv-radius-md);
+  background: var(--pv-accent);
+  color: var(--pv-accent-ink);
+  font-weight: 600;
+  transform: translateY(-160%);
+  transition: transform var(--pv-dur-travel) var(--pv-ease-out);
+}
+.pv-skip:focus-visible { transform: none; outline-color: var(--pv-text); }
+
+/* Reveal on scroll. Hidden only after pv.js has marked what is already in
+   view (html.pv-js), so content never vanishes if the script is missing. */
+@media (prefers-reduced-motion: no-preference) {
+  .pv-js [data-pv-reveal]:not([data-pv-reveal="stagger"]):not(.is-in),
+  .pv-js [data-pv-reveal="stagger"]:not(.is-in) > * {
+    opacity: 0;
+    transform: translateY(var(--pv-rise));
+  }
+  /* Transitions live on the arrived state only: hiding is instant, arriving
+     is animated. */
+  .pv-js [data-pv-reveal]:not([data-pv-reveal="stagger"]).is-in,
+  .pv-js [data-pv-reveal="stagger"].is-in > * {
+    transition:
+      opacity 700ms var(--pv-ease-out),
+      transform var(--pv-dur-reveal) var(--pv-ease-expo);
+    transition-delay: calc(var(--pv-i, 0) * var(--pv-stagger));
+  }
+}
+
+/* Live-region text for screen readers (copy confirmations). */
+.pv-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+@media (forced-colors: active) {
+  .pv-btn, .pv-chip, .pv-tag, .pv-seg, .pv-verified, .pv-eyebrow, .pv-stat { border: 1px solid CanvasText; }
+  .pv-search__input:focus-visible { outline: 2px solid Highlight; }
+  .pv-topbar__nav a:is([aria-current="page"], [aria-current="true"])::before, .pv-gate::before, .pv-chip::before { forced-color-adjust: none; }
+}
+
+
+/* 12 · Print ================================================================= */
+
+@media print {
+  :root, [data-theme] {
+    --pv-bg: #FFFFFF; --pv-bg-2: #FFFFFF; --pv-surface: #FFFFFF; --pv-surface-2: #FFFFFF;
+    --pv-text: #000000; --pv-text-2: #222222; --pv-text-3: #444444;
+    --pv-line: #BBBBBB; --pv-line-soft: #DDDDDD; --pv-code-bg: #F6F6F6; --pv-code-text: #000000;
+  }
+  .pv-topbar, .pv-drawer, .pv-toaster, .pv-skip, .pv-code__copy, .pv-theme-toggle { display: none !important; }
+  .pv-footer { color: #444444; }
+  .pv-prose a:not([class])[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; }
+}

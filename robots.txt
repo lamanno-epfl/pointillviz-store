@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://store.pointillviz.com/sitemap.xml

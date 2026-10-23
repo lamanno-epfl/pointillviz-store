@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(d){try{var w=d.clientWidth||innerWidth;d.style.setProperty('--k',Math.min(Math.max(Math.min(w/1440,innerHeight/900),1),1.6).toFixed(4))}catch(e){}})(document.documentElement)</script>
+<meta name="theme-color" content="#06070D">
+<title>Spatial Scale Spectrum · The Tool Store · PointillViz</title>
+<meta name="description" content="How clustered each cell type is, at every length scale. A PointillViz community tool, version 1.1.0.">
+<link rel="canonical" href="https://store.pointillviz.com/tools/spatial-scale-spectrum/">
+<meta property="og:site_name" content="PointillViz">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Spatial Scale Spectrum · The Tool Store · PointillViz">
+<meta property="og:description" content="How clustered each cell type is, at every length scale.">
+<meta property="og:url" content="https://store.pointillviz.com/tools/spatial-scale-spectrum/">
+<meta property="og:image" content="https://store.pointillviz.com/assets/media/social/spatial-scale-spectrum.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Structure factor against wavelength for three colon cell populations, both axes log: one dips below the random-labelling line at short wavelength and climbs to a marked patch scale, one stays flat at every scale">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../assets/pv/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&amp;family=Fraunces:opsz,wght@9..144,600&amp;family=JetBrains+Mono:wght@400..600&amp;display=swap">
+<link rel="stylesheet" href="../../assets/pv/pv.css">
+<link rel="stylesheet" href="../../assets/store.css">
+<script src="../../assets/pv/pv.js" defer></script>
+<script src="../../assets/store.js" defer></script>
+<script>document.documentElement.classList.add('st-js')</script>
+<noscript><style>.pv-topbar__menu { display: none !important; }</style></noscript>
+</head>
+<body class="st-page st-page--tool">
+<a class="pv-skip" href="#main">Skip to content</a>
+<header class="pv-topbar">
+  <div class="pv-topbar__inner">
+    <a class="pv-topbar__brand" href="https://pointillviz.com/" translate="no">
+      <img src="../../assets/pv/logo.svg" width="169" height="20" alt="PointillViz">
+    </a>
+    <nav class="pv-topbar__nav" aria-label="Main">
+      <ul>
+        <li><a href="https://pointillviz.com/">Overview</a></li>
+        <li><a href="https://docs.pointillviz.com/">Docs</a></li>
+        <li><a href="../../" aria-current="true">Tool Store</a></li>
+        <li><a href="#" data-placeholder="paper">Paper</a></li>
+      </ul>
+    </nav>
+    <div class="pv-topbar__end">
+      <button class="pv-topbar__menu" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="pv-drawer" data-pv-drawer-open="pv-drawer">
+        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="1.6"/><circle cx="10" cy="4" r="1.6"/><circle cx="16" cy="4" r="1.6"/><circle cx="4" cy="10" r="1.6"/><circle cx="10" cy="10" r="1.6"/><circle cx="16" cy="10" r="1.6"/><circle cx="4" cy="16" r="1.6"/><circle cx="10" cy="16" r="1.6"/><circle cx="16" cy="16" r="1.6"/></svg>
+        <span class="pv-sr-only">Menu</span>
+      </button>
+    </div>
+  </div>
+  <noscript>
+    <nav class="pv-nojs-nav" aria-label="Main">
+      <a href="https://pointillviz.com/">Overview</a><a href="https://docs.pointillviz.com/">Docs</a><a href="../../" aria-current="true">Tool Store</a>
+    </nav>
+  </noscript>
+</header>
+<dialog class="pv-drawer" id="pv-drawer" aria-label="Menu">
+  <div class="pv-drawer__panel">
+    <div class="pv-drawer__head">
+      <img src="../../assets/pv/logo.svg" width="152" height="18" alt="PointillViz" translate="no">
+      <button class="pv-btn pv-btn--ghost pv-btn--icon" type="button" data-pv-drawer-close aria-label="Close menu" autofocus>
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15"/></svg>
+      </button>
+    </div>
+    <nav aria-label="Main">
+      <ul class="pv-drawer__nav">
+        <li><a href="https://pointillviz.com/"><span class="pv-drawer__name">Overview</span><span class="pv-drawer__host">pointillviz.com</span></a></li>
+        <li><a href="https://docs.pointillviz.com/"><span class="pv-drawer__name">Docs</span><span class="pv-drawer__host">docs.pointillviz.com</span></a></li>
+        <li><a href="../../" aria-current="true"><span class="pv-drawer__name">Tool Store</span><span class="pv-drawer__host">store.pointillviz.com</span></a></li>
+        <li><a href="#" data-placeholder="paper"><span class="pv-drawer__name">Paper</span><span class="pv-drawer__host">bioRxiv</span></a></li>
+      </ul>
+    </nav>
+    <div class="pv-drawer__foot">
+      <p>© 2026 PointillViz</p>
+    </div>
+  </div>
+</dialog>
+<main id="main" class="st-tool">
+  <div class="pv-container">
+    <nav class="st-back" aria-label="Back">
+      <a class="st-back__link" href="../../"><svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-arrow-left"/></svg>All tools</a>
+    </nav>
+    <div class="st-tool__layout">
+      <header class="st-hero">
+        <h1 class="pv-title st-hero__title">Spatial Scale Spectrum</h1>
+        <p class="st-hero__by">by PointillViz community tools</p>
+        <p class="pv-lede st-hero__desc">How clustered each cell type is, at every length scale.</p>
+        <div class="st-hero__badges"><span class="pv-verified" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-check"/></svg>Verified</span><span class="pv-tag pv-tag--ver">v1.1.0</span></div>
+        <div class="st-hero__chips"><ul class="pv-tags" aria-label="Tags"><li class="pv-tag">cell types</li><li class="pv-tag">multiscale</li><li class="pv-tag">structure factor</li></ul><div class="st-hero__outs"><span class="st-tags__sep" aria-hidden="true">Outputs</span><ul class="pv-tags" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="writes a summary">summary</li><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul></div></div>
+      </header>
+      <figure class="pv-figure st-hero__art">
+        <div class="pv-figure__stage st-artstage"><img src="../../assets/media/tools/spatial-scale-spectrum.webp?v=3c59a7e84a" srcset="../../assets/media/tools/spatial-scale-spectrum.webp?v=3c59a7e84a 720w, ../../assets/media/tools/spatial-scale-spectrum@2x.webp?v=5eb69717af 1440w" sizes="(min-width: 1320px) 820px, (min-width: 1100px) 62vw, 94vw" width="720" height="420" alt="Structure factor against wavelength for three colon cell populations, both axes log: one dips below the random-labelling line at short wavelength and climbs to a marked patch scale, one stays flat at every scale" fetchpriority="high" decoding="async"></div>
+        <figcaption class="pv-figure__caption"><span>Structure factor against wavelength for three colon cell populations, both axes log: one dips below the random-labelling line at short wavelength and climbs to a marked patch scale, one stays flat at every scale</span><span class="pv-figure__meta">Artwork from the tool’s bundle</span></figcaption>
+      </figure>
+      <div class="st-side">
+        <aside class="st-get" aria-labelledby="get-h">
+          <h2 class="st-get__title" id="get-h">Get this tool</h2>
+          <button class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" type="button" aria-expanded="false" aria-controls="install-how" data-st-install>
+            <svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Install into PointillViz</span><span class="pv-btn__sub">Coming soon</span></span>
+          </button>
+          <div class="st-get__how" id="install-how" hidden>
+            <p>Installing from this website is coming soon. In PointillViz, open the <b>Tools</b> tab, then <b>Community Tools</b>, then <b>Browse Store</b>, and install it there. The viewer runs the nine gates again first.</p>
+            <p class="st-get__docs"><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How tools work · Docs</a></p>
+          </div>
+          <p class="st-get__note"><b>This runs as you.</b> A tool is arbitrary Python, run with the privileges of whoever started the viewer. <a class="pv-link" href="../../#safety">Read the safety note</a></p>
+          <h3 class="pv-label st-get__facts-h">Facts</h3>
+          <dl class="st-facts"><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__ver">1.1.0</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-10-13">13 Oct 2026</time></dd></div><div class="st-facts__row"><dt>Downloads</dt><dd>4</dd></div><div class="st-facts__row"><dt>Bundle size</dt><dd>22.7 kB</dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Time limit</dt><dd>300 s</dd></div><div class="st-facts__row"><dt>Memory limit</dt><dd>4,096 MB</dd></div><div class="st-facts__row"><dt>Needs</dt><dd><span class="st-nowrap">a categorical column</span> · <span class="st-nowrap">2D coordinates</span> · <span class="st-nowrap">200+ cells</span> · <span class="st-nowrap">scipy</span></dd></div></dl>
+        </aside>
+        <nav class="st-onpage" aria-labelledby="onpage-h">
+          <p class="pv-label st-onpage__h" id="onpage-h">On this page</p>
+          <ul>
+            <li><a href="#readme">Readme</a></li>
+            <li><a href="#parameters">Parameters</a></li>
+            <li><a href="#outputs">Outputs</a></li>
+            <li><a href="#tool-check">Tool check</a></li>
+            <li><a href="#versions">Versions</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="st-tool__main">
+        <section class="st-sec" id="readme" aria-labelledby="readme-h">
+          <h2 class="st-sec__h" id="readme-h">Readme</h2>
+          <div class="st-md">
+<p>Answers the question: <strong>At which spatial scales is each population organized into regular patterns, small patches, or large territories?</strong></p>
+<p>The tool describes the spatial distribution of a population as a combination of waves of different sizes and shows at which wavelengths its spatial patterns are strongest.</p>
+<p>To describe these patterns mathematically, the tool applies a Fourier transform. For each population <math translate="no"><mi>c</mi></math> and wavevector <math translate="no"><mi>k</mi></math>, it calculates the following complex coefficient:</p>
+<div class="st-formula" role="img" aria-label="f̂(k) = sum over j of f(x_j)e^(−i k · x_j) ⟶ T_c(k) = sum over j of (z_j−p_c)e^(−i k · x_j)"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mover accent="true"><mi>f</mi><mo>ˆ</mo></mover><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><munder><mo>∑</mo><mi>j</mi></munder><mi>f</mi><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mi>j</mi></msub><mo stretchy="false">)</mo></mrow><msup><mi>e</mi><mrow><mo>−</mo><mi>i</mi><mi>k</mi><mo>·</mo><msub><mi>x</mi><mi>j</mi></msub></mrow></msup></math></span></span><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>⟶</mo></math></span></span><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><msub><mi>T</mi><mi>c</mi></msub><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><munder><mo>∑</mo><mi>j</mi></munder><mrow><mo stretchy="false">(</mo><msub><mi>z</mi><mi>j</mi></msub><mo>−</mo><msub><mi>p</mi><mi>c</mi></msub><mo stretchy="false">)</mo></mrow><msup><mi>e</mi><mrow><mo>−</mo><mi>i</mi><mi>k</mi><mo>·</mo><msub><mi>x</mi><mi>j</mi></msub></mrow></msup></math></span></span></div></div>
+<p>Here, <math translate="no"><msub><mi>z</mi><mi>j</mi></msub><mo>=</mo><mn>1</mn></math> if cell <math translate="no"><mi>j</mi></math> belongs to population <math translate="no"><mi>c</mi></math>, and <math translate="no"><msub><mi>z</mi><mi>j</mi></msub><mo>=</mo><mn>0</mn></math> for all other labelled cells. <math translate="no"><mi>p</mi><mrow><mo stretchy="false">(</mo><mi>c</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>N</mi><mrow><mo stretchy="false">(</mo><mi>c</mi><mo stretchy="false">)</mo></mrow><mo lspace="0" rspace="0">/</mo><mi>N</mi></math> is the overall proportion of population <math translate="no"><mi>c</mi></math>, and <math translate="no"><msub><mi>x</mi><mi>j</mi></msub></math> is the position of cell <math translate="no"><mi>j</mi></math>. This term represents a spatial wave at that position. Its direction and wavelength are determined by <math translate="no"><mi>k</mi></math>, while the available values of <math translate="no"><mi>k</mi></math> depend on the selected binning resolution <math translate="no"><mi>G</mi></math>. For each section, the cells are placed on a square grid of physical side length <math translate="no"><mi>L</mi></math>, giving:</p>
+<div class="st-formula" role="img" aria-label="k = ((2π n_x) / (L), (2π n_y) / (L)), λ(k) = (2π) / (|k|)"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>k</mi></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mrow><mo>(</mo><mfrac><mrow><mn>2</mn><mi>π</mi><msub><mi>n</mi><mi>x</mi></msub></mrow><mi>L</mi></mfrac><mo>,</mo><mfrac><mrow><mn>2</mn><mi>π</mi><msub><mi>n</mi><mi>y</mi></msub></mrow><mi>L</mi></mfrac><mo>)</mo></mrow><mo>,</mo></math></span></span><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>λ</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mrow><mo stretchy="false">|</mo><mi>k</mi><mo stretchy="false">|</mo></mrow></mfrac></math></span></span></div></div>
+<p>where <math translate="no"><mi>n</mi><mrow><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mo>−</mo><mi>G</mi><mo lspace="0" rspace="0">/</mo><mn>2</mn><mo>,</mo><mo>…</mo><mo>,</mo><mi>G</mi><mo lspace="0" rspace="0">/</mo><mn>2</mn><mo>−</mo><mn>1</mn></math> and <math translate="no"><mi>n</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mn>0</mn><mo>,</mo><mo>…</mo><mo>,</mo><mi>G</mi><mo lspace="0" rspace="0">/</mo><mn>2</mn></math>.</p>
+<p><strong>Map.</strong> An inverse Fourier transform of all coefficients would reconstruct the complete mean-centered population field. Instead, the map reconstructs only the wavelength band <math translate="no"><mi>B</mi></math> containing the automatically determined patch scale, defined as the first wavelength at which the spectrum reaches halfway between <math translate="no"><mi>S</mi><mo>=</mo><mn>1</mn></math> and its long-wavelength plateau:</p>
+<div class="st-formula" role="img" aria-label="B = {k : λ_(low) ≤ (2π) / (|k|) &lt; λ_(high)}, g_c(x) = F⁻¹[M_B(k)T_c(k)](x) ∝ sum over k in B of T_c(k)e^(i k · x)"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>B</mi></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mrow><mo>{</mo><mi>k</mi><mo>:</mo><msub><mi>λ</mi><mi>low</mi></msub><mo>≤</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mrow><mo stretchy="false">|</mo><mi>k</mi><mo stretchy="false">|</mo></mrow></mfrac><mo>&lt;</mo><msub><mi>λ</mi><mi>high</mi></msub><mo>}</mo></mrow><mo>,</mo></math></span></span><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><msub><mi>g</mi><mi>c</mi></msub><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><msup><mi>F</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mrow><mo stretchy="false">[</mo><msub><mi>M</mi><mi>B</mi></msub><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><msub><mi>T</mi><mi>c</mi></msub><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><mo stretchy="false">]</mo></mrow><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>∝</mo><munder><mo>∑</mo><mrow><mi>k</mi><mtext> in </mtext><mi>B</mi></mrow></munder><msub><mi>T</mi><mi>c</mi></msub><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><msup><mi>e</mi><mrow><mi>i</mi><mi>k</mi><mo>·</mo><mi>x</mi></mrow></msup></math></span></span></div></div>
+<p>Each cell receives the reconstructed signal at its position, normalized by the average number of cells per occupied grid bin: <math translate="no"><msub><mi>V</mi><mi>i</mi></msub><mo>=</mo><mi>g</mi><mrow><mo stretchy="false">(</mo><mi>c</mi><mo>,</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><mo lspace="0" rspace="0">/</mo><mi>ρ</mi><mrow><mo stretchy="false">(</mo><mi>bin</mi><mo stretchy="false">)</mo></mrow></math>. Warm colors indicate positions where the retained waves combine into a positive signal, cool colors indicate a negative signal, and values near zero appear neutral.</p>
+<p><strong>Plot.</strong> The plot shows how strongly population <math translate="no"><mi>c</mi></math> is spatially organized at each wavelength <math translate="no"><mi>λ</mi></math>. The x-axis shows wavelength on a logarithmic scale, while the y-axis shows the normalized spatial power <math translate="no"><mi>S</mi><mrow><mo stretchy="false">(</mo><mi>c</mi><mo>,</mo><mi>λ</mi><mo stretchy="false">)</mo></mrow></math>. A value of <math translate="no"><mi>S</mi><mrow><mo stretchy="false">(</mo><mi>c</mi><mo>,</mo><mi>λ</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mn>1</mn></math> is expected when the population labels are randomly distributed over the observed cell positions. Values above <strong>1</strong> indicate stronger spatial patterns, such as patches or large territories, while values below <strong>1</strong> indicate a more even arrangement. Each colored line represents one population, and the grey band shows the variation obtained from random label redistributions.</p>
+<p>More specifically, the tool normalizes the squared magnitude of each Fourier coefficient and then averages waves with similar wavelengths across directions:</p>
+<div class="st-formula" role="img" aria-label="S_c(k) = (|T_c(k)|²) / (p_c(1−p_c)(N) / (N−1)(N−S_(all)(k))), S_(all)(k) = (|sum over j of e^(−i k · x_j)|²) / (N), S_c(λ_b) = (1) / (M_b)sum over k in b of S_c(k)"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><msub><mi>S</mi><mi>c</mi></msub><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mfrac><mrow><mo stretchy="false">|</mo><msub><mi>T</mi><mi>c</mi></msub><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><msup><mo stretchy="false">|</mo><mn>2</mn></msup></mrow><mrow><msub><mi>p</mi><mi>c</mi></msub><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><msub><mi>p</mi><mi>c</mi></msub><mo stretchy="false">)</mo></mrow><mfrac><mi>N</mi><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mrow><mo stretchy="false">(</mo><mi>N</mi><mo>−</mo><msub><mi>S</mi><mi>all</mi></msub><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><mo stretchy="false">)</mo></mrow></mrow></mfrac><mo>,</mo></math></span></span><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><msub><mi>S</mi><mi>all</mi></msub><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mfrac><mrow><mo stretchy="false">|</mo><munder><mo>∑</mo><mi>j</mi></munder><msup><mi>e</mi><mrow><mo>−</mo><mi>i</mi><mi>k</mi><mo>·</mo><msub><mi>x</mi><mi>j</mi></msub></mrow></msup><msup><mo stretchy="false">|</mo><mn>2</mn></msup></mrow><mi>N</mi></mfrac><mo>,</mo></math></span></span><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><msub><mi>S</mi><mi>c</mi></msub><mrow><mo stretchy="false">(</mo><msub><mi>λ</mi><mi>b</mi></msub><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mfrac><mn>1</mn><msub><mi>M</mi><mi>b</mi></msub></mfrac><munder><mo>∑</mo><mrow><mi>k</mi><mtext> in </mtext><mi>b</mi></mrow></munder><msub><mi>S</mi><mi>c</mi></msub><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></math></span></span></div></div>
+<p>Here, <math translate="no"><mi>S</mi><mrow><mo stretchy="false">(</mo><mi>all</mi><mo>,</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></math> accounts for the observed cell arrangement, <math translate="no"><mi>p</mi><mrow><mo stretchy="false">(</mo><mi>c</mi><mo stretchy="false">)</mo></mrow></math> for population abundance, and <math translate="no"><mi>M</mi><mrow><mo stretchy="false">(</mo><mi>b</mi><mo stretchy="false">)</mo></mrow></math> is the number of Fourier modes in wavelength shell <math translate="no"><mi>b</mi></math>.</p>
+<p><strong>Table.</strong> Each row represents one population. <code translate="no">S short</code> measures spatial organization across the shortest resolved wavelengths, while <code translate="no">S long</code> measures it across the longest. <code translate="no">Patch scale</code> marks the wavelength where <math translate="no"><mi>S</mi></math> lies halfway between <strong>1</strong> and its long-wavelength level and determines the wavelength band used for the map. <code translate="no">Spectral exponent</code> describes how <math translate="no"><mi>S</mi></math> changes toward longer wavelengths, with negative values indicating increasingly strong spatial organization at larger scales. When the real-space check is enabled, <code translate="no">Var / Var_null</code> compares the observed variation in population counts across spatial windows with the random-label expectation, while <code translate="no">alpha</code> describes how quickly this variation grows as the window size increases.</p>
+          </div>
+          <div class="st-refs"><h3 class="st-refs__h">References</h3><p>Torquato, S. (2018). Hyperuniform states of matter. Physics Reports 745, 1-95.</p></div>
+        </section>
+        <section class="st-sec" id="parameters" aria-labelledby="parameters-h">
+          <h2 class="st-sec__h" id="parameters-h">Parameters</h2>
+          <div class="pv-table-wrap st-params">
+<table class="pv-table" role="table" aria-labelledby="parameters-h">
+<thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Parameter</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Default</th><th scope="col" role="columnheader">What it does</th></tr></thead>
+<tbody role="rowgroup">
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Grouping column</span><code class="st-param__name" translate="no">field</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">categorical_field</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">optional</span></td>
+  <td role="cell" data-label="What it does">Selects the annotation used to define the populations.
+Defaults to the dataset’s cell-type column.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Population to map</span><code class="st-param__name" translate="no">focus</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">category_value</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">optional</span></td>
+  <td role="cell" data-label="What it does">Selects the population shown in the map.
+This does not change the plot or table.
+Defaults to the most abundant population that meets the minimum cell count.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Minimum cells per population</span><code class="st-param__name" translate="no">min_cells</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">int, 20–5,000</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">200</span></td>
+  <td role="cell" data-label="What it does">Sets the minimum number of cells required for a population to receive its own table row and spectrum.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Binning resolution</span><code class="st-param__name" translate="no">grid</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">select, 4 options</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">1024 x 1024</span></td>
+  <td role="cell" data-label="What it does">Sets the G × G grid used for the Fourier transform.
+Higher resolutions can show shorter wavelengths but require more memory and runtime.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Real-space check</span><code class="st-param__name" translate="no">real_space</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">bool</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">on</span></td>
+  <td role="cell" data-label="What it does">Also measures cell-count variation in spatial windows as an independent check on the spectrum.
+This adds Var / Var_null and alpha to the table.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Null permutations</span><code class="st-param__name" translate="no">n_perms</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">int, 2–20</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">3</span></td>
+  <td role="cell" data-label="What it does">Sets how many random label redistributions are used to estimate the grey null band.</td>
+</tr>
+</tbody>
+</table>
+</div>
+        </section>
+        <section class="st-sec" id="outputs" aria-labelledby="outputs-h">
+          <h2 class="st-sec__h" id="outputs-h">Outputs</h2>
+          <ul class="st-outputs"><li><span class="pv-tag pv-tag--out">summary</span><span class="st-outputs__what">writes a summary</span></li><li><span class="pv-tag pv-tag--out">cells</span><span class="st-outputs__what">paints the spatial view</span></li><li><span class="pv-tag pv-tag--out">series</span><span class="st-outputs__what">returns a line chart</span></li><li><span class="pv-tag pv-tag--out">table</span><span class="st-outputs__what">returns a table</span></li></ul>
+        </section>
+        <section class="st-sec" id="tool-check" aria-labelledby="check-h">
+          <h2 class="st-sec__h" id="check-h">Tool check</h2>
+          <p class="st-sec__intro">The nine gates this version passed when it was published.</p>
+          <div class="st-check">
+  <div class="st-check__head"><span class="pv-verified" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-check"/></svg>Verified</span><p class="st-check__result">Passed 9 of 9 gates</p></div>
+  <ol class="pv-gates st-check__strip" aria-label="The nine gates, in the order they ran"><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">bundle</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">manifest</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">entry</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass" data-adv><span class="pv-gate__name" translate="no">imports</span><span class="pv-sr-only"> pass, advisory</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">fixture</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">result</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">determinism</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">edge</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">no_mutation</span><span class="pv-sr-only"> pass</span></li></ol>
+  <ol class="st-gatelog" aria-label="What each gate saw">
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">bundle</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">4 files, 22.7 kB packed and 62.4 kB unpacked, plugin.json at the root.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">manifest</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">spatial-scale-spectrum 1.1.0 by PointillViz community tools; entry tool.py, outputs summary, cells, series, table, 300 s and 4096 MB budget.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">entry</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">tool.py imported in 0.20 s and defines run(ds, params).</p>
+</li>
+<li class="st-gatelog__row" data-state="pass" data-adv>
+  <span class="st-gatelog__name"><code translate="no">imports</code> <span class="st-adv">advisory</span></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">1 Python file, importing __future__, backend, gc, hashlib, numpy, os, scipy; no network, subprocess, filesystem-write, dynamic-exec or environment use found.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">fixture</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">ran on the 600-cell fixture in 0.45 s of its 300 s budget, returning summary, cells, table, series.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">result</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">returned the declared outputs: summary, cells, table, series.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">determinism</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">two runs with identical parameters produced byte-identical results (10.9 kB of JSON).</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">edge</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">ran at the minimum corner (grid=&#x27;256&#x27;, min_cells=20, n_perms=2, real_space=False) in 0.32 s; ran at the maximum corner (grid=&#x27;2048&#x27;, min_cells=5000, n_perms=20) in 1.48 s.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">no_mutation</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">the fixture dataset&#x27;s 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design).</p>
+</li>
+  </ol>
+</div>
+          <p class="st-sec__note">Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run.</p>
+        </section>
+        <section class="st-sec" id="versions" aria-labelledby="versions-h">
+          <h2 class="st-sec__h" id="versions-h">Versions</h2>
+          <ol class="st-versions" reversed><li><span class="st-versions__v">v1.1.0</span><span aria-hidden="true"> · </span><time datetime="2026-10-13">13 Oct 2026</time> <span class="pv-tag st-latest">latest</span></li></ol>
+        </section>
+      </div>
+    </div>
+    <section class="st-more" aria-labelledby="more-h">
+      <h2 class="st-more__h" id="more-h">More tools</h2>
+      <ul class="st-grid st-grid--more">
+<li class="st-cell" data-id="celltype-percolation" data-name="Cell-Type Percolation" data-tags="spatial|cell types|connectivity|topology" data-outputs="summary|cells|series|table" data-downloads="4" data-published="2026-10-13T16:15:50.706Z" data-version="1.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="../../assets/media/tools/celltype-percolation.webp?v=e6c69b9c10" srcset="../../assets/media/tools/celltype-percolation.webp?v=e6c69b9c10 720w, ../../assets/media/tools/celltype-percolation@2x.webp?v=f263ffe93d 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/celltype-percolation/">Cell-Type Percolation</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Whether a cell type is one connected mass or many islands.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.0.0</span>
+    <span class="st-card__dl" title="4 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">4</span><span class="pv-sr-only">4 downloads</span></span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="interface-coherence" data-name="Interface Coherence" data-tags="spatial|cell types|geometry|boundaries" data-outputs="summary|cells|matrix|series|table" data-downloads="4" data-published="2026-10-13T16:15:59.685Z" data-version="1.1.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="../../assets/media/tools/interface-coherence.webp?v=7ad2d19081" srcset="../../assets/media/tools/interface-coherence.webp?v=7ad2d19081 720w, ../../assets/media/tools/interface-coherence@2x.webp?v=d859770e92 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/interface-coherence/">Interface Coherence</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz community tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Whether two cell types meet along one front or in specks.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.1.0</span>
+    <span class="st-card__dl" title="4 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">4</span><span class="pv-sr-only">4 downloads</span></span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="tissue-permeability" data-name="Tissue Permeability" data-tags="spatial|cell types|geometry|barrier|connectivity" data-outputs="summary|cells|series|table" data-downloads="4" data-published="2026-10-13T16:16:12.733Z" data-version="1.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="../../assets/media/tools/tissue-permeability.webp?v=8d2490fb13" srcset="../../assets/media/tools/tissue-permeability.webp?v=8d2490fb13 720w, ../../assets/media/tools/tissue-permeability@2x.webp?v=34841a48e8 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/tissue-permeability/">Tissue Permeability</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz community tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Which cells one cell type seals off from the rest of the tissue.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.0.0</span>
+    <span class="st-card__dl" title="4 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">4</span><span class="pv-sr-only">4 downloads</span></span>
+  </div>
+</article>
+</li>
+      </ul>
+    </section>
+  </div>
+</main>
+<footer class="pv-footer">
+  <div class="pv-footer__inner">
+    <a class="pv-footer__brand" href="https://pointillviz.com/" translate="no"><img src="../../assets/pv/logo-mark.svg" width="28" height="28" alt="">PointillViz</a>
+    <nav class="pv-footer__sites" aria-label="PointillViz sites">
+      <ul>
+        <li><a href="https://pointillviz.com/"><span class="pv-footer__site">Overview</span><span class="pv-footer__host">pointillviz.com</span></a></li>
+        <li><a href="https://docs.pointillviz.com/"><span class="pv-footer__site">Docs</span><span class="pv-footer__host">docs.pointillviz.com</span></a></li>
+        <li><a href="../../" aria-current="true"><span class="pv-footer__site">Tool Store</span><span class="pv-footer__host">store.pointillviz.com</span></a></li>
+      </ul>
+    </nav>
+    <p class="pv-footer__pub">Preprint: Authors <em>et&nbsp;al.</em>, bioRxiv · <a href="#" data-placeholder="paper">Coming soon</a></p>
+    <p class="pv-footer__copy">© 2026 PointillViz</p>
+  </div>
+</footer>
+</body>
+</html>

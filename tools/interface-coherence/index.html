@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(d){try{var w=d.clientWidth||innerWidth;d.style.setProperty('--k',Math.min(Math.max(Math.min(w/1440,innerHeight/900),1),1.6).toFixed(4))}catch(e){}})(document.documentElement)</script>
+<meta name="theme-color" content="#06070D">
+<title>Interface Coherence · The Tool Store · PointillViz</title>
+<meta name="description" content="Whether two cell types meet along one front or in specks. A PointillViz community tool, version 1.1.0.">
+<link rel="canonical" href="https://store.pointillviz.com/tools/interface-coherence/">
+<meta property="og:site_name" content="PointillViz">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Interface Coherence · The Tool Store · PointillViz">
+<meta property="og:description" content="Whether two cell types meet along one front or in specks.">
+<meta property="og:url" content="https://store.pointillviz.com/tools/interface-coherence/">
+<meta property="og:image" content="https://store.pointillviz.com/assets/media/social/interface-coherence.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Interface segment-length survival: one long coherent front, a speck field, and the label-shuffled null">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../assets/pv/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&amp;family=Fraunces:opsz,wght@9..144,600&amp;family=JetBrains+Mono:wght@400..600&amp;display=swap">
+<link rel="stylesheet" href="../../assets/pv/pv.css">
+<link rel="stylesheet" href="../../assets/store.css">
+<script src="../../assets/pv/pv.js" defer></script>
+<script src="../../assets/store.js" defer></script>
+<script>document.documentElement.classList.add('st-js')</script>
+<noscript><style>.pv-topbar__menu { display: none !important; }</style></noscript>
+</head>
+<body class="st-page st-page--tool">
+<a class="pv-skip" href="#main">Skip to content</a>
+<header class="pv-topbar">
+  <div class="pv-topbar__inner">
+    <a class="pv-topbar__brand" href="https://pointillviz.com/" translate="no">
+      <img src="../../assets/pv/logo.svg" width="169" height="20" alt="PointillViz">
+    </a>
+    <nav class="pv-topbar__nav" aria-label="Main">
+      <ul>
+        <li><a href="https://pointillviz.com/">Overview</a></li>
+        <li><a href="https://docs.pointillviz.com/">Docs</a></li>
+        <li><a href="../../" aria-current="true">Tool Store</a></li>
+        <li><a href="#" data-placeholder="paper">Paper</a></li>
+      </ul>
+    </nav>
+    <div class="pv-topbar__end">
+      <button class="pv-topbar__menu" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="pv-drawer" data-pv-drawer-open="pv-drawer">
+        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="1.6"/><circle cx="10" cy="4" r="1.6"/><circle cx="16" cy="4" r="1.6"/><circle cx="4" cy="10" r="1.6"/><circle cx="10" cy="10" r="1.6"/><circle cx="16" cy="10" r="1.6"/><circle cx="4" cy="16" r="1.6"/><circle cx="10" cy="16" r="1.6"/><circle cx="16" cy="16" r="1.6"/></svg>
+        <span class="pv-sr-only">Menu</span>
+      </button>
+    </div>
+  </div>
+  <noscript>
+    <nav class="pv-nojs-nav" aria-label="Main">
+      <a href="https://pointillviz.com/">Overview</a><a href="https://docs.pointillviz.com/">Docs</a><a href="../../" aria-current="true">Tool Store</a>
+    </nav>
+  </noscript>
+</header>
+<dialog class="pv-drawer" id="pv-drawer" aria-label="Menu">
+  <div class="pv-drawer__panel">
+    <div class="pv-drawer__head">
+      <img src="../../assets/pv/logo.svg" width="152" height="18" alt="PointillViz" translate="no">
+      <button class="pv-btn pv-btn--ghost pv-btn--icon" type="button" data-pv-drawer-close aria-label="Close menu" autofocus>
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15"/></svg>
+      </button>
+    </div>
+    <nav aria-label="Main">
+      <ul class="pv-drawer__nav">
+        <li><a href="https://pointillviz.com/"><span class="pv-drawer__name">Overview</span><span class="pv-drawer__host">pointillviz.com</span></a></li>
+        <li><a href="https://docs.pointillviz.com/"><span class="pv-drawer__name">Docs</span><span class="pv-drawer__host">docs.pointillviz.com</span></a></li>
+        <li><a href="../../" aria-current="true"><span class="pv-drawer__name">Tool Store</span><span class="pv-drawer__host">store.pointillviz.com</span></a></li>
+        <li><a href="#" data-placeholder="paper"><span class="pv-drawer__name">Paper</span><span class="pv-drawer__host">bioRxiv</span></a></li>
+      </ul>
+    </nav>
+    <div class="pv-drawer__foot">
+      <p>© 2026 PointillViz</p>
+    </div>
+  </div>
+</dialog>
+<main id="main" class="st-tool">
+  <div class="pv-container">
+    <nav class="st-back" aria-label="Back">
+      <a class="st-back__link" href="../../"><svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-arrow-left"/></svg>All tools</a>
+    </nav>
+    <div class="st-tool__layout">
+      <header class="st-hero">
+        <h1 class="pv-title st-hero__title">Interface Coherence</h1>
+        <p class="st-hero__by">by PointillViz community tools</p>
+        <p class="pv-lede st-hero__desc">Whether two cell types meet along one front or in specks.</p>
+        <div class="st-hero__badges"><span class="pv-verified" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-check"/></svg>Verified</span><span class="pv-tag pv-tag--ver">v1.1.0</span></div>
+        <div class="st-hero__chips"><ul class="pv-tags" aria-label="Tags"><li class="pv-tag">cell types</li><li class="pv-tag">geometry</li><li class="pv-tag">boundaries</li></ul><div class="st-hero__outs"><span class="st-tags__sep" aria-hidden="true">Outputs</span><ul class="pv-tags" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="writes a summary">summary</li><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul></div></div>
+      </header>
+      <figure class="pv-figure st-hero__art">
+        <div class="pv-figure__stage st-artstage"><img src="../../assets/media/tools/interface-coherence.webp?v=7ad2d19081" srcset="../../assets/media/tools/interface-coherence.webp?v=7ad2d19081 720w, ../../assets/media/tools/interface-coherence@2x.webp?v=d859770e92 1440w" sizes="(min-width: 1320px) 820px, (min-width: 1100px) 62vw, 94vw" width="720" height="420" alt="Interface segment-length survival: one long coherent front, a speck field, and the label-shuffled null" fetchpriority="high" decoding="async"></div>
+        <figcaption class="pv-figure__caption"><span>Interface segment-length survival: one long coherent front, a speck field, and the label-shuffled null</span><span class="pv-figure__meta">Artwork from the tool’s bundle</span></figcaption>
+      </figure>
+      <div class="st-side">
+        <aside class="st-get" aria-labelledby="get-h">
+          <h2 class="st-get__title" id="get-h">Get this tool</h2>
+          <button class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" type="button" aria-expanded="false" aria-controls="install-how" data-st-install>
+            <svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Install into PointillViz</span><span class="pv-btn__sub">Coming soon</span></span>
+          </button>
+          <div class="st-get__how" id="install-how" hidden>
+            <p>Installing from this website is coming soon. In PointillViz, open the <b>Tools</b> tab, then <b>Community Tools</b>, then <b>Browse Store</b>, and install it there. The viewer runs the nine gates again first.</p>
+            <p class="st-get__docs"><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How tools work · Docs</a></p>
+          </div>
+          <p class="st-get__note"><b>This runs as you.</b> A tool is arbitrary Python, run with the privileges of whoever started the viewer. <a class="pv-link" href="../../#safety">Read the safety note</a></p>
+          <h3 class="pv-label st-get__facts-h">Facts</h3>
+          <dl class="st-facts"><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__ver">1.1.0</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-10-13">13 Oct 2026</time></dd></div><div class="st-facts__row"><dt>Downloads</dt><dd>4</dd></div><div class="st-facts__row"><dt>Bundle size</dt><dd>16.4 kB</dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Time limit</dt><dd>120 s</dd></div><div class="st-facts__row"><dt>Memory limit</dt><dd>2,048 MB</dd></div><div class="st-facts__row"><dt>Needs</dt><dd><span class="st-nowrap">a categorical column</span> · <span class="st-nowrap">2D coordinates</span> · <span class="st-nowrap">200+ cells</span> · <span class="st-nowrap">scipy</span></dd></div></dl>
+        </aside>
+        <nav class="st-onpage" aria-labelledby="onpage-h">
+          <p class="pv-label st-onpage__h" id="onpage-h">On this page</p>
+          <ul>
+            <li><a href="#readme">Readme</a></li>
+            <li><a href="#parameters">Parameters</a></li>
+            <li><a href="#outputs">Outputs</a></li>
+            <li><a href="#tool-check">Tool check</a></li>
+            <li><a href="#versions">Versions</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="st-tool__main">
+        <section class="st-sec" id="readme" aria-labelledby="readme-h">
+          <h2 class="st-sec__h" id="readme-h">Readme</h2>
+          <div class="st-md">
+<p>Answers the question: <strong>Which group pairs form long, continuous boundaries rather than many short, disconnected contacts?</strong></p>
+<p>To identify boundaries between groups, the tool first connects the cells in each section using a Delaunay triangulation. Three cells form such a triangle if a circle can pass through all three centers without enclosing another cell center.</p>
+<p>When two connected cells belong to different groups, the tool creates a small boundary piece between them, perpendicular to the line connecting their centers. Touching boundary pieces are combined into one segment when they separate the same two groups.</p>
+<p>For each group pair, the tool measures the lengths <math translate="no"><mi>s</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mo>,</mo><mo>…</mo><mo>,</mo><mi>s</mi><mrow><mo stretchy="false">(</mo><mi>q</mi><mo stretchy="false">)</mo></mrow></math> of its separate boundary segments and summarizes them as:</p>
+<div class="st-formula" role="img" aria-label="Lw = (sum over s of s²) / (sum over s of s)"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>Lw</mi></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>s</mi></munder><msup><mi>s</mi><mn>2</mn></msup></mrow><mrow><munder><mo>∑</mo><mi>s</mi></munder><mi>s</mi></mrow></mfrac></math></span></span></div></div>
+<p>Because segment length is used as a weight, long connected boundaries contribute more than short contacts. The same value is calculated after repeatedly shuffling the group labels while keeping cell positions fixed. Coherence is then:</p>
+<div class="st-formula" role="img" aria-label="C(A,B) = log₂((Lw(observed)) / (Lw(shuffled)))"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>C</mi><mrow><mo stretchy="false">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mrow><mo>(</mo><mfrac><mrow><mi>Lw</mi><mrow><mo stretchy="false">(</mo><mi>observed</mi><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>Lw</mi><mrow><mo stretchy="false">(</mo><mi>shuffled</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac><mo>)</mo></mrow></math></span></span></div></div>
+<p><strong>0</strong> indicates the shuffled expectation, while <strong>+1</strong> indicates an observed value about <strong>2×</strong> as large.</p>
+<p><strong>Map.</strong> Cells along group boundaries are colored by their local coherence value. This is calculated similarly to <math translate="no"><mi>C</mi><mrow><mo stretchy="false">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy="false">)</mo></mrow></math>, but uses the lengths of the specific segments touching the cell instead of the pair-wide observed <em>Lw</em>. Cells on longer, more continuous segments than expected appear yellow, whereas cells on shorter, more fragmented segments appear blue.</p>
+<p><strong>Matrix.</strong> Both axes list all groups, and each square shows the coherence score <math translate="no"><mi>C</mi><mrow><mo stretchy="false">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy="false">)</mo></mrow></math> defined above for one group pair. Yellow indicates longer, more continuous boundaries than expected overall, while blue indicates shorter, more fragmented boundaries.</p>
+<p><strong>Table.</strong> Each row describes one group pair and gives the cell count for both groups, along with <code translate="no">Coherence length</code> and <code translate="no">log2 coherence</code>, which correspond to <em>Lw</em> and <math translate="no"><mi>C</mi><mrow><mo stretchy="false">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy="false">)</mo></mrow></math> defined above. The table also reports <code translate="no">Interface length</code>, the total length of all boundary segments; <code translate="no">Segments</code>, the number of disconnected segments making up this boundary; and <code translate="no">Log2 contact amount</code>, the observed-versus-shuffled comparison based on this total boundary length rather than <em>Lw</em>.</p>
+          </div>
+          
+        </section>
+        <section class="st-sec" id="parameters" aria-labelledby="parameters-h">
+          <h2 class="st-sec__h" id="parameters-h">Parameters</h2>
+          <div class="pv-table-wrap st-params">
+<table class="pv-table" role="table" aria-labelledby="parameters-h">
+<thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Parameter</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Default</th><th scope="col" role="columnheader">What it does</th></tr></thead>
+<tbody role="rowgroup">
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Grouping column</span><code class="st-param__name" translate="no">field</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">categorical_field</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">optional</span></td>
+  <td role="cell" data-label="What it does">Which annotation the boundaries are drawn between.
+Defaults to the cell-type column.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Minimum reportable interface</span><code class="st-param__name" translate="no">min_interface</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">float, 0–1,000</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">50</span></td>
+  <td role="cell" data-label="What it does">Sets the minimum shared boundary required for a group pair to appear in the matrix and table, measured in cell diameters.
+It does not change the map or the calculated boundaries.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Edge pruning distance</span><code class="st-param__name" translate="no">edge_prune</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">float, 1–20</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">3</span></td>
+  <td role="cell" data-label="What it does">Drop Delaunay edges longer than this many median cell spacings, so no boundary is created across a lumen or tissue gap.
+(The empty-circle criterion used to construct Delaunay triangles does not impose a maximum edge length and could otherwise connect cells across such gaps.)</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Label shuffles</span><code class="st-param__name" translate="no">n_shuffles</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">int, 5–99</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">19</span></td>
+  <td role="cell" data-label="What it does">Sets how many times the group labels are randomly shuffled to create the reference used to score each pair.
+More shuffles give a more stable comparison but increase runtime.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Pair member A</span><code class="st-param__name" translate="no">type_a</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">category_value</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">optional</span></td>
+  <td role="cell" data-label="What it does">First member of the pair drawn in the segment-length curve. It is used only to select the pair shown against the dashed white shuffled-label curve.
+Defaults to the longest reportable interface.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Pair member B</span><code class="st-param__name" translate="no">type_b</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">category_value</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">optional</span></td>
+  <td role="cell" data-label="What it does">Second member of that pair.</td>
+</tr>
+</tbody>
+</table>
+</div>
+        </section>
+        <section class="st-sec" id="outputs" aria-labelledby="outputs-h">
+          <h2 class="st-sec__h" id="outputs-h">Outputs</h2>
+          <ul class="st-outputs"><li><span class="pv-tag pv-tag--out">summary</span><span class="st-outputs__what">writes a summary</span></li><li><span class="pv-tag pv-tag--out">cells</span><span class="st-outputs__what">paints the spatial view</span></li><li><span class="pv-tag pv-tag--out">matrix</span><span class="st-outputs__what">returns a heatmap</span></li><li><span class="pv-tag pv-tag--out">series</span><span class="st-outputs__what">returns a line chart</span></li><li><span class="pv-tag pv-tag--out">table</span><span class="st-outputs__what">returns a table</span></li></ul>
+        </section>
+        <section class="st-sec" id="tool-check" aria-labelledby="check-h">
+          <h2 class="st-sec__h" id="check-h">Tool check</h2>
+          <p class="st-sec__intro">The nine gates this version passed when it was published.</p>
+          <div class="st-check">
+  <div class="st-check__head"><span class="pv-verified" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-check"/></svg>Verified</span><p class="st-check__result">Passed 9 of 9 gates</p></div>
+  <ol class="pv-gates st-check__strip" aria-label="The nine gates, in the order they ran"><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">bundle</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">manifest</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">entry</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass" data-adv><span class="pv-gate__name" translate="no">imports</span><span class="pv-sr-only"> pass, advisory</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">fixture</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">result</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">determinism</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">edge</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">no_mutation</span><span class="pv-sr-only"> pass</span></li></ol>
+  <ol class="st-gatelog" aria-label="What each gate saw">
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">bundle</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">4 files, 16.4 kB packed and 44.4 kB unpacked, plugin.json at the root.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">manifest</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">interface-coherence 1.1.0 by PointillViz community tools; entry tool.py, outputs summary, cells, matrix, series, table, 120 s and 2048 MB budget.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">entry</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">tool.py imported in 0.20 s and defines run(ds, params).</p>
+</li>
+<li class="st-gatelog__row" data-state="pass" data-adv>
+  <span class="st-gatelog__name"><code translate="no">imports</code> <span class="st-adv">advisory</span></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">1 Python file, importing __future__, backend, numpy, scipy; no network, subprocess, filesystem-write, dynamic-exec or environment use found.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">fixture</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">ran on the 600-cell fixture in 0.41 s of its 120 s budget, returning summary, cells, table, series, matrix and 1 log line.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">result</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">returned the declared outputs: summary, cells, table, series, matrix.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">determinism</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">two runs with identical parameters produced byte-identical results (22.4 kB of JSON).</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">edge</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">ran at the minimum corner (edge_prune=1.0, min_interface=0.0, n_shuffles=5) in 0.35 s; at the maximum corner (edge_prune=20.0, min_interface=1000.0, n_shuffles=99) it refused in words rather than crashing: No pair of groups shares at least 1000 cell diameters of boundary. Lower the minimum reportable interface. (code: no_interface).</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">no_mutation</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">the fixture dataset&#x27;s 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design).</p>
+</li>
+  </ol>
+</div>
+          <p class="st-sec__note">Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run.</p>
+        </section>
+        <section class="st-sec" id="versions" aria-labelledby="versions-h">
+          <h2 class="st-sec__h" id="versions-h">Versions</h2>
+          <ol class="st-versions" reversed><li><span class="st-versions__v">v1.1.0</span><span aria-hidden="true"> · </span><time datetime="2026-10-13">13 Oct 2026</time> <span class="pv-tag st-latest">latest</span></li></ol>
+        </section>
+      </div>
+    </div>
+    <section class="st-more" aria-labelledby="more-h">
+      <h2 class="st-more__h" id="more-h">More tools</h2>
+      <ul class="st-grid st-grid--more">
+<li class="st-cell" data-id="tissue-permeability" data-name="Tissue Permeability" data-tags="spatial|cell types|geometry|barrier|connectivity" data-outputs="summary|cells|series|table" data-downloads="4" data-published="2026-10-13T16:16:12.733Z" data-version="1.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="../../assets/media/tools/tissue-permeability.webp?v=8d2490fb13" srcset="../../assets/media/tools/tissue-permeability.webp?v=8d2490fb13 720w, ../../assets/media/tools/tissue-permeability@2x.webp?v=34841a48e8 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/tissue-permeability/">Tissue Permeability</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz community tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Which cells one cell type seals off from the rest of the tissue.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.0.0</span>
+    <span class="st-card__dl" title="4 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">4</span><span class="pv-sr-only">4 downloads</span></span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="celltype-percolation" data-name="Cell-Type Percolation" data-tags="spatial|cell types|connectivity|topology" data-outputs="summary|cells|series|table" data-downloads="4" data-published="2026-10-13T16:15:50.706Z" data-version="1.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="../../assets/media/tools/celltype-percolation.webp?v=e6c69b9c10" srcset="../../assets/media/tools/celltype-percolation.webp?v=e6c69b9c10 720w, ../../assets/media/tools/celltype-percolation@2x.webp?v=f263ffe93d 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/celltype-percolation/">Cell-Type Percolation</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Whether a cell type is one connected mass or many islands.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.0.0</span>
+    <span class="st-card__dl" title="4 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">4</span><span class="pv-sr-only">4 downloads</span></span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="spatial-scale-spectrum" data-name="Spatial Scale Spectrum" data-tags="spatial|cell types|multiscale|structure factor" data-outputs="summary|cells|series|table" data-downloads="4" data-published="2026-10-13T16:16:10.182Z" data-version="1.1.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="../../assets/media/tools/spatial-scale-spectrum.webp?v=3c59a7e84a" srcset="../../assets/media/tools/spatial-scale-spectrum.webp?v=3c59a7e84a 720w, ../../assets/media/tools/spatial-scale-spectrum@2x.webp?v=5eb69717af 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/spatial-scale-spectrum/">Spatial Scale Spectrum</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz community tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">How clustered each cell type is, at every length scale.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.1.0</span>
+    <span class="st-card__dl" title="4 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">4</span><span class="pv-sr-only">4 downloads</span></span>
+  </div>
+</article>
+</li>
+      </ul>
+    </section>
+  </div>
+</main>
+<footer class="pv-footer">
+  <div class="pv-footer__inner">
+    <a class="pv-footer__brand" href="https://pointillviz.com/" translate="no"><img src="../../assets/pv/logo-mark.svg" width="28" height="28" alt="">PointillViz</a>
+    <nav class="pv-footer__sites" aria-label="PointillViz sites">
+      <ul>
+        <li><a href="https://pointillviz.com/"><span class="pv-footer__site">Overview</span><span class="pv-footer__host">pointillviz.com</span></a></li>
+        <li><a href="https://docs.pointillviz.com/"><span class="pv-footer__site">Docs</span><span class="pv-footer__host">docs.pointillviz.com</span></a></li>
+        <li><a href="../../" aria-current="true"><span class="pv-footer__site">Tool Store</span><span class="pv-footer__host">store.pointillviz.com</span></a></li>
+      </ul>
+    </nav>
+    <p class="pv-footer__pub">Preprint: Authors <em>et&nbsp;al.</em>, bioRxiv · <a href="#" data-placeholder="paper">Coming soon</a></p>
+    <p class="pv-footer__copy">© 2026 PointillViz</p>
+  </div>
+</footer>
+</body>
+</html>

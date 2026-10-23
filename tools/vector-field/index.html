@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(d){try{var w=d.clientWidth||innerWidth;d.style.setProperty('--k',Math.min(Math.max(Math.min(w/1440,innerHeight/900),1),1.6).toFixed(4))}catch(e){}})(document.documentElement)</script>
+<meta name="theme-color" content="#06070D">
+<title>Vector Field · The Tool Store · PointillViz</title>
+<meta name="description" content="Which way a quantity increases across the tissue, as arrows over the section. A PointillViz community tool, version 1.0.0.">
+<link rel="canonical" href="https://store.pointillviz.com/tools/vector-field/">
+<meta property="og:site_name" content="PointillViz">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Vector Field · The Tool Store · PointillViz">
+<meta property="og:description" content="Which way a quantity increases across the tissue, as arrows over the section. Gene, cell type or any annotation column — with every arrow that could be noise removed.">
+<meta property="og:url" content="https://store.pointillviz.com/tools/vector-field/">
+<meta property="og:image" content="https://store.pointillviz.com/assets/media/social/vector-field.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Vector field: arrows on the local gradient of S100a6 over a colon section, over cells painted by the smoothed field">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../assets/pv/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&amp;family=Fraunces:opsz,wght@9..144,600&amp;family=JetBrains+Mono:wght@400..600&amp;display=swap">
+<link rel="stylesheet" href="../../assets/pv/pv.css">
+<link rel="stylesheet" href="../../assets/store.css">
+<script src="../../assets/pv/pv.js" defer></script>
+<script src="../../assets/store.js" defer></script>
+<script>document.documentElement.classList.add('st-js')</script>
+<noscript><style>.pv-topbar__menu { display: none !important; }</style></noscript>
+</head>
+<body class="st-page st-page--tool">
+<a class="pv-skip" href="#main">Skip to content</a>
+<header class="pv-topbar">
+  <div class="pv-topbar__inner">
+    <a class="pv-topbar__brand" href="https://pointillviz.com/" translate="no">
+      <img src="../../assets/pv/logo.svg" width="169" height="20" alt="PointillViz">
+    </a>
+    <nav class="pv-topbar__nav" aria-label="Main">
+      <ul>
+        <li><a href="https://pointillviz.com/">Overview</a></li>
+        <li><a href="https://docs.pointillviz.com/">Docs</a></li>
+        <li><a href="../../" aria-current="true">Tool Store</a></li>
+        <li><a href="#" data-placeholder="paper">Paper</a></li>
+      </ul>
+    </nav>
+    <div class="pv-topbar__end">
+      <button class="pv-topbar__menu" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="pv-drawer" data-pv-drawer-open="pv-drawer">
+        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="1.6"/><circle cx="10" cy="4" r="1.6"/><circle cx="16" cy="4" r="1.6"/><circle cx="4" cy="10" r="1.6"/><circle cx="10" cy="10" r="1.6"/><circle cx="16" cy="10" r="1.6"/><circle cx="4" cy="16" r="1.6"/><circle cx="10" cy="16" r="1.6"/><circle cx="16" cy="16" r="1.6"/></svg>
+        <span class="pv-sr-only">Menu</span>
+      </button>
+    </div>
+  </div>
+  <noscript>
+    <nav class="pv-nojs-nav" aria-label="Main">
+      <a href="https://pointillviz.com/">Overview</a><a href="https://docs.pointillviz.com/">Docs</a><a href="../../" aria-current="true">Tool Store</a>
+    </nav>
+  </noscript>
+</header>
+<dialog class="pv-drawer" id="pv-drawer" aria-label="Menu">
+  <div class="pv-drawer__panel">
+    <div class="pv-drawer__head">
+      <img src="../../assets/pv/logo.svg" width="152" height="18" alt="PointillViz" translate="no">
+      <button class="pv-btn pv-btn--ghost pv-btn--icon" type="button" data-pv-drawer-close aria-label="Close menu" autofocus>
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15"/></svg>
+      </button>
+    </div>
+    <nav aria-label="Main">
+      <ul class="pv-drawer__nav">
+        <li><a href="https://pointillviz.com/"><span class="pv-drawer__name">Overview</span><span class="pv-drawer__host">pointillviz.com</span></a></li>
+        <li><a href="https://docs.pointillviz.com/"><span class="pv-drawer__name">Docs</span><span class="pv-drawer__host">docs.pointillviz.com</span></a></li>
+        <li><a href="../../" aria-current="true"><span class="pv-drawer__name">Tool Store</span><span class="pv-drawer__host">store.pointillviz.com</span></a></li>
+        <li><a href="#" data-placeholder="paper"><span class="pv-drawer__name">Paper</span><span class="pv-drawer__host">bioRxiv</span></a></li>
+      </ul>
+    </nav>
+    <div class="pv-drawer__foot">
+      <p>© 2026 PointillViz</p>
+    </div>
+  </div>
+</dialog>
+<main id="main" class="st-tool">
+  <div class="pv-container">
+    <nav class="st-back" aria-label="Back">
+      <a class="st-back__link" href="../../"><svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-arrow-left"/></svg>All tools</a>
+    </nav>
+    <div class="st-tool__layout">
+      <header class="st-hero">
+        <h1 class="pv-title st-hero__title">Vector Field</h1>
+        <p class="st-hero__by">by PointillViz reference tools</p>
+        <p class="pv-lede st-hero__desc">Which way a quantity increases across the tissue, as arrows over the section. Gene, cell type or any annotation column — with every arrow that could be noise removed.</p>
+        <div class="st-hero__badges"><span class="pv-verified" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-check"/></svg>Verified</span><span class="pv-tag pv-tag--ver">v1.0.0</span></div>
+        <div class="st-hero__chips"><ul class="pv-tags" aria-label="Tags"><li class="pv-tag">gradient</li><li class="pv-tag">expression</li></ul><div class="st-hero__outs"><span class="st-tags__sep" aria-hidden="true">Outputs</span><ul class="pv-tags" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="writes a summary">summary</li><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="draws arrows over the tissue">vectors</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li></ul></div></div>
+      </header>
+      <figure class="pv-figure st-hero__art">
+        <div class="pv-figure__stage st-artstage"><img src="../../assets/media/tools/vector-field.webp?v=5827d1076d" srcset="../../assets/media/tools/vector-field.webp?v=5827d1076d 720w, ../../assets/media/tools/vector-field@2x.webp?v=859528c09b 1440w" sizes="(min-width: 1320px) 820px, (min-width: 1100px) 62vw, 94vw" width="720" height="420" alt="Vector field: arrows on the local gradient of S100a6 over a colon section, over cells painted by the smoothed field" fetchpriority="high" decoding="async"></div>
+        <figcaption class="pv-figure__caption"><span>Vector field: arrows on the local gradient of S100a6 over a colon section, over cells painted by the smoothed field</span><span class="pv-figure__meta">Artwork from the tool’s bundle</span></figcaption>
+      </figure>
+      <div class="st-side">
+        <aside class="st-get" aria-labelledby="get-h">
+          <h2 class="st-get__title" id="get-h">Get this tool</h2>
+          <button class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" type="button" aria-expanded="false" aria-controls="install-how" data-st-install>
+            <svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Install into PointillViz</span><span class="pv-btn__sub">Coming soon</span></span>
+          </button>
+          <div class="st-get__how" id="install-how" hidden>
+            <p>Installing from this website is coming soon. In PointillViz, open the <b>Tools</b> tab, then <b>Community Tools</b>, then <b>Browse Store</b>, and install it there. The viewer runs the nine gates again first.</p>
+            <p class="st-get__docs"><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How tools work · Docs</a></p>
+          </div>
+          <p class="st-get__note"><b>This runs as you.</b> A tool is arbitrary Python, run with the privileges of whoever started the viewer. <a class="pv-link" href="../../#safety">Read the safety note</a></p>
+          <h3 class="pv-label st-get__facts-h">Facts</h3>
+          <dl class="st-facts"><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__ver">1.0.0</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-10-13">13 Oct 2026</time></dd></div><div class="st-facts__row"><dt>Downloads</dt><dd>4</dd></div><div class="st-facts__row"><dt>Bundle size</dt><dd>39.0 kB</dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Time limit</dt><dd>180 s</dd></div><div class="st-facts__row"><dt>Memory limit</dt><dd>4,096 MB</dd></div><div class="st-facts__row"><dt>Needs</dt><dd><span class="st-nowrap">2D coordinates</span> · <span class="st-nowrap">200+ cells</span></dd></div></dl>
+        </aside>
+        <nav class="st-onpage" aria-labelledby="onpage-h">
+          <p class="pv-label st-onpage__h" id="onpage-h">On this page</p>
+          <ul>
+            <li><a href="#readme">Readme</a></li>
+            <li><a href="#parameters">Parameters</a></li>
+            <li><a href="#outputs">Outputs</a></li>
+            <li><a href="#tool-check">Tool check</a></li>
+            <li><a href="#versions">Versions</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="st-tool__main">
+        <section class="st-sec" id="readme" aria-labelledby="readme-h">
+          <h2 class="st-sec__h" id="readme-h">Readme</h2>
+          <div class="st-md">
+<p>Answers the question: <strong>In which direction does a selected quantity increase across the tissue, and how steeply?</strong></p>
+<p>The tool converts the selected quantity into a smoothed spatial field. Its gradient reveals the direction and strength of local changes across the tissue. Each cell <math translate="no"><mi>j</mi></math> with a valid measurement receives a value <math translate="no"><msub><mi>a</mi><mi>j</mi></msub></math>. This is either the selected gene expression, a continuous measurement, or—for a selected population—<math translate="no"><mn>1</mn></math> for cells belonging to that population and <math translate="no"><mn>0</mn></math> for other labelled cells.</p>
+<p>At regularly spaced positions <math translate="no"><mi>x</mi></math> across the tissue, the tool calculates a Gaussian-weighted local mean:</p>
+<div class="st-formula" role="img" aria-label="A(x) = sum over j of w_j(x)a_j, C(x) = sum over j of w_j(x), F(x) = (A(x)) / (C(x))"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>A</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><msub><mi>a</mi><mi>j</mi></msub><mo>,</mo></math></span></span><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>C</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mo>,</mo></math></span></span><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>F</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mfrac><mrow><mi>A</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>C</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></math></span></span></div></div>
+<p>The weight <math translate="no"><msub><mi>w</mi><mi>j</mi></msub><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math> decreases with the distance between cell <math translate="no"><mi>j</mi></math> and position <math translate="no"><mi>x</mi></math>, so nearby cells contribute more strongly to <math translate="no"><mi>F</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math> than distant cells. For a selected population, <math translate="no"><mi>F</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math> represents its smoothed local proportion.</p>
+<p>From the spatial variation of this field, the tool calculates its gradient and magnitude:</p>
+<div class="st-formula" role="img" aria-label="∇F(x) = ((∂F) / (∂x), (∂F) / (∂y)), g(x) = ‖∇F(x)‖ = √(((∂F) / (∂x))² + ((∂F) / (∂y))²)"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi mathvariant="normal">∇</mi><mi>F</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mrow><mo>(</mo><mfrac><mrow><mi>∂</mi><mi>F</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>,</mo><mfrac><mrow><mi>∂</mi><mi>F</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mo>,</mo></math></span></span><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>g</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mo stretchy="false">‖</mo><mi mathvariant="normal">∇</mi><mi>F</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mo stretchy="false">‖</mo></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><msqrt><msup><mrow><mo>(</mo><mfrac><mrow><mi>∂</mi><mi>F</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mfrac><mrow><mi>∂</mi><mi>F</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mn>2</mn></msup></msqrt></math></span></span></div></div>
+<p><strong>Map.</strong> Cells are colored by the smoothed local value <math translate="no"><mi>F</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math>: dark colors indicate lower values and yellow indicates higher values. The arrows show the gradient <math translate="no"><mi mathvariant="normal">∇</mi><mi>F</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math>: their direction indicates the steepest increase, while their length represents the strength <math translate="no"><mi>g</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math> of the spatial change. For display, this strength is scaled nonlinearly as <math translate="no"><mi>t</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><msqrt><mi>min</mi><mrow><mo stretchy="false">(</mo><mi>g</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mo lspace="0" rspace="0">/</mo><msub><mi>g</mi><mn>95</mn></msub><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msqrt></math>, where <math translate="no"><msub><mi>g</mi><mn>95</mn></msub></math> is the 95th percentile of the displayed gradient magnitudes. Arrow color also represents <math translate="no"><mi>F</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math>, not gradient magnitude.</p>
+<p><strong>Plot.</strong> To distinguish strong gradients from uncertain estimates, the tool calculates the effective cell count <math translate="no"><mi>N</mi><mrow><mo stretchy="false">(</mo><mi>eff</mi><mo stretchy="false">)</mo></mrow></math>, the local variance <math translate="no"><msup><mover accent="true"><mi>τ</mi><mo>ˆ</mo></mover><mn>2</mn></msup></math>, and the standard error:</p>
+<div class="st-formula" role="img" aria-label="N_(eff)(x) = ((sum over j of w_j(x))²) / (sum over j of w_j(x)²), τ̂²(x) = (sum over j of w_j(x)(a′_j)²) / (C(x)) − (F(x) − ā)², SE(x) = (τ̂(x)) / (σₚ√(2N_(eff)(x)))"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><msub><mi>N</mi><mi>eff</mi></msub><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mfrac><msup><mrow><mo stretchy="false">(</mo><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><msup><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mn>2</mn></msup></mrow></mfrac><mo>,</mo></math></span></span><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><msup><mover accent="true"><mi>τ</mi><mo>ˆ</mo></mover><mn>2</mn></msup><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><msup><mrow><mo stretchy="false">(</mo><msub><mrow><mi>a</mi><mo>′</mo></mrow><mi>j</mi></msub><mo stretchy="false">)</mo></mrow><mn>2</mn></msup></mrow><mrow><mi>C</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac><mo>−</mo><msup><mrow><mo stretchy="false">(</mo><mi>F</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mo>−</mo><mover accent="true"><mi>a</mi><mo>¯</mo></mover><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mo>,</mo></math></span></span><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>SE</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mfrac><mrow><mover accent="true"><mi>τ</mi><mo>ˆ</mo></mover><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mrow><msub><mi>σ</mi><mi>p</mi></msub><msqrt><mn>2</mn><msub><mi>N</mi><mi>eff</mi></msub><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></msqrt></mrow></mfrac></math></span></span></div></div>
+<p>Here, <math translate="no"><msub><mrow><mi>a</mi><mo>′</mo></mrow><mi>j</mi></msub><mo>=</mo><msub><mi>a</mi><mi>j</mi></msub><mo>−</mo><mover accent="true"><mi>a</mi><mo>¯</mo></mover></math> is the centered cell value, and <math translate="no"><msub><mi>σ</mi><mi>p</mi></msub></math> is the spatial width of the Gaussian filter. A small effective cell count or high local variation increases the standard error. The x-axis shows a threshold <math translate="no"><mi>t</mi></math>, while the y-axis shows the proportion of the <math translate="no"><mi>M</mi></math> measurable positions whose standardized gradient magnitude <math translate="no"><mi>z</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math> reaches that threshold:</p>
+<div class="st-formula" role="img" aria-label="z(x) = (g(x)) / (SE(x)), S_(observed)(t) = (1) / (M)sum over x∈M of 1[z(x) ≥ t], S_(random)(t) = e^(−t²/2)"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>z</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mfrac><mrow><mi>g</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>SE</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac><mo>,</mo></math></span></span><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><msub><mi>S</mi><mi>observed</mi></msub><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mfrac><mn>1</mn><mi>M</mi></mfrac><munder><mo>∑</mo><mrow><mi>x</mi><mo>∈</mo><mi>M</mi></mrow></munder><mn>1</mn><mrow><mo stretchy="false">[</mo><mi>z</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mo>≥</mo><mi>t</mi><mo stretchy="false">]</mo></mrow><mo>,</mo></math></span></span><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><msub><mi>S</mi><mi>random</mi></msub><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><msup><mi>e</mi><mrow><mo>−</mo><msup><mi>t</mi><mn>2</mn></msup><mo lspace="0" rspace="0">/</mo><mn>2</mn></mrow></msup></math></span></span></div></div>
+<p>The solid curve shows the observed proportion. The dashed curve shows the frequency of standardized two-dimensional gradients expected from the Rayleigh distribution under random cell values. If the observed curve lies clearly above it, strong spatial gradients occur more often than expected by chance. The line at <math translate="no"><mi>z</mi><mo>=</mo><mn>3</mn></math> marks the default threshold below which arrows are hidden when filtering is enabled.</p>
+          </div>
+          
+        </section>
+        <section class="st-sec" id="parameters" aria-labelledby="parameters-h">
+          <h2 class="st-sec__h" id="parameters-h">Parameters</h2>
+          <div class="pv-table-wrap st-params">
+<table class="pv-table" role="table" aria-labelledby="parameters-h">
+<thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Parameter</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Default</th><th scope="col" role="columnheader">What it does</th></tr></thead>
+<tbody role="rowgroup">
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Differentiate</span><code class="st-param__name" translate="no">source</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">select, 3 options</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">One level of a categorical column</span></td>
+  <td role="cell" data-label="What it does">Selects whether the field represents the local proportion of a population, a continuous measurement, or gene expression.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Categorical column</span><code class="st-param__name" translate="no">field</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">categorical_field</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">optional</span></td>
+  <td role="cell" data-label="What it does">Selects the categorical annotation used to define the populations.
+Used only when Differentiate is set to category.
+Defaults to the dataset’s cell-type column.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Level</span><code class="st-param__name" translate="no">level</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">category_value</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">optional</span></td>
+  <td role="cell" data-label="What it does">Selects the population from the chosen categorical column whose local proportion is analyzed.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Continuous column</span><code class="st-param__name" translate="no">column</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">continuous_field</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">optional</span></td>
+  <td role="cell" data-label="What it does">Selects the continuous measurement to analyze.
+Used only when Differentiate is set to continuous.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Gene</span><code class="st-param__name" translate="no">gene</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">gene</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">optional</span></td>
+  <td role="cell" data-label="What it does">Selects the gene whose normalized expression is analyzed.
+Used only when Differentiate is set to gene.
+Values are normalized to a total of 10,000 counts per cell.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Smoothing (σ, grid cells)</span><code class="st-param__name" translate="no">sigma</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">float, 0.6–3</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">1.2</span></td>
+  <td role="cell" data-label="What it does">Sets the width of the Gaussian smoothing in grid cells.
+Larger values produce smoother fields with broader, weaker gradients.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Grid detail</span><code class="st-param__name" translate="no">detail</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">float, 0.5–2.5</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">1</span></td>
+  <td role="cell" data-label="What it does">Sets the spatial resolution of the calculation.
+Higher values capture finer but noisier spatial changes.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Arrows</span><code class="st-param__name" translate="no">arrows</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">int, 200–20,000</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">2,000</span></td>
+  <td role="cell" data-label="What it does">Sets the approximate number of arrows displayed.
+This changes the display density, not the calculated field.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Hide arrows that are not significant</span><code class="st-param__name" translate="no">gate</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">bool</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">on</span></td>
+  <td role="cell" data-label="What it does">Shows only positions with z ≥ 3 and at least 30 effective cells.
+Turning it off also displays gradients that may reflect noise.</td>
+</tr>
+</tbody>
+</table>
+</div>
+        </section>
+        <section class="st-sec" id="outputs" aria-labelledby="outputs-h">
+          <h2 class="st-sec__h" id="outputs-h">Outputs</h2>
+          <ul class="st-outputs"><li><span class="pv-tag pv-tag--out">summary</span><span class="st-outputs__what">writes a summary</span></li><li><span class="pv-tag pv-tag--out">cells</span><span class="st-outputs__what">paints the spatial view</span></li><li><span class="pv-tag pv-tag--out">vectors</span><span class="st-outputs__what">draws arrows over the tissue</span></li><li><span class="pv-tag pv-tag--out">series</span><span class="st-outputs__what">returns a line chart</span></li></ul>
+        </section>
+        <section class="st-sec" id="tool-check" aria-labelledby="check-h">
+          <h2 class="st-sec__h" id="check-h">Tool check</h2>
+          <p class="st-sec__intro">The nine gates this version passed when it was published.</p>
+          <div class="st-check">
+  <div class="st-check__head"><span class="pv-verified" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-check"/></svg>Verified</span><p class="st-check__result">Passed 9 of 9 gates</p></div>
+  <ol class="pv-gates st-check__strip" aria-label="The nine gates, in the order they ran"><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">bundle</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">manifest</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">entry</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass" data-adv><span class="pv-gate__name" translate="no">imports</span><span class="pv-sr-only"> pass, advisory</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">fixture</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">result</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">determinism</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">edge</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">no_mutation</span><span class="pv-sr-only"> pass</span></li></ol>
+  <ol class="st-gatelog" aria-label="What each gate saw">
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">bundle</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">5 files, 39.0 kB packed and 174.9 kB unpacked, plugin.json at the root.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">manifest</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">vector-field 1.0.0 by PointillViz reference tools; entry tool.py, outputs summary, cells, vectors, series, 180 s and 4096 MB budget.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">entry</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">tool.py imported in 0.20 s and defines run(ds, params).</p>
+</li>
+<li class="st-gatelog__row" data-state="pass" data-adv>
+  <span class="st-gatelog__name"><code translate="no">imports</code> <span class="st-adv">advisory</span></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">2 Python files, importing __future__, backend, numpy, vfield_core; no network, subprocess, filesystem-write, dynamic-exec or environment use found.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">fixture</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">ran on the 600-cell fixture in 0.02 s of its 180 s budget, returning summary, cells, vectors, series and 1 log line.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">result</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">returned the declared outputs: summary, cells, vectors, series.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">determinism</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">two runs with identical parameters produced byte-identical results (27.3 kB of JSON).</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">edge</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">ran at the minimum corner (arrows=200, detail=0.5, gate=False, sigma=0.6) in 0.02 s; at the maximum corner (arrows=20000, detail=2.5, sigma=3.0, source=&#x27;continuous&#x27;) it refused in words rather than crashing: Nothing could be measured. Of 122 grid sites inside the tissue, none were far enough from a tissue edge for the smoothing window to sit entirely on real data, so no gradient at all was computed for cont_cell_area. The grid is too coarse, or σ too large, for a region this size: lower the smoothing, raise the grid detail, or widen the selection. (code: no_measurable_sites).</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">no_mutation</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">the fixture dataset&#x27;s 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design).</p>
+</li>
+  </ol>
+</div>
+          <p class="st-sec__note">Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run.</p>
+        </section>
+        <section class="st-sec" id="versions" aria-labelledby="versions-h">
+          <h2 class="st-sec__h" id="versions-h">Versions</h2>
+          <ol class="st-versions" reversed><li><span class="st-versions__v">v1.0.0</span><span aria-hidden="true"> · </span><time datetime="2026-10-13">13 Oct 2026</time> <span class="pv-tag st-latest">latest</span></li></ol>
+        </section>
+      </div>
+    </div>
+    <section class="st-more" aria-labelledby="more-h">
+      <h2 class="st-more__h" id="more-h">More tools</h2>
+      <ul class="st-grid st-grid--more">
+<li class="st-cell" data-id="expression-hotspots" data-name="Expression Hotspots (Getis-Ord Gi*)" data-tags="spatial|expression|hotspots|statistics" data-outputs="summary|cells|table" data-downloads="2" data-published="2026-10-13T16:15:56.919Z" data-version="1.1.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="../../assets/media/tools/expression-hotspots.webp?v=bab3802236" srcset="../../assets/media/tools/expression-hotspots.webp?v=bab3802236 720w, ../../assets/media/tools/expression-hotspots@2x.webp?v=678bdc94b6 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/expression-hotspots/">Expression Hotspots (Getis-Ord Gi*)</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Where one gene forms clusters of high or low expression.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.1.0</span>
+    <span class="st-card__dl" title="2 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">2</span><span class="pv-sr-only">2 downloads</span></span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="celltype-percolation" data-name="Cell-Type Percolation" data-tags="spatial|cell types|connectivity|topology" data-outputs="summary|cells|series|table" data-downloads="4" data-published="2026-10-13T16:15:50.706Z" data-version="1.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="../../assets/media/tools/celltype-percolation.webp?v=e6c69b9c10" srcset="../../assets/media/tools/celltype-percolation.webp?v=e6c69b9c10 720w, ../../assets/media/tools/celltype-percolation@2x.webp?v=f263ffe93d 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/celltype-percolation/">Cell-Type Percolation</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Whether a cell type is one connected mass or many islands.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.0.0</span>
+    <span class="st-card__dl" title="4 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">4</span><span class="pv-sr-only">4 downloads</span></span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="interface-coherence" data-name="Interface Coherence" data-tags="spatial|cell types|geometry|boundaries" data-outputs="summary|cells|matrix|series|table" data-downloads="4" data-published="2026-10-13T16:15:59.685Z" data-version="1.1.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="../../assets/media/tools/interface-coherence.webp?v=7ad2d19081" srcset="../../assets/media/tools/interface-coherence.webp?v=7ad2d19081 720w, ../../assets/media/tools/interface-coherence@2x.webp?v=d859770e92 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/interface-coherence/">Interface Coherence</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz community tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Whether two cell types meet along one front or in specks.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.1.0</span>
+    <span class="st-card__dl" title="4 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">4</span><span class="pv-sr-only">4 downloads</span></span>
+  </div>
+</article>
+</li>
+      </ul>
+    </section>
+  </div>
+</main>
+<footer class="pv-footer">
+  <div class="pv-footer__inner">
+    <a class="pv-footer__brand" href="https://pointillviz.com/" translate="no"><img src="../../assets/pv/logo-mark.svg" width="28" height="28" alt="">PointillViz</a>
+    <nav class="pv-footer__sites" aria-label="PointillViz sites">
+      <ul>
+        <li><a href="https://pointillviz.com/"><span class="pv-footer__site">Overview</span><span class="pv-footer__host">pointillviz.com</span></a></li>
+        <li><a href="https://docs.pointillviz.com/"><span class="pv-footer__site">Docs</span><span class="pv-footer__host">docs.pointillviz.com</span></a></li>
+        <li><a href="../../" aria-current="true"><span class="pv-footer__site">Tool Store</span><span class="pv-footer__host">store.pointillviz.com</span></a></li>
+      </ul>
+    </nav>
+    <p class="pv-footer__pub">Preprint: Authors <em>et&nbsp;al.</em>, bioRxiv · <a href="#" data-placeholder="paper">Coming soon</a></p>
+    <p class="pv-footer__copy">© 2026 PointillViz</p>
+  </div>
+</footer>
+</body>
+</html>

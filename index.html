@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(d){try{var w=d.clientWidth||innerWidth;d.style.setProperty('--k',Math.min(Math.max(Math.min(w/1440,innerHeight/900),1),1.6).toFixed(4))}catch(e){}})(document.documentElement)</script>
+<meta name="theme-color" content="#06070D">
+<title>The Tool Store · PointillViz</title>
+<meta name="description" content="Community analysis tools for PointillViz. Each is one Python file and a manifest, checked by nine conformance gates before it is listed.">
+<link rel="canonical" href="https://store.pointillviz.com/">
+<meta property="og:site_name" content="PointillViz">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Tool Store">
+<meta property="og:description" content="12 community tools for PointillViz, each checked by nine conformance gates before it is listed.">
+<meta property="og:url" content="https://store.pointillviz.com/">
+<meta property="og:image" content="https://store.pointillviz.com/assets/media/social/store.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Tool Store wordmark above the artwork of its community tools.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/pv/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&amp;family=Fraunces:opsz,wght@9..144,600&amp;family=JetBrains+Mono:wght@400..600&amp;display=swap">
+<link rel="stylesheet" href="assets/pv/pv.css">
+<link rel="stylesheet" href="assets/store.css">
+<script src="assets/pv/pv.js" defer></script>
+<script src="assets/store.js" defer></script>
+<script>document.documentElement.classList.add('st-js')</script>
+<noscript><style>.st-toolbar, .st-tags { display: none; } .pv-topbar__menu { display: none !important; }</style></noscript>
+</head>
+<body class="st-page st-page--home">
+<a class="pv-skip" href="#main">Skip to content</a>
+<header class="pv-topbar">
+  <div class="pv-topbar__inner">
+    <a class="pv-topbar__brand" href="https://pointillviz.com/" translate="no">
+      <img src="assets/pv/logo.svg" width="169" height="20" alt="PointillViz">
+    </a>
+    <nav class="pv-topbar__nav" aria-label="Main">
+      <ul>
+        <li><a href="https://pointillviz.com/">Overview</a></li>
+        <li><a href="https://docs.pointillviz.com/">Docs</a></li>
+        <li><a href="./" aria-current="page">Tool Store</a></li>
+        <li><a href="#" data-placeholder="paper">Paper</a></li>
+      </ul>
+    </nav>
+    <div class="pv-topbar__end">
+      <button class="pv-topbar__menu" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="pv-drawer" data-pv-drawer-open="pv-drawer">
+        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="1.6"/><circle cx="10" cy="4" r="1.6"/><circle cx="16" cy="4" r="1.6"/><circle cx="4" cy="10" r="1.6"/><circle cx="10" cy="10" r="1.6"/><circle cx="16" cy="10" r="1.6"/><circle cx="4" cy="16" r="1.6"/><circle cx="10" cy="16" r="1.6"/><circle cx="16" cy="16" r="1.6"/></svg>
+        <span class="pv-sr-only">Menu</span>
+      </button>
+    </div>
+  </div>
+  <noscript>
+    <nav class="pv-nojs-nav" aria-label="Main">
+      <a href="https://pointillviz.com/">Overview</a><a href="https://docs.pointillviz.com/">Docs</a><a href="./" aria-current="page">Tool Store</a>
+    </nav>
+  </noscript>
+</header>
+<dialog class="pv-drawer" id="pv-drawer" aria-label="Menu">
+  <div class="pv-drawer__panel">
+    <div class="pv-drawer__head">
+      <img src="assets/pv/logo.svg" width="152" height="18" alt="PointillViz" translate="no">
+      <button class="pv-btn pv-btn--ghost pv-btn--icon" type="button" data-pv-drawer-close aria-label="Close menu" autofocus>
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15"/></svg>
+      </button>
+    </div>
+    <nav aria-label="Main">
+      <ul class="pv-drawer__nav">
+        <li><a href="https://pointillviz.com/"><span class="pv-drawer__name">Overview</span><span class="pv-drawer__host">pointillviz.com</span></a></li>
+        <li><a href="https://docs.pointillviz.com/"><span class="pv-drawer__name">Docs</span><span class="pv-drawer__host">docs.pointillviz.com</span></a></li>
+        <li><a href="./" aria-current="page"><span class="pv-drawer__name">Tool Store</span><span class="pv-drawer__host">store.pointillviz.com</span></a></li>
+        <li><a href="#" data-placeholder="paper"><span class="pv-drawer__name">Paper</span><span class="pv-drawer__host">bioRxiv</span></a></li>
+      </ul>
+    </nav>
+    <div class="pv-drawer__foot">
+      <p>© 2026 PointillViz</p>
+    </div>
+  </div>
+</dialog>
+
+<main id="main">
+  <section class="st-mast" aria-labelledby="st-title">
+    <div class="pv-container pv-container--wide st-mast__inner">
+      <div class="st-mast__lede">
+        <p class="pv-eyebrow">PointillViz · Community Tools</p>
+        <h1 class="st-wordmark" id="st-title" translate="no">The Tool Store</h1>
+        <p class="pv-lede st-mast__text">Spatial-analysis tools for PointillViz: each is one Python file and a manifest, published as a <code class="st-file" translate="no">.pvtool</code> bundle, and installing one adds a launcher to the Tools tab.</p>
+      </div>
+
+      <div class="st-start">
+        <ol class="st-howto" aria-label="How to use the store">
+          <li>Find a tool and read its page.</li>
+          <li>Install it into PointillViz.</li>
+          <li>Reopen a dataset: the tool is in the Tools tab.</li>
+        </ol>
+        <section class="st-install" id="install" aria-labelledby="st-install-h">
+          <div class="st-install__sum">
+            <h2 class="st-install__h" id="st-install-h">
+              <button class="st-install__toggle" type="button" aria-expanded="false" aria-controls="install-body">
+                <span>How installing works</span>
+                <svg class="st-install__chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg>
+              </button>
+            </h2>
+            <p class="st-install__lead">Tools run in your own PointillViz viewer, never on this website.</p>
+          </div>
+          <div class="st-install__body" id="install-body">
+            <ul class="st-routes">
+              <li class="st-route" data-on>
+                <h3 class="st-route__title">From the viewer</h3>
+                <p class="st-route__text">In the <b>Tools</b> tab, open <b>Community Tools</b>, then <b>Browse Store</b>. Read the tool’s code and press <b>Install</b>. A <code class="st-file" translate="no">.pvtool</code> file installs with <b>Install from file</b>.</p>
+              </li>
+              <li class="st-route">
+                <h3 class="st-route__title">From this website <span class="pv-soon">Coming soon</span></h3>
+                <p class="st-route__text">Connect the store to your viewer, then press Install on a tool’s page.</p>
+              </li>
+            </ul>
+            <p class="st-install__close">Either way, the viewer runs the nine gates again before it installs.</p>
+            <p class="st-install__links"><a class="pv-link" href="#safety">Read the safety note</a><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How tools work · Docs</a></p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="st-shop" aria-labelledby="tools-h">
+    <h2 class="pv-sr-only" id="tools-h">Tools</h2>
+    <div class="st-sentinel" aria-hidden="true"></div>
+    <div class="st-toolbar" id="toolbar">
+      <div class="pv-container pv-container--wide st-toolbar__inner">
+        <form class="pv-search st-search" role="search" action="./" method="get">
+          <svg class="pv-search__icon" aria-hidden="true"><use href="assets/pv/icons.svg#i-search"/></svg>
+          <label class="pv-sr-only" for="q">Search tools</label>
+          <input class="pv-search__input" id="q" name="q" type="search" placeholder="Search tools, authors, tags…" autocomplete="off" spellcheck="false" enterkeyhint="search">
+          <kbd class="pv-kbd pv-search__kbd st-search__kbd" aria-hidden="true">/</kbd>
+        </form>
+        <button class="st-active" type="button" id="active-tag" hidden>
+          <span class="st-active__label"></span>
+          <svg class="st-active__x" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l8 8M14 6l-8 8"/></svg>
+        </button>
+        <div class="st-sort">
+          <span class="pv-label" id="sort-label">Sort</span>
+          <div class="pv-seg st-seg" role="radiogroup" aria-labelledby="sort-label" id="sort">
+            <button type="button" role="radio" aria-checked="true" tabindex="0" value="popular">Popular</button>
+            <button type="button" role="radio" aria-checked="false" tabindex="-1" value="newest">Newest</button>
+            <button type="button" role="radio" aria-checked="false" tabindex="-1" value="name">A–Z</button>
+          </div>
+        </div>
+        <p class="pv-label st-count" id="count"><!-- store:count -->12 tools published<!-- /store:count --></p>
+      </div>
+    </div>
+
+    <div class="pv-container pv-container--wide st-tags" id="tags">
+      <div class="st-tags__list" role="radiogroup" aria-label="Filter tools" id="tag-list"><!-- store:tags -->
+<div class="st-tags__group">
+<button class="pv-chip st-chip" type="button" role="radio" aria-checked="true" tabindex="0" data-tag="">All <span class="pv-chip__count">12</span></button>
+<button class="pv-chip st-chip" type="button" role="radio" aria-checked="false" tabindex="-1" data-tag="cell types">cell types <span class="pv-chip__count">9</span></button>
+<button class="pv-chip st-chip" type="button" role="radio" aria-checked="false" tabindex="-1" data-tag="connectivity">connectivity <span class="pv-chip__count">2</span></button>
+<button class="pv-chip st-chip" type="button" role="radio" aria-checked="false" tabindex="-1" data-tag="enrichment">enrichment <span class="pv-chip__count">2</span></button>
+<button class="pv-chip st-chip" type="button" role="radio" aria-checked="false" tabindex="-1" data-tag="expression">expression <span class="pv-chip__count">2</span></button>
+<button class="pv-chip st-chip" type="button" role="radio" aria-checked="false" tabindex="-1" data-tag="geometry">geometry <span class="pv-chip__count">2</span></button>
+</div>
+<div class="st-tags__group st-tags__group--out">
+<span class="st-tags__sep" aria-hidden="true">Outputs</span>
+<button class="pv-chip st-chip st-chip--out" type="button" role="radio" aria-checked="false" tabindex="-1" data-out="cells" title="Paints the spatial view"><span class="pv-sr-only">Output: </span>cells <span class="pv-chip__count">9</span></button>
+<button class="pv-chip st-chip st-chip--out" type="button" role="radio" aria-checked="false" tabindex="-1" data-out="vectors" title="Draws arrows over the tissue"><span class="pv-sr-only">Output: </span>vectors <span class="pv-chip__count">1</span></button>
+<button class="pv-chip st-chip st-chip--out" type="button" role="radio" aria-checked="false" tabindex="-1" data-out="matrix" title="Returns a heatmap"><span class="pv-sr-only">Output: </span>matrix <span class="pv-chip__count">5</span></button>
+<button class="pv-chip st-chip st-chip--out" type="button" role="radio" aria-checked="false" tabindex="-1" data-out="series" title="Returns a line chart"><span class="pv-sr-only">Output: </span>series <span class="pv-chip__count">7</span></button>
+<button class="pv-chip st-chip st-chip--out" type="button" role="radio" aria-checked="false" tabindex="-1" data-out="chord" title="Returns a chord diagram"><span class="pv-sr-only">Output: </span>chord <span class="pv-chip__count">1</span></button>
+</div>
+<!-- /store:tags --></div>
+    </div>
+
+    <div class="pv-container pv-container--wide st-results">
+      <ul class="st-grid" id="grid" data-sort="popular"><!-- store:cards -->
+<li class="st-cell" data-id="vector-field" data-name="Vector Field" data-tags="spatial|gradient|expression" data-outputs="summary|cells|vectors|series" data-downloads="4" data-published="2026-10-13T16:16:14.011Z" data-version="1.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="assets/media/tools/vector-field.webp?v=5827d1076d" srcset="assets/media/tools/vector-field.webp?v=5827d1076d 720w, assets/media/tools/vector-field@2x.webp?v=859528c09b 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" fetchpriority="high" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="tools/vector-field/">Vector Field</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Which way a quantity increases across the tissue, as arrows over the section. Gene, cell type or any annotation column — with every arrow that could be noise removed.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="draws arrows over the tissue">vectors</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.0.0</span>
+    <span class="st-card__dl" title="4 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">4</span><span class="pv-sr-only">4 downloads</span></span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="tissue-permeability" data-name="Tissue Permeability" data-tags="spatial|cell types|geometry|barrier|connectivity" data-outputs="summary|cells|series|table" data-downloads="4" data-published="2026-10-13T16:16:12.733Z" data-version="1.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="assets/media/tools/tissue-permeability.webp?v=8d2490fb13" srcset="assets/media/tools/tissue-permeability.webp?v=8d2490fb13 720w, assets/media/tools/tissue-permeability@2x.webp?v=34841a48e8 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" fetchpriority="high" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="tools/tissue-permeability/">Tissue Permeability</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz community tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Which cells one cell type seals off from the rest of the tissue.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.0.0</span>
+    <span class="st-card__dl" title="4 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">4</span><span class="pv-sr-only">4 downloads</span></span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="spatial-scale-spectrum" data-name="Spatial Scale Spectrum" data-tags="spatial|cell types|multiscale|structure factor" data-outputs="summary|cells|series|table" data-downloads="4" data-published="2026-10-13T16:16:10.182Z" data-version="1.1.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="assets/media/tools/spatial-scale-spectrum.webp?v=3c59a7e84a" srcset="assets/media/tools/spatial-scale-spectrum.webp?v=3c59a7e84a 720w, assets/media/tools/spatial-scale-spectrum@2x.webp?v=5eb69717af 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" fetchpriority="high" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="tools/spatial-scale-spectrum/">Spatial Scale Spectrum</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz community tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">How clustered each cell type is, at every length scale.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.1.0</span>
+    <span class="st-card__dl" title="4 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">4</span><span class="pv-sr-only">4 downloads</span></span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="interface-coherence" data-name="Interface Coherence" data-tags="spatial|cell types|geometry|boundaries" data-outputs="summary|cells|matrix|series|table" data-downloads="4" data-published="2026-10-13T16:15:59.685Z" data-version="1.1.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="assets/media/tools/interface-coherence.webp?v=7ad2d19081" srcset="assets/media/tools/interface-coherence.webp?v=7ad2d19081 720w, assets/media/tools/interface-coherence@2x.webp?v=d859770e92 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" fetchpriority="high" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="tools/interface-coherence/">Interface Coherence</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz community tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Whether two cell types meet along one front or in specks.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.1.0</span>
+    <span class="st-card__dl" title="4 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">4</span><span class="pv-sr-only">4 downloads</span></span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="celltype-percolation" data-name="Cell-Type Percolation" data-tags="spatial|cell types|connectivity|topology" data-outputs="summary|cells|series|table" data-downloads="4" data-published="2026-10-13T16:15:50.706Z" data-version="1.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="assets/media/tools/celltype-percolation.webp?v=e6c69b9c10" srcset="assets/media/tools/celltype-percolation.webp?v=e6c69b9c10 720w, assets/media/tools/celltype-percolation@2x.webp?v=f263ffe93d 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="tools/celltype-percolation/">Cell-Type Percolation</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Whether a cell type is one connected mass or many islands.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.0.0</span>
+    <span class="st-card__dl" title="4 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">4</span><span class="pv-sr-only">4 downloads</span></span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="ripley-cross-l" data-name="Ripley’s Cross-L Function" data-tags="spatial|cell types|point process|colocalization|scale" data-outputs="summary|series|table" data-downloads="2" data-published="2026-10-13T16:16:06.378Z" data-version="1.1.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="assets/media/tools/ripley-cross-l.webp?v=92fa9e5ed5" srcset="assets/media/tools/ripley-cross-l.webp?v=92fa9e5ed5 720w, assets/media/tools/ripley-cross-l@2x.webp?v=0b05cb6394 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="tools/ripley-cross-l/">Ripley’s Cross-L Function</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">At what distance cell type B accumulates around cell type A.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.1.0</span>
+    <span class="st-card__dl" title="2 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">2</span><span class="pv-sr-only">2 downloads</span></span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="local-density" data-name="Local Cell Density" data-tags="spatial|qc|density" data-outputs="cells|series|summary" data-downloads="2" data-published="2026-10-13T16:16:01.584Z" data-version="1.1.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="assets/media/tools/local-density.webp?v=511f1577eb" srcset="assets/media/tools/local-density.webp?v=511f1577eb 720w, assets/media/tools/local-density@2x.webp?v=0b49da8a8e 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="tools/local-density/">Local Cell Density</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">How crowded the tissue is around every cell.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.1.0</span>
+    <span class="st-card__dl" title="2 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">2</span><span class="pv-sr-only">2 downloads</span></span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="expression-hotspots" data-name="Expression Hotspots (Getis-Ord Gi*)" data-tags="spatial|expression|hotspots|statistics" data-outputs="summary|cells|table" data-downloads="2" data-published="2026-10-13T16:15:56.919Z" data-version="1.1.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="assets/media/tools/expression-hotspots.webp?v=bab3802236" srcset="assets/media/tools/expression-hotspots.webp?v=bab3802236 720w, assets/media/tools/expression-hotspots@2x.webp?v=678bdc94b6 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="tools/expression-hotspots/">Expression Hotspots (Getis-Ord Gi*)</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Where one gene forms clusters of high or low expression.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.1.0</span>
+    <span class="st-card__dl" title="2 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">2</span><span class="pv-sr-only">2 downloads</span></span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="conditional-contact-odds" data-name="Conditional Contact Odds" data-tags="spatial|cell types" data-outputs="summary|cells|matrix|table" data-downloads="2" data-published="2026-10-13T16:15:53.094Z" data-version="1.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="assets/media/tools/conditional-contact-odds.webp?v=45bcf979e1" srcset="assets/media/tools/conditional-contact-odds.webp?v=45bcf979e1 720w, assets/media/tools/conditional-contact-odds@2x.webp?v=b43941dfeb 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="tools/conditional-contact-odds/">Conditional Contact Odds</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz community tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">How much one extra neighbour of type B changes the odds a cell is type A, holding every other type’s neighbour count fixed.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.0.0</span>
+    <span class="st-card__dl" title="2 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">2</span><span class="pv-sr-only">2 downloads</span></span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="neighborhood-composition" data-name="Neighborhood Composition &amp; Mixing" data-tags="spatial|cell types|neighbourhood|entropy|enrichment" data-outputs="summary|cells|matrix|table" data-downloads="1" data-published="2026-10-13T16:16:03.178Z" data-version="1.1.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="assets/media/tools/neighborhood-composition.webp?v=6b87a0174b" srcset="assets/media/tools/neighborhood-composition.webp?v=6b87a0174b 720w, assets/media/tools/neighborhood-composition@2x.webp?v=354fc2ce92 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="tools/neighborhood-composition/">Neighborhood Composition &amp; Mixing</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">How mixed each cell’s neighbourhood is, and who sits next to whom.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.1.0</span>
+    <span class="st-card__dl" title="1 download"><svg class="st-card__dl-i" aria-hidden="true"><use href="assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">1</span><span class="pv-sr-only">1 download</span></span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="categorical-chords" data-name="Categorical Chords" data-tags="spatial|cell types|categorical|chord" data-outputs="chord|matrix|table|summary" data-downloads="1" data-published="2026-10-13T16:15:48.301Z" data-version="1.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="assets/media/tools/categorical-chords.webp?v=aed602856f" srcset="assets/media/tools/categorical-chords.webp?v=aed602856f 720w, assets/media/tools/categorical-chords@2x.webp?v=2654222e53 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="tools/categorical-chords/">Categorical Chords</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz community tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Explore spatial contacts or shared membership between categorical annotations with count-weighted ribbons and enrichment colors.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="returns a chord diagram">chord</li><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.0.0</span>
+    <span class="st-card__dl" title="1 download"><svg class="st-card__dl-i" aria-hidden="true"><use href="assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">1</span><span class="pv-sr-only">1 download</span></span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="celltype-cooccurrence" data-name="Cell-Type Co-occurrence" data-tags="spatial|cell types|enrichment" data-outputs="matrix|table|summary" data-downloads="1" data-published="2026-09-29T08:24:40.851Z" data-version="1.2.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="assets/media/tools/celltype-cooccurrence.webp?v=871ec925fb" srcset="assets/media/tools/celltype-cooccurrence.webp?v=871ec925fb 720w, assets/media/tools/celltype-cooccurrence@2x.webp?v=57ab831e44 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="tools/celltype-cooccurrence/">Cell-Type Co-occurrence</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-09-29">29 Sep 2026</time></p>
+  <p class="pv-card__body st-card__desc">Which cell types are found near each other more often than expected by chance.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="st-card__ver" title="Version">v1.2.0</span>
+    <span class="st-card__dl" title="1 download"><svg class="st-card__dl-i" aria-hidden="true"><use href="assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">1</span><span class="pv-sr-only">1 download</span></span>
+  </div>
+</article>
+</li>
+<!-- /store:cards --></ul>
+      <div class="st-empty" id="empty" hidden>
+        <div class="st-empty__plate" aria-hidden="true"></div>
+        <h3 class="st-empty__title" id="empty-title">Nothing matches that</h3>
+        <p class="st-empty__text" id="empty-text">Try a broader search, or clear the tag filter.</p>
+        <button class="pv-btn pv-btn--secondary" type="button" id="empty-action">Clear search and filters</button>
+      </div>
+      <p class="pv-sr-only" id="live" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="st-land" aria-labelledby="land-h">
+    <div class="pv-container pv-container--wide">
+      <div class="st-land__head">
+        <h2 class="st-land__h" id="land-h">From the Tools tab to the tissue</h2>
+        <p class="pv-figure__meta">Vector Field 1.0.0 · Xenium 5K · mouse colon · 135,232 cells</p>
+      </div>
+      <div class="st-land__pair">
+        <figure class="pv-figure pv-figure--plain st-land__fig st-land__fig--tab">
+          <div class="pv-figure__stage st-land__stage">
+            <picture>
+              <source media="(max-width: 559.98px)" srcset="assets/media/tools-tab-narrow.webp 236w, assets/media/tools-tab-narrow@2x.webp 472w" sizes="calc(100vw - 32px)" width="236" height="282">
+              <img src="assets/media/tools-tab.webp" srcset="assets/media/tools-tab.webp 508w, assets/media/tools-tab@2x.webp 1016w" sizes="(min-width: 900px) 508px, 92vw" width="508" height="371" alt="The Tools tab in PointillViz: the Community Tools group, 12 installed, and its first launchers, starting with Categorical Chords, each with the tool’s artwork, author and version." loading="lazy" decoding="async">
+            </picture>
+          </div>
+          <figcaption class="st-land__cap"><span class="st-land__k">Tools tab</span>Once installed, a tool is a launcher in the Tools tab of each dataset that has what it needs.</figcaption>
+        </figure>
+        <span class="st-land__arrow" aria-hidden="true"></span>
+        <figure class="pv-figure pv-figure--plain st-land__fig st-land__fig--result">
+          <div class="pv-figure__stage st-land__stage">
+            <img src="assets/media/fig2a-result.webp" srcset="assets/media/fig2a-result.webp 760w, assets/media/fig2a-result@2x.webp 1520w" sizes="(min-width: 1100px) 760px, 92vw" width="760" height="309" alt="Vector Field run on a Xenium 5K mouse colon section: cells coloured by the local mean of Epcam, white arrows along its gradient, and the whole section with the enlarged field boxed." loading="lazy" decoding="async">
+          </div>
+          <figcaption class="st-land__cap"><span class="st-land__k">Result</span>Once run, it draws on the section: here the arrows of Vector Field along the gradient of local mean <i>Epcam</i>.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="st-notes" aria-label="Safety and publishing">
+    <div class="pv-container pv-container--wide st-notes__inner">
+      <div class="st-safety" id="safety" tabindex="-1">
+        <h2 class="st-safety__title">A tool is arbitrary Python</h2>
+        <p class="st-safety__text">An installed tool runs on your machine with the privileges of whoever started the viewer, like any script you download. The gates report what a tool reaches for; they cannot stop it. “Verified” means the listed version passed every required gate when it was published, not that its code is safe. In PointillViz, Browse Store shows each tool’s code before you install it: read it.</p>
+      </div>
+      <article class="pv-card pv-card--link st-teaser">
+        <h2 class="st-teaser__title"><a class="pv-card__link" href="publish/">Build &amp; publish a tool</a></h2>
+        <p class="st-teaser__text">One Python file and a manifest, checked by nine conformance gates before the store lists it.</p>
+        <ol class="st-teaser__gates" aria-label="The nine gates" translate="no">
+          <li>bundle</li><li>manifest</li><li>entry</li><li data-adv>imports<span class="pv-sr-only">, advisory</span></li><li>fixture</li><li>result</li><li>determinism</li><li>edge</li><li>no_mutation</li>
+        </ol>
+        <span class="st-teaser__go" aria-hidden="true"><svg class="pv-icon"><use href="assets/pv/icons.svg#i-arrow-right"/></svg></span>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer class="pv-footer">
+  <div class="pv-footer__inner">
+    <a class="pv-footer__brand" href="https://pointillviz.com/" translate="no"><img src="assets/pv/logo-mark.svg" width="28" height="28" alt="">PointillViz</a>
+    <nav class="pv-footer__sites" aria-label="PointillViz sites">
+      <ul>
+        <li><a href="https://pointillviz.com/"><span class="pv-footer__site">Overview</span><span class="pv-footer__host">pointillviz.com</span></a></li>
+        <li><a href="https://docs.pointillviz.com/"><span class="pv-footer__site">Docs</span><span class="pv-footer__host">docs.pointillviz.com</span></a></li>
+        <li><a href="./" aria-current="page"><span class="pv-footer__site">Tool Store</span><span class="pv-footer__host">store.pointillviz.com</span></a></li>
+      </ul>
+    </nav>
+    <p class="pv-footer__pub">Preprint: Authors <em>et&nbsp;al.</em>, bioRxiv · <a href="#" data-placeholder="paper">Coming soon</a></p>
+    <p class="pv-footer__copy">© 2026 PointillViz</p>
+  </div>
+</footer>
+</body>
+</html>
