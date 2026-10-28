@@ -89,7 +89,7 @@ SCALE_SCRIPT = ("<script>(function(d){try{var w=d.clientWidth||innerWidth;d.styl
                 "Math.min(Math.max(Math.min(w/1440,innerHeight/900),1),1.6).toFixed(4))}catch(e){}})"
                 "(document.documentElement)</script>")
 # CHROME.md §5: the publication line, the same on the three sites (brief/CONTENT.md A11).
-PUB_LINE = ('<p class="pv-footer__pub">Preprint: Authors <em>et&nbsp;al.</em>, bioRxiv · '
+PUB_LINE = ('<p class="pv-footer__pub">Preprint: Gargoori Motlagh&nbsp;A. <em>et&nbsp;al.</em>, bioRxiv · '
             '<a href="#" data-placeholder="paper">Coming soon</a></p>')
 
 MENU_DOTS = ('<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="1.6"/>'
