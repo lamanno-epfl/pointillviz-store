@@ -1,7 +1,7 @@
 {
  "schema": 2,
  "source": "the PointillViz tool registry's index.json, latest version of each tool",
- "count": 13,
+ "count": 14,
  "gate_order": [
   "bundle",
   "manifest",
@@ -23,6 +23,10 @@
    "count": 9
   },
   {
+   "tag": "expression",
+   "count": 3
+  },
+  {
    "tag": "clustering",
    "count": 2
   },
@@ -32,10 +36,6 @@
   },
   {
    "tag": "enrichment",
-   "count": 2
-  },
-  {
-   "tag": "expression",
    "count": 2
   },
   {
@@ -91,7 +91,19 @@
    "count": 1
   },
   {
+   "tag": "groups",
+   "count": 1
+  },
+  {
    "tag": "hotspots",
+   "count": 1
+  },
+  {
+   "tag": "markers",
+   "count": 1
+  },
+  {
+   "tag": "plot",
    "count": 1
   },
   {
@@ -122,8 +134,16 @@
  "filters": {
   "tags": [
    {
+    "tag": "spatial",
+    "count": 13
+   },
+   {
     "tag": "cell types",
     "count": 9
+   },
+   {
+    "tag": "expression",
+    "count": 3
    },
    {
     "tag": "clustering",
@@ -135,10 +155,6 @@
    },
    {
     "tag": "enrichment",
-    "count": 2
-   },
-   {
-    "tag": "expression",
     "count": 2
    },
    {
@@ -186,8 +202,13 @@
     "help": "returns a chord diagram"
    },
    {
-    "out": "files",
+    "out": "images",
     "count": 1,
+    "help": "returns figures"
+   },
+   {
+    "out": "files",
+    "count": 2,
     "help": "returns files to download"
    }
   ]
@@ -437,6 +458,202 @@
    },
    "social": "assets/media/social/banksy-niches.jpg",
    "url": "tools/banksy-niches/"
+  },
+  {
+   "id": "beeswarm-plot",
+   "name": "Beeswarm Plot",
+   "version": "1.0.0",
+   "author": "PointillViz reference tools",
+   "description": "How marker genes are expressed across cell types or niches, one swarm of cells per group.",
+   "readme_html": "<p>Answers the question: <strong>Which genes set each cell type or niche apart, and how are they spread across its cells?</strong></p>\n<p>The plot has one row per group of an annotation (cell types, niches or any other categorical column) and one column per gene. Each glyph is the swarm of the group’s cells along the gene’s expression, log1p(CP10K):</p>\n<ul><li><strong>Length.</strong> Low expression is at the glyph’s left end and high expression at its right. Each gene has its own scale, from the threshold to the 99.5th percentile of the cells above it.</li><li><strong>Height.</strong> At each level, the height follows how many of the group’s cells are there.</li><li><strong>Size.</strong> The glyph’s size follows the share of the group’s cells above the threshold (its square root, as the Marker Dot Plot sizes its dots). A gene that few cells of a group detect draws a small glyph.</li><li><strong>Colour.</strong> The group’s mean expression as a z-score across the groups, in one of the viewer’s gene colormaps, from −2.5 to 2.5:</li></ul>\n<div class=\"st-formula\" role=\"img\" aria-label=\"z_(g,j) = (\\bar{x}_(g,j) - \\operatorname{mean}_(g&#x27;)\\,\\bar{x}_(g&#x27;,j)) / (\\operatorname{sd}_(g&#x27;)\\,\\bar{x}_(g&#x27;,j))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><msub><mi>z</mi><mrow><mi>g</mi><mo>,</mo><mi>j</mi></mrow></msub></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><mo>\\</mo><mi>bar</mi><msub><mrow><mo stretchy=\"false\">{</mo><mi>x</mi><mo stretchy=\"false\">}</mo></mrow><mrow><mi>g</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>−</mo><mo>\\</mo><mi>operatorname</mi><msub><mrow><mo stretchy=\"false\">{</mo><mi>mean</mi><mo stretchy=\"false\">}</mo></mrow><mrow><mi>g</mi><mo>&#x27;</mo></mrow></msub><mo>\\</mo><mo>,</mo><mo>\\</mo><mi>bar</mi><msub><mrow><mo stretchy=\"false\">{</mo><mi>x</mi><mo stretchy=\"false\">}</mo></mrow><mrow><mi>g</mi><mo>&#x27;</mo><mo>,</mo><mi>j</mi></mrow></msub></mrow><mrow><mo>\\</mo><mi>operatorname</mi><msub><mrow><mo stretchy=\"false\">{</mo><mi>sd</mi><mo stretchy=\"false\">}</mo></mrow><mrow><mi>g</mi><mo>&#x27;</mo></mrow></msub><mo>\\</mo><mo>,</mo><mo>\\</mo><mi>bar</mi><msub><mrow><mo stretchy=\"false\">{</mo><mi>x</mi><mo stretchy=\"false\">}</mo></mrow><mrow><mi>g</mi><mo>&#x27;</mo><mo>,</mo><mi>j</mi></mrow></msub></mrow></mfrac></math></span></span></div></div>\n<p>where $\\bar{x}_{g,j}$ is the mean log1p(CP10K) of gene $j$ over every cell of group $g$.</p>\n<p><strong>Genes.</strong> The form opens on the 20 genes detected in the most cells, the Marker Dot Plot’s Top markers. Search to add genes (up to 40), or remove them.</p>\n<p><strong>Groups.</strong> A row needs at least 10 cells, and the plot draws at most the 120 largest groups. A second, coarse annotation adds an outer colour strip and orders the rows: each group takes the coarse group most of its cells belong to.</p>\n<p><strong>Threshold.</strong> Cells at or below the threshold are left out of the swarms; 0 keeps every cell that detects the gene. The colours always count every cell of a group, so the threshold changes what is drawn, never what a colour means.</p>\n<p><strong>Outputs.</strong> The plot as a figure and as an SVG download, and a table with each group’s cells, mean expression, z-score and share above the threshold for every gene.</p>",
+   "citation": "",
+   "tags": [
+    "expression",
+    "markers",
+    "groups",
+    "plot"
+   ],
+   "icon": "bubble_chart",
+   "language": "python",
+   "language_label": "Python",
+   "gpu": null,
+   "gpu_label": "",
+   "parameters": [
+    {
+     "name": "field",
+     "label": "Groups",
+     "type": "categorical_field",
+     "default": null,
+     "optional": true,
+     "help": "Selects the annotation whose groups form the rows: cell types, niches or any other categorical column.\nDefaults to the dataset’s cell-type column.",
+     "type_text": "categorical_field",
+     "default_text": "optional"
+    },
+    {
+     "name": "genes",
+     "label": "Genes",
+     "type": "genes",
+     "default": null,
+     "optional": true,
+     "help": "Selects the genes that form the columns.\nOpens on the 20 genes detected in the most cells, the Marker Dot Plot’s Top markers. Search to add genes, or remove them; left empty, the plot uses those 20.",
+     "type_text": "genes",
+     "default_text": "optional"
+    },
+    {
+     "name": "coarse",
+     "label": "Coarse groups",
+     "type": "categorical_field",
+     "default": null,
+     "optional": true,
+     "help": "Adds a second, broader annotation as an outer colour strip and orders the rows by it; each group takes the coarse group most of its cells belong to.\nThe same column as Groups draws no outer strip.",
+     "type_text": "categorical_field",
+     "default_text": "optional"
+    },
+    {
+     "name": "threshold",
+     "label": "Expression threshold",
+     "type": "float",
+     "default": 0,
+     "optional": false,
+     "help": "Leaves cells at or below this log1p(CP10K) out of the swarms; 0 keeps every cell that detects the gene.\nThe colours always count every cell of a group.",
+     "min": 0.0,
+     "max": 5.0,
+     "step": 0.05,
+     "type_text": "float, 0–5",
+     "default_text": "0"
+    },
+    {
+     "name": "cmap",
+     "label": "Colormap",
+     "type": "select",
+     "default": "magma",
+     "optional": false,
+     "help": "Colours the mean expression z-score with the colormaps the viewer offers for gene expression.",
+     "options": [
+      {
+       "label": "Viridis",
+       "value": "viridis"
+      },
+      {
+       "label": "Plasma",
+       "value": "plasma"
+      },
+      {
+       "label": "Inferno",
+       "value": "inferno"
+      },
+      {
+       "label": "Magma",
+       "value": "magma"
+      },
+      {
+       "label": "Cividis",
+       "value": "cividis"
+      }
+     ],
+     "type_text": "select, 5 options",
+     "default_text": "Magma"
+    }
+   ],
+   "sweep": null,
+   "outputs": [
+    "images",
+    "table",
+    "summary",
+    "files"
+   ],
+   "optional_outputs": [],
+   "output_help": {
+    "images": "returns figures",
+    "table": "returns a table",
+    "summary": "writes a summary",
+    "files": "returns files to download"
+   },
+   "requires": {
+    "genes": true,
+    "cell_types": false,
+    "categoricals": true,
+    "spatial": "any",
+    "min_cells": 20
+   },
+   "needs": [
+    "gene expression",
+    "a categorical column",
+    "20+ cells"
+   ],
+   "license": "MIT",
+   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/beeswarm-plot-v1.0.0/beeswarm-plot-1.0.0.pvtool",
+   "bundle_size": "29.1 kB",
+   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/beeswarm-plot",
+   "published": "2026-10-28",
+   "published_date": "28 Oct 2026",
+   "gates": [
+    {
+     "id": "bundle",
+     "required": true,
+     "status": "pass",
+     "message": "6 files, 29.1 kB packed and 103.4 kB unpacked, plugin.json at the root."
+    },
+    {
+     "id": "manifest",
+     "required": true,
+     "status": "pass",
+     "message": "beeswarm-plot 1.0.0 by PointillViz reference tools; Python entry tool.py, outputs images, table, summary, files."
+    },
+    {
+     "id": "environment",
+     "required": true,
+     "status": "pass",
+     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
+    },
+    {
+     "id": "entry",
+     "required": true,
+     "status": "pass",
+     "message": "tool.py imported in 0.02 s and defines run(ds, params)."
+    },
+    {
+     "id": "imports",
+     "required": false,
+     "status": "pass",
+     "message": "1 source file, using html, numpy, pointillviz_tool; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
+    },
+    {
+     "id": "fixture",
+     "required": true,
+     "status": "pass",
+     "message": "ran on the 600-cell fixture in 0.02 s, returning summary, table, files, images."
+    },
+    {
+     "id": "result",
+     "required": true,
+     "status": "pass",
+     "message": "returned the declared outputs: summary, table, files, images."
+    },
+    {
+     "id": "edge",
+     "required": true,
+     "status": "pass",
+     "message": "ran at the minimum corner (cmap='viridis') in 0.02 s; ran at the maximum corner (cmap='cividis', threshold=5.0) in 0.02 s."
+    },
+    {
+     "id": "no_mutation",
+     "required": true,
+     "status": "pass",
+     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
+    }
+   ],
+   "risks": [],
+   "art": {
+    "src": "assets/media/tools/beeswarm-plot.webp?v=22a6de230b",
+    "src2x": "assets/media/tools/beeswarm-plot@2x.webp?v=7c6108523f",
+    "width": 720,
+    "height": 420,
+    "alt": "Beeswarm plot: eight cell types against a marker gene of each, the swarms brightest along the diagonal",
+    "generated": false
+   },
+   "social": "assets/media/social/beeswarm-plot.jpg",
+   "url": "tools/beeswarm-plot/"
   },
   {
    "id": "categorical-chords",

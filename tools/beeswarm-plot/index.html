@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(d){try{var w=d.clientWidth||innerWidth;d.style.setProperty('--k',Math.min(Math.max(Math.min(w/1440,innerHeight/900),1),1.6).toFixed(4))}catch(e){}})(document.documentElement)</script>
+<meta name="theme-color" content="#06070D">
+<title>Beeswarm Plot · The Tool Store · PointillViz</title>
+<meta name="description" content="How marker genes are expressed across cell types or niches, one swarm of cells per group. A PointillViz community tool, version 1.0.0.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://store.pointillviz.com/tools/beeswarm-plot/">
+<meta property="og:site_name" content="PointillViz">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Beeswarm Plot · The Tool Store · PointillViz">
+<meta property="og:description" content="How marker genes are expressed across cell types or niches, one swarm of cells per group.">
+<meta property="og:url" content="https://store.pointillviz.com/tools/beeswarm-plot/">
+<meta property="og:image" content="https://store.pointillviz.com/assets/media/social/beeswarm-plot.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Beeswarm plot: eight cell types against a marker gene of each, the swarms brightest along the diagonal">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../assets/pv/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&amp;family=Fraunces:opsz,wght@9..144,600&amp;family=JetBrains+Mono:wght@400..600&amp;display=swap">
+<link rel="stylesheet" href="../../assets/pv/pv.css">
+<link rel="stylesheet" href="../../assets/store.css">
+<script src="../../assets/pv/pv.js" defer></script>
+<script src="../../assets/store.js" defer></script>
+<script>document.documentElement.classList.add('st-js')</script>
+<noscript><style>.pv-topbar__menu { display: none !important; }</style></noscript>
+</head>
+<body class="st-page st-page--tool">
+<a class="pv-skip" href="#main">Skip to content</a>
+<header class="pv-topbar">
+  <div class="pv-topbar__inner">
+    <a class="pv-topbar__brand" href="https://pointillviz.com/" translate="no">
+      <img src="../../assets/pv/logo.svg" width="169" height="20" alt="PointillViz">
+    </a>
+    <nav class="pv-topbar__nav" aria-label="Main">
+      <ul>
+        <li><a href="https://pointillviz.com/">Overview</a></li>
+        <li><a href="https://docs.pointillviz.com/">Docs</a></li>
+        <li><a href="../../" aria-current="true">Tool Store</a></li>
+        <li><a href="#" data-placeholder="paper">Paper</a></li>
+      </ul>
+    </nav>
+    <div class="pv-topbar__end">
+      <button class="pv-topbar__menu" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="pv-drawer" data-pv-drawer-open="pv-drawer">
+        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="1.6"/><circle cx="10" cy="4" r="1.6"/><circle cx="16" cy="4" r="1.6"/><circle cx="4" cy="10" r="1.6"/><circle cx="10" cy="10" r="1.6"/><circle cx="16" cy="10" r="1.6"/><circle cx="4" cy="16" r="1.6"/><circle cx="10" cy="16" r="1.6"/><circle cx="16" cy="16" r="1.6"/></svg>
+        <span class="pv-sr-only">Menu</span>
+      </button>
+    </div>
+  </div>
+  <noscript>
+    <nav class="pv-nojs-nav" aria-label="Main">
+      <a href="https://pointillviz.com/">Overview</a><a href="https://docs.pointillviz.com/">Docs</a><a href="../../" aria-current="true">Tool Store</a>
+    </nav>
+  </noscript>
+</header>
+<dialog class="pv-drawer" id="pv-drawer" aria-label="Menu">
+  <div class="pv-drawer__panel">
+    <div class="pv-drawer__head">
+      <img src="../../assets/pv/logo.svg" width="152" height="18" alt="PointillViz" translate="no">
+      <button class="pv-btn pv-btn--ghost pv-btn--icon" type="button" data-pv-drawer-close aria-label="Close menu" autofocus>
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15"/></svg>
+      </button>
+    </div>
+    <nav aria-label="Main">
+      <ul class="pv-drawer__nav">
+        <li><a href="https://pointillviz.com/"><span class="pv-drawer__name">Overview</span><span class="pv-drawer__host">pointillviz.com</span></a></li>
+        <li><a href="https://docs.pointillviz.com/"><span class="pv-drawer__name">Docs</span><span class="pv-drawer__host">docs.pointillviz.com</span></a></li>
+        <li><a href="../../" aria-current="true"><span class="pv-drawer__name">Tool Store</span><span class="pv-drawer__host">store.pointillviz.com</span></a></li>
+        <li><a href="#" data-placeholder="paper"><span class="pv-drawer__name">Paper</span><span class="pv-drawer__host">bioRxiv</span></a></li>
+      </ul>
+    </nav>
+    <div class="pv-drawer__foot">
+      <p>© 2026 PointillViz</p>
+    </div>
+  </div>
+</dialog>
+<main id="main" class="st-tool">
+  <div class="pv-container">
+    <nav class="st-back" aria-label="Back">
+      <a class="st-back__link" href="../../"><svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-arrow-left"/></svg>All tools</a>
+    </nav>
+    <div class="st-tool__layout">
+      <header class="st-hero">
+        <h1 class="pv-title st-hero__title">Beeswarm Plot</h1>
+        <p class="st-hero__by">by PointillViz reference tools</p>
+        <p class="pv-lede st-hero__desc">How marker genes are expressed across cell types or niches, one swarm of cells per group.</p>
+        <div class="st-hero__badges"><span class="pv-tag st-badge" title="Written in Python">Python</span><span class="pv-tag pv-tag--ver">v1.0.0</span></div>
+        <div class="st-hero__chips"><ul class="pv-tags" aria-label="Tags"><li class="pv-tag">expression</li><li class="pv-tag">markers</li><li class="pv-tag">groups</li><li class="pv-tag">plot</li></ul><div class="st-hero__outs"><span class="st-tags__sep" aria-hidden="true">Outputs</span><ul class="pv-tags" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="returns figures">images</li><li class="pv-tag pv-tag--out" title="returns a table">table</li><li class="pv-tag pv-tag--out" title="writes a summary">summary</li><li class="pv-tag pv-tag--out" title="returns files to download">files</li></ul></div></div>
+      </header>
+      <figure class="pv-figure st-hero__art">
+        <div class="pv-figure__stage st-artstage"><img src="../../assets/media/tools/beeswarm-plot.webp?v=22a6de230b" srcset="../../assets/media/tools/beeswarm-plot.webp?v=22a6de230b 720w, ../../assets/media/tools/beeswarm-plot@2x.webp?v=7c6108523f 1440w" sizes="(min-width: 1320px) 820px, (min-width: 1100px) 62vw, 94vw" width="720" height="420" alt="Beeswarm plot: eight cell types against a marker gene of each, the swarms brightest along the diagonal" fetchpriority="high" decoding="async"></div>
+        <figcaption class="pv-figure__caption"><span>Beeswarm plot: eight cell types against a marker gene of each, the swarms brightest along the diagonal</span><span class="pv-figure__meta">Artwork from the tool’s bundle</span></figcaption>
+      </figure>
+      <div class="st-side">
+        <aside class="st-get" aria-labelledby="get-h">
+          <h2 class="st-get__title" id="get-h">Get this tool</h2>
+          <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/beeswarm-plot-v1.0.0/beeswarm-plot-1.0.0.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 29.1 kB</span></span></a>
+          <div class="st-get__how">
+            <p>Install in PointillViz: <b>Tools → Store → Install</b>, or use <b>Install from file</b> with the download.</p>
+            <p class="st-get__docs"><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How tools work · Docs</a></p>
+          </div>
+          <p class="st-get__src"><a class="pv-link" href="https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/beeswarm-plot">Source in the public registry<svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-external"/></svg></a></p>
+          <p class="st-get__note"><b>This runs as you.</b> A tool is arbitrary code, run with the privileges of whoever started PointillViz. <a class="pv-link" href="../../#safety">Read the safety note</a></p>
+          <h3 class="pv-label st-get__facts-h">Facts</h3>
+          <dl class="st-facts"><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__ver">1.0.0</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-10-28">28 Oct 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Needs</dt><dd><span class="st-nowrap">gene expression</span> · <span class="st-nowrap">a categorical column</span> · <span class="st-nowrap">20+ cells</span></dd></div></dl>
+        </aside>
+        <nav class="st-onpage" aria-labelledby="onpage-h">
+          <p class="pv-label st-onpage__h" id="onpage-h">On this page</p>
+          <ul>
+            <li><a href="#readme">Readme</a></li>
+            <li><a href="#parameters">Parameters</a></li>
+            <li><a href="#outputs">Outputs</a></li>
+            <li><a href="#tool-check">Tool check</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="st-tool__main">
+        <section class="st-sec" id="readme" aria-labelledby="readme-h">
+          <h2 class="st-sec__h" id="readme-h">Readme</h2>
+          <div class="st-md">
+<p>Answers the question: <strong>Which genes set each cell type or niche apart, and how are they spread across its cells?</strong></p>
+<p>The plot has one row per group of an annotation (cell types, niches or any other categorical column) and one column per gene. Each glyph is the swarm of the group’s cells along the gene’s expression, log1p(CP10K):</p>
+<ul><li><strong>Length.</strong> Low expression is at the glyph’s left end and high expression at its right. Each gene has its own scale, from the threshold to the 99.5th percentile of the cells above it.</li><li><strong>Height.</strong> At each level, the height follows how many of the group’s cells are there.</li><li><strong>Size.</strong> The glyph’s size follows the share of the group’s cells above the threshold (its square root, as the Marker Dot Plot sizes its dots). A gene that few cells of a group detect draws a small glyph.</li><li><strong>Colour.</strong> The group’s mean expression as a z-score across the groups, in one of the viewer’s gene colormaps, from −2.5 to 2.5:</li></ul>
+<div class="st-formula" role="img" aria-label="z_(g,j) = (\bar{x}_(g,j) - \operatorname{mean}_(g&#x27;)\,\bar{x}_(g&#x27;,j)) / (\operatorname{sd}_(g&#x27;)\,\bar{x}_(g&#x27;,j))"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><msub><mi>z</mi><mrow><mi>g</mi><mo>,</mo><mi>j</mi></mrow></msub></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mfrac><mrow><mo>\</mo><mi>bar</mi><msub><mrow><mo stretchy="false">{</mo><mi>x</mi><mo stretchy="false">}</mo></mrow><mrow><mi>g</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>−</mo><mo>\</mo><mi>operatorname</mi><msub><mrow><mo stretchy="false">{</mo><mi>mean</mi><mo stretchy="false">}</mo></mrow><mrow><mi>g</mi><mo>&#x27;</mo></mrow></msub><mo>\</mo><mo>,</mo><mo>\</mo><mi>bar</mi><msub><mrow><mo stretchy="false">{</mo><mi>x</mi><mo stretchy="false">}</mo></mrow><mrow><mi>g</mi><mo>&#x27;</mo><mo>,</mo><mi>j</mi></mrow></msub></mrow><mrow><mo>\</mo><mi>operatorname</mi><msub><mrow><mo stretchy="false">{</mo><mi>sd</mi><mo stretchy="false">}</mo></mrow><mrow><mi>g</mi><mo>&#x27;</mo></mrow></msub><mo>\</mo><mo>,</mo><mo>\</mo><mi>bar</mi><msub><mrow><mo stretchy="false">{</mo><mi>x</mi><mo stretchy="false">}</mo></mrow><mrow><mi>g</mi><mo>&#x27;</mo><mo>,</mo><mi>j</mi></mrow></msub></mrow></mfrac></math></span></span></div></div>
+<p>where $\bar{x}_{g,j}$ is the mean log1p(CP10K) of gene $j$ over every cell of group $g$.</p>
+<p><strong>Genes.</strong> The form opens on the 20 genes detected in the most cells, the Marker Dot Plot’s Top markers. Search to add genes (up to 40), or remove them.</p>
+<p><strong>Groups.</strong> A row needs at least 10 cells, and the plot draws at most the 120 largest groups. A second, coarse annotation adds an outer colour strip and orders the rows: each group takes the coarse group most of its cells belong to.</p>
+<p><strong>Threshold.</strong> Cells at or below the threshold are left out of the swarms; 0 keeps every cell that detects the gene. The colours always count every cell of a group, so the threshold changes what is drawn, never what a colour means.</p>
+<p><strong>Outputs.</strong> The plot as a figure and as an SVG download, and a table with each group’s cells, mean expression, z-score and share above the threshold for every gene.</p>
+          </div>
+          
+        </section>
+        <section class="st-sec" id="parameters" aria-labelledby="parameters-h">
+          <h2 class="st-sec__h" id="parameters-h">Parameters</h2>
+          <div class="pv-table-wrap st-params">
+<table class="pv-table" role="table" aria-labelledby="parameters-h">
+<thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Parameter</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Default</th><th scope="col" role="columnheader">What it does</th></tr></thead>
+<tbody role="rowgroup">
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Groups</span><code class="st-param__name" translate="no">field</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">categorical_field</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">optional</span></td>
+  <td role="cell" data-label="What it does">Selects the annotation whose groups form the rows: cell types, niches or any other categorical column.
+Defaults to the dataset’s cell-type column.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Genes</span><code class="st-param__name" translate="no">genes</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">genes</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">optional</span></td>
+  <td role="cell" data-label="What it does">Selects the genes that form the columns.
+Opens on the 20 genes detected in the most cells, the Marker Dot Plot’s Top markers. Search to add genes, or remove them; left empty, the plot uses those 20.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Coarse groups</span><code class="st-param__name" translate="no">coarse</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">categorical_field</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">optional</span></td>
+  <td role="cell" data-label="What it does">Adds a second, broader annotation as an outer colour strip and orders the rows by it; each group takes the coarse group most of its cells belong to.
+The same column as Groups draws no outer strip.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Expression threshold</span><code class="st-param__name" translate="no">threshold</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">float, 0–5</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">0</span></td>
+  <td role="cell" data-label="What it does">Leaves cells at or below this log1p(CP10K) out of the swarms; 0 keeps every cell that detects the gene.
+The colours always count every cell of a group.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Colormap</span><code class="st-param__name" translate="no">cmap</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">select, 5 options</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">Magma</span></td>
+  <td role="cell" data-label="What it does">Colours the mean expression z-score with the colormaps the viewer offers for gene expression.</td>
+</tr>
+</tbody>
+</table>
+</div>
+        </section>
+        <section class="st-sec" id="outputs" aria-labelledby="outputs-h">
+          <h2 class="st-sec__h" id="outputs-h">Outputs</h2>
+          <ul class="st-outputs"><li><span class="pv-tag pv-tag--out">images</span><span class="st-outputs__what">returns figures</span></li><li><span class="pv-tag pv-tag--out">table</span><span class="st-outputs__what">returns a table</span></li><li><span class="pv-tag pv-tag--out">summary</span><span class="st-outputs__what">writes a summary</span></li><li><span class="pv-tag pv-tag--out">files</span><span class="st-outputs__what">returns files to download</span></li></ul>
+        </section>
+        <section class="st-sec" id="tool-check" aria-labelledby="check-h">
+          <h2 class="st-sec__h" id="check-h">Tool check</h2>
+          <p class="st-sec__intro">The gates this version passed when it was released, in the order they ran.</p>
+          <div class="st-check">
+  <ol class="pv-gates st-check__strip" aria-label="The gates, in the order they ran"><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">bundle</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">manifest</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">environment</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">entry</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass" data-adv><span class="pv-gate__name" translate="no">imports</span><span class="pv-sr-only"> pass, advisory</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">fixture</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">result</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">edge</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">no_mutation</span><span class="pv-sr-only"> pass</span></li></ol>
+  <ol class="st-gatelog" aria-label="What each gate saw">
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">bundle</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">6 files, 29.1 kB packed and 103.4 kB unpacked, plugin.json at the root.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">manifest</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">beeswarm-plot 1.0.0 by PointillViz reference tools; Python entry tool.py, outputs images, table, summary, files.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">environment</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">entry</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">tool.py imported in 0.02 s and defines run(ds, params).</p>
+</li>
+<li class="st-gatelog__row" data-state="pass" data-adv>
+  <span class="st-gatelog__name"><code translate="no">imports</code> <span class="st-adv">advisory</span></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">1 source file, using html, numpy, pointillviz_tool; no network, subprocess, filesystem-write, dynamic-exec or environment use found.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">fixture</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">ran on the 600-cell fixture in 0.02 s, returning summary, table, files, images.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">result</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">returned the declared outputs: summary, table, files, images.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">edge</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">ran at the minimum corner (cmap=&#x27;viridis&#x27;) in 0.02 s; ran at the maximum corner (cmap=&#x27;cividis&#x27;, threshold=5.0) in 0.02 s.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">no_mutation</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">the fixture dataset&#x27;s 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design).</p>
+</li>
+  </ol>
+</div>
+          <p class="st-sec__note">Passing the gates is a statement about the gates, not about whether the code is safe to run.</p>
+        </section>
+      </div>
+    </div>
+    <section class="st-more" aria-labelledby="more-h">
+      <h2 class="st-more__h" id="more-h">More tools</h2>
+      <ul class="st-grid st-grid--more">
+<li class="st-cell" data-id="expression-hotspots" data-name="Expression Hotspots (Getis-Ord Gi*)" data-tags="spatial|expression|hotspots|statistics" data-outputs="summary|cells|table" data-published="2026-10-28" data-version="2.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="../../assets/media/tools/expression-hotspots.webp?v=bab3802236" srcset="../../assets/media/tools/expression-hotspots.webp?v=bab3802236 720w, ../../assets/media/tools/expression-hotspots@2x.webp?v=dd4e41d014 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/expression-hotspots/">Expression Hotspots (Getis-Ord Gi*)</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-28">28 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Where one gene forms clusters of high or low expression.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="pv-tag st-badge" title="Written in Python">Python</span>
+    <span class="st-card__ver" title="Version">v2.0.0</span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="vector-field" data-name="Vector Field" data-tags="spatial|gradient|expression" data-outputs="summary|cells|vectors|series" data-published="2026-10-28" data-version="2.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="../../assets/media/tools/vector-field.webp?v=5827d1076d" srcset="../../assets/media/tools/vector-field.webp?v=5827d1076d 720w, ../../assets/media/tools/vector-field@2x.webp?v=27da398fce 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/vector-field/">Vector Field</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-28">28 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Which way a quantity increases across the tissue, as arrows over the section. Gene, cell type or any annotation column — with every arrow that could be noise removed.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="draws arrows over the tissue">vectors</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="pv-tag st-badge" title="Written in Python">Python</span>
+    <span class="st-card__ver" title="Version">v2.0.0</span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="banksy-niches" data-name="BANKSY niches" data-tags="spatial|niches|domains|clustering|genes" data-outputs="summary|labels|matrix|table|files" data-published="2026-10-28" data-version="1.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="../../assets/media/tools/banksy-niches.webp?v=71e43568a0" srcset="../../assets/media/tools/banksy-niches.webp?v=71e43568a0 720w, ../../assets/media/tools/banksy-niches@2x.webp?v=b3a2346569 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/banksy-niches/">BANKSY niches</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-28">28 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Tissue niches from each cell’s expression and its neighbourhood’s, by the BANKSY method.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints categories on the spatial view">labels</li><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a table">table</li><li class="pv-tag pv-tag--out" title="returns files to download">files</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="pv-tag st-badge" title="Written in Python">Python</span>
+    <span class="st-card__ver" title="Version">v1.0.0</span>
+  </div>
+</article>
+</li>
+      </ul>
+    </section>
+  </div>
+</main>
+<footer class="pv-footer">
+  <div class="pv-footer__inner">
+    <a class="pv-footer__brand" href="https://pointillviz.com/" translate="no"><img src="../../assets/pv/logo-mark.svg" width="28" height="28" alt="">PointillViz</a>
+    <nav class="pv-footer__sites" aria-label="PointillViz sites">
+      <ul>
+        <li><a href="https://pointillviz.com/"><span class="pv-footer__site">Overview</span><span class="pv-footer__host">pointillviz.com</span></a></li>
+        <li><a href="https://docs.pointillviz.com/"><span class="pv-footer__site">Docs</span><span class="pv-footer__host">docs.pointillviz.com</span></a></li>
+        <li><a href="../../" aria-current="true"><span class="pv-footer__site">Tool Store</span><span class="pv-footer__host">store.pointillviz.com</span></a></li>
+      </ul>
+    </nav>
+    <p class="pv-footer__pub">Preprint: Gargoori Motlagh&nbsp;A. <em>et&nbsp;al.</em>, bioRxiv · <a href="#" data-placeholder="paper">Coming soon</a></p>
+    <p class="pv-footer__copy">© 2026 PointillViz</p>
+  </div>
+</footer>
+</body>
+</html>

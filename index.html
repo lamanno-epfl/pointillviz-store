@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="PointillViz">
 <meta property="og:type" content="website">
 <meta property="og:title" content="The Tool Store">
-<meta property="og:description" content="13 community tools for PointillViz, in Python or R, each checked by the gates before it is listed.">
+<meta property="og:description" content="14 community tools for PointillViz, in Python or R, each checked by the gates before it is listed.">
 <meta property="og:url" content="https://store.pointillviz.com/">
 <meta property="og:image" content="https://store.pointillviz.com/assets/media/social/store.jpg">
 <meta property="og:image:width" content="1200">
@@ -146,19 +146,20 @@
             <button type="button" role="radio" aria-checked="false" tabindex="-1" value="name">A–Z</button>
           </div>
         </div>
-        <p class="pv-label st-count" id="count"><!-- store:count -->13 tools published<!-- /store:count --></p>
+        <p class="pv-label st-count" id="count"><!-- store:count -->14 tools published<!-- /store:count --></p>
       </div>
     </div>
 
     <div class="pv-container pv-container--wide st-tags" id="tags">
       <div class="st-tags__list" role="radiogroup" aria-label="Filter tools" id="tag-list"><!-- store:tags -->
 <div class="st-tags__group">
-<button class="pv-chip st-chip" type="button" role="radio" aria-checked="true" tabindex="0" data-tag="">All <span class="pv-chip__count">13</span></button>
+<button class="pv-chip st-chip" type="button" role="radio" aria-checked="true" tabindex="0" data-tag="">All <span class="pv-chip__count">14</span></button>
+<button class="pv-chip st-chip" type="button" role="radio" aria-checked="false" tabindex="-1" data-tag="spatial">spatial <span class="pv-chip__count">13</span></button>
 <button class="pv-chip st-chip" type="button" role="radio" aria-checked="false" tabindex="-1" data-tag="cell types">cell types <span class="pv-chip__count">9</span></button>
+<button class="pv-chip st-chip" type="button" role="radio" aria-checked="false" tabindex="-1" data-tag="expression">expression <span class="pv-chip__count">3</span></button>
 <button class="pv-chip st-chip" type="button" role="radio" aria-checked="false" tabindex="-1" data-tag="clustering">clustering <span class="pv-chip__count">2</span></button>
 <button class="pv-chip st-chip" type="button" role="radio" aria-checked="false" tabindex="-1" data-tag="connectivity">connectivity <span class="pv-chip__count">2</span></button>
 <button class="pv-chip st-chip" type="button" role="radio" aria-checked="false" tabindex="-1" data-tag="enrichment">enrichment <span class="pv-chip__count">2</span></button>
-<button class="pv-chip st-chip" type="button" role="radio" aria-checked="false" tabindex="-1" data-tag="expression">expression <span class="pv-chip__count">2</span></button>
 <button class="pv-chip st-chip" type="button" role="radio" aria-checked="false" tabindex="-1" data-tag="geometry">geometry <span class="pv-chip__count">2</span></button>
 <button class="pv-chip st-chip" type="button" role="radio" aria-checked="false" tabindex="-1" data-tag="neighbourhood">neighbourhood <span class="pv-chip__count">2</span></button>
 <button class="pv-chip st-chip" type="button" role="radio" aria-checked="false" tabindex="-1" data-tag="niches">niches <span class="pv-chip__count">2</span></button>
@@ -171,7 +172,8 @@
 <button class="pv-chip st-chip st-chip--out" type="button" role="radio" aria-checked="false" tabindex="-1" data-out="matrix" title="Returns a heatmap"><span class="pv-sr-only">Output: </span>matrix <span class="pv-chip__count">6</span></button>
 <button class="pv-chip st-chip st-chip--out" type="button" role="radio" aria-checked="false" tabindex="-1" data-out="series" title="Returns a line chart"><span class="pv-sr-only">Output: </span>series <span class="pv-chip__count">6</span></button>
 <button class="pv-chip st-chip st-chip--out" type="button" role="radio" aria-checked="false" tabindex="-1" data-out="chord" title="Returns a chord diagram"><span class="pv-sr-only">Output: </span>chord <span class="pv-chip__count">1</span></button>
-<button class="pv-chip st-chip st-chip--out" type="button" role="radio" aria-checked="false" tabindex="-1" data-out="files" title="Returns files to download"><span class="pv-sr-only">Output: </span>files <span class="pv-chip__count">1</span></button>
+<button class="pv-chip st-chip st-chip--out" type="button" role="radio" aria-checked="false" tabindex="-1" data-out="images" title="Returns figures"><span class="pv-sr-only">Output: </span>images <span class="pv-chip__count">1</span></button>
+<button class="pv-chip st-chip st-chip--out" type="button" role="radio" aria-checked="false" tabindex="-1" data-out="files" title="Returns files to download"><span class="pv-sr-only">Output: </span>files <span class="pv-chip__count">2</span></button>
 </div>
 <!-- /store:tags --></div>
     </div>
@@ -185,6 +187,19 @@
   <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-28">28 Oct 2026</time></p>
   <p class="pv-card__body st-card__desc">Tissue niches from each cell’s expression and its neighbourhood’s, by the BANKSY method.</p>
   <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints categories on the spatial view">labels</li><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a table">table</li><li class="pv-tag pv-tag--out" title="returns files to download">files</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="pv-tag st-badge" title="Written in Python">Python</span>
+    <span class="st-card__ver" title="Version">v1.0.0</span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="beeswarm-plot" data-name="Beeswarm Plot" data-tags="expression|markers|groups|plot" data-outputs="images|table|summary|files" data-published="2026-10-28" data-version="1.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="assets/media/tools/beeswarm-plot.webp?v=22a6de230b" srcset="assets/media/tools/beeswarm-plot.webp?v=22a6de230b 720w, assets/media/tools/beeswarm-plot@2x.webp?v=7c6108523f 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" fetchpriority="high" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="tools/beeswarm-plot/">Beeswarm Plot</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-28">28 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">How marker genes are expressed across cell types or niches, one swarm of cells per group.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="returns figures">images</li><li class="pv-tag pv-tag--out" title="returns a table">table</li><li class="pv-tag pv-tag--out" title="returns files to download">files</li></ul>
   <div class="pv-card__foot st-card__foot">
     <span class="pv-tag st-badge" title="Written in Python">Python</span>
     <span class="st-card__ver" title="Version">v1.0.0</span>
@@ -219,7 +234,7 @@
 </li>
 <li class="st-cell" data-id="celltype-percolation" data-name="Cell-Type Percolation" data-tags="spatial|cell types|connectivity|topology" data-outputs="summary|cells|series|table" data-published="2026-10-28" data-version="2.0.0">
 <article class="pv-card pv-card--link st-card">
-  <div class="st-card__art"><img src="assets/media/tools/celltype-percolation.webp?v=671e35079f" srcset="assets/media/tools/celltype-percolation.webp?v=671e35079f 720w, assets/media/tools/celltype-percolation@2x.webp?v=524dcd17f2 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" fetchpriority="high" decoding="async"></div>
+  <div class="st-card__art"><img src="assets/media/tools/celltype-percolation.webp?v=671e35079f" srcset="assets/media/tools/celltype-percolation.webp?v=671e35079f 720w, assets/media/tools/celltype-percolation@2x.webp?v=524dcd17f2 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
   <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="tools/celltype-percolation/">Cell-Type Percolation</a></h3>
   <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-28">28 Oct 2026</time></p>
   <p class="pv-card__body st-card__desc">Whether a cell type is one connected mass or many islands.</p>
