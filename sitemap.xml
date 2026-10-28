@@ -2,16 +2,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://store.pointillviz.com/</loc></url>
   <url><loc>https://store.pointillviz.com/publish/</loc></url>
-  <url><loc>https://store.pointillviz.com/tools/vector-field/</loc><lastmod>2026-10-13</lastmod></url>
-  <url><loc>https://store.pointillviz.com/tools/tissue-permeability/</loc><lastmod>2026-10-13</lastmod></url>
-  <url><loc>https://store.pointillviz.com/tools/spatial-scale-spectrum/</loc><lastmod>2026-10-13</lastmod></url>
-  <url><loc>https://store.pointillviz.com/tools/interface-coherence/</loc><lastmod>2026-10-13</lastmod></url>
-  <url><loc>https://store.pointillviz.com/tools/celltype-percolation/</loc><lastmod>2026-10-13</lastmod></url>
-  <url><loc>https://store.pointillviz.com/tools/ripley-cross-l/</loc><lastmod>2026-10-13</lastmod></url>
-  <url><loc>https://store.pointillviz.com/tools/local-density/</loc><lastmod>2026-10-13</lastmod></url>
-  <url><loc>https://store.pointillviz.com/tools/expression-hotspots/</loc><lastmod>2026-10-13</lastmod></url>
-  <url><loc>https://store.pointillviz.com/tools/conditional-contact-odds/</loc><lastmod>2026-10-13</lastmod></url>
-  <url><loc>https://store.pointillviz.com/tools/neighborhood-composition/</loc><lastmod>2026-10-13</lastmod></url>
-  <url><loc>https://store.pointillviz.com/tools/categorical-chords/</loc><lastmod>2026-10-13</lastmod></url>
-  <url><loc>https://store.pointillviz.com/tools/celltype-cooccurrence/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://store.pointillviz.com/tools/banksy-niches/</loc><lastmod>2026-10-28</lastmod></url>
+  <url><loc>https://store.pointillviz.com/tools/categorical-chords/</loc><lastmod>2026-10-28</lastmod></url>
+  <url><loc>https://store.pointillviz.com/tools/celltype-cooccurrence/</loc><lastmod>2026-10-28</lastmod></url>
+  <url><loc>https://store.pointillviz.com/tools/celltype-percolation/</loc><lastmod>2026-10-28</lastmod></url>
+  <url><loc>https://store.pointillviz.com/tools/conditional-contact-odds/</loc><lastmod>2026-10-28</lastmod></url>
+  <url><loc>https://store.pointillviz.com/tools/expression-hotspots/</loc><lastmod>2026-10-28</lastmod></url>
+  <url><loc>https://store.pointillviz.com/tools/interface-coherence/</loc><lastmod>2026-10-28</lastmod></url>
+  <url><loc>https://store.pointillviz.com/tools/local-density/</loc><lastmod>2026-10-28</lastmod></url>
+  <url><loc>https://store.pointillviz.com/tools/mclust-niches/</loc><lastmod>2026-10-28</lastmod></url>
+  <url><loc>https://store.pointillviz.com/tools/neighborhood-composition/</loc><lastmod>2026-10-28</lastmod></url>
+  <url><loc>https://store.pointillviz.com/tools/ripley-cross-l/</loc><lastmod>2026-10-28</lastmod></url>
+  <url><loc>https://store.pointillviz.com/tools/tissue-permeability/</loc><lastmod>2026-10-28</lastmod></url>
+  <url><loc>https://store.pointillviz.com/tools/vector-field/</loc><lastmod>2026-10-28</lastmod></url>
 </urlset>

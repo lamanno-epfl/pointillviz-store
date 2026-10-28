@@ -6,12 +6,12 @@
 <script>(function(d){try{var w=d.clientWidth||innerWidth;d.style.setProperty('--k',Math.min(Math.max(Math.min(w/1440,innerHeight/900),1),1.6).toFixed(4))}catch(e){}})(document.documentElement)</script>
 <meta name="theme-color" content="#06070D">
 <title>Build &amp; publish a tool · The Tool Store · PointillViz</title>
-<meta name="description" content="How a PointillViz tool is made: scaffold it, run the nine gates, pack a .pvtool and publish. An outline; the full guide is in preparation.">
+<meta name="description" content="How a PointillViz tool is made: write it in Python or R, lock its pixi environment, pass the gates and open a pull request to the public registry.">
 <link rel="canonical" href="https://store.pointillviz.com/publish/">
 <meta property="og:site_name" content="PointillViz">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Build &amp; publish a tool · The Tool Store · PointillViz">
-<meta property="og:description" content="One Python file and a manifest, checked by nine conformance gates before the store lists it.">
+<meta property="og:description" content="A Python or R tool, published by pull request to the public registry and checked by the gates before the store lists it.">
 <meta property="og:url" content="https://store.pointillviz.com/publish/">
 <meta property="og:image" content="https://store.pointillviz.com/assets/media/social/store.jpg">
 <meta property="og:image:width" content="1200">
@@ -86,9 +86,9 @@
     </nav>
     <div class="st-pub-hero__inner">
       <h1 class="pv-title">Build &amp; publish a tool</h1>
-      <p class="pv-lede">A tool is one Python file and a manifest. This page outlines the author’s loop; the full guide is in preparation.</p>
+      <p class="pv-lede">A tool is a folder: a manifest, a Python or R file and the pixi environment it runs in. Write it with the SDK, check it with the gates and publish it by pull request to the public registry.</p>
       <div class="st-pub-hero__meta">
-        <p class="pv-status">Guide in preparation</p>
+        <a class="pv-btn pv-btn--secondary" href="https://github.com/lamanno-epfl/pointillviz-registry/blob/main/CONTRIBUTING.md"><svg aria-hidden="true"><use href="../assets/pv/icons.svg#i-doc"/></svg>Read the author guide</a>
         <a class="pv-link st-docs-link" href="https://docs.pointillviz.com/tool-store/">How tools work · Docs</a>
       </div>
     </div>
@@ -99,7 +99,7 @@
       <figcaption class="st-anatomy__cap">
         <div>
           <h2 class="st-anatomy__h" id="what-h">What a tool is</h2>
-          <p class="st-anatomy__line"><code translate="no" class="pv-code-inline">tool.py</code> defines <code translate="no" class="pv-code-inline">run(ds, params)</code>; <code translate="no" class="pv-code-inline">plugin.json</code> declares its parameters, needs and outputs.</p>
+          <p class="st-anatomy__line"><code translate="no" class="pv-code-inline">tool.py</code> or <code translate="no" class="pv-code-inline">tool.R</code> defines <code translate="no" class="pv-code-inline st-nowrap">run(ds, params)</code>; <code translate="no" class="pv-code-inline">plugin.json</code> declares its parameters, needs and outputs; <code translate="no" class="pv-code-inline">pixi.toml</code> and <code translate="no" class="pv-code-inline">pixi.lock</code> pin its environment.</p>
         </div>
         <span class="pv-figure__meta">Vector Field 1.0.0 · Xenium 5K · mouse colon · 135,232 cells</span>
       </figcaption>
@@ -117,13 +117,13 @@
     <div class="pv-container st-loop__grid">
       <div class="st-loop__aside">
         <h2 class="st-loop__h" id="loop-h">The author’s loop</h2>
-        <p class="st-loop__path"><code translate="no">plugin_scaffold</code> <span aria-hidden="true">→</span> <code translate="no">plugin_validate</code> <span aria-hidden="true">→</span> <code translate="no">plugin_pack</code> <span aria-hidden="true">→</span> publish</p>
-        <p>The gates run again on publish and again on install.</p>
+        <p class="st-loop__path"><code translate="no">new</code> <span aria-hidden="true">→</span> <code translate="no">validate</code> <span aria-hidden="true">→</span> <code translate="no">pack</code> <span aria-hidden="true">→</span> pull request</p>
+        <p>The commands are the SDK’s: <code translate="no" class="pv-code-inline st-nowrap">python -m pointillviz_tool</code>. The gates run on your computer, again in the registry and once more on install.</p>
       </div>
       <ol class="pv-steps st-steps">
         <li>
           <h3 class="pv-steps__title">Start from the scaffold</h3>
-          <p><code translate="no" class="pv-code-inline">plugin_scaffold</code> writes a starter tool that already passes every gate.</p>
+          <p><code translate="no" class="pv-code-inline">new</code> writes a starter tool in Python, or in R with <code translate="no" class="pv-code-inline">--r</code>, that passes every gate once its environment is locked.</p>
         </li>
         <li>
           <h3 class="pv-steps__title">Write <code translate="no" class="st-step__code">run(ds, params)</code></h3>
@@ -131,57 +131,61 @@
         </li>
         <li>
           <h3 class="pv-steps__title">Declare the manifest</h3>
-          <p>Each typed parameter becomes a control; requirements decide which datasets offer the tool.</p>
+          <p>Each typed parameter becomes a control; requirements decide which datasets offer the tool, and <code translate="no" class="pv-code-inline">gpu</code> says whether it can use a GPU.</p>
+        </li>
+        <li>
+          <h3 class="pv-steps__title">Lock the environment</h3>
+          <p><code translate="no" class="pv-code-inline">pixi.toml</code> lists what the tool needs, and <code translate="no" class="pv-code-inline">pixi lock</code> pins it for every platform in <code translate="no" class="pv-code-inline">pixi.lock</code>.</p>
         </li>
         <li>
           <h3 class="pv-steps__title">Validate</h3>
-          <p><code translate="no" class="pv-code-inline">plugin_validate</code> runs the nine gates locally and names the one that failed.</p>
-          <p class="st-step__gates"><span class="st-step__dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Nine gates</p>
+          <p><code translate="no" class="pv-code-inline">validate</code> builds the environment, runs the gates and names the one that failed.</p>
+          <p class="st-step__gates"><span class="st-step__dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>The gates</p>
         </li>
         <li>
           <h3 class="pv-steps__title">Pack</h3>
-          <p><code translate="no" class="pv-code-inline">plugin_pack</code> writes a single <code translate="no" class="pv-code-inline">.pvtool</code> bundle.</p>
+          <p><code translate="no" class="pv-code-inline">pack</code> writes a <code translate="no" class="pv-code-inline">.pvtool</code> bundle, to try in PointillViz with Install from file.</p>
         </li>
         <li>
-          <h3 class="pv-steps__title st-step__title">Publish <span class="pv-soon">Coming soon</span></h3>
-          <p>The store runs the gates again and lists the tool only if every required gate passes.</p>
-          <p class="st-step__gates"><span class="st-step__dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Nine gates, again</p>
+          <h3 class="pv-steps__title">Publish</h3>
+          <p>Open a pull request that adds the tool’s folder to the public registry. The registry runs the gates in the tool’s own environment; once the request is merged, the tool is released and listed here.</p>
+          <p class="st-step__gates"><span class="st-step__dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>The gates, again</p>
         </li>
         <li>
           <h3 class="pv-steps__title">Install</h3>
-          <p>The viewer runs the gates once more before it installs.</p>
-          <p class="st-step__gates"><span class="st-step__dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Nine gates, once more</p>
+          <p>PointillViz builds the tool’s environment and runs the gates once more before it installs.</p>
+          <p class="st-step__gates"><span class="st-step__dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>The gates, once more</p>
         </li>
       </ol>
     </div>
   </section>
 
-  <section class="pv-container st-agent" aria-labelledby="agent-h">
+  <section class="pv-container st-agent" aria-labelledby="registry-h">
     <div class="st-agent__card">
       <div>
-        <h2 class="st-agent__h" id="agent-h">Write one with a coding agent</h2>
-        <p>A guide written for coding agents carries the contract the gates check.</p>
+        <h2 class="st-agent__h" id="registry-h">The public registry</h2>
+        <p>Every published tool is a folder there: its code, manifest, environment and README. Read a tool before you install it, or start yours from one.</p>
       </div>
-      <a class="pv-btn pv-btn--secondary" href="#" data-placeholder="code" data-placeholder-msg="The guide for coding agents is not available yet."><svg aria-hidden="true"><use href="../assets/pv/icons.svg#i-download"/></svg>Download the guide</a>
+      <a class="pv-btn pv-btn--secondary" href="https://github.com/lamanno-epfl/pointillviz-registry"><svg aria-hidden="true"><use href="../assets/pv/icons.svg#i-external"/></svg>Open the registry</a>
     </div>
   </section>
 
   <section class="pv-container st-gates9" aria-labelledby="gates-h">
-    <h2 class="st-gates9__h" id="gates-h">The nine gates</h2>
-    <p class="st-gates9__intro">What each gate checks, in the order they run.</p>
-    <div class="pv-table-wrap" role="region" tabindex="0" aria-label="Table of the nine gates">
+    <h2 class="st-gates9__h" id="gates-h">The gates</h2>
+    <p class="st-gates9__intro">What each gate checks, in the order they run. Every run uses the CPU, so a tool meant for a GPU must also run without one.</p>
+    <div class="pv-table-wrap" role="region" tabindex="0" aria-label="Table of the gates">
       <table class="pv-table">
         <thead>
           <tr><th scope="col" class="num">#</th><th scope="col">Gate</th><th scope="col">What it checks</th></tr>
         </thead>
         <tbody>
-          <tr><td class="num st-gates9__n">1</td><td><span class="st-gatename" translate="no">bundle</span></td><td>The archive’s layout, size and file types.</td></tr>
+          <tr><td class="num st-gates9__n">1</td><td><span class="st-gatename" translate="no">bundle</span></td><td>The bundle’s layout, size and file types.</td></tr>
           <tr><td class="num st-gates9__n">2</td><td><span class="st-gatename" translate="no">manifest</span></td><td>Every field of <code translate="no">plugin.json</code>, defaults included.</td></tr>
-          <tr><td class="num st-gates9__n">3</td><td><span class="st-gatename" translate="no">entry</span></td><td><code translate="no">tool.py</code> imports and defines <code translate="no">run(ds, params)</code>.</td></tr>
-          <tr><td class="num st-gates9__n">4</td><td><span class="st-gatename" translate="no" data-adv>imports</span> <span class="st-adv">advisory</span></td><td>Reports network, subprocess, file-write, dynamic-code and environment use, with file and line. Advisory: it never blocks.</td></tr>
-          <tr><td class="num st-gates9__n">5</td><td><span class="st-gatename" translate="no">fixture</span></td><td>Runs on a synthetic dataset at its own defaults, within its time and memory limits.</td></tr>
-          <tr><td class="num st-gates9__n">6</td><td><span class="st-gatename" translate="no">result</span></td><td>Returns the declared outputs and no others, each with values to draw.</td></tr>
-          <tr><td class="num st-gates9__n">7</td><td><span class="st-gatename" translate="no">determinism</span></td><td>Two runs with the same parameters give the same result.</td></tr>
+          <tr><td class="num st-gates9__n">3</td><td><span class="st-gatename" translate="no">environment</span></td><td><code translate="no">pixi.lock</code> matches <code translate="no">pixi.toml</code>, which declares python, numpy and scipy, and for R also r-base and r-jsonlite.</td></tr>
+          <tr><td class="num st-gates9__n">4</td><td><span class="st-gatename" translate="no">entry</span></td><td><code translate="no">tool.py</code> or <code translate="no">tool.R</code> loads in the tool’s environment and defines <code translate="no">run(ds, params)</code>.</td></tr>
+          <tr><td class="num st-gates9__n">5</td><td><span class="st-gatename" translate="no" data-adv>imports</span> <span class="st-adv">advisory</span></td><td>Reports network, subprocess, file-write, dynamic-code and environment use, with file and line. Advisory: it never blocks.</td></tr>
+          <tr><td class="num st-gates9__n">6</td><td><span class="st-gatename" translate="no">fixture</span></td><td>Runs on a synthetic dataset at its own defaults.</td></tr>
+          <tr><td class="num st-gates9__n">7</td><td><span class="st-gatename" translate="no">result</span></td><td>Returns the declared outputs and no others, each with values to draw.</td></tr>
           <tr><td class="num st-gates9__n">8</td><td><span class="st-gatename" translate="no">edge</span></td><td>Runs with every parameter at its minimum, then at its maximum, without crashing.</td></tr>
           <tr><td class="num st-gates9__n">9</td><td><span class="st-gatename" translate="no">no_mutation</span></td><td>Writes nothing into the dataset.</td></tr>
         </tbody>
@@ -192,7 +196,7 @@
   <section class="pv-container st-pub-safety" aria-labelledby="safety-h">
     <div class="st-safety st-safety--short">
       <h2 class="st-safety__title" id="safety-h">Safety</h2>
-      <p class="st-safety__text">A tool is arbitrary Python; read the safety note before you install one.</p>
+      <p class="st-safety__text">A tool is arbitrary code; read the safety note before you install one.</p>
       <a class="pv-link st-safety__link" href="../#safety">Read the safety note</a>
     </div>
   </section>

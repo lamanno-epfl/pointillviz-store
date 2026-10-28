@@ -454,14 +454,7 @@ html:not(.st-js) .st-install__toggle { cursor: default; }
   color: var(--pv-edition);
   font-variant-numeric: tabular-nums;
 }
-.st-card__dl {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-variant-numeric: tabular-nums;
-}
-.st-card__dl-i { width: 14px; height: 14px; }
-/* While Newest sorts, each card says when it was published, under its author. */
+/* While Newest sorts, each card says when it was released, under its author. */
 .st-card__date { display: none; margin-top: 2px; white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--pv-text-2); }
 .st-grid[data-sort="newest"] .st-card__date { display: block; }
 @media (hover: hover) and (pointer: fine) {
@@ -471,54 +464,11 @@ html:not(.st-js) .st-install__toggle { cursor: default; }
 }
 .st-card:focus-within .st-card__art { border-color: var(--pv-line); }
 
-/* The verified badge: the nine gates as nine points, in the order they ran,
-   then the word. A required gate that passed is a filled point; the advisory
-   imports gate, which never blocks, is a ring: mint when it passed, as on the
-   tool page's strip. Gold is kept for a gate that flagged something. */
-.st-vbadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font: 500 var(--pv-text-xs) / 1 var(--pv-font-mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--pv-accent);
-  white-space: nowrap;
-}
-.st-vbadge--no { color: var(--pv-caution); }
-.st-vbadge__dots { display: inline-flex; align-items: center; gap: 3px; }
-.st-vbadge__dots i {
-  --st-glow: var(--pv-accent-glow);
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--pv-accent);
-}
-.st-vbadge__dots i[data-s="adv"] { --st-ring: inset 0 0 0 1.5px var(--pv-accent); background: none; box-shadow: var(--st-ring); }
-.st-vbadge__dots i[data-s="flag"] { --st-glow: rgba(226, 178, 90, 0.55); background: var(--pv-caution); }
-.st-vbadge__dots i[data-s="fail"] { --st-glow: rgba(255, 122, 107, 0.55); background: var(--pv-danger); }
-.st-vbadge__dots i[data-s="skip"] { --st-ring: inset 0 0 0 1.5px var(--pv-line-2); background: none; box-shadow: var(--st-ring); }
-/* On hover the gates light up once, in the order they run. */
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .st-card:hover .st-vbadge__dots i { animation: st-gate 560ms var(--pv-ease-out) both; }
-  .st-card:hover .st-vbadge__dots i:nth-child(2) { animation-delay: 45ms; }
-  .st-card:hover .st-vbadge__dots i:nth-child(3) { animation-delay: 90ms; }
-  .st-card:hover .st-vbadge__dots i:nth-child(4) { animation-delay: 135ms; }
-  .st-card:hover .st-vbadge__dots i:nth-child(5) { animation-delay: 180ms; }
-  .st-card:hover .st-vbadge__dots i:nth-child(6) { animation-delay: 225ms; }
-  .st-card:hover .st-vbadge__dots i:nth-child(7) { animation-delay: 270ms; }
-  .st-card:hover .st-vbadge__dots i:nth-child(8) { animation-delay: 315ms; }
-  .st-card:hover .st-vbadge__dots i:nth-child(9) { animation-delay: 360ms; }
-}
-/* A ring keeps its ring while it glows. */
-@keyframes st-gate {
-  0%, 100% { transform: none; }
-  40% { transform: scale(1.55); box-shadow: var(--st-ring, 0 0 #0000), 0 0 9px var(--st-glow); }
-}
+/* What a tool is written in, and whether it can use a GPU: plain facts, so
+   cream on the system's tag rather than a colour of their own. */
+.st-badge { color: var(--pv-text); border-color: var(--pv-line-2); }
 
-.st-unverified,
-.st-risk,
-.st-edgechip {
+.st-risk {
   display: inline-flex;
   align-items: center;
   height: 24px;
@@ -529,9 +479,14 @@ html:not(.st-js) .st-install__toggle { cursor: default; }
   text-transform: uppercase;
   white-space: nowrap;
 }
-.st-unverified { border: 1px solid color-mix(in srgb, var(--pv-caution) 45%, transparent); color: var(--pv-caution); }
 .st-risk { border: 1px solid color-mix(in srgb, var(--pv-danger) 40%, transparent); background: color-mix(in srgb, var(--pv-danger) 8%, transparent); color: var(--pv-danger); }
-.st-edgechip { border: 1px solid color-mix(in srgb, var(--pv-edition) 40%, transparent); background: color-mix(in srgb, var(--pv-edition) 8%, transparent); color: var(--pv-edition); text-transform: none; letter-spacing: 0.02em; }
+
+/* A tool that is announced, not published: an empty plate under a dashed edge,
+   and no link. Its plate keeps the artwork's 12:7, so rows stay even. */
+.st-card--soon { border-style: dashed; background: transparent; }
+.st-card__art--soon::before { content: ""; display: block; aspect-ratio: 12 / 7; }
+.st-card--soon .st-card__title { color: var(--pv-text-2); }
+.st-card--soon .pv-soon { color: var(--pv-text-2); }
 
 
 /* 5 · Empty and error states ============================================= */
@@ -806,6 +761,8 @@ html:not(.st-js) .st-install__toggle { cursor: default; }
 .st-get__title { font-size: var(--pv-text-h4); font-weight: 600; line-height: 1.3; }
 .st-get__btn { width: 100%; gap: 10px; }
 .st-get__btn svg { width: 17px; height: 17px; }
+/* The file's name and size, as written: ".pvtool · 33.3 kB", not capitals. */
+.st-get__btn .pv-btn__sub { text-transform: none; letter-spacing: 0.02em; }
 .st-get__how {
   display: grid;
   gap: 8px;
@@ -817,14 +774,13 @@ html:not(.st-js) .st-install__toggle { cursor: default; }
   line-height: 1.55;
   color: var(--pv-text);
 }
-.st-get__how b { font-weight: 600; }
-/* Without JavaScript the button cannot open its note, so the note shows. */
-html:not(.st-js) .st-get__how[hidden] { display: grid !important; }
-.st-get__how.is-in { animation: st-open var(--pv-dur-panel) var(--pv-ease-out); }
+.st-get__how b { font-weight: 600; white-space: nowrap; }
 @keyframes st-open {
   from { opacity: 0; transform: translateY(calc(var(--pv-rise) * -0.4)); }
   to { opacity: 1; transform: none; }
 }
+.st-get__src { font-size: 0.9063rem; }
+.st-get__src .pv-icon { width: 15px; height: 15px; margin-inline-start: 5px; vertical-align: -2px; }
 .st-get__note { font-size: 0.875rem; line-height: 1.55; color: var(--pv-text-2); }
 .st-get__note b { font-weight: 600; color: var(--pv-edition); }
 .st-get__note .pv-link { white-space: nowrap; }
@@ -926,9 +882,10 @@ html:not(.st-js) .st-get__how[hidden] { display: grid !important; }
 
 /* Outputs */
 .st-outputs { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
-.st-outputs li { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; }
-.st-outputs .pv-tag { min-width: 72px; justify-content: center; }
-.st-outputs__what { color: var(--pv-text-2); }
+/* The words wrap beside their chip, so a long one (labels) does not drop below it on a phone. */
+.st-outputs li { display: flex; align-items: center; gap: 6px 14px; }
+.st-outputs .pv-tag { flex: none; min-width: 72px; justify-content: center; }
+.st-outputs__what { min-width: 0; color: var(--pv-text-2); }
 .st-opt { margin-inline-start: 8px; font: 500 var(--pv-text-2xs) / 1 var(--pv-font-mono); letter-spacing: var(--pv-track-label); text-transform: uppercase; color: var(--pv-text-3); }
 
 /* Tool check */
@@ -938,12 +895,10 @@ html:not(.st-js) .st-get__how[hidden] { display: grid !important; }
   border-radius: var(--pv-radius-lg);
   background: var(--pv-surface);
 }
-.st-check__head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
-.st-check__result { font: 500 var(--pv-text-sm) / 1.3 var(--pv-font-mono); color: var(--pv-text); font-variant-numeric: tabular-nums; }
-/* The strip is pv.css's gate report: nine in a row while every name fits on
+/* The strip is pv.css's gate report: all in a row while every name fits on
    one line, three rows of three below that, and the advisory gate that passed
-   (data-adv) as a mint ring, as on the cards (§4). */
-.st-check__strip { margin-top: 22px; }
+   (data-adv) as a mint ring. */
+.st-check__strip { margin-top: 4px; }
 .st-gatelog { margin: 20px 0 0; padding: 0; list-style: none; }
 .st-gatelog__row {
   display: grid;
@@ -979,21 +934,12 @@ html:not(.st-js) .st-get__how[hidden] { display: grid !important; }
 .st-gatelog__row[data-state="advisory"] .st-gatelog__status::before { border-color: var(--pv-caution); background: radial-gradient(circle, var(--pv-caution) 0 1.4px, transparent 1.8px); }
 .st-gatelog__msg { font-size: 0.875rem; line-height: 1.55; color: var(--pv-text-2); overflow-wrap: anywhere; }
 
-/* Versions */
-.st-versions { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; max-width: 520px; }
-.st-versions li {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 10px;
-  padding-block: 10px;
-  border-top: 1px solid var(--pv-line-soft);
-  color: var(--pv-text-2);
-  font-variant-numeric: tabular-nums;
-}
-.st-versions li:last-child { border-bottom: 1px solid var(--pv-line-soft); }
-.st-versions__v { font: 500 0.875rem / 1.3 var(--pv-font-mono); color: var(--pv-edition); }
-.st-latest { color: var(--pv-accent); border-color: var(--pv-accent-line); height: 20px; }
+/* A tool that is coming soon keeps its address: its name and one line, with
+   the footer at the foot of a tall screen (as on the 404). */
+body.st-page--soon { display: flex; flex-direction: column; }
+.st-soon { flex: 1 0 auto; }
+.st-soon__head { max-width: 720px; padding-bottom: clamp(56px, 8vw, 120px); }
+.st-soon__head .pv-title { margin-top: 16px; }
 
 /* More tools */
 .st-more { padding-block: clamp(56px, 6vw, 96px) clamp(56px, 7vw, 112px); }
@@ -1176,7 +1122,8 @@ html:not(.st-js) .st-get__how[hidden] { display: grid !important; }
 .st-step__gates { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; font: 500 var(--pv-text-2xs) / 1 var(--pv-font-mono); letter-spacing: var(--pv-track-label); text-transform: uppercase; color: var(--pv-text-3); }
 .st-step__dots { display: inline-flex; gap: 4px; }
 .st-step__dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--pv-accent); }
-.st-step__dots i:nth-child(4) { background: none; box-shadow: inset 0 0 0 1.5px var(--pv-accent); }
+/* The fifth gate, imports, is advisory: a ring, as on a tool page's strip. */
+.st-step__dots i:nth-child(5) { background: none; box-shadow: inset 0 0 0 1.5px var(--pv-accent); }
 
 .st-agent { padding-block: clamp(20px, 3vw, 40px) clamp(36px, 4vw, 56px); }
 .st-agent__card { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px 32px; padding: clamp(22px, 2.6vw, 32px); border: 1px solid var(--pv-line); border-radius: var(--pv-radius-lg); background: var(--pv-surface); }
@@ -1362,7 +1309,7 @@ html:not(.st-js) .st-get__how[hidden] { display: grid !important; }
   .st-params tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 16px; }
   .st-params .pv-table th[scope="row"], .st-params td[data-label="What it does"] { grid-column: 1 / -1; }
   .st-params td[data-label="Default"] { min-width: 0; }
-  /* The nine gates: number and name on one line, what it checks below. */
+  /* The gates: number and name on one line, what it checks below. */
   .st-gates9 .pv-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .st-gates9 .pv-table :is(tbody, tr, td) { display: block; }
   .st-gates9 .pv-table tr { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 10px; align-items: baseline; padding: 12px 16px; border-bottom: 1px solid var(--pv-line-soft); }
@@ -1401,7 +1348,7 @@ html:not(.st-js) .st-get__how[hidden] { display: grid !important; }
   }
   .st-card__art { grid-area: art; margin: 0; padding: 4px; border-radius: 8px; background-size: 10px 10px, auto; background-position: 5px 5px, 0 0; }
   .st-card__title { grid-area: title; font-size: 1rem; line-height: 1.3; }
-  .st-card__outs, .st-card__dl { display: none; }
+  .st-card__outs { display: none; }
   /* Only the date shows in the author's line, and only while Newest sorts. */
   .st-card__by { display: none; grid-area: by; margin: 0; }
   .st-grid[data-sort="newest"] .st-card__by { display: block; }
@@ -1409,9 +1356,6 @@ html:not(.st-js) .st-get__how[hidden] { display: grid !important; }
   .st-grid[data-sort="newest"] .st-card__date { margin-top: 0; }
   .st-card__desc { grid-area: desc; font-size: 0.875rem; line-height: 1.45; }
   .st-card__foot { grid-area: foot; align-self: end; gap: 8px; margin-top: 0; padding-top: 4px; }
-  .st-vbadge { gap: 6px; font-size: var(--pv-text-2xs); }
-  .st-vbadge__dots { gap: 2px; }
-  .st-vbadge__dots i { width: 5px; height: 5px; }
 
   .st-formula { padding: 12px 14px; }
   .st-formula__row { font-size: 0.96875rem; column-gap: 1.25em; }
@@ -1423,6 +1367,6 @@ html:not(.st-js) .st-get__how[hidden] { display: grid !important; }
 
 /* Reduced motion: the travel tokens are already zero; cancel the rest. */
 @media (prefers-reduced-motion: reduce) {
-  .st-get__how.is-in, .st-install.is-open .st-install__body { animation: none; }
+  .st-install.is-open .st-install__body { animation: none; }
   .st-card__art img, .st-teaser__go, .st-back__link .pv-icon { transition: none; }
 }

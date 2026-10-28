@@ -4,11 +4,11 @@
  * all in the browser over data/tools-index.json. The grid arrives pre-rendered by
  * tools/build_store_pages.py, so the page works and reads before this script runs;
  * this script reconciles the grid with the index (the source of truth) and then
- * filters and orders it.
+ * filters and orders it. The Coming soon cards stay after the tools: search finds
+ * them, and a tag or output filter hides them.
  *
- * Tool pages: the "Install into PointillViz" placeholder explains installing from
- * the app, the section list follows the section in view, and a formula wider than
- * its column becomes a focusable scroller that fades where it continues.
+ * Tool pages: the section list follows the section in view, and a formula wider
+ * than its column becomes a focusable scroller that fades where it continues.
  *
  * Every string in the index was written by a tool's author: it reaches the page
  * through esc() or textContent, never as markup.
@@ -88,8 +88,9 @@
     const toolbar = $('#toolbar');
     const sentinel = $('.st-sentinel');
 
-    const SORTS = { popular: 'popular', newest: 'newest', name: 'name' };
-    const state = { q: '', tag: '', out: '', sort: 'popular' };
+    const SORTS = { newest: 'newest', name: 'name' };
+    const state = { q: '', tag: '', out: '', sort: 'newest' };
+    const toolCells = () => $$('.st-cell:not([data-soon])', grid);
     let tools = modelFromDom();
     let total = tools.length;
     let allTags = new Set(tools.flatMap((t) => t.tags.map(fold)));
@@ -105,7 +106,7 @@
     // Until the index arrives (or if it cannot), the pre-rendered cards carry
     // everything search, filters and sort need.
     function modelFromDom() {
-      return $$('.st-cell', grid).map((cell) => {
+      return toolCells().map((cell) => {
         const t = {
           id: cell.dataset.id,
           name: cell.dataset.name || ($('.pv-card__link', cell) || {}).textContent || '',
@@ -114,7 +115,6 @@
           tags: (cell.dataset.tags || '').split('|').filter(Boolean),
           outputs: (cell.dataset.outputs || '').split('|').filter(Boolean),
           optional_outputs: [],
-          downloads: +cell.dataset.downloads || 0,
           published: cell.dataset.published || '',
           version: cell.dataset.version || '',
         };
@@ -123,54 +123,46 @@
       });
     }
 
-    function matches(t, q) {
+    // A Coming soon card: a name and one line, after the tools. Search reads it.
+    const soonHay = (cell) => fold(`${cell.dataset.name || ''} ${($('.st-card__desc', cell) || {}).textContent || ''} ${cell.dataset.id || ''}`);
+
+    function matches(hay, q) {
       if (!q) return true;
       // Every word must match, as in the local store: "spatial entropy" should
       // not return a tool that is merely spatial.
-      return fold(q).split(/\s+/).filter(Boolean).every((w) => t._hay.includes(w));
+      return fold(q).split(/\s+/).filter(Boolean).every((w) => hay.includes(w));
     }
 
     const outsOf = (t) => (t.outputs || []).concat(t.optional_outputs || []);
     const passes = (t) => (!state.tag || (t.tags || []).some((x) => fold(x) === state.tag))
       && (!state.out || outsOf(t).includes(state.out));
 
-    // Popular: downloads, then the newest, then name (as the pre-rendered grid).
-    // Newest: the day published, then name; tools published together stay A–Z.
+    // Newest: the day released, then name; tools released together stay A–Z
+    // (as the pre-rendered grid). A–Z: name.
     function ordered(list) {
       const byName = (a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase());
       const out = list.slice();
       if (state.sort === 'name') out.sort(byName);
-      else if (state.sort === 'newest') {
+      else {
         out.sort((a, b) => {
           const da = a.published.slice(0, 10), db = b.published.slice(0, 10);
           return da < db ? 1 : da > db ? -1 : byName(a, b);
         });
-      } else {
-        out.sort((a, b) => (b.downloads - a.downloads)
-          || (a.published < b.published ? 1 : a.published > b.published ? -1 : byName(a, b)));
       }
       return out;
     }
 
     /* ---- rendering (mirrors card_html in tools/build_store_pages.py) --- */
 
-    const VERIFIED_TIP = 'Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run.';
-    const UNVERIFIED_TIP = 'This version has no passing gate report on file.';
+    const GPU_TIP = {
+      optional: 'Runs on the CPU or a GPU: you choose when you run it.',
+      required: 'Meant for a GPU. PointillViz selects the GPU when the computer has one; the tool also runs on the CPU.',
+    };
 
-    function dotState(status, required) {
-      if (status === 'fail') return 'fail';
-      if (status === 'skip') return 'skip';
-      if (!required) return status === 'warn' ? 'flag' : 'adv';
-      return 'pass';
-    }
-
-    function badgeHTML(t) {
-      const dots = (t.strip || []).map(([, s, r]) => `<i data-s="${dotState(s, r)}"></i>`).join('');
-      const totalGates = t.gates_total || 9;
-      const sr = `<span class="pv-sr-only">: passed ${t.gates_passed || 0} of ${totalGates} gates</span>`;
-      return t.verified
-        ? `<span class="st-vbadge" title="${esc(VERIFIED_TIP)}"><span class="st-vbadge__dots" aria-hidden="true">${dots}</span>Verified${sr}</span>`
-        : `<span class="st-vbadge st-vbadge--no" title="${esc(UNVERIFIED_TIP)}"><span class="st-vbadge__dots" aria-hidden="true">${dots}</span>Unverified${sr}</span>`;
+    function badgesHTML(t) {
+      const lang = t.language_label || t.language || '';
+      const gpu = t.gpu ? `<span class="pv-tag st-badge" title="${esc(GPU_TIP[t.gpu] || '')}">${esc(t.gpu_label)}</span>` : '';
+      return `<span class="pv-tag st-badge" title="${esc(`Written in ${lang}`)}">${esc(lang)}</span>${gpu}`;
     }
 
     function cardHTML(t) {
@@ -179,18 +171,16 @@
         `<li class="pv-tag pv-tag--out" title="${esc((t.output_help || {})[o] || o)}">${esc(o)}</li>`).join('');
       const risks = (t.risks || []).map((r) =>
         `<span class="st-risk" title="Disclosed by the advisory imports gate: this tool ${esc(r.text)}. A tool can pass every gate and still do this.">${esc(r.label)}</span>`).join('');
-      const dl = t.downloads || 0;
       const sizes = '(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw';
       return `<article class="pv-card pv-card--link st-card">
   <div class="st-card__art"><img src="${esc(a.src)}" srcset="${esc(a.src)} ${a.width}w, ${esc(a.src2x)} ${a.width * 2}w" sizes="${sizes}" width="${a.width}" height="${a.height}" alt="" loading="lazy" decoding="async"></div>
   <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="${esc(t.url)}">${esc(t.name)}</a></h3>
-  <p class="pv-card__meta st-card__by"><span class="st-card__author">${esc(t.author)}</span> <time class="st-card__date" datetime="${esc((t.published || '').slice(0, 10))}">${esc(t.published_date)}</time></p>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">${esc(t.author)}</span> <time class="st-card__date" datetime="${esc(t.published || '')}">${esc(t.published_date)}</time></p>
   <p class="pv-card__body st-card__desc">${esc(t.description)}</p>
   <ul class="pv-tags st-card__outs" aria-label="Outputs">${outs}</ul>
   <div class="pv-card__foot st-card__foot">
-    ${badgeHTML(t)}${risks}
+    ${badgesHTML(t)}${risks}
     <span class="st-card__ver" title="Version">v${esc(t.version)}</span>
-    <span class="st-card__dl" title="${plural(dl, 'download')}"><svg class="st-card__dl-i" aria-hidden="true"><use href="assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">${dl}</span><span class="pv-sr-only">${plural(dl, 'download')}</span></span>
   </div>
 </article>`;
     }
@@ -200,7 +190,6 @@
       cell.dataset.name = t.name;
       cell.dataset.tags = (t.tags || []).join('|');
       cell.dataset.outputs = outsOf(t).join('|');
-      cell.dataset.downloads = String(t.downloads || 0);
       cell.dataset.published = t.published || '';
       cell.dataset.version = t.version || '';
     }
@@ -224,7 +213,7 @@
     // the ones it changed, add the ones the static page did not have.
     function reconcile(data) {
       hiddenOutputs = data.card_hidden_outputs || [];
-      const byId = new Map($$('.st-cell', grid).map((c) => [c.dataset.id, c]));
+      const byId = new Map(toolCells().map((c) => [c.dataset.id, c]));
       const keep = new Set();
       const next = (data.tools || []).map((t) => {
         let cell = byId.get(t.id);
@@ -242,6 +231,11 @@
         return m;
       });
       byId.forEach((cell, id) => { if (!keep.has(id)) cell.remove(); });
+      // A Coming soon card goes once its tool is published or no longer announced.
+      const announced = new Set((data.placeholders || []).map((p) => p.id));
+      $$('.st-cell[data-soon]', grid).forEach((cell) => {
+        if (keep.has(cell.dataset.id) || !announced.has(cell.dataset.id)) cell.remove();
+      });
       const f = data.filters || { tags: [], outputs: [] };
       const have = $$('.st-chip', tagList).map((c) => (c.dataset.out ? `o:${c.dataset.out}` : `t:${c.dataset.tag}`)).join('|');
       const want = ['t:'].concat(f.tags.map((r) => `t:${r.tag}`), f.outputs.map((r) => `o:${r.out}`)).join('|');
@@ -258,7 +252,7 @@
       state.q = (p.get('q') || '').slice(0, 200);
       state.tag = fold(p.get('tag') || '');
       state.out = fold(p.get('out') || '');
-      state.sort = SORTS[p.get('sort')] || 'popular';
+      state.sort = SORTS[p.get('sort')] || 'newest';
     }
 
     function writeURL() {
@@ -266,7 +260,7 @@
       if (state.q.trim()) p.set('q', state.q.trim());
       if (state.tag) p.set('tag', state.tag);
       if (state.out) p.set('out', state.out);
-      if (state.sort !== 'popular') p.set('sort', state.sort);
+      if (state.sort !== 'newest') p.set('sort', state.sort);
       const qs = p.toString();
       const url = window.location.pathname + (qs ? `?${qs}` : '') + window.location.hash;
       if (url !== window.location.pathname + window.location.search + window.location.hash) {
@@ -305,14 +299,18 @@
     function apply({ animate = true } = {}) {
       settleFilters();
       const q = state.q.trim();
-      const byQ = tools.filter((t) => matches(t, q));
+      const byQ = tools.filter((t) => matches(t._hay, q));
       const shown = ordered(byQ.filter(passes));
       const showIds = new Set(shown.map((t) => t.id));
-      const cells = new Map($$('.st-cell', grid).map((c) => [c.dataset.id, c]));
+      const cells = new Map(toolCells().map((c) => [c.dataset.id, c]));
+      // Coming soon cards have no tags or outputs: a filter leaves them out.
+      const soon = $$('.st-cell[data-soon]', grid);
+      const soonShown = soon.filter((c) => !state.tag && !state.out && matches(soonHay(c), q));
 
       const mutate = () => {
         grid.dataset.sort = state.sort;
         shown.forEach((t) => { const c = cells.get(t.id); if (c) { c.hidden = false; grid.appendChild(c); } });
+        soon.forEach((c) => { c.hidden = !soonShown.includes(c); grid.appendChild(c); });
         cells.forEach((c, id) => { if (!showIds.has(id)) { c.hidden = true; grid.appendChild(c); } });
       };
       if (animate && !firstApply && !reduced() && 'animate' in Element.prototype) flip(mutate);
@@ -352,7 +350,7 @@
       }
 
       if (empty) {
-        const none = shown.length === 0 && total > 0;
+        const none = shown.length === 0 && soonShown.length === 0 && total > 0;
         empty.hidden = !none;
         if (none) {
           emptyTitle.textContent = 'Nothing matches that';
@@ -472,7 +470,7 @@
         if (b.getAttribute('aria-checked') === 'true') return;
         checkOne(sortSeg, b);
         placeThumb(false);
-        state.sort = SORTS[b.value] || 'popular';
+        state.sort = SORTS[b.value] || 'newest';
         apply();
       };
       buttons.forEach((b) => b.addEventListener('click', () => pickSort(b)));
@@ -562,18 +560,6 @@
   /* ======================================================= tool page */
 
   function toolPage() {
-    const installBtn = $('[data-st-install]');
-    if (installBtn) {
-      const panel = doc.getElementById(installBtn.getAttribute('aria-controls'));
-      installBtn.addEventListener('click', () => {
-        const open = installBtn.getAttribute('aria-expanded') !== 'true';
-        installBtn.setAttribute('aria-expanded', String(open));
-        if (!panel) return;
-        panel.hidden = !open;
-        panel.classList.toggle('is-in', open);
-      });
-    }
-
     const onpage = $('.st-onpage');
     if (onpage && 'IntersectionObserver' in window) {
       const links = $$('a[href^="#"]', onpage);

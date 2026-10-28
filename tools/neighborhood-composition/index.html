@@ -6,7 +6,7 @@
 <script>(function(d){try{var w=d.clientWidth||innerWidth;d.style.setProperty('--k',Math.min(Math.max(Math.min(w/1440,innerHeight/900),1),1.6).toFixed(4))}catch(e){}})(document.documentElement)</script>
 <meta name="theme-color" content="#06070D">
 <title>Neighborhood Composition &amp; Mixing · The Tool Store · PointillViz</title>
-<meta name="description" content="How mixed each cell’s neighbourhood is, and who sits next to whom. A PointillViz community tool, version 1.1.0.">
+<meta name="description" content="How mixed each cell’s neighbourhood is, and who sits next to whom. A PointillViz community tool, version 2.0.0.">
 <link rel="canonical" href="https://store.pointillviz.com/tools/neighborhood-composition/">
 <meta property="og:site_name" content="PointillViz">
 <meta property="og:type" content="website">
@@ -88,7 +88,7 @@
         <h1 class="pv-title st-hero__title">Neighborhood Composition &amp; Mixing</h1>
         <p class="st-hero__by">by PointillViz reference tools</p>
         <p class="pv-lede st-hero__desc">How mixed each cell’s neighbourhood is, and who sits next to whom.</p>
-        <div class="st-hero__badges"><span class="pv-verified" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-check"/></svg>Verified</span><span class="pv-tag pv-tag--ver">v1.1.0</span></div>
+        <div class="st-hero__badges"><span class="pv-tag st-badge" title="Written in Python">Python</span><span class="pv-tag pv-tag--ver">v2.0.0</span></div>
         <div class="st-hero__chips"><ul class="pv-tags" aria-label="Tags"><li class="pv-tag">cell types</li><li class="pv-tag">neighbourhood</li><li class="pv-tag">entropy</li><li class="pv-tag">enrichment</li></ul><div class="st-hero__outs"><span class="st-tags__sep" aria-hidden="true">Outputs</span><ul class="pv-tags" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="writes a summary">summary</li><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul></div></div>
       </header>
       <figure class="pv-figure st-hero__art">
@@ -98,16 +98,15 @@
       <div class="st-side">
         <aside class="st-get" aria-labelledby="get-h">
           <h2 class="st-get__title" id="get-h">Get this tool</h2>
-          <button class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" type="button" aria-expanded="false" aria-controls="install-how" data-st-install>
-            <svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Install into PointillViz</span><span class="pv-btn__sub">Coming soon</span></span>
-          </button>
-          <div class="st-get__how" id="install-how" hidden>
-            <p>Installing from this website is coming soon. In PointillViz, open the <b>Tools</b> tab, then <b>Community Tools</b>, then <b>Browse Store</b>, and install it there. The viewer runs the nine gates again first.</p>
+          <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/neighborhood-composition-v2.0.0/neighborhood-composition-2.0.0.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 28.8 kB</span></span></a>
+          <div class="st-get__how">
+            <p>Install in PointillViz: <b>Tools → Store → Install</b>, or use <b>Install from file</b> with the download.</p>
             <p class="st-get__docs"><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How tools work · Docs</a></p>
           </div>
-          <p class="st-get__note"><b>This runs as you.</b> A tool is arbitrary Python, run with the privileges of whoever started the viewer. <a class="pv-link" href="../../#safety">Read the safety note</a></p>
+          <p class="st-get__src"><a class="pv-link" href="https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/neighborhood-composition">Source in the public registry<svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-external"/></svg></a></p>
+          <p class="st-get__note"><b>This runs as you.</b> A tool is arbitrary code, run with the privileges of whoever started PointillViz. <a class="pv-link" href="../../#safety">Read the safety note</a></p>
           <h3 class="pv-label st-get__facts-h">Facts</h3>
-          <dl class="st-facts"><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__ver">1.1.0</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-10-13">13 Oct 2026</time></dd></div><div class="st-facts__row"><dt>Downloads</dt><dd>1</dd></div><div class="st-facts__row"><dt>Bundle size</dt><dd>15.3 kB</dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Time limit</dt><dd>300 s</dd></div><div class="st-facts__row"><dt>Memory limit</dt><dd>4,096 MB</dd></div><div class="st-facts__row"><dt>Needs</dt><dd><span class="st-nowrap">a categorical column</span> · <span class="st-nowrap">200+ cells</span> · <span class="st-nowrap">scipy</span></dd></div></dl>
+          <dl class="st-facts"><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__ver">2.0.0</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-10-28">28 Oct 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Needs</dt><dd><span class="st-nowrap">a categorical column</span> · <span class="st-nowrap">200+ cells</span></dd></div></dl>
         </aside>
         <nav class="st-onpage" aria-labelledby="onpage-h">
           <p class="pv-label st-onpage__h" id="onpage-h">On this page</p>
@@ -116,7 +115,6 @@
             <li><a href="#parameters">Parameters</a></li>
             <li><a href="#outputs">Outputs</a></li>
             <li><a href="#tool-check">Tool check</a></li>
-            <li><a href="#versions">Versions</a></li>
           </ul>
         </nav>
       </div>
@@ -173,35 +171,39 @@ Defaults to the dataset’s cell-type column.</td>
         </section>
         <section class="st-sec" id="tool-check" aria-labelledby="check-h">
           <h2 class="st-sec__h" id="check-h">Tool check</h2>
-          <p class="st-sec__intro">The nine gates this version passed when it was published.</p>
+          <p class="st-sec__intro">The gates this version passed when it was released, in the order they ran.</p>
           <div class="st-check">
-  <div class="st-check__head"><span class="pv-verified" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-check"/></svg>Verified</span><p class="st-check__result">Passed 9 of 9 gates</p></div>
-  <ol class="pv-gates st-check__strip" aria-label="The nine gates, in the order they ran"><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">bundle</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">manifest</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">entry</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass" data-adv><span class="pv-gate__name" translate="no">imports</span><span class="pv-sr-only"> pass, advisory</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">fixture</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">result</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">determinism</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">edge</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">no_mutation</span><span class="pv-sr-only"> pass</span></li></ol>
+  <ol class="pv-gates st-check__strip" aria-label="The gates, in the order they ran"><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">bundle</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">manifest</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">environment</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">entry</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass" data-adv><span class="pv-gate__name" translate="no">imports</span><span class="pv-sr-only"> pass, advisory</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">fixture</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">result</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">edge</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">no_mutation</span><span class="pv-sr-only"> pass</span></li></ol>
   <ol class="st-gatelog" aria-label="What each gate saw">
 <li class="st-gatelog__row" data-state="pass">
   <span class="st-gatelog__name"><code translate="no">bundle</code></span>
   <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">4 files, 15.3 kB packed and 56.7 kB unpacked, plugin.json at the root.</p>
+  <p class="st-gatelog__msg">6 files, 28.8 kB packed and 117.6 kB unpacked, plugin.json at the root.</p>
 </li>
 <li class="st-gatelog__row" data-state="pass">
   <span class="st-gatelog__name"><code translate="no">manifest</code></span>
   <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">neighborhood-composition 1.1.0 by PointillViz reference tools; entry tool.py, outputs summary, cells, matrix, table, 300 s and 4096 MB budget.</p>
+  <p class="st-gatelog__msg">neighborhood-composition 2.0.0 by PointillViz reference tools; Python entry tool.py, outputs summary, cells, matrix, table.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">environment</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default.</p>
 </li>
 <li class="st-gatelog__row" data-state="pass">
   <span class="st-gatelog__name"><code translate="no">entry</code></span>
   <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">tool.py imported in 0.20 s and defines run(ds, params).</p>
+  <p class="st-gatelog__msg">tool.py imported in 0.00 s and defines run(ds, params).</p>
 </li>
 <li class="st-gatelog__row" data-state="pass" data-adv>
   <span class="st-gatelog__name"><code translate="no">imports</code> <span class="st-adv">advisory</span></span>
   <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">1 Python file, importing __future__, backend, math, numpy; no network, subprocess, filesystem-write, dynamic-exec or environment use found.</p>
+  <p class="st-gatelog__msg">1 source file, using __future__, math, numpy, pointillviz_tool; no network, subprocess, filesystem-write, dynamic-exec or environment use found.</p>
 </li>
 <li class="st-gatelog__row" data-state="pass">
   <span class="st-gatelog__name"><code translate="no">fixture</code></span>
   <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">ran on the 600-cell fixture in 0.28 s of its 300 s budget, returning summary, cells, table, matrix and 1 log line.</p>
+  <p class="st-gatelog__msg">ran on the 600-cell fixture in 0.26 s, returning summary, cells, table, matrix and 1 log line.</p>
 </li>
 <li class="st-gatelog__row" data-state="pass">
   <span class="st-gatelog__name"><code translate="no">result</code></span>
@@ -209,14 +211,9 @@ Defaults to the dataset’s cell-type column.</td>
   <p class="st-gatelog__msg">returned the declared outputs: summary, cells, table, matrix.</p>
 </li>
 <li class="st-gatelog__row" data-state="pass">
-  <span class="st-gatelog__name"><code translate="no">determinism</code></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">two runs with identical parameters produced byte-identical results (13.3 kB of JSON).</p>
-</li>
-<li class="st-gatelog__row" data-state="pass">
   <span class="st-gatelog__name"><code translate="no">edge</code></span>
   <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">ran at the minimum corner (k=3, min_type_cells=0) in 0.29 s; at the maximum corner (k=100, min_type_cells=5000) it refused in words rather than crashing: No two categories have at least 5000 cells with coordinates, so there is no composition matrix to build. Lower &#x27;Minimum cells per category&#x27;. (code: no_types_pass_floor).</p>
+  <p class="st-gatelog__msg">ran at the minimum corner (k=3, min_type_cells=0) in 0.18 s; at the maximum corner (k=100, min_type_cells=5000) it refused in words rather than crashing: No two categories have at least 5000 cells with coordinates, so there is no composition matrix to build. Lower &#x27;Minimum cells per category&#x27;. (code: no_types_pass_floor).</p>
 </li>
 <li class="st-gatelog__row" data-state="pass">
   <span class="st-gatelog__name"><code translate="no">no_mutation</code></span>
@@ -225,56 +222,49 @@ Defaults to the dataset’s cell-type column.</td>
 </li>
   </ol>
 </div>
-          <p class="st-sec__note">Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run.</p>
-        </section>
-        <section class="st-sec" id="versions" aria-labelledby="versions-h">
-          <h2 class="st-sec__h" id="versions-h">Versions</h2>
-          <ol class="st-versions" reversed><li><span class="st-versions__v">v1.1.0</span><span aria-hidden="true"> · </span><time datetime="2026-10-13">13 Oct 2026</time> <span class="pv-tag st-latest">latest</span></li><li><span class="st-versions__v">v1.0.0</span><span aria-hidden="true"> · </span><time datetime="2026-08-20">20 Aug 2026</time></li></ol>
+          <p class="st-sec__note">Passing the gates is a statement about the gates, not about whether the code is safe to run.</p>
         </section>
       </div>
     </div>
     <section class="st-more" aria-labelledby="more-h">
       <h2 class="st-more__h" id="more-h">More tools</h2>
       <ul class="st-grid st-grid--more">
-<li class="st-cell" data-id="celltype-cooccurrence" data-name="Cell-Type Co-occurrence" data-tags="spatial|cell types|enrichment" data-outputs="matrix|table|summary" data-downloads="1" data-published="2026-09-29T08:24:40.851Z" data-version="1.2.0">
+<li class="st-cell" data-id="celltype-cooccurrence" data-name="Cell-Type Co-occurrence" data-tags="spatial|cell types|enrichment" data-outputs="matrix|table|summary" data-published="2026-10-28" data-version="2.0.0">
 <article class="pv-card pv-card--link st-card">
   <div class="st-card__art"><img src="../../assets/media/tools/celltype-cooccurrence.webp?v=871ec925fb" srcset="../../assets/media/tools/celltype-cooccurrence.webp?v=871ec925fb 720w, ../../assets/media/tools/celltype-cooccurrence@2x.webp?v=57ab831e44 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
   <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/celltype-cooccurrence/">Cell-Type Co-occurrence</a></h3>
-  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-09-29">29 Sep 2026</time></p>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-28">28 Oct 2026</time></p>
   <p class="pv-card__body st-card__desc">Which cell types are found near each other more often than expected by chance.</p>
   <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
   <div class="pv-card__foot st-card__foot">
-    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
-    <span class="st-card__ver" title="Version">v1.2.0</span>
-    <span class="st-card__dl" title="1 download"><svg class="st-card__dl-i" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">1</span><span class="pv-sr-only">1 download</span></span>
+    <span class="pv-tag st-badge" title="Written in Python">Python</span>
+    <span class="st-card__ver" title="Version">v2.0.0</span>
   </div>
 </article>
 </li>
-<li class="st-cell" data-id="celltype-percolation" data-name="Cell-Type Percolation" data-tags="spatial|cell types|connectivity|topology" data-outputs="summary|cells|series|table" data-downloads="4" data-published="2026-10-13T16:15:50.706Z" data-version="1.0.0">
+<li class="st-cell" data-id="mclust-niches" data-name="Mclust niches" data-tags="spatial|niches|cell types|neighbourhood|clustering|R" data-outputs="summary|labels|table" data-published="2026-10-28" data-version="1.0.0">
 <article class="pv-card pv-card--link st-card">
-  <div class="st-card__art"><img src="../../assets/media/tools/celltype-percolation.webp?v=e6c69b9c10" srcset="../../assets/media/tools/celltype-percolation.webp?v=e6c69b9c10 720w, ../../assets/media/tools/celltype-percolation@2x.webp?v=f263ffe93d 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
-  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/celltype-percolation/">Cell-Type Percolation</a></h3>
-  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
-  <p class="pv-card__body st-card__desc">Whether a cell type is one connected mass or many islands.</p>
-  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="st-card__art"><img src="../../assets/media/tools/mclust-niches.webp?v=f5ed6ba46f" srcset="../../assets/media/tools/mclust-niches.webp?v=f5ed6ba46f 720w, ../../assets/media/tools/mclust-niches@2x.webp?v=c3a02b72e9 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/mclust-niches/">Mclust niches</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-28">28 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Niches from the mix of cell types around each cell, fitted by a Gaussian mixture with mclust in R.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints categories on the spatial view">labels</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
   <div class="pv-card__foot st-card__foot">
-    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
+    <span class="pv-tag st-badge" title="Written in R">R</span>
     <span class="st-card__ver" title="Version">v1.0.0</span>
-    <span class="st-card__dl" title="4 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">4</span><span class="pv-sr-only">4 downloads</span></span>
   </div>
 </article>
 </li>
-<li class="st-cell" data-id="interface-coherence" data-name="Interface Coherence" data-tags="spatial|cell types|geometry|boundaries" data-outputs="summary|cells|matrix|series|table" data-downloads="4" data-published="2026-10-13T16:15:59.685Z" data-version="1.1.0">
+<li class="st-cell" data-id="categorical-chords" data-name="Categorical Chords" data-tags="spatial|cell types|categorical|chord" data-outputs="chord|matrix|table|summary" data-published="2026-10-28" data-version="2.0.0">
 <article class="pv-card pv-card--link st-card">
-  <div class="st-card__art"><img src="../../assets/media/tools/interface-coherence.webp?v=7ad2d19081" srcset="../../assets/media/tools/interface-coherence.webp?v=7ad2d19081 720w, ../../assets/media/tools/interface-coherence@2x.webp?v=d859770e92 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
-  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/interface-coherence/">Interface Coherence</a></h3>
-  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz community tools</span> <time class="st-card__date" datetime="2026-10-13">13 Oct 2026</time></p>
-  <p class="pv-card__body st-card__desc">Whether two cell types meet along one front or in specks.</p>
-  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="st-card__art"><img src="../../assets/media/tools/categorical-chords.webp?v=aed602856f" srcset="../../assets/media/tools/categorical-chords.webp?v=aed602856f 720w, ../../assets/media/tools/categorical-chords@2x.webp?v=2654222e53 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/categorical-chords/">Categorical Chords</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-28">28 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Explore spatial contacts or shared membership between categorical annotations with count-weighted ribbons and enrichment colors.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="returns a chord diagram">chord</li><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
   <div class="pv-card__foot st-card__foot">
-    <span class="st-vbadge" title="Passed every required gate when this version was published. That is a statement about the gates, not about whether the code is safe to run."><span class="st-vbadge__dots" aria-hidden="true"><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="adv"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i><i data-s="pass"></i></span>Verified<span class="pv-sr-only">: passed 9 of 9 gates</span></span>
-    <span class="st-card__ver" title="Version">v1.1.0</span>
-    <span class="st-card__dl" title="4 downloads"><svg class="st-card__dl-i" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span aria-hidden="true">4</span><span class="pv-sr-only">4 downloads</span></span>
+    <span class="pv-tag st-badge" title="Written in Python">Python</span>
+    <span class="st-card__ver" title="Version">v2.0.0</span>
   </div>
 </article>
 </li>

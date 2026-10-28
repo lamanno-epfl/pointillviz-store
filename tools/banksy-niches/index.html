@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(d){try{var w=d.clientWidth||innerWidth;d.style.setProperty('--k',Math.min(Math.max(Math.min(w/1440,innerHeight/900),1),1.6).toFixed(4))}catch(e){}})(document.documentElement)</script>
+<meta name="theme-color" content="#06070D">
+<title>BANKSY niches · The Tool Store · PointillViz</title>
+<meta name="description" content="Tissue niches from each cell’s expression and its neighbourhood’s, by the BANKSY method. A PointillViz community tool, version 1.0.0.">
+<link rel="canonical" href="https://store.pointillviz.com/tools/banksy-niches/">
+<meta property="og:site_name" content="PointillViz">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BANKSY niches · The Tool Store · PointillViz">
+<meta property="og:description" content="Tissue niches from each cell’s expression and its neighbourhood’s, by the BANKSY method.">
+<meta property="og:url" content="https://store.pointillviz.com/tools/banksy-niches/">
+<meta property="og:image" content="https://store.pointillviz.com/assets/media/social/banksy-niches.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Niches from each cell and its neighbourhood">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../assets/pv/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&amp;family=Fraunces:opsz,wght@9..144,600&amp;family=JetBrains+Mono:wght@400..600&amp;display=swap">
+<link rel="stylesheet" href="../../assets/pv/pv.css">
+<link rel="stylesheet" href="../../assets/store.css">
+<script src="../../assets/pv/pv.js" defer></script>
+<script src="../../assets/store.js" defer></script>
+<script>document.documentElement.classList.add('st-js')</script>
+<noscript><style>.pv-topbar__menu { display: none !important; }</style></noscript>
+</head>
+<body class="st-page st-page--tool">
+<a class="pv-skip" href="#main">Skip to content</a>
+<header class="pv-topbar">
+  <div class="pv-topbar__inner">
+    <a class="pv-topbar__brand" href="https://pointillviz.com/" translate="no">
+      <img src="../../assets/pv/logo.svg" width="169" height="20" alt="PointillViz">
+    </a>
+    <nav class="pv-topbar__nav" aria-label="Main">
+      <ul>
+        <li><a href="https://pointillviz.com/">Overview</a></li>
+        <li><a href="https://docs.pointillviz.com/">Docs</a></li>
+        <li><a href="../../" aria-current="true">Tool Store</a></li>
+        <li><a href="#" data-placeholder="paper">Paper</a></li>
+      </ul>
+    </nav>
+    <div class="pv-topbar__end">
+      <button class="pv-topbar__menu" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="pv-drawer" data-pv-drawer-open="pv-drawer">
+        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="1.6"/><circle cx="10" cy="4" r="1.6"/><circle cx="16" cy="4" r="1.6"/><circle cx="4" cy="10" r="1.6"/><circle cx="10" cy="10" r="1.6"/><circle cx="16" cy="10" r="1.6"/><circle cx="4" cy="16" r="1.6"/><circle cx="10" cy="16" r="1.6"/><circle cx="16" cy="16" r="1.6"/></svg>
+        <span class="pv-sr-only">Menu</span>
+      </button>
+    </div>
+  </div>
+  <noscript>
+    <nav class="pv-nojs-nav" aria-label="Main">
+      <a href="https://pointillviz.com/">Overview</a><a href="https://docs.pointillviz.com/">Docs</a><a href="../../" aria-current="true">Tool Store</a>
+    </nav>
+  </noscript>
+</header>
+<dialog class="pv-drawer" id="pv-drawer" aria-label="Menu">
+  <div class="pv-drawer__panel">
+    <div class="pv-drawer__head">
+      <img src="../../assets/pv/logo.svg" width="152" height="18" alt="PointillViz" translate="no">
+      <button class="pv-btn pv-btn--ghost pv-btn--icon" type="button" data-pv-drawer-close aria-label="Close menu" autofocus>
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15"/></svg>
+      </button>
+    </div>
+    <nav aria-label="Main">
+      <ul class="pv-drawer__nav">
+        <li><a href="https://pointillviz.com/"><span class="pv-drawer__name">Overview</span><span class="pv-drawer__host">pointillviz.com</span></a></li>
+        <li><a href="https://docs.pointillviz.com/"><span class="pv-drawer__name">Docs</span><span class="pv-drawer__host">docs.pointillviz.com</span></a></li>
+        <li><a href="../../" aria-current="true"><span class="pv-drawer__name">Tool Store</span><span class="pv-drawer__host">store.pointillviz.com</span></a></li>
+        <li><a href="#" data-placeholder="paper"><span class="pv-drawer__name">Paper</span><span class="pv-drawer__host">bioRxiv</span></a></li>
+      </ul>
+    </nav>
+    <div class="pv-drawer__foot">
+      <p>© 2026 PointillViz</p>
+    </div>
+  </div>
+</dialog>
+<main id="main" class="st-tool">
+  <div class="pv-container">
+    <nav class="st-back" aria-label="Back">
+      <a class="st-back__link" href="../../"><svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-arrow-left"/></svg>All tools</a>
+    </nav>
+    <div class="st-tool__layout">
+      <header class="st-hero">
+        <h1 class="pv-title st-hero__title">BANKSY niches</h1>
+        <p class="st-hero__by">by PointillViz reference tools</p>
+        <p class="pv-lede st-hero__desc">Tissue niches from each cell’s expression and its neighbourhood’s, by the BANKSY method.</p>
+        <div class="st-hero__badges"><span class="pv-tag st-badge" title="Written in Python">Python</span><span class="pv-tag pv-tag--ver">v1.0.0</span></div>
+        <div class="st-hero__chips"><ul class="pv-tags" aria-label="Tags"><li class="pv-tag">niches</li><li class="pv-tag">domains</li><li class="pv-tag">clustering</li><li class="pv-tag">genes</li></ul><div class="st-hero__outs"><span class="st-tags__sep" aria-hidden="true">Outputs</span><ul class="pv-tags" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="writes a summary">summary</li><li class="pv-tag pv-tag--out" title="paints categories on the spatial view">labels</li><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a table">table</li><li class="pv-tag pv-tag--out" title="returns files to download">files</li></ul></div></div>
+      </header>
+      <figure class="pv-figure st-hero__art">
+        <div class="pv-figure__stage st-artstage"><img src="../../assets/media/tools/banksy-niches.webp?v=68bbb752b1" srcset="../../assets/media/tools/banksy-niches.webp?v=68bbb752b1 720w, ../../assets/media/tools/banksy-niches@2x.webp?v=2dc7850b88 1440w" sizes="(min-width: 1320px) 820px, (min-width: 1100px) 62vw, 94vw" width="720" height="420" alt="Niches from each cell and its neighbourhood" fetchpriority="high" decoding="async"></div>
+        <figcaption class="pv-figure__caption"><span>Niches from each cell and its neighbourhood</span><span class="pv-figure__meta">Artwork from the tool’s bundle</span></figcaption>
+      </figure>
+      <div class="st-side">
+        <aside class="st-get" aria-labelledby="get-h">
+          <h2 class="st-get__title" id="get-h">Get this tool</h2>
+          <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/banksy-niches-v1.0.0/banksy-niches-1.0.0.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 40.3 kB</span></span></a>
+          <div class="st-get__how">
+            <p>Install in PointillViz: <b>Tools → Store → Install</b>, or use <b>Install from file</b> with the download.</p>
+            <p class="st-get__docs"><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How tools work · Docs</a></p>
+          </div>
+          <p class="st-get__src"><a class="pv-link" href="https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/banksy-niches">Source in the public registry<svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-external"/></svg></a></p>
+          <p class="st-get__note"><b>This runs as you.</b> A tool is arbitrary code, run with the privileges of whoever started PointillViz. <a class="pv-link" href="../../#safety">Read the safety note</a></p>
+          <h3 class="pv-label st-get__facts-h">Facts</h3>
+          <dl class="st-facts"><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__ver">1.0.0</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-10-28">28 Oct 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Needs</dt><dd><span class="st-nowrap">gene expression</span> · <span class="st-nowrap">200+ cells</span></dd></div></dl>
+        </aside>
+        <nav class="st-onpage" aria-labelledby="onpage-h">
+          <p class="pv-label st-onpage__h" id="onpage-h">On this page</p>
+          <ul>
+            <li><a href="#readme">Readme</a></li>
+            <li><a href="#parameters">Parameters</a></li>
+            <li><a href="#outputs">Outputs</a></li>
+            <li><a href="#tool-check">Tool check</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="st-tool__main">
+        <section class="st-sec" id="readme" aria-labelledby="readme-h">
+          <h2 class="st-sec__h" id="readme-h">Readme</h2>
+          <div class="st-md">
+<p>Answers the question: <strong>Which tissue domains, or niches, does a section divide into, judged by what each cell and its neighbours express?</strong></p>
+<p>BANKSY (Singhal, Chou, Lee et al., <em>Nature Genetics</em> 2024) describes every cell by its own expression together with the expression around it, and clusters the cells on that joint description. With most of the weight on the neighbourhood, the clusters are tissue domains; with little, they are cell types refined by their surroundings.</p>
+<h3>What you get</h3>
+<ul><li><strong>Map.</strong> Every cell painted by its niche, one colour per niche. Niches are numbered N1, N2, … from the largest, and the numbers carry no other order. Cells without spatial neighbours, or outside a selection, are left unpainted.</li><li><strong>Matrix.</strong> Each niche’s cell-type composition when the dataset has cell types; its marker genes otherwise.</li><li><strong>Table.</strong> Each niche’s size, its five strongest marker genes and its three main cell types.</li><li><strong>Download.</strong> A CSV (gzip) of every cell’s niche, when it fits in the result.</li></ul>
+<p>On a Xenium 5K mouse colon section of 135,000 cells, the defaults give 8 niches that follow the structure of the gut wall: the muscle layers, the lamina propria, crypt and surface epithelium, and a small niche of lymphoid aggregates (ILC3s and dendritic cells, with Cxcl13 and Ltb).</p>
+<h3>Parameters</h3>
+<ul><li><strong>Clustering.</strong> <em>Leiden</em>, the authors’ default, finds as many niches as the resolution calls for. <em>k-means</em> divides the cells into exactly the number of niches you ask for.</li><li><strong>Resolution (Leiden).</strong> Higher values give more, smaller niches; lower values give fewer, larger ones.</li><li><strong>Niches (k-means).</strong> How many niches k-means makes.</li><li><strong>Neighbourhood weight (λ).</strong> 0.8 finds tissue domains, 0.2 spatially informed cell types, and 0 ignores space.</li><li><strong>Spatial neighbours (k).</strong> How many nearest cells make a neighbourhood. The gradient features use twice as many.</li><li><strong>Include gradients (AGF).</strong> Adds BANKSY’s azimuthal Gabor filter, which responds where expression changes across a neighbourhood, as at a border.</li><li><strong>Variable genes.</strong> How many of the most variable genes to use. More genes take longer.</li><li><strong>Principal components.</strong> How many components of the joint matrix the clustering sees.</li><li><strong>Smooth labels.</strong> Gives a cell the niche held by more than half of itself and its 15 nearest cells, repeated until nothing changes (BANKSY’s smoothLabels).</li></ul>
+<h3>Method</h3>
+<p>For each cell, three blocks over the most variable genes, ranked by dispersion as in scanpy’s <code translate="no">flavor=&quot;seurat&quot;</code>:</p>
+<ul><li><strong>own</strong>: the cell’s library-size-normalised expression;</li><li><strong>neighbourhood mean</strong>: a Gaussian-weighted average over its <math translate="no"><mi>k</mi></math> nearest cells, the kernel scaled by the cell’s median neighbour distance;</li><li><strong>gradient (AGF)</strong>: the azimuthal Gabor filter over its 2<math translate="no"><mi>k</mi></math> nearest cells. It is large where expression changes across the neighbourhood.</li></ul>
+<p>Each column is z-scored, the blocks are weighted by √(1−λ), √(2λ/3) and √(λ/3) (√(1−λ) and √λ without the gradient), and the joint matrix is reduced to its top principal components. The components are then clustered:</p>
+<ul><li><strong>Leiden</strong>, as the authors’ Python package runs it. Each cell is linked to its 50 nearest cells in component space, with weight 1/(1 + distance). A link is kept when the two cells share five or more of those neighbours, or when it is one of the three links the cell shares the most neighbours over. Leiden (RBConfiguration quality, seed 1234, repeated until no cell moves) partitions this graph.</li><li><strong>k-means</strong>, with k-means++ seeding and the best of four fixed starts. The authors’ R package offers it too (<code translate="no">clusterBanksy(algo = &quot;kmeans&quot;)</code>).</li></ul>
+<p>The joint matrix is streamed in chunks rather than stored, so memory stays near the size of its Gram matrix, and the chunks are built on up to 16 processors.</p>
+<p>This is a reimplementation in NumPy and SciPy, with python-igraph and leidenalg for Leiden. It takes no code from the authors’ packages. On that section, its three feature blocks match <code translate="no">pybanksy</code> 1.3.5 to within 5 × 10⁻⁸, and its principal components are exact, where <code translate="no">pybanksy</code>‘s default randomized PCA is unseeded and changes slightly from run to run.</p>
+<h3>Citation</h3>
+<p>Singhal V, Chou N, Lee J, et al. BANKSY unifies cell typing and tissue domain segmentation for scalable spatial omics data analysis. <em>Nature Genetics</em> 56, 431–441 (2024).</p>
+          </div>
+          <div class="st-refs"><h3 class="st-refs__h">References</h3><p>Singhal V, Chou N, Lee J, et al. BANKSY unifies cell typing and tissue domain segmentation for scalable spatial omics data analysis. Nat Genet 56, 431-441 (2024).</p></div>
+        </section>
+        <section class="st-sec" id="parameters" aria-labelledby="parameters-h">
+          <h2 class="st-sec__h" id="parameters-h">Parameters</h2>
+          <div class="pv-table-wrap st-params">
+<table class="pv-table" role="table" aria-labelledby="parameters-h">
+<thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Parameter</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Default</th><th scope="col" role="columnheader">What it does</th></tr></thead>
+<tbody role="rowgroup">
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Clustering</span><code class="st-param__name" translate="no">clustering</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">select, 2 options</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">Leiden (the authors’ default)</span></td>
+  <td role="cell" data-label="What it does">Leiden finds as many niches as the resolution calls for, on a graph of cells that share neighbours.
+k-means divides the cells into exactly the number of niches you ask for.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Resolution (Leiden)</span><code class="st-param__name" translate="no">resolution</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">float, 0.05–2</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">0.3</span></td>
+  <td role="cell" data-label="What it does">Leiden only. Higher values give more, smaller niches; lower values give fewer, larger ones.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Niches (k-means)</span><code class="st-param__name" translate="no">n_niches</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">int, 2–30</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">8</span></td>
+  <td role="cell" data-label="What it does">k-means only: how many niches to divide the tissue into.
+If two niches share their marker genes and cell types, try fewer.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Neighbourhood weight (λ)</span><code class="st-param__name" translate="no">lambda</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">float, 0–1</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">0.8</span></td>
+  <td role="cell" data-label="What it does">How much a cell’s neighbourhood counts against its own expression.
+0.8 finds tissue domains; 0.2 finds spatially informed cell types; 0 ignores space.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Spatial neighbours (k)</span><code class="st-param__name" translate="no">k_geom</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">int, 5–30</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">15</span></td>
+  <td role="cell" data-label="What it does">How many nearest cells make a neighbourhood. The gradient features use twice as many.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Include gradients (AGF)</span><code class="st-param__name" translate="no">agf</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">bool</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">on</span></td>
+  <td role="cell" data-label="What it does">Adds BANKSY’s azimuthal Gabor filter, which responds where expression changes across a neighbourhood, as at a border.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Variable genes</span><code class="st-param__name" translate="no">n_genes</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">int, 50–5,000</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">2,000</span></td>
+  <td role="cell" data-label="What it does">How many of the most variable genes to use. More genes take longer.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Principal components</span><code class="st-param__name" translate="no">n_pcs</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">int, 5–50</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">20</span></td>
+  <td role="cell" data-label="What it does">How many principal components of the joint matrix the clustering sees.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Smooth labels</span><code class="st-param__name" translate="no">smooth</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">bool</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">off</span></td>
+  <td role="cell" data-label="What it does">Gives a cell the niche held by more than half of itself and its 15 nearest cells, repeated until nothing changes (BANKSY’s smoothLabels).</td>
+</tr>
+</tbody>
+</table>
+</div>
+        </section>
+        <section class="st-sec" id="outputs" aria-labelledby="outputs-h">
+          <h2 class="st-sec__h" id="outputs-h">Outputs</h2>
+          <ul class="st-outputs"><li><span class="pv-tag pv-tag--out">summary</span><span class="st-outputs__what">writes a summary</span></li><li><span class="pv-tag pv-tag--out">labels</span><span class="st-outputs__what">paints categories on the spatial view</span></li><li><span class="pv-tag pv-tag--out">matrix</span><span class="st-outputs__what">returns a heatmap</span></li><li><span class="pv-tag pv-tag--out">table</span><span class="st-outputs__what">returns a table</span></li><li><span class="pv-tag pv-tag--out">files</span><span class="st-outputs__what">returns files to download <span class="st-opt">optional</span></span></li></ul>
+        </section>
+        <section class="st-sec" id="tool-check" aria-labelledby="check-h">
+          <h2 class="st-sec__h" id="check-h">Tool check</h2>
+          <p class="st-sec__intro">The gates this version passed when it was released, in the order they ran.</p>
+          <div class="st-check">
+  <ol class="pv-gates st-check__strip" aria-label="The gates, in the order they ran"><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">bundle</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">manifest</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">environment</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">entry</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass" data-adv><span class="pv-gate__name" translate="no">imports</span><span class="pv-sr-only"> pass, advisory</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">fixture</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">result</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">edge</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">no_mutation</span><span class="pv-sr-only"> pass</span></li></ol>
+  <ol class="st-gatelog" aria-label="What each gate saw">
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">bundle</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">6 files, 40.3 kB packed and 178.3 kB unpacked, plugin.json at the root.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">manifest</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">banksy-niches 1.0.0 by PointillViz reference tools; Python entry tool.py, outputs summary, labels, matrix, table.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">environment</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">entry</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">tool.py imported in 0.47 s and defines run(ds, params).</p>
+</li>
+<li class="st-gatelog__row" data-state="pass" data-adv>
+  <span class="st-gatelog__name"><code translate="no">imports</code> <span class="st-adv">advisory</span></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">1 source file, using collections, concurrent, gzip, igraph, leidenalg, numpy, os, pointillviz_tool, scipy; no network, subprocess, filesystem-write, dynamic-exec or environment use found.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">fixture</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">ran on the 600-cell fixture in 0.31 s, returning summary, table, matrix, files, labels and 2 log lines.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">result</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">returned the declared outputs: summary, table, matrix, files, labels.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">edge</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">ran at the minimum corner (agf=False, k_geom=5, lambda=0.0, n_genes=50, n_niches=2, n_pcs=5, resolution=0.05) in 0.28 s; ran at the maximum corner (clustering=&#x27;kmeans&#x27;, k_geom=30, lambda=1.0, n_genes=5000, n_niches=30, n_pcs=50, resolution=2.0, smooth=True) in 0.29 s.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">no_mutation</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">the fixture dataset&#x27;s 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design).</p>
+</li>
+  </ol>
+</div>
+          <p class="st-sec__note">Passing the gates is a statement about the gates, not about whether the code is safe to run.</p>
+        </section>
+      </div>
+    </div>
+    <section class="st-more" aria-labelledby="more-h">
+      <h2 class="st-more__h" id="more-h">More tools</h2>
+      <ul class="st-grid st-grid--more">
+<li class="st-cell" data-id="mclust-niches" data-name="Mclust niches" data-tags="spatial|niches|cell types|neighbourhood|clustering|R" data-outputs="summary|labels|table" data-published="2026-10-28" data-version="1.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="../../assets/media/tools/mclust-niches.webp?v=f5ed6ba46f" srcset="../../assets/media/tools/mclust-niches.webp?v=f5ed6ba46f 720w, ../../assets/media/tools/mclust-niches@2x.webp?v=c3a02b72e9 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/mclust-niches/">Mclust niches</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-28">28 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Niches from the mix of cell types around each cell, fitted by a Gaussian mixture with mclust in R.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints categories on the spatial view">labels</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="pv-tag st-badge" title="Written in R">R</span>
+    <span class="st-card__ver" title="Version">v1.0.0</span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="categorical-chords" data-name="Categorical Chords" data-tags="spatial|cell types|categorical|chord" data-outputs="chord|matrix|table|summary" data-published="2026-10-28" data-version="2.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="../../assets/media/tools/categorical-chords.webp?v=aed602856f" srcset="../../assets/media/tools/categorical-chords.webp?v=aed602856f 720w, ../../assets/media/tools/categorical-chords@2x.webp?v=2654222e53 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/categorical-chords/">Categorical Chords</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-28">28 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Explore spatial contacts or shared membership between categorical annotations with count-weighted ribbons and enrichment colors.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="returns a chord diagram">chord</li><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="pv-tag st-badge" title="Written in Python">Python</span>
+    <span class="st-card__ver" title="Version">v2.0.0</span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="celltype-cooccurrence" data-name="Cell-Type Co-occurrence" data-tags="spatial|cell types|enrichment" data-outputs="matrix|table|summary" data-published="2026-10-28" data-version="2.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="../../assets/media/tools/celltype-cooccurrence.webp?v=871ec925fb" srcset="../../assets/media/tools/celltype-cooccurrence.webp?v=871ec925fb 720w, ../../assets/media/tools/celltype-cooccurrence@2x.webp?v=57ab831e44 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/celltype-cooccurrence/">Cell-Type Co-occurrence</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-28">28 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Which cell types are found near each other more often than expected by chance.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="pv-tag st-badge" title="Written in Python">Python</span>
+    <span class="st-card__ver" title="Version">v2.0.0</span>
+  </div>
+</article>
+</li>
+      </ul>
+    </section>
+  </div>
+</main>
+<footer class="pv-footer">
+  <div class="pv-footer__inner">
+    <a class="pv-footer__brand" href="https://pointillviz.com/" translate="no"><img src="../../assets/pv/logo-mark.svg" width="28" height="28" alt="">PointillViz</a>
+    <nav class="pv-footer__sites" aria-label="PointillViz sites">
+      <ul>
+        <li><a href="https://pointillviz.com/"><span class="pv-footer__site">Overview</span><span class="pv-footer__host">pointillviz.com</span></a></li>
+        <li><a href="https://docs.pointillviz.com/"><span class="pv-footer__site">Docs</span><span class="pv-footer__host">docs.pointillviz.com</span></a></li>
+        <li><a href="../../" aria-current="true"><span class="pv-footer__site">Tool Store</span><span class="pv-footer__host">store.pointillviz.com</span></a></li>
+      </ul>
+    </nav>
+    <p class="pv-footer__pub">Preprint: Authors <em>et&nbsp;al.</em>, bioRxiv · <a href="#" data-placeholder="paper">Coming soon</a></p>
+    <p class="pv-footer__copy">© 2026 PointillViz</p>
+  </div>
+</footer>
+</body>
+</html>
