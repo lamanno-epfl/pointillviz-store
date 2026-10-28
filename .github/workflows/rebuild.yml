@@ -1,0 +1,55 @@
+# Keeps the store in step with the public registry. Every hour, and when the
+# build itself changes, it rebuilds the store's data, artwork and tool pages
+# from the registry's index.json with the scripts in _build/, and commits what
+# changed. A commit made with the workflow's token starts no Pages build, so
+# the workflow then asks GitHub Pages for one.
+#
+# The registry's strings and artwork are their authors', merged without review.
+# The build runs nothing from the registry: it escapes all text, allows only
+# http(s) links and rasterizes the artwork (see _build/build_store_data.py).
+name: rebuild
+
+on:
+  schedule:
+    - cron: "41 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["_build/**", ".github/workflows/rebuild.yml"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rebuild
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    name: Rebuild from the registry
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write         # commit the rebuilt store
+      pages: write            # ask GitHub Pages to publish it
+    steps:
+      - uses: actions/checkout@v7
+      - uses: prefix-dev/setup-pixi@v0.11.2
+        with:
+          pixi-version: v0.83.0
+          manifest-path: _build/pixi.toml
+          locked: true
+      - run: pixi run --locked --manifest-path _build/pixi.toml build
+      - name: Commit and publish what changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "The store already matches the registry."
+            exit 0
+          fi
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -q -m "Rebuild from the registry's index"
+          git push origin HEAD:main
+          gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds" --jq .status

@@ -1,0 +1,15 @@
+# The store site's build. rsvg-convert rasterizes each tool's artwork and Pillow
+# encodes it; the lock pins both, so that the same index gives the same bytes
+# here and in the rebuild workflow.
+[workspace]
+name = "pointillviz-store-build"
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[dependencies]
+python = "3.12.*"
+pillow = "*"
+librsvg = "*"
+
+[tasks]
+build = "python -I build_store_data.py && python -I build_store_pages.py"

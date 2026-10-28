@@ -25,6 +25,8 @@ Everything here is static. GitHub Pages serves the files as they are, with no bu
 | `assets/media/tools/` | Each tool's card artwork as WebP, 720 × 420 and 1440 × 840 (`@2x`). Generated. |
 | `assets/media/social/` | 1200 × 630 link previews: one per tool, and `store.jpg` for the gallery. Generated. |
 | `assets/media/*.webp` | The Tools tab at its real size and Fig. 2a's result (gallery), and Fig. 2a (Build & publish). Generated once. |
+| `_build/` | The two scripts that generate the pages from the registry, the fonts of the link previews (DM Sans and JetBrains Mono, SIL OFL 1.1, with their licences) and the locked environment they run in (`pixi.toml`, `pixi.lock`). |
+| `.github/workflows/rebuild.yml` | Rebuilds the store from the registry every hour, and commits what changed. |
 | `CNAME` | The custom domain. GitHub Pages reads it, so leave it in place. |
 | `.nojekyll` | Tells GitHub Pages to publish the files as they are. |
 
@@ -33,21 +35,29 @@ folder in the public registry.
 
 ## Regenerate the pages
 
-The scripts live in the `tools/` folder of the PointillViz web workspace, next to this site
-(`build_store_data.py`, `build_store_pages.py`, `build_store_media.py`). They read the registry's
+The store keeps itself up to date. Every hour, the `rebuild` workflow runs the two scripts in
+`_build/` (`build_store_data.py`, then `build_store_pages.py`) against the public registry's
+`index.json`, commits what changed, and asks GitHub Pages to publish it. It runs them in the
+environment of `_build/pixi.toml`, whose lock pins Pillow and librsvg, so the same index always gives
+the same bytes. Commit only what that environment builds: other versions encode the artwork
+differently.
+
+The scripts read the registry's
 `index.json`, which its release workflow builds with `scripts/build_index.py`: each tool's latest
 version, with its manifest, its bundle's address and size, its gate report and its release date,
 and the tools announced as Coming soon. A tool's `README.md` and `preview.svg` come from a registry
 checkout's `tools/<id>/` when there is one, or else from the addresses the index gives.
 
 ```bash
-# 1. Data and artwork (needs Pillow and rsvg-convert, both in the penv environment)
-python -I tools/build_store_data.py                          # index.json of the registry beside the workspace
-python -I tools/build_store_data.py --index PATH|URL         # or any other index
-python -I tools/build_store_data.py --index PATH --out DIR   # into a copy of this site, for tests
+pixi run --manifest-path _build/pixi.toml build              # both steps, as the workflow runs them
+
+# 1. Data and artwork (needs Pillow and rsvg-convert: run it in _build/pixi.toml's environment)
+python -I _build/build_store_data.py --index PATH|URL        # any other index
+python -I _build/build_store_data.py --index PATH --registry DIR --out DIR
+                                                             # a registry checkout, into a copy of this site
 
 # 2. Pages (any Python 3.8+, no packages)
-python3 -I tools/build_store_pages.py                        # or --out DIR, as above
+python3 -I _build/build_store_pages.py                       # or --out DIR, as above
 ```
 
 `build_store_data.py` writes `data/tools.json`, `data/tools-index.json`, the artwork and the link
@@ -69,18 +79,18 @@ cards; with JavaScript, `assets/store.js` loads `data/tools-index.json` and filt
 searches in the browser, and keeps the choice in the address (`?q=`, `?tag=`, `?out=`, `?sort=`).
 Search also finds the Coming soon cards; a tag or output filter leaves them out.
 
-`build_store_media.py` crops the page pictures from the PointillViz paper's figure sources. Run it
-only if those change.
+`build_store_media.py` crops the page pictures from the PointillViz paper's figure sources. It lives
+in the PointillViz web workspace, not here, because those sources are not public. Run it only if they
+change.
 
 Both scripts write a file only when its content changed, so a rerun leaves `git status` clean.
 
 ## Add a tool
 
-1. The tool is published in the public registry: a pull request adds its folder, and once it is
-   merged the release workflow runs the gates, releases its bundle and adds it to `index.json`
-   (the registry's CONTRIBUTING.md has the details).
-2. Run the two scripts above, in order.
-3. Check the new page at `tools/<id>/` and the gallery, then commit and push.
+1. The tool is published in the public registry: a pull request adds its folder, it is merged
+   automatically once its checks pass, and the release workflow releases its bundle and adds it to
+   `index.json` (the registry's CONTRIBUTING.md has the details).
+2. Within the hour, the rebuild workflow adds its page and its card here. Nothing is done by hand.
 
 A new version of a listed tool works the same way: the index lists only the latest version, and the
 earlier ones stay available as the registry's GitHub releases.
