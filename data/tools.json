@@ -1,7 +1,7 @@
 {
  "schema": 2,
  "source": "the PointillViz tool registry's index.json, latest version of each tool",
- "count": 14,
+ "count": 15,
  "gate_order": [
   "bundle",
   "manifest",
@@ -16,15 +16,15 @@
  "tags": [
   {
    "tag": "spatial",
-   "count": 13
+   "count": 14
   },
   {
    "tag": "cell types",
-   "count": 9
+   "count": 10
   },
   {
    "tag": "expression",
-   "count": 3
+   "count": 4
   },
   {
    "tag": "clustering",
@@ -32,6 +32,10 @@
   },
   {
    "tag": "connectivity",
+   "count": 2
+  },
+  {
+   "tag": "density",
    "count": 2
   },
   {
@@ -71,15 +75,15 @@
    "count": 1
   },
   {
-   "tag": "density",
-   "count": 1
-  },
-  {
    "tag": "domains",
    "count": 1
   },
   {
    "tag": "entropy",
+   "count": 1
+  },
+  {
+   "tag": "figure",
    "count": 1
   },
   {
@@ -119,6 +123,10 @@
    "count": 1
   },
   {
+   "tag": "relief",
+   "count": 1
+  },
+  {
    "tag": "scale",
    "count": 1
   },
@@ -135,15 +143,15 @@
   "tags": [
    {
     "tag": "spatial",
-    "count": 13
+    "count": 14
    },
    {
     "tag": "cell types",
-    "count": 9
+    "count": 10
    },
    {
     "tag": "expression",
-    "count": 3
+    "count": 4
    },
    {
     "tag": "clustering",
@@ -151,6 +159,10 @@
    },
    {
     "tag": "connectivity",
+    "count": 2
+   },
+   {
+    "tag": "density",
     "count": 2
    },
    {
@@ -203,12 +215,12 @@
    },
    {
     "out": "images",
-    "count": 1,
+    "count": 2,
     "help": "returns figures"
    },
    {
     "out": "files",
-    "count": 2,
+    "count": 3,
     "help": "returns files to download"
    }
   ]
@@ -217,6 +229,176 @@
   "summary"
  ],
  "tools": [
+  {
+   "id": "ridge-map",
+   "name": "Ridge Map",
+   "version": "1.0.0",
+   "author": "PointillViz authors",
+   "description": "A tissue section as a relief of ridges, their height a gene or the cell density, their colour the most common cell type.",
+   "readme_html": "<p>Answers the question: <strong>How does a gene’s expression, or the density of cells, rise and fall across the section, and over which cell types?</strong></p>\n<p>The tool cuts the section into horizontal strips and draws each one as a ridge, a joy plot laid over the tissue. Ridges are drawn from the back of the figure to its front, and each hides what stands behind it, so the tissue’s architecture reads as a relief.</p>\n<p>Every height and colour is measured around its place on the strip with a Gaussian of width <math translate=\"no\"><mi>σ</mi></math>, so the strips are cross-sections of one smooth surface and a peak carries on from one strip to the next. A cell <math translate=\"no\"><mi>j</mi></math> at distance <math translate=\"no\"><msub><mi>d</mi><mi>j</mi></msub></math> from that place weighs <math translate=\"no\"><msub><mi>w</mi><mi>j</mi></msub><mo>=</mo><mi>exp</mi><mrow><mo stretchy=\"false\">(</mo><mo>−</mo><msubsup><mi>d</mi><mi>j</mi><mn>2</mn></msubsup><mo lspace=\"0\" rspace=\"0\">/</mo><mn>2</mn><msup><mi>σ</mi><mn>2</mn></msup><mo stretchy=\"false\">)</mo></mrow></math>, by its true position, so a regular lattice of pixels draws flat. With <math translate=\"no\"><msub><mi>a</mi><mi>j</mi></msub></math> its expression in log1p(CP10K), the height is the gene’s local mean:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"h(x, y) = (sum over j of w_j a_j) / (sum over j of w_j)\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>h</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><msub><mi>a</mi><mi>j</mi></msub></mrow><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub></mrow></mfrac></math></span></span></div></div>\n<p>With no gene chosen, it is the local cell density:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"h(x, y) = (sum over j of w_j) / (2πσ^2)\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>h</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub></mrow><mrow><mn>2</mn><mi>π</mi><msup><mi>σ</mi><mn>2</mn></msup></mrow></mfrac></math></span></span></div></div>\n<p><strong>Figure.</strong> The section keeps its proportions and the orientation of the map.</p>\n<ul><li><strong>Height.</strong> The tallest ridge stands <em>Relief</em> strip heights tall. The bar in the key shows a round value at its true height, and it applies to every ridge. A gene’s height is on a log scale: a ridge twice as tall is far more than twice the expression. The figures of one run share one scale, but two runs do not: compare them by their bars.</li><li><strong>Place.</strong> A peak stands behind its baseline: it rises up the figure from its own strip and overlaps the strips further back. A place on the tissue is where its ridge starts, not the top of the peak.</li><li><strong>Colour.</strong> Each stretch of a ridge takes the map’s colour of the cell type with the most cells around it, counted with the same weights. It says which cell type is most common at that place, not which cells express the gene. A colour with less than 3:1 contrast on black is lightened just enough, keeping its hue, and the summary says so. A stretch shorter than 5 px takes the colour of its longer neighbour, at any number of strips. The soft glow under a ridge is the same colour, brighter the higher the ridge stands within its stretch of tissue, and adds no measurement.</li><li><strong>Edges.</strong> A ridge is drawn where the Gaussian holds at least 10% of what it holds around the section’s typical cell. Along the strip, it comes down to its baseline over 3<math translate=\"no\"><mi>σ</mi></math> at each end, where the tissue stops, so gaps and tears stay black, and the heights in that margin are lower than measured. Patches holding fewer than 0.05% of the section’s cells are taken for strays and not drawn. So are cells far outside the section, past an empty gap as wide as the middle 90% of the section, and they do not change the figure’s scale. A distant piece holding more than 5% of the cells counts as tissue.</li></ul>\n<p><strong>Cells that say nothing.</strong> A cell with no coordinates cannot be drawn. A cell whose section did not measure the gene is left out as well: it does not count as zero, and a section that did not measure the gene draws no figure. Cells with no cell type count toward the height but not the colours; a stretch with no labelled cell around it is grey, named Unlabelled in the key. The summary gives their number when a grey stretch is drawn, or when they reach 1% of the cells drawn.</p>\n<p><strong>Sections and selections.</strong> Each section draws its own figure, up to the 8 largest, at one scale of length, strip height and ridge height, and names itself in its key. Isolate a section to draw only that one. With cells selected, only they are drawn, and the figure closes in on them.</p>\n<p><strong>Outputs.</strong> The figure, the same figure as an SVG download, and a summary: the cells and strips drawn, the scale of this run, and the cell types over which the ridges stand tallest on average. It counts the cells not drawn, by reason: no coordinates, gene not measured, far outside the section, in a section left out, sparse or stray. It also counts the cell types present but not drawn, because none is the most common over a long enough stretch, and names them when there are at most five.</p>\n<h3>Parameters</h3>\n<ul><li><strong>Gene.</strong> Sets the height of the ridges. With no gene chosen, the height is the cell density.</li><li><strong>Strips.</strong> How many strips the section is cut into. Fewer are cut when each would hold fewer than 15 cells on average, when they would lie closer than 2.5 px, or when the figures would still not fit the 8 MiB output limit with fewer points on each ridge and longer stretches of one colour. The limit is measured on the figures themselves, and the summary says when this happens. A strip with no tissue in it draws no ridge.</li><li><strong>Relief.</strong> How tall the tallest ridge stands, in strip heights, up to half the figure’s height.</li><li><strong>Smoothing.</strong> The width <math translate=\"no\"><mi>σ</mi></math> of the Gaussian, in strip heights. It widens by itself when it would hold fewer than 5 cells on average, or when it would be narrower than the figure can draw, and the summary says so.</li></ul>\n<h3>Limitations</h3>\n<p>The figure is for reading the shape of a tissue, not for testing it: no height carries a significance. Tall ridges hide what stands behind them, so a low signal next to a high one can be out of sight; lower the relief, or read the place on the map.</p>\n<p>Colour shows only the most common cell type, so a rare type can be present and never be drawn.</p>\n<p>The tool needs 2D coordinates and a cell-type annotation. A 3D dataset is not offered it.</p>",
+   "citation": "",
+   "tags": [
+    "spatial",
+    "expression",
+    "density",
+    "cell types",
+    "relief",
+    "figure"
+   ],
+   "icon": "landscape",
+   "language": "python",
+   "language_label": "Python",
+   "gpu": null,
+   "gpu_label": "",
+   "parameters": [
+    {
+     "name": "gene",
+     "label": "Gene",
+     "type": "gene",
+     "default": null,
+     "optional": true,
+     "help": "Selects the gene whose local expression sets the height of the ridges.\nWith no gene chosen, the height is the local cell density.",
+     "type_text": "gene",
+     "default_text": "optional"
+    },
+    {
+     "name": "strips",
+     "label": "Strips",
+     "type": "int",
+     "default": 120,
+     "optional": false,
+     "help": "Sets how many horizontal strips the section is cut into, one ridge each.\nMore strips draw finer detail; fewer draw a bolder figure.",
+     "min": 20.0,
+     "max": 300.0,
+     "step": 5.0,
+     "type_text": "int, 20–300",
+     "default_text": "120"
+    },
+    {
+     "name": "relief",
+     "label": "Relief",
+     "type": "float",
+     "default": 8,
+     "optional": false,
+     "help": "Sets how tall the tallest ridge stands, in strip heights.\nTaller ridges make a more dramatic landscape and hide more of what stands behind them.",
+     "min": 1.0,
+     "max": 30.0,
+     "step": 0.5,
+     "type_text": "float, 1–30",
+     "default_text": "8"
+    },
+    {
+     "name": "smoothing",
+     "label": "Smoothing",
+     "type": "float",
+     "default": 0.75,
+     "optional": false,
+     "help": "Sets the width of the neighbourhood each height and colour is measured in, the σ of a Gaussian, in strip heights.\nLarger values draw calmer ridges and longer stretches of one colour.",
+     "min": 0.25,
+     "max": 3.0,
+     "step": 0.05,
+     "type_text": "float, 0.25–3",
+     "default_text": "0.75"
+    }
+   ],
+   "sweep": null,
+   "outputs": [
+    "summary",
+    "images",
+    "files"
+   ],
+   "optional_outputs": [],
+   "output_help": {
+    "summary": "writes a summary",
+    "images": "returns figures",
+    "files": "returns files to download"
+   },
+   "requires": {
+    "genes": false,
+    "cell_types": true,
+    "categoricals": false,
+    "spatial": "2d",
+    "min_cells": 200
+   },
+   "needs": [
+    "cell types",
+    "2D coordinates",
+    "200+ cells"
+   ],
+   "license": "MIT",
+   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/ridge-map-v1.0.0/ridge-map-1.0.0.pvtool",
+   "bundle_size": "36.2 kB",
+   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/ridge-map",
+   "published": "2026-11-04",
+   "published_date": "4 Nov 2026",
+   "gates": [
+    {
+     "id": "bundle",
+     "required": true,
+     "status": "pass",
+     "message": "6 files, 36.2 kB packed and 166.4 kB unpacked, plugin.json at the root."
+    },
+    {
+     "id": "manifest",
+     "required": true,
+     "status": "pass",
+     "message": "ridge-map 1.0.0 by PointillViz authors; Python entry tool.py, outputs summary, images, files."
+    },
+    {
+     "id": "environment",
+     "required": true,
+     "status": "pass",
+     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
+    },
+    {
+     "id": "entry",
+     "required": true,
+     "status": "pass",
+     "message": "tool.py imported in 0.17 s and defines run(ds, params)."
+    },
+    {
+     "id": "imports",
+     "required": false,
+     "status": "pass",
+     "message": "1 source file, using colorsys, html, math, numpy, pointillviz_tool, re, scipy; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
+    },
+    {
+     "id": "fixture",
+     "required": true,
+     "status": "pass",
+     "message": "ran on the 600-cell fixture in 0.14 s, returning summary, files, images."
+    },
+    {
+     "id": "result",
+     "required": true,
+     "status": "pass",
+     "message": "returned the declared outputs: summary, files, images."
+    },
+    {
+     "id": "edge",
+     "required": true,
+     "status": "pass",
+     "message": "ran at the minimum corner (relief=1.0, smoothing=0.25, strips=20) in 0.14 s; ran at the maximum corner (relief=30.0, smoothing=3.0, strips=300) in 0.21 s."
+    },
+    {
+     "id": "no_mutation",
+     "required": true,
+     "status": "pass",
+     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
+    }
+   ],
+   "risks": [],
+   "art": {
+    "src": "assets/media/tools/ridge-map.webp?v=504cfe2fb6",
+    "src2x": "assets/media/tools/ridge-map@2x.webp?v=cfdf200628",
+    "width": 720,
+    "height": 420,
+    "alt": "Ridge map: rows of coloured ridges, each hiding the one behind it, rising into a relief over a rounded shape. An illustration, not a real tissue.",
+    "generated": false
+   },
+   "social": "assets/media/social/ridge-map.jpg",
+   "url": "tools/ridge-map/"
+  },
   {
    "id": "tissue-permeability",
    "name": "Tissue Permeability",
