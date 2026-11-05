@@ -247,6 +247,11 @@
         shown.forEach((t) => { const c = cells.get(t.id); if (c) { c.hidden = false; grid.appendChild(c); } });
         soon.forEach((c) => { c.hidden = !soonShown.includes(c); grid.appendChild(c); });
         cells.forEach((c, id) => { if (!showIds.has(id)) { c.hidden = true; grid.appendChild(c); } });
+        // Search and Filters are in reach at any depth of the page, under a header that
+        // stays: an answer to them starts at its first result, not somewhere below it.
+        if (animate && window.scrollY > 0 && hero && getComputedStyle(hero).position === 'sticky') {
+          window.scrollTo({ top: 0, behavior: 'instant' });
+        }
       };
       if (animate && !firstApply && !reduced() && 'animate' in Element.prototype) flip(mutate);
       else mutate();
@@ -481,19 +486,15 @@
     let shownCell = null, restTimer = 0, leaveTimer = 0, lastScroll = -1e4;
     window.addEventListener('scroll', () => { lastScroll = performance.now(); }, { passive: true });
 
-    // How much of the hero is on screen: whether its band has stuck under the top bar,
-    // whether the hero's words still have their place, and how wide a picture is.
+    // The hero stays where it is: whether tools are passing under it (it takes a rule
+    // then), and how much room a picture leaves its words.
     function heroState() {
       if (!hero) return;
-      const H = hero.offsetHeight;
       const k = scaleK();
-      const band = 80 * k;
       const sticky = getComputedStyle(hero).position === 'sticky';
-      const covered = sticky ? Math.max(0, Math.min(H - band, barBlock() - hero.getBoundingClientRect().top)) : 0;
-      hero.classList.toggle('is-stuck', sticky && covered >= H - band - 1);
-      hero.classList.toggle('is-compact', covered > 20 * k);
+      hero.classList.toggle('is-stuck', sticky && window.scrollY > 1);
       const can = field && field.canShow();
-      hero.style.setProperty('--st-pic-w', can ? `${((H - covered - 20 * k) * 12) / 7 / k}px` : '0px');
+      hero.style.setProperty('--st-pic-w', can ? `${((hero.offsetHeight - 20 * k) * 12) / 7 / k}px` : '0px');
     }
     let stateFrame = 0;
     const queueState = () => { if (!stateFrame) stateFrame = requestAnimationFrame(() => { stateFrame = 0; heroState(); }); };

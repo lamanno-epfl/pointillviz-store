@@ -44,13 +44,12 @@
 
 
 /* 2 · The hero and its field ==============================================
-   A third of the screen, and one sticky element: as the page scrolls its top
-   slides under the top bar and its foot, the band with search and Filters, stays.
-   field.js gathers the points into a tool's artwork in whatever part is on screen. */
+   A third of the screen, and it stays there: only the tools scroll, under it, so
+   the header and what it shows for a tool are the same at any depth of the page.
+   field.js gathers the points into a tool's artwork inside it. */
 
 :root {
   --st-hero-h: calc(clamp(196px, 26.2vh, 236px) * var(--k));
-  --st-band-h: calc(80px * var(--k));
 }
 .st-shop { position: relative; }
 .st-hero {
@@ -77,7 +76,7 @@
   pointer-events: none;
 }
 .st-js .st-hero:not(.no-field)::before { content: none; }
-/* The chrome's dotted rule, once the band has stuck. */
+/* The chrome's dotted rule, once tools are passing under it. */
 .st-hero::after {
   content: "";
   position: absolute;
@@ -94,13 +93,12 @@
 .st-hero__in {
   position: relative;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: minmax(0, 1fr) auto;
-  gap: 0 24px;
   padding-top: 14px;
 }
 .st-hero__words {
-  grid-area: 1 / 1 / 2 / -1;
+  grid-area: 1 / 1;
   align-self: end;
   min-width: 0;
   transition: opacity 200ms ease, transform 320ms var(--pv-ease-out);
@@ -125,8 +123,7 @@
 /* While the pointer rests on a plate the hero speaks of that tool: its name in the
    title's place and its whole description under it. */
 .st-now {
-  container-type: inline-size;
-  grid-area: 1 / 1 / 2 / -1;
+  grid-area: 1 / 1;
   align-self: end;
   max-width: min(44em, calc(100% - var(--st-pic-w, 0px) - 32px));
   opacity: 0;
@@ -150,35 +147,16 @@
 }
 .st-hero.is-long .st-now__desc { font-size: 0.875rem; line-height: 1.36; }
 .st-hero.is-xlong .st-now__desc { display: none; }
-.st-hero.is-long-name:not(.is-compact) .st-now__name { font-size: 1.5rem; line-height: 1.14; letter-spacing: -0.016em; }
+.st-hero.is-long-name .st-now__name { font-size: 1.5rem; line-height: 1.14; letter-spacing: -0.016em; }
 /* One at a time, so that the two never stand over each other: the words leaving go
    quickly and the words arriving wait for them. */
 .st-hero:not(.is-preview) .st-now { transition: opacity 80ms ease, transform 80ms ease; }
 .st-hero:not(.is-preview) .st-hero__words { transition: opacity 200ms ease 80ms, transform 320ms var(--pv-ease-out) 80ms; }
 .st-hero.is-preview .st-hero__words { opacity: 0; transform: translateY(-5px); transition: opacity 80ms ease, transform 80ms ease; }
-.st-hero.is-stuck .st-hero__words { opacity: 0; visibility: hidden; transition: opacity 120ms ease, visibility 0s linear 120ms; }
 .st-hero.is-preview .st-now { opacity: 1; transform: none; transition: opacity 160ms ease 80ms, transform 280ms var(--pv-ease-out) 80ms; }
-/* As the hero slides under the top bar the words move into the band, beside the
-   picture, which shrinks with what is left on screen. */
-.st-hero.is-compact .st-now {
-  grid-area: 2 / 2;
-  align-self: center;
-  max-width: calc(100% - var(--st-pic-w, 0px) - 24px);
-}
-.st-hero.is-compact .st-now__name { font-size: 0.9688rem; line-height: 1.3; letter-spacing: -0.008em; }
-/* Too little room for the whole line: the name alone, and then not even that. The tool's
-   page holds the rest. */
-@container (max-width: 439.98px) {
-  .st-hero.is-compact .st-now__desc { display: none; }
-}
-@container (max-width: 139.98px) {
-  .st-hero.is-compact .st-now__name { display: none; }
-}
-.st-hero.is-compact .st-now__desc { margin-top: 1px; font-size: 0.8438rem; line-height: 1.32; }
-.st-hero.is-compact.is-long .st-now__desc { font-size: 0.75rem; line-height: 1.26; }
 
 .st-controls {
-  grid-area: 2 / 1 / 3 / -1;
+  grid-area: 2 / 1;
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -187,7 +165,6 @@
   min-height: 80px;
   padding-block: 12px;
 }
-.st-hero.is-compact .st-controls { grid-area: 2 / 1; }
 .st-search { flex: 0 1 440px; width: 440px; max-width: 100%; }
 .st-search .pv-search__input { padding-inline-end: 44px; background: rgba(6, 7, 13, 0.86); }
 .st-search .pv-search__input::-webkit-search-cancel-button { -webkit-appearance: none; }
@@ -1305,25 +1282,30 @@ body.st-page--soon { display: flex; flex-direction: column; }
 
 /* 10 · Responsive ========================================================== */
 
-/* The hero sticks, and is a third of the screen, wherever there is room for both. */
+/* The hero stays, and is a third of the screen, wherever there is room for both. */
 @media (min-width: 760px) and (min-height: 600px) {
   .st-hero {
     position: sticky;
-    top: calc(var(--pv-topbar-block) - var(--st-hero-h) + var(--st-band-h));
+    top: var(--pv-topbar-block);
     z-index: var(--pv-z-sticky);
     height: var(--st-hero-h);
+    /* Its ink reaches up behind the top bar: tools gone under it do not show in the bar's glass. */
+    box-shadow: 0 calc(-1 * var(--pv-topbar-block)) 0 var(--pv-bg);
   }
   .st-hero__in { height: calc(var(--st-hero-h) / var(--k)); }
-  /* Tabbing to a plate brings it clear of the sticky band. */
-  .st-card { scroll-margin-block: 160px 24px; }
+  /* Tabbing to a plate, or a link to the safety note, brings it clear of the hero. */
+  .st-results { --st-clear: calc((var(--pv-topbar-block) + var(--st-hero-h)) / var(--k) + 16px); }
+  .st-card { scroll-margin-block: var(--st-clear) 24px; }
+  .st-safety { scroll-margin-top: var(--st-clear); }
+  /* The panel hangs from a hero that does not move: on a short screen it scrolls by itself. */
+  .st-filters {
+    max-height: calc((100vh - var(--pv-topbar-block) - var(--st-hero-h)) / var(--k));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
   /* Without JavaScript there is no search or filter to keep on screen. */
-  html:not(.st-js) .st-hero { position: relative; top: auto; height: auto; }
+  html:not(.st-js) .st-hero { position: relative; top: auto; height: auto; box-shadow: none; }
   html:not(.st-js) .st-hero__in { height: auto; padding-block: 28px 18px; }
-}
-
-/* Under this the words and a picture no longer fit side by side. */
-@media (max-width: 1179.98px) {
-  .st-hero.is-compact .st-now { display: none; }
 }
 
 @media (max-width: 1023.98px) {

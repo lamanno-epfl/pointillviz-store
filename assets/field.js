@@ -462,8 +462,8 @@ void main() {
       if (art) { sampledH = 0; place(); }
     }
 
-    /* The picture sits in what is on screen of the hero: all of it at the top of
-       the page, its band under the top bar once that has stuck. */
+    /* The picture sits in what is on screen of the hero: all of it wherever the hero
+       stays in place, what is left of it in a short window, where it scrolls away. */
     function layout(visTop) {
       const visH = H - visTop;
       const pad = 10 * k;
@@ -543,7 +543,7 @@ void main() {
           if (ty !== rowY) {
             rowY = ty;
             rowV = ty / H;
-            // Nothing under the top bar; once the band has stuck the field is quieter.
+            // Nothing under the top bar.
             rowFoot = ty < visTop ? 0 : 1 - smooth(0.66, 1, (ty - visTop) / visH);
             rowEdge = H - ty >= 16 * k ? 1 : smooth(0, 16 * k, H - ty);
             rowHue = 0.03 * Math.sin(rowV * 6 + t * 0.07);
@@ -645,7 +645,7 @@ void main() {
       raf = requestAnimationFrame(tick);
       if (now > busyUntil && now - t0 > 2500) {
         // The resting drift is slow: every second frame is enough for it, and none at
-        // all once the band has stuck, when the plates are what the reader came for.
+        // all once the hero has mostly scrolled away (a short window).
         if (frame++ & 1) return;
         if (host.getBoundingClientRect().top < barPx - H * 0.5) return;
       }
@@ -674,8 +674,13 @@ void main() {
     }
     doc.addEventListener('visibilitychange', sync);
     reduceMQ.addEventListener('change', sync);
-    // The field follows the part of the hero on screen while the page scrolls.
+    // Where the hero scrolls away, the field follows the part of it on screen. Where it
+    // stays in place, a scroll of the tools under it asks nothing of the field.
+    let lastTop = host.getBoundingClientRect().top;
     window.addEventListener('scroll', () => {
+      const top = host.getBoundingClientRect().top;
+      if (top === lastTop) return;
+      lastTop = top;
       busyUntil = Math.max(busyUntil, performance.now() + 240);
       if (!raf && inView && built) step(performance.now(), true);
     }, { passive: true });
