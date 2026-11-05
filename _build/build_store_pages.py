@@ -10,10 +10,10 @@ Run _build/build_store_data.py first. This script writes:
                                 page (its name and one line) per placeholder;
                                 it removes the folders of tools no longer listed
   store/index.html              only the regions between build markers:
-                                  <!-- store:cards -->  the card grid, Newest first,
-                                                        then the Coming soon cards
-                                  <!-- store:tags -->   the filters: shared tags, then outputs
-                                  <!-- store:count -->  "13 tools published"
+                                  <!-- store:cards -->    the card grid, Newest first,
+                                                          then the Coming soon cards
+                                  <!-- store:filters -->  the filters panel's options:
+                                                          shared tags, then outputs
                                 and the tool count in its og:description
   store/404.html                only its logo regions (<!-- store:logo-* -->): the
                                 logos as data URIs, since a 404 at any depth cannot
@@ -52,12 +52,11 @@ GATE_DONE = {"pass": "pass", "fail": "fail", "skip": "skipped", "warn": "flagged
 GATE_STATE = {"pass": "pass", "fail": "fail", "skip": "pending", "warn": "advisory"}
 # Badge and note texts, in the words of brief/CONTENT.md (B5, B7).
 GATES_NOTE = "Passing the gates is a statement about the gates, not about whether the code is safe to run."
-LANG_TIP = "Written in {}"
-GPU_TIP = {"optional": "Runs on the CPU or a GPU: you choose when you run it.",
-           "required": ("Meant for a GPU. PointillViz selects the GPU when the computer has one; "
-                        "the tool also runs on the CPU.")}
+GPU_FACT = {"optional": "Optional: you choose when you run it",
+            "required": "Meant for a GPU; also runs on the CPU"}
+HOWTO_LABEL = "How to install and run a tool"
 STORE_ART_ALT = "The Tool Store wordmark above the artwork of its community tools."
-NBSP = "\xa0"
+OUTPUT_GLYPHS = frozenset({"cells", "labels", "vectors", "matrix", "series", "chord", "images", "files", "table", "summary"})
 
 
 def esc(s) -> str:
@@ -74,10 +73,6 @@ def first_sentence(text: str, limit: int = 120) -> str:
         return text
     m = re.match(r"^(.+?[.!?])(\s|$)", text)
     return m.group(1) if m else text[:limit].rsplit(" ", 1)[0] + "…"
-
-
-def plural(n: int, word: str) -> str:
-    return f"{n} {word}{'' if n == 1 else 's'}"
 
 
 # --------------------------------------------------------------------------- chrome
@@ -99,7 +94,7 @@ MENU_DOTS = ('<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><c
 
 
 def head(root: str, title: str, desc: str, og_title: str, og_desc: str, url: str, image: str,
-         image_alt: str, extra: str = "") -> str:
+         image_alt: str, scripts: str = "", early: str = "") -> str:
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -123,13 +118,13 @@ def head(root: str, title: str, desc: str, og_title: str, og_desc: str, url: str
 <link rel="icon" href="{root}assets/pv/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&amp;family=Fraunces:opsz,wght@9..144,600&amp;family=JetBrains+Mono:wght@400..600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&amp;family=JetBrains+Mono:wght@400..600&amp;display=swap">
 <link rel="stylesheet" href="{root}assets/pv/pv.css">
 <link rel="stylesheet" href="{root}assets/store.css">
-<script src="{root}assets/pv/pv.js" defer></script>
-<script src="{root}assets/store.js" defer></script>
-<script>document.documentElement.classList.add('st-js')</script>
-<noscript><style>.pv-topbar__menu {{ display: none !important; }}</style></noscript>{extra}
+<script src="{root}assets/pv/pv.js" defer></script>{scripts}
+<script src="{root}assets/store.js" defer onerror="document.documentElement.classList.remove('st-js')"></script>
+<script>document.documentElement.classList.add('st-js'){early}</script>
+<noscript><style>.pv-topbar__menu {{ display: none !important; }}</style></noscript>
 </head>"""
 
 
@@ -220,158 +215,289 @@ def art_img(t: dict, root: str, sizes: str, eager: bool = False, alt: str = "") 
             f'height="{a["height"]}" alt="{esc(alt)}" {load} decoding="async">')
 
 
-def badges(t: dict) -> str:
-    """The language the tool is written in, and whether it can use a GPU."""
-    out = f'<span class="pv-tag st-badge" title="{esc(LANG_TIP.format(t["language_label"]))}">{esc(t["language_label"])}</span>'
-    if t.get("gpu"):
-        out += (f'<span class="pv-tag st-badge" title="{esc(GPU_TIP.get(t["gpu"], ""))}">'
-                f'{esc(t["gpu_label"])}</span>')
-    return out
+CARD_SIZES = "(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw"
 
 
-def risk_chips(t: dict) -> str:
-    return "".join(
-        f'<span class="st-risk" title="Disclosed by the advisory imports gate: this tool {esc(r["text"])}. '
-        f'A tool can pass every gate and still do this.">{esc(r["label"])}</span>' for r in t["risks"])
-
-
-CARD_SIZES = "(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw"
-
-
-def card_html(t: dict, root: str = "", eager: bool = False, heading: str = "h3", hidden_outputs=()) -> str:
-    """One card. Outputs that every tool returns (a summary) are left off the card;
-    the tool's page lists them all. The tags are on the tool's page and in search."""
+def card_html(t: dict, root: str = "", eager: bool = False, heading: str = "h3") -> str:
+    """One plate: the artwork and the name. The description is in the markup for
+    search, for screen readers and for a reader without JavaScript; with JavaScript
+    the hero says it while the plate is under the pointer (store.css §4, store.js).
+    Everything else about a tool is on its page."""
     all_outs = t["outputs"] + t["optional_outputs"]
-    outs = "".join(f'<li class="pv-tag pv-tag--out" title="{esc(t["output_help"].get(o, o))}">{esc(o)}</li>'
-                   for o in all_outs if o not in hidden_outputs)
-    data = (f'data-id="{esc(t["id"])}" data-name="{esc(t["name"])}" data-tags="{esc("|".join(t["tags"]))}" '
-            f'data-outputs="{esc("|".join(all_outs))}" data-published="{esc(t["published"])}" '
-            f'data-version="{esc(t["version"])}"')
+    data = (f'data-id="{esc(t["id"])}" data-name="{esc(t["name"])}" data-author="{esc(t["author"])}" '
+            f'data-tags="{esc("|".join(t["tags"]))}" data-outputs="{esc("|".join(all_outs))}" '
+            f'data-published="{esc(t["published"])}" data-version="{esc(t["version"])}"')
     return f"""<li class="st-cell" {data}>
-<article class="pv-card pv-card--link st-card">
+<a class="st-card" href="{root}{esc(t['url'])}">
   <div class="st-card__art">{art_img(t, root, CARD_SIZES, eager)}</div>
-  <{heading} class="pv-card__title st-card__title"><a class="pv-card__link" href="{root}{esc(t['url'])}">{esc(t['name'])}</a></{heading}>
-  <p class="pv-card__meta st-card__by"><span class="st-card__author">{esc(t['author'])}</span> <time class="st-card__date" datetime="{esc(t['published'])}">{esc(t['published_date'])}</time></p>
-  <p class="pv-card__body st-card__desc">{esc(t['description'])}</p>
-  <ul class="pv-tags st-card__outs" aria-label="Outputs">{outs}</ul>
-  <div class="pv-card__foot st-card__foot">
-    {badges(t)}{risk_chips(t)}
-    <span class="st-card__ver" title="Version">v{esc(t['version'])}</span>
-  </div>
-</article>
+  <{heading} class="st-card__name">{esc(t['name'])}</{heading}>
+  <p class="st-card__desc">{esc(t['description'])}</p>
+</a>
 </li>"""
 
 
 def soon_card_html(p: dict) -> str:
-    """A tool that is announced, not published: its name and one line, with no
-    artwork and no page to open. Listed after the tools; search finds it."""
+    """A tool that is announced, not published: its name and one line, on an empty
+    plate. Listed after the tools; search finds it."""
     return f"""<li class="st-cell st-cell--soon" data-id="{esc(p['id'])}" data-name="{esc(p['name'])}" data-soon>
-<article class="pv-card st-card st-card--soon">
-  <div class="st-card__art st-card__art--soon"></div>
-  <h3 class="pv-card__title st-card__title">{esc(p['name'])}</h3>
-  <p class="pv-card__body st-card__desc">{esc(p['description'])}</p>
-  <div class="pv-card__foot st-card__foot"><span class="pv-soon">Coming soon</span></div>
-</article>
+<div class="st-card st-card--soon">
+  <div class="st-card__art st-card__art--soon"><span class="pv-soon">Coming soon</span></div>
+  <h3 class="st-card__name">{esc(p['name'])}</h3>
+  <p class="st-card__line">{esc(p['description'])}</p>
+</div>
 </li>"""
 
 
+def filter_option(attr: str, value: str, label: str, count: int, title: str = "") -> str:
+    tip = f' title="{esc(title)}"' if title else ""
+    return (f'<button class="st-opt" type="button" aria-pressed="false" {attr}="{esc(value)}"{tip}>'
+            f'<span class="st-opt__label">{esc(label)}</span><span class="st-opt__n">{count}</span></button>')
+
+
 def filters_html(data: dict) -> str:
-    """One radio group in two parts that wrap as wholes: All and the tags two or
-    more tools share, then what the tools draw. Single-tool tags are found by
-    search instead."""
+    """The panel's two legends: the tags two or more tools share, and what the tools
+    draw. A tag only one tool has is found by search instead."""
     f = data.get("filters") or {"tags": [], "outputs": []}
-    chips = ['<button class="pv-chip st-chip" type="button" role="radio" aria-checked="true" tabindex="0" data-tag="">'
-             f'All <span class="pv-chip__count">{data["count"]}</span></button>']
-    for row in f["tags"]:
-        chips.append(f'<button class="pv-chip st-chip" type="button" role="radio" aria-checked="false" tabindex="-1" '
-                     f'data-tag="{esc(row["tag"])}">{esc(row["tag"])} <span class="pv-chip__count">{row["count"]}</span></button>')
-    groups = ['<div class="st-tags__group">\n' + "\n".join(chips) + "\n</div>"]
-    if f["outputs"]:
-        outs = ['<span class="st-tags__sep" aria-hidden="true">Outputs</span>']
-        for row in f["outputs"]:
-            outs.append(f'<button class="pv-chip st-chip st-chip--out" type="button" role="radio" aria-checked="false" '
-                        f'tabindex="-1" data-out="{esc(row["out"])}" title="{esc(row["help"].capitalize())}">'
-                        f'<span class="pv-sr-only">Output: </span>{esc(row["out"])} '
-                        f'<span class="pv-chip__count">{row["count"]}</span></button>')
-        groups.append('<div class="st-tags__group st-tags__group--out">\n' + "\n".join(outs) + "\n</div>")
-    return "\n".join(groups)
+    tags = "\n".join(filter_option("data-tag", r["tag"], r["tag"], r["count"]) for r in f["tags"])
+    outs = "\n".join(filter_option("data-out", r["out"], r["out"], r["count"], r["help"].capitalize()) for r in f["outputs"])
+    return (f'<div class="st-filters__group st-filters__group--tags" role="group" aria-labelledby="f-tags">\n'
+            f'<p class="st-filters__h" id="f-tags">Tags</p>\n<div class="st-filters__opts" id="tag-list">\n{tags}\n</div>\n</div>\n'
+            f'<div class="st-filters__group" role="group" aria-labelledby="f-outs">\n'
+            f'<p class="st-filters__h" id="f-outs">Outputs</p>\n<div class="st-filters__opts" id="out-list">\n{outs}\n</div>\n</div>')
 
 
-def count_text(n: int) -> str:
-    return f"{plural(n, 'tool')} published"
+# --------------------------------------------------------------------------- the README, taken apart
+# readme_html is sanitized by build_store_data.py. It is split here, never rewritten:
+# its first sentence may be lifted out, and the sections that repeat a part of the
+# page move next to that part, folded, so that nothing is shown twice by default
+# and nothing is lost. A README that does not follow this shape is left as it is.
+
+QUESTION = re.compile(
+    r"^\s*<p>\s*(?:this tool\s+)?answers the question\s*:?\s*"
+    r"(?:<(?:strong|b)>(?P<q1>.+?)</(?:strong|b)>|(?P<q2>[^<]+?))\s*</p>\s*", re.I | re.S)
+TAG = re.compile(r"<[^>]+>")
+PARAMS_HEADS = {"parameters", "parameter", "options", "settings", "the parameters"}
+OUTPUTS_HEADS = {"what you get", "outputs", "output", "results", "what it returns", "what it draws"}
+CITE_HEADS = {"citation", "citations", "references", "reference", "how to cite", "cite", "citing"}
+
+
+def plain(fragment: str) -> str:
+    return re.sub(r"\s+", " ", html.unescape(TAG.sub(" ", fragment))).strip()
+
+
+def words(text: str) -> set:
+    return set(re.findall(r"[a-z0-9]+", plain(text).lower()))
+
+
+def overlap(a: str, b: str) -> float:
+    """How much of two texts is the same words (Jaccard)."""
+    wa, wb = words(a), words(b)
+    return len(wa & wb) / len(wa | wb) if wa and wb else 0.0
+
+
+def split_readme(t: dict) -> dict:
+    """The README in parts: the lifted question, the reading view, and the sections
+    that belong with the parameters, the outputs and the references."""
+    src = t["readme_html"] or ""
+    question = ""
+    m = QUESTION.match(src)
+    if m:
+        question = (m.group("q1") or m.group("q2") or "").strip()
+        src = src[m.end():]
+    # Its sections are its largest headings, at whichever level the author chose.
+    level = "h3" if re.search(r"<h3\b", src, re.I) else "h4"
+    parts = re.split(rf"<{level}\b[^>]*>(.*?)</{level}>", src, flags=re.I | re.S)
+    body, params, outs, cite = [parts[0]], [], [], []
+    for head, text in zip(parts[1::2], parts[2::2]):
+        key = plain(head).lower().rstrip(":. ")
+        if key in PARAMS_HEADS:
+            params.append(text)
+        elif key in OUTPUTS_HEADS:
+            outs.append(text)
+        elif key in CITE_HEADS:
+            cite.append(text)
+        else:
+            body.append(f"<{level}>{head}</{level}>{text}")
+    # The question opens the reading view, unless it says what the description
+    # above it already says.
+    if question and overlap(question, t["description"]) >= 0.8:
+        question = ""
+    return {"question": question, "body": "".join(body).strip(), "params": "".join(params).strip(),
+            "outputs": "".join(outs).strip(), "cite": "".join(cite).strip()}
+
+
+def linked(text: str) -> str:
+    """Escaped text, its http(s) addresses made links (a citation's DOI)."""
+    out, pos = [], 0
+    for m in re.finditer(r"https?://[^\s<>\"']+[^\s<>\"'.,;)]", text):
+        out.append(esc(text[pos:m.start()]))
+        out.append(f'<a class="pv-link" href="{esc(m.group(0))}" rel="noopener noreferrer nofollow">{esc(m.group(0))}</a>')
+        pos = m.end()
+    out.append(esc(text[pos:]))
+    return "".join(out)
+
+
+def references_html(t: dict, cite: str) -> str:
+    """One block. The manifest's citation shows too only if it says something the
+    README's own Citation section does not."""
+    rows = []
+    if cite:
+        rows.append(cite)
+    manifest = t.get("citation") or ""
+    if manifest:
+        mine = words(manifest)
+        known = len(mine & words(cite)) / len(mine) if mine else 0
+        if known < 0.7:
+            rows.append(f"<p>{linked(manifest)}</p>")
+    if not rows:
+        return ""
+    return f'<div class="st-refs"><h3 class="st-refs__h">References</h3><div class="st-md">{"".join(rows)}</div></div>'
+
+
+def fold_html(label: str, inner: str) -> str:
+    """A README section that repeats what stands above it: there, one click away."""
+    if not inner:
+        return ""
+    return (f'<details class="st-fold"><summary class="st-fold__sum">{esc(label)}'
+            f'<svg class="st-fold__chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" '
+            f'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg></summary>'
+            f'<div class="st-md st-fold__body">{inner}</div></details>')
 
 
 # --------------------------------------------------------------------------- tool page
+
+PARAM_KIND = {"categorical_field": "a categorical column", "continuous_field": "a continuous column",
+              "category_value": "one of its categories", "gene": "a gene", "genes": "genes", "bool": "on or off",
+              "int": "whole number", "float": "number"}
+
+
+def param_range(p: dict) -> str:
+    """A numeric parameter's range, drawn: its ends, and a lit point at the default."""
+    lo, hi, d = p.get("min"), p.get("max"), p.get("default")
+    if not isinstance(lo, (int, float)) or not isinstance(hi, (int, float)) or hi <= lo:
+        return ""
+    m = re.match(r"^\w+,\s*(.+)–(.+)$", p.get("type_text") or "")
+    lo_text, hi_text = (m.group(1), m.group(2)) if m else (f"{lo:g}", f"{hi:g}")
+    point = ""
+    if isinstance(d, (int, float)) and not isinstance(d, bool):
+        x = max(0.0, min(1.0, (d - lo) / (hi - lo)))
+        point = f'<i class="st-range__pt" style="--x:{x:.4f}"></i>'
+    return (f'<span class="st-range" aria-hidden="true"><span class="st-range__end">{esc(lo_text)}</span>'
+            f'<span class="st-range__track">{point}</span><span class="st-range__end">{esc(hi_text)}</span></span>'
+            f'<span class="pv-sr-only">Range {esc(lo_text)} to {esc(hi_text)}. </span>')
+
 
 def param_rows(t: dict) -> str:
     if not t["parameters"]:
         return '<p class="st-empty-line">This tool takes no parameters.</p>'
     rows = []
     for p in t["parameters"]:
-        sweep = (' <span class="pv-tag st-sweep" title="This parameter can be swept: one run per value, '
-                 'with a slider between the results.">sweep</span>') if t.get("sweep") == p["name"] else ""
-        rows.append(f"""<tr role="row">
-  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">{esc(p['label'])}</span><code class="st-param__name" translate="no">{esc(p['name'])}</code>{sweep}</th>
-  <td role="cell" data-label="Type"><span class="st-param__type">{esc(p['type_text'])}</span></td>
-  <td role="cell" data-label="Default"><span class="st-param__default">{esc(p['default_text'])}</span></td>
-  <td role="cell" data-label="What it does">{esc(p['help'])}</td>
+        kind = PARAM_KIND.get(p["type"], p.get("type_text") or p["type"])
+        default = p["default_text"]
+        has_default = default != "—"
+        if not has_default:
+            default = "required"
+        # On a phone there is no column head to say what this value is.
+        said = '<span class="st-p__dl">Default: </span>' if default not in ("required", "optional") else ""
+        sweep = (' <span class="st-p__sweep" title="This parameter can be swept: one run per value, '
+                 'with a slider between the results.">can be swept</span>') if t.get("sweep") == p["name"] else ""
+        opts = p.get("options") or []
+        # The default stands on its own beside the name: here, the other choices.
+        others = [o for o in opts if o.get("value") != p.get("default")]
+        lead = "Or" if has_default else "One of"
+        extra = f'<p class="st-p__opts">{lead}: {esc(", ".join(str(o.get("label")) for o in others))}</p>' if others else ""
+        ranged = param_range(p)
+        kind_html = "" if opts or ranged else f'<span class="st-p__kind">{esc(kind)}</span>'
+        rows.append(f"""<tr role="row" class="st-p">
+  <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">{esc(p['label'])}</span> <code class="st-p__name" translate="no">{esc(p['name'])}</code>{sweep}</th>
+  <td role="cell" class="st-p__val"><span class="st-p__default">{said}{esc(default)}</span>{ranged}{kind_html}</td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">{esc(p['help'])}</span>{extra}</td>
 </tr>""")
-    return f"""<div class="pv-table-wrap st-params">
-<table class="pv-table" role="table" aria-labelledby="parameters-h">
-<thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Parameter</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Default</th><th scope="col" role="columnheader">What it does</th></tr></thead>
+    return f"""<table class="st-ptable" role="table" aria-labelledby="parameters-h">
+<thead role="rowgroup"><tr role="row" class="st-p st-p--names"><th scope="col" role="columnheader" class="st-p__head">Parameter</th><th scope="col" role="columnheader" class="st-p__val">Default</th><th scope="col" role="columnheader" class="pv-sr-only">What it does</th></tr></thead>
 <tbody role="rowgroup">
 {chr(10).join(rows)}
 </tbody>
-</table>
-</div>"""
+</table>"""
 
 
-def outputs_html(t: dict) -> str:
+def glyph(root: str, kind: str, cls: str = "st-glyph") -> str:
+    """What an output is, drawn (assets/outputs.svg). A kind the sprite does not
+    know gets a plain point: publishing is automatic, so a new kind may appear."""
+    name = kind if kind in OUTPUT_GLYPHS else "any"
+    return f'<svg class="{cls}" aria-hidden="true"><use href="{root}assets/outputs.svg#o-{name}"/></svg>'
+
+
+def outputs_html(t: dict, root: str) -> str:
     items = []
     for o in t["outputs"] + t["optional_outputs"]:
-        opt = ' <span class="st-opt">optional</span>' if o in t["optional_outputs"] else ""
-        items.append(f'<li><span class="pv-tag pv-tag--out">{esc(o)}</span><span class="st-outputs__what">'
-                     f'{esc(t["output_help"].get(o, o))}{opt}</span></li>')
-    return f'<ul class="st-outputs">{"".join(items)}</ul>'
+        opt = '<span class="st-out__opt">optional</span>' if o in t["optional_outputs"] else ""
+        what = t["output_help"].get(o, "")
+        what = what[:1].upper() + what[1:] if what else ""
+        items.append(f'<li class="st-out">{glyph(root, o)}<code class="st-out__name" translate="no">{esc(o)}</code>'
+                     f'<span class="st-out__what">{esc(what)}{opt}</span></li>')
+    if not items:
+        return '<p class="st-empty-line">This tool lists no outputs.</p>'
+    return f'<ul class="st-outs">{"".join(items)}</ul>'
 
 
 def gates_html(t: dict) -> str:
+    """The strip of points, then what each gate saw. The strip has no words of its
+    own: the names are in the log right below it."""
     if not t["gates"]:
         return '<p class="st-empty-line">No gate report is on file for this version.</p>'
     strip, log = [], []
     for g in t["gates"]:
         state, word = GATE_STATE.get(g["status"], "pending"), GATE_DONE.get(g["status"], g["status"])
         # An advisory gate (imports) never blocks: drawn as a ring (store.css §7).
-        adv, adv_attr = ('', '') if g["required"] else (' <span class="st-adv">advisory</span>', ' data-adv')
-        strip.append(f'<li class="pv-gate" data-state="{state}"{adv_attr}><span class="pv-gate__name" translate="no">{esc(g["id"])}</span>'
-                     f'<span class="pv-sr-only"> {esc(word)}{"" if g["required"] else ", advisory"}</span></li>')
-        log.append(f"""<li class="st-gatelog__row" data-state="{state}"{adv_attr}>
-  <span class="st-gatelog__name"><code translate="no">{esc(g['id'])}</code>{adv}</span>
-  <span class="st-gatelog__status">{esc(word)}</span>
-  <p class="st-gatelog__msg">{esc(g['message'])}</p>
+        adv, adv_attr = ('', '') if g["required"] else (' <span class="st-gate__adv">advisory</span>', ' data-adv')
+        strip.append(f'<li class="st-strip__dot" data-state="{state}"{adv_attr} title="{esc(g["id"])}: {esc(word)}"></li>')
+        log.append(f"""<li class="st-gate" data-state="{state}"{adv_attr}>
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">{esc(g['id'])}</code>{adv}<span class="st-gate__word">{esc(word)}</span></p>
+  <p class="st-gate__msg">{esc(g['message'])}</p>
 </li>""")
-    return f"""<div class="st-check">
-  <ol class="pv-gates st-check__strip" aria-label="The gates, in the order they ran">{''.join(strip)}</ol>
-  <ol class="st-gatelog" aria-label="What each gate saw">
+    passed = sum(1 for g in t["gates"] if g["status"] == "pass")
+    return f"""<ol class="st-strip" aria-hidden="true">{''.join(strip)}</ol>
+<p class="st-tests__lead">{passed} of {len(t['gates'])} gates passed when this version was released. They ran in this order:</p>
+<ol class="st-gates">
 {chr(10).join(log)}
-  </ol>
-</div>"""
+</ol>
+<p class="st-tests__note">{esc(GATES_NOTE)}</p>"""
+
+
+def gates_state(t: dict) -> str:
+    """The point on the button: all passed, something flagged, or a gate failed."""
+    if not t["gates"]:
+        return "none"
+    states = {g["status"] for g in t["gates"]}
+    return "fail" if "fail" in states else "advisory" if states - {"pass"} else "pass"
 
 
 def facts_html(t: dict) -> str:
     def fact(k, v):
         return f'<div class="st-facts__row"><dt>{esc(k)}</dt><dd>{v}</dd></div>'
+    gpu = GPU_FACT.get(t.get("gpu"), t["gpu_label"]) if t.get("gpu") else "Not used"
     rows = [
-        fact("Version", f'<span class="st-facts__ver">{esc(t["version"])}</span>'),
+        fact("Author", esc(t["author"] or "Not stated")),
+        fact("Version", f'<span class="st-facts__num" translate="no">{esc(t["version"])}</span>'),
         fact("Published", f'<time datetime="{esc(t["published"])}">{esc(t["published_date"])}</time>'),
-        fact("Licence", esc(t["license"] or "not stated")),
-        fact("Needs", " · ".join(f'<span class="st-nowrap">{esc(x)}</span>' for x in t["needs"])
-             if t["needs"] else "nothing in particular"),
+        fact("Licence", esc(t["license"] or "Not stated")),
+        fact("Language", esc(t["language_label"])),
+        fact("GPU", esc(gpu)),
+        fact("Needs", "<br>".join(esc(x) for x in t["needs"]) if t["needs"] else "Nothing in particular"),
     ]
-    return f'<dl class="st-facts">{"".join(rows)}</dl>'
+    return f'<dl class="st-facts__list">{"".join(rows)}</dl>'
 
 
-def related(t: dict, tools: list[dict], n: int = 3) -> list[dict]:
+def risks_html(t: dict) -> str:
+    """What the advisory imports gate disclosed: beside Download, in words."""
+    if not t["risks"]:
+        return ""
+    items = "".join(f'<li>This tool {esc(r["text"])}.</li>' for r in t["risks"])
+    return (f'<ul class="st-risks" aria-label="Disclosed by the advisory imports gate">{items}</ul>')
+
+
+def related(t: dict, tools: list[dict], n: int = 4) -> list[dict]:
     mine = set(t["tags"])
     scored = []
     for o in tools:
@@ -383,123 +509,128 @@ def related(t: dict, tools: list[dict], n: int = 3) -> list[dict]:
     return [s[2] for s in scored[:n]]
 
 
-ONPAGE = [("readme", "Readme"), ("parameters", "Parameters"), ("outputs", "Outputs"),
-          ("tool-check", "Tool check")]
+VIEWS = [("readme", "Readme"), ("parameters", "Parameters"), ("outputs", "Outputs")]
+# Before the first paint: the view the address asks for, so that a panel never flashes.
+EARLY_VIEW = (";(function(d,m){d.setAttribute('data-view',m?m[1]:'readme')})"
+              "(document.documentElement,/^#(readme|parameters|outputs)$/.exec(location.hash))")
+CLOSE_X = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" '
+           'aria-hidden="true"><path d="M5 5l10 10M15 5 5 15"/></svg>')
 
 
-def hero_chips(t: dict, common_tags=frozenset()) -> str:
-    """The tool's tags, then the gallery's dotted "Outputs" divider and what it
-    draws. A tag that every tool carries says nothing here and is left out (search
-    still finds it), and so is one that repeats the language badge ("R")."""
-    tags = [x for x in t["tags"] if x not in common_tags and x.lower() != t["language_label"].lower()]
-    outs = t["outputs"] + t["optional_outputs"]
-    tag_items = "".join(f'<li class="pv-tag">{esc(x)}</li>' for x in tags)
-    out_items = "".join(f'<li class="pv-tag pv-tag--out" title="{esc(t["output_help"].get(o, o))}">{esc(o)}</li>'
-                        for o in outs)
-    parts = []
-    if tags:
-        parts.append(f'<ul class="pv-tags" aria-label="Tags">{tag_items}</ul>')
-    if outs:
-        sep = "st-tags__sep" if tags else "st-tags__sep st-tags__sep--lead"
-        parts.append(f'<div class="st-hero__outs"><span class="{sep}" aria-hidden="true">Outputs</span>'
-                     f'<ul class="pv-tags" aria-label="Outputs">{out_items}</ul></div>')
-    return f'<div class="st-hero__chips">{"".join(parts)}</div>' if parts else ""
+def keep_together(name: str) -> str:
+    """A hyphenated word in a title stays whole while it fits ("Cross-L"), without
+    changing the title's text."""
+    return re.sub(r"\S+-\S+", lambda m: f'<span class="st-keep">{m.group(0)}</span>', esc(name))
 
 
-def tool_page(t: dict, tools: list[dict], hidden_outputs=(), common_tags=frozenset()) -> str:
+def tool_page(t: dict, tools: list[dict]) -> str:
     root = "../../"
     url = f"{SITE_URL}tools/{t['id']}/"
     desc = f"{first_sentence(t['description'])} A PointillViz community tool, version {t['version']}."
     alt = t["art"]["alt"] or f"Card artwork of {t['name']}."
-    caption = (f'<figcaption class="pv-figure__caption"><span>{esc(t["art"]["alt"])}</span>'
-               f'<span class="pv-figure__meta">Artwork from the tool’s bundle</span></figcaption>') if t["art"]["alt"] else ""
-    readme = t["readme_html"] or '<p class="st-empty-line">This tool shipped no README.</p>'
-    refs = (f'<div class="st-refs"><h3 class="st-refs__h">References</h3><p>{esc(t["citation"])}</p></div>'
-            if t.get("citation") else "")
-    more = "\n".join(card_html(o, root, heading="h3", hidden_outputs=hidden_outputs) for o in related(t, tools))
-    onpage = "\n".join(f'            <li><a href="#{sid}">{label}</a></li>' for sid, label in ONPAGE)
+    plate_tip = f' title="{esc(t["art"]["alt"])}"' if t["art"]["alt"] else ""
+    # The title keeps its size for every name of today (35 characters at most); a longer
+    # one comes down a step, so that Download stays in the first screen.
+    name_len = ' data-len="xlong"' if len(t["name"]) > 64 else ' data-len="long"' if len(t["name"]) > 40 else ""
+    install_words = ("In PointillViz: <b>Tools → Store → Install</b>, or <b>Install from file</b> with the download."
+                     if t["bundle_url"] else "In PointillViz: <b>Tools → Store → Install</b>.")
+    parts = split_readme(t)
+    question = f'<p class="st-question">{parts["question"]}</p>' if parts["question"] else ""
+    readme = parts["body"] or ('<p class="st-empty-line">This tool shipped no README.</p>' if not question else "")
+    more = "\n".join(card_html(o, root, heading="h3") for o in related(t, tools))
+    views = "\n".join(f'          <a class="st-tab" href="#{sid}" data-view-link="{sid}">{label}</a>' for sid, label in VIEWS)
     # The bundle is the release's own file; the source is the tool's folder in
     # the public registry (both from the index).
     download = (f'<a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="{esc(t["bundle_url"])}" download>'
                 f'{icon(root, "i-download", "")}<span class="pv-btn__stack"><span>Download</span> '
                 f'<span class="pv-btn__sub">.pvtool · {esc(t["bundle_size"])}</span></span></a>') if t["bundle_url"] else ""
-    source = (f'<p class="st-get__src"><a class="pv-link" href="{esc(t["source_url"])}">Source in the public registry'
+    bar_download = (f'<a class="pv-btn pv-btn--primary st-bar__dl" href="{esc(t["bundle_url"])}" download tabindex="-1">'
+                    f'{icon(root, "i-download", "")}<span>Download</span></a>') if t["bundle_url"] else ""
+    source = (f'<p class="st-facts__src"><a class="pv-link" href="{esc(t["source_url"])}">Source in the public registry'
               f'{icon(root, "i-external")}</a></p>') if t["source_url"] else ""
-    check = (f'<p class="st-sec__intro">The gates this version passed when it was released, in the order they ran.</p>\n'
-             f'          {gates_html(t)}\n          <p class="st-sec__note">{esc(GATES_NOTE)}</p>'
-             if t["gates"] else gates_html(t))
     # <Tool> · The Tool Store · PointillViz, as the store's own pages.
     title = f"{t['name']} · The Tool Store · PointillViz"
+    field_script = f'\n<script src="{root}assets/field.js" defer></script>'
     return f"""{head(root, title, desc, title, t['description'], url,
-                     f"{SITE_URL}{t['social']}", alt)}
+                     f"{SITE_URL}{t['social']}", alt, field_script, EARLY_VIEW)}
 <body class="st-page st-page--tool">
 {topbar(root)}
 <main id="main" class="st-tool">
-  <div class="pv-container">
-    <nav class="st-back" aria-label="Back">
-      <a class="st-back__link" href="{root}">{icon(root, "i-arrow-left")}All tools</a>
-    </nav>
-    <div class="st-tool__layout">
-      <header class="st-hero">
-        <h1 class="pv-title st-hero__title">{esc(t['name'])}</h1>
-        <p class="st-hero__by">by {esc(t['author'])}</p>
-        <p class="pv-lede st-hero__desc">{esc(t['description'])}</p>
-        <div class="st-hero__badges">{badges(t)}<span class="pv-tag pv-tag--ver">v{esc(t['version'])}</span>{risk_chips(t)}</div>
-        {hero_chips(t, common_tags)}
-      </header>
-      <figure class="pv-figure st-hero__art">
-        <div class="pv-figure__stage st-artstage">{art_img(t, root, "(min-width: 1320px) 820px, (min-width: 1100px) 62vw, 94vw", True, alt)}</div>
-        {caption}
-      </figure>
-      <div class="st-side">
-        <aside class="st-get" aria-labelledby="get-h">
-          <h2 class="st-get__title" id="get-h">Get this tool</h2>
+  <header class="st-top">
+    <div class="st-wrap st-top__in">
+      <div class="st-top__words">
+        <a class="st-back" href="{root}">{icon(root, "i-arrow-left")}All tools</a>
+        <h1 class="st-title st-top__name"{name_len}>{keep_together(t['name'])}</h1>
+        <p class="st-top__desc">{esc(t['description'])}</p>
+        <div class="st-get">
           {download}
-          <div class="st-get__how">
-            <p>Install in PointillViz: <b>Tools → Store → Install</b>, or use <b>Install from file</b> with the download.</p>
-            <p class="st-get__docs"><a class="pv-link" href="{DOCS_TOOLS_URL}">How tools work · Docs</a></p>
-          </div>
-          {source}
-          <p class="st-get__note"><b>This runs as you.</b> A tool is arbitrary code, run with the privileges of whoever started PointillViz. <a class="pv-link" href="{root}#safety">Read the safety note</a></p>
-          <h3 class="pv-label st-get__facts-h">Facts</h3>
-          {facts_html(t)}
-        </aside>
-        <nav class="st-onpage" aria-labelledby="onpage-h">
-          <p class="pv-label st-onpage__h" id="onpage-h">On this page</p>
-          <ul>
-{onpage}
-          </ul>
-        </nav>
+          <p class="st-get__how"><span class="st-get__steps">{install_words} </span><a class="pv-link" href="{DOCS_TOOLS_URL}">{HOWTO_LABEL}</a></p>
+          {risks_html(t)}
+          <p class="st-get__note">This runs as you: a tool is arbitrary code, with your privileges. <a class="pv-link" href="{root}#safety">Safety note</a></p>
+        </div>
       </div>
-      <div class="st-tool__main">
-        <section class="st-sec" id="readme" aria-labelledby="readme-h">
-          <h2 class="st-sec__h" id="readme-h">Readme</h2>
+      <figure class="st-top__art">
+        <div class="st-artplate"{plate_tip}>{art_img(t, root, "(max-width: 1023.98px) 92vw, 58vw", True, alt)}</div>
+      </figure>
+    </div>
+  </header>
+  <div class="st-views">
+    <div class="st-bar" id="view-bar">
+      <div class="st-wrap st-bar__in">
+        <p class="st-bar__name" aria-hidden="true"><img class="st-bar__thumb" src="{root}{esc(t['art']['src'])}" width="{t['art']['width']}" height="{t['art']['height']}" alt="" loading="lazy" decoding="async"><span>{esc(t['name'])}</span></p>
+        <nav class="st-tabs" aria-label="About this tool" id="view-tabs">
+{views}
+        </nav>
+        <button class="st-testbtn" id="test-summary-open" type="button" aria-haspopup="dialog" aria-controls="test-summary" data-state="{gates_state(t)}">Tool test summary</button>
+        {bar_download}
+      </div>
+    </div>
+    <div class="st-wrap st-views__grid">
+      <div class="st-panels">
+        <section class="st-panel" id="readme" aria-labelledby="readme-h">
+          <h2 class="st-panel__h" id="readme-h">Readme</h2>
+          {question}
           <div class="st-md">
 {readme}
           </div>
-          {refs}
+          {references_html(t, parts["cite"])}
         </section>
-        <section class="st-sec" id="parameters" aria-labelledby="parameters-h">
-          <h2 class="st-sec__h" id="parameters-h">Parameters</h2>
+        <section class="st-panel" id="parameters" aria-labelledby="parameters-h">
+          <h2 class="st-panel__h" id="parameters-h">Parameters</h2>
           {param_rows(t)}
+          {fold_html("More on these parameters, from the readme", parts["params"])}
         </section>
-        <section class="st-sec" id="outputs" aria-labelledby="outputs-h">
-          <h2 class="st-sec__h" id="outputs-h">Outputs</h2>
-          {outputs_html(t)}
-        </section>
-        <section class="st-sec" id="tool-check" aria-labelledby="check-h">
-          <h2 class="st-sec__h" id="check-h">Tool check</h2>
-          {check}
+        <section class="st-panel" id="outputs" aria-labelledby="outputs-h">
+          <h2 class="st-panel__h" id="outputs-h">Outputs</h2>
+          {outputs_html(t, root)}
+          {fold_html("More on what you get, from the readme", parts["outputs"])}
         </section>
       </div>
+      <aside class="st-facts" aria-labelledby="facts-h">
+        <h2 class="pv-sr-only" id="facts-h">Details</h2>
+        {facts_html(t)}
+        {source}
+      </aside>
     </div>
-    <section class="st-more" aria-labelledby="more-h">
+  </div>
+  <dialog class="st-tests" id="test-summary" aria-labelledby="test-summary-h">
+    <div class="st-tests__head" id="tool-check">
+      <h2 class="st-tests__title" id="test-summary-h">Tool test summary</h2>
+      <button class="st-tests__close" type="button" data-close-tests aria-label="Close the test summary">{CLOSE_X}</button>
+    </div>
+    <div class="st-tests__body">
+      {gates_html(t)}
+      <p class="st-tests__more"><a class="pv-link" href="{root}publish/#gates-h">What each gate checks</a></p>
+    </div>
+  </dialog>
+  <section class="st-more" aria-labelledby="more-h">
+    <div class="st-wrap">
       <h2 class="st-more__h" id="more-h">More tools</h2>
-      <ul class="st-grid st-grid--more">
+      <ul class="st-grid">
 {more}
       </ul>
-    </section>
-  </div>
+    </div>
+  </section>
 </main>
 {footer(root)}
 </body>
@@ -517,14 +648,12 @@ def soon_page(p: dict) -> str:
 <body class="st-page st-page--soon">
 {topbar(root)}
 <main id="main" class="st-tool st-soon">
-  <div class="pv-container">
-    <nav class="st-back" aria-label="Back">
-      <a class="st-back__link" href="{root}">{icon(root, "i-arrow-left")}All tools</a>
-    </nav>
+  <div class="st-wrap">
+    <a class="st-back" href="{root}">{icon(root, "i-arrow-left")}All tools</a>
     <header class="st-soon__head">
       <span class="pv-soon">Coming soon</span>
-      <h1 class="pv-title st-hero__title">{esc(p['name'])}</h1>
-      <p class="pv-lede st-hero__desc">{esc(p['description'])}</p>
+      <h1 class="st-title st-soon__name">{esc(p['name'])}</h1>
+      <p class="st-top__desc">{esc(p['description'])}</p>
     </header>
   </div>
 </main>
@@ -588,12 +717,9 @@ def main():
         sys.exit(f"No {data_path}: run _build/build_store_data.py first.")
     tools = data["tools"]
     soon = data.get("placeholders") or []
-    hidden = tuple(data.get("card_hidden_outputs") or ())
-    # A tag on every tool (spatial) tells one tool from no other.
-    common = frozenset.intersection(*(frozenset(t["tags"]) for t in tools)) if len(tools) > 1 else frozenset()
     written = 0
     for t in tools:
-        written += write(os.path.join(store, "tools", t["id"], "index.html"), tool_page(t, tools, hidden, common))
+        written += write(os.path.join(store, "tools", t["id"], "index.html"), tool_page(t, tools))
     for p in soon:
         written += write(os.path.join(store, "tools", p["id"], "index.html"), soon_page(p))
     keep = {t["id"] for t in tools} | {p["id"] for p in soon}
@@ -606,12 +732,11 @@ def main():
     index_path = os.path.join(store, "index.html")
     with open(index_path, encoding="utf-8") as fh:
         src = fh.read()
-    # The first row (four cards on a wide screen) is fetched first.
-    cards = "\n".join([card_html(t, "", eager=k < 4, hidden_outputs=hidden) for k, t in enumerate(tools)]
+    # The first screen's plates (eight on a laptop) are fetched first.
+    cards = "\n".join([card_html(t, "", eager=k < 8) for k, t in enumerate(tools)]
                       + [soon_card_html(p) for p in soon])
     src = fill(src, "cards", "\n" + cards + "\n")
-    src = fill(src, "tags", "\n" + filters_html(data) + "\n")
-    src = fill(src, "count", count_text(len(tools)))
+    src = fill(src, "filters", "\n" + filters_html(data) + "\n")
     src = re.sub(r'(<meta property="og:description" content=")\d+( community tools)', rf"\g<1>{len(tools)}\g<2>", src)
     written += write(index_path, src)
 

@@ -1,14 +1,16 @@
-/*! store.pointillviz.com · store.js · no dependencies (uses window.PV from pv.js when present)
+/*! store.pointillviz.com · store.js · no dependencies (uses window.PV from pv.js and
+ * window.STField from field.js when present)
  *
- * Gallery (index.html): search, filters (shared tags and outputs), sort and count,
- * all in the browser over data/tools-index.json. The grid arrives pre-rendered by
- * tools/build_store_pages.py, so the page works and reads before this script runs;
- * this script reconciles the grid with the index (the source of truth) and then
- * filters and orders it. The Coming soon cards stay after the tools: search finds
- * them, and a tag or output filter hides them.
+ * Gallery (index.html): search, filters and sort, all in the browser over
+ * data/tools-index.json. The grid arrives pre-rendered by _build/build_store_pages.py,
+ * so the page works and reads before this script runs; this script reconciles the grid
+ * with the index (the source of truth) and then filters and orders it. The Coming soon
+ * cards stay after the tools: search finds them, and a filter hides them. While the
+ * pointer rests on a plate (or a plate has keyboard focus) the hero previews that tool.
  *
- * Tool pages: the section list follows the section in view, and a formula wider
- * than its column becomes a focusable scroller that fades where it continues.
+ * Tool pages: three views on one bar (Readme, Parameters, Outputs), the test summary
+ * in a dialog, and the artwork developed by field.js. A formula wider than its column
+ * becomes a focusable scroller that fades where it continues.
  *
  * Every string in the index was written by a tool's author: it reaches the page
  * through esc() or textContent, never as markup.
@@ -17,84 +19,52 @@
   'use strict';
 
   const doc = document;
+  const root = doc.documentElement;
   const $ = (sel, ctx = doc) => ctx.querySelector(sel);
   const $$ = (sel, ctx = doc) => Array.from(ctx.querySelectorAll(sel));
   const reduceMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
   const reduced = () => reduceMQ.matches;
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
   // Typographer's apostrophes in names and search alike: "ripley's" finds Ripley’s.
-  const fold = (s) => String(s || '').toLowerCase().replace(/[\u2018\u2019]/g, "'");
-
-  // A radio group of buttons: one tab stop; arrows, Home and End move and select.
-  function radioKeys(group, onPick) {
-    group.addEventListener('keydown', (e) => {
-      const list = $$('[role="radio"]', group).filter((b) => b.offsetParent !== null);
-      const i = list.indexOf(doc.activeElement);
-      if (i < 0) return;
-      const next = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: list.length - 1 }[e.key];
-      if (next === undefined) return;
-      e.preventDefault();
-      const target = list[(next + list.length) % list.length];
-      target.focus();
-      onPick(target);
-    });
-  }
-
-  function checkOne(group, chosen) {
-    $$('[role="radio"]', group).forEach((b) => {
-      const on = b === chosen;
-      b.setAttribute('aria-checked', String(on));
-      b.tabIndex = on ? 0 : -1;
-    });
-  }
+  const fold = (s) => String(s || '').toLowerCase().replace(/[‘’]/g, "'");
+  const cssNum = (name, fallback) => parseFloat(getComputedStyle(root).getPropertyValue(name)) || fallback;
+  const scaleK = () => cssNum('--k', 1);
+  const barBlock = () => cssNum('--pv-topbar-h', 64) * scaleK();
 
   function main() {
-    installBox();
     if ($('#grid')) gallery();
     toolPage();
     notFound();
-  }
-
-  /* ======================================================= how installing works */
-
-  // Folded to its one-line summary on every width; the reader opens it.
-  function installBox() {
-    const install = $('#install');
-    const btn = install && $('.st-install__toggle', install);
-    if (!btn) return;
-    btn.addEventListener('click', () => {
-      const open = !install.classList.contains('is-open');
-      install.classList.toggle('is-open', open);
-      btn.setAttribute('aria-expanded', String(open));
-    });
   }
 
   /* ======================================================= gallery */
 
   function gallery() {
     const grid = $('#grid');
+    const hero = $('#hero');
     const input = $('#q');
     const form = input && input.form;
+    const panel = $('#filters-panel');
+    const toggle = $('#filters-toggle');
+    const scrim = $('#filters-scrim');
     const tagList = $('#tag-list');
-    const sortSeg = $('#sort');
+    const outList = $('#out-list');
+    const sortBox = $('#sort');
     const countEl = $('#count');
     const live = $('#live');
     const empty = $('#empty');
     const emptyTitle = $('#empty-title');
     const emptyText = $('#empty-text');
     const emptyAction = $('#empty-action');
-    const activeBtn = $('#active-tag');
-    const toolbar = $('#toolbar');
-    const sentinel = $('.st-sentinel');
+    const pill = $('#active-filter');
+    const pillLabel = $('#active-filter-label');
 
     const SORTS = { newest: 'newest', name: 'name' };
     const state = { q: '', tag: '', out: '', sort: 'newest' };
-    const toolCells = () => $$('.st-cell:not([data-soon])', grid);
+    const toolCells = () => $$('.st-cell:not([data-soon]):not(.st-ghost)', grid);
     let tools = modelFromDom();
     let total = tools.length;
     let allTags = new Set(tools.flatMap((t) => t.tags.map(fold)));
-    let hiddenOutputs = [];
     let firstApply = true;
 
     /* ---- the model -------------------------------------------------- */
@@ -109,9 +79,9 @@
       return toolCells().map((cell) => {
         const t = {
           id: cell.dataset.id,
-          name: cell.dataset.name || ($('.pv-card__link', cell) || {}).textContent || '',
+          name: cell.dataset.name || ($('.st-card__name', cell) || {}).textContent || '',
           description: ($('.st-card__desc', cell) || {}).textContent || '',
-          author: ($('.st-card__author', cell) || {}).textContent || '',
+          author: cell.dataset.author || '',
           tags: (cell.dataset.tags || '').split('|').filter(Boolean),
           outputs: (cell.dataset.outputs || '').split('|').filter(Boolean),
           optional_outputs: [],
@@ -124,7 +94,7 @@
     }
 
     // A Coming soon card: a name and one line, after the tools. Search reads it.
-    const soonHay = (cell) => fold(`${cell.dataset.name || ''} ${($('.st-card__desc', cell) || {}).textContent || ''} ${cell.dataset.id || ''}`);
+    const soonHay = (cell) => fold(`${cell.dataset.name || ''} ${($('.st-card__line', cell) || {}).textContent || ''} ${cell.dataset.id || ''}`);
 
     function matches(hay, q) {
       if (!q) return true;
@@ -134,8 +104,8 @@
     }
 
     const outsOf = (t) => (t.outputs || []).concat(t.optional_outputs || []);
-    const passes = (t) => (!state.tag || (t.tags || []).some((x) => fold(x) === state.tag))
-      && (!state.out || outsOf(t).includes(state.out));
+    const hasTag = (t) => !state.tag || (t.tags || []).some((x) => fold(x) === state.tag);
+    const hasOut = (t) => !state.out || outsOf(t).includes(state.out);
 
     // Newest: the day released, then name; tools released together stay A–Z
     // (as the pre-rendered grid). A–Z: name.
@@ -152,67 +122,36 @@
       return out;
     }
 
-    /* ---- rendering (mirrors card_html in tools/build_store_pages.py) --- */
-
-    const GPU_TIP = {
-      optional: 'Runs on the CPU or a GPU: you choose when you run it.',
-      required: 'Meant for a GPU. PointillViz selects the GPU when the computer has one; the tool also runs on the CPU.',
-    };
-
-    function badgesHTML(t) {
-      const lang = t.language_label || t.language || '';
-      const gpu = t.gpu ? `<span class="pv-tag st-badge" title="${esc(GPU_TIP[t.gpu] || '')}">${esc(t.gpu_label)}</span>` : '';
-      return `<span class="pv-tag st-badge" title="${esc(`Written in ${lang}`)}">${esc(lang)}</span>${gpu}`;
-    }
+    /* ---- rendering (mirrors card_html in _build/build_store_pages.py) --- */
 
     function cardHTML(t) {
       const a = t.art || {};
-      const outs = outsOf(t).filter((o) => !hiddenOutputs.includes(o)).map((o) =>
-        `<li class="pv-tag pv-tag--out" title="${esc((t.output_help || {})[o] || o)}">${esc(o)}</li>`).join('');
-      const risks = (t.risks || []).map((r) =>
-        `<span class="st-risk" title="Disclosed by the advisory imports gate: this tool ${esc(r.text)}. A tool can pass every gate and still do this.">${esc(r.label)}</span>`).join('');
-      const sizes = '(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw';
-      return `<article class="pv-card pv-card--link st-card">
+      const sizes = '(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw';
+      return `<a class="st-card" href="${esc(t.url)}">
   <div class="st-card__art"><img src="${esc(a.src)}" srcset="${esc(a.src)} ${a.width}w, ${esc(a.src2x)} ${a.width * 2}w" sizes="${sizes}" width="${a.width}" height="${a.height}" alt="" loading="lazy" decoding="async"></div>
-  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="${esc(t.url)}">${esc(t.name)}</a></h3>
-  <p class="pv-card__meta st-card__by"><span class="st-card__author">${esc(t.author)}</span> <time class="st-card__date" datetime="${esc(t.published || '')}">${esc(t.published_date)}</time></p>
-  <p class="pv-card__body st-card__desc">${esc(t.description)}</p>
-  <ul class="pv-tags st-card__outs" aria-label="Outputs">${outs}</ul>
-  <div class="pv-card__foot st-card__foot">
-    ${badgesHTML(t)}${risks}
-    <span class="st-card__ver" title="Version">v${esc(t.version)}</span>
-  </div>
-</article>`;
+  <h3 class="st-card__name">${esc(t.name)}</h3>
+  <p class="st-card__desc">${esc(t.description)}</p>
+</a>`;
     }
 
     function setCellData(cell, t) {
       cell.dataset.id = t.id;
       cell.dataset.name = t.name;
+      cell.dataset.author = t.author || '';
       cell.dataset.tags = (t.tags || []).join('|');
       cell.dataset.outputs = outsOf(t).join('|');
       cell.dataset.published = t.published || '';
       cell.dataset.version = t.version || '';
     }
 
-    function filtersHTML(data) {
-      const f = data.filters || { tags: [], outputs: [] };
-      const chip = (attr, value, label, count, extra = '') =>
-        `<button class="pv-chip st-chip${extra}" type="button" role="radio" aria-checked="false" tabindex="-1" ${attr}="${esc(value)}">${label} <span class="pv-chip__count">${count}</span></button>`;
-      const tags = [chip('data-tag', '', 'All', data.count)].concat(f.tags.map((r) => chip('data-tag', r.tag, esc(r.tag), r.count)));
-      const groups = [`<div class="st-tags__group">${tags.join('\n')}</div>`];
-      if (f.outputs.length) {
-        const outs = ['<span class="st-tags__sep" aria-hidden="true">Outputs</span>'].concat(f.outputs.map((r) =>
-          chip('data-out', r.out, `<span class="pv-sr-only">Output: </span>${esc(r.out)}`, r.count, ' st-chip--out')
-            .replace('type="button"', `type="button" title="${esc(r.help.charAt(0).toUpperCase() + r.help.slice(1))}"`)));
-        groups.push(`<div class="st-tags__group st-tags__group--out">${outs.join('\n')}</div>`);
-      }
-      return groups.join('\n');
+    function optionHTML(attr, value, label, count, title) {
+      const tip = title ? ` title="${esc(title)}"` : '';
+      return `<button class="st-opt" type="button" aria-pressed="false" ${attr}="${esc(value)}"${tip}><span class="st-opt__label">${esc(label)}</span><span class="st-opt__n">${count}</span></button>`;
     }
 
     // The index is the source of truth: keep the cards that match it, re-render
     // the ones it changed, add the ones the static page did not have.
     function reconcile(data) {
-      hiddenOutputs = data.card_hidden_outputs || [];
       const byId = new Map(toolCells().map((c) => [c.dataset.id, c]));
       const keep = new Set();
       const next = (data.tools || []).map((t) => {
@@ -237,9 +176,13 @@
         if (keep.has(cell.dataset.id) || !announced.has(cell.dataset.id)) cell.remove();
       });
       const f = data.filters || { tags: [], outputs: [] };
-      const have = $$('.st-chip', tagList).map((c) => (c.dataset.out ? `o:${c.dataset.out}` : `t:${c.dataset.tag}`)).join('|');
-      const want = ['t:'].concat(f.tags.map((r) => `t:${r.tag}`), f.outputs.map((r) => `o:${r.out}`)).join('|');
-      if (have !== want) tagList.innerHTML = filtersHTML(data);
+      const have = (list, key) => $$('.st-opt', list).map((o) => o.dataset[key]).join('|');
+      if (tagList && have(tagList, 'tag') !== f.tags.map((r) => r.tag).join('|')) {
+        tagList.innerHTML = f.tags.map((r) => optionHTML('data-tag', r.tag, r.tag, r.count)).join('');
+      }
+      if (outList && have(outList, 'out') !== f.outputs.map((r) => r.out).join('|')) {
+        outList.innerHTML = f.outputs.map((r) => optionHTML('data-out', r.out, r.out, r.count, r.help.charAt(0).toUpperCase() + r.help.slice(1))).join('');
+      }
       tools = next;
       total = tools.length;
       allTags = new Set(tools.flatMap((t) => (t.tags || []).map(fold)));
@@ -271,16 +214,14 @@
     // A filter the page does not offer (an old link to a tag that only one tool
     // has): that tag becomes a search, so the link still finds its tool.
     function settleFilters() {
-      const chips = $$('.st-chip', tagList);
-      if (state.tag && !chips.some((c) => c.dataset.tag && fold(c.dataset.tag) === state.tag)) {
+      if (state.tag && !$$('.st-opt', tagList).some((o) => fold(o.dataset.tag) === state.tag)) {
         if (allTags.has(state.tag) && !state.q) {
           state.q = state.tag;
           if (input) input.value = state.q;
         }
         state.tag = '';
       }
-      if (state.out && !chips.some((c) => c.dataset.out === state.out)) state.out = '';
-      if (state.tag && state.out) state.out = '';
+      if (state.out && !$$('.st-opt', outList).some((o) => o.dataset.out === state.out)) state.out = '';
     }
 
     /* ---- apply -------------------------------------------------------- */
@@ -291,16 +232,11 @@
       announceTimer = window.setTimeout(() => { if (live) live.textContent = text; }, 650);
     }
 
-    function countText(n, filtered) {
-      if (!filtered) return `${plural(n, 'tool')} published`;
-      return n === 1 ? '1 tool matching' : `${n} tools matching`;
-    }
-
     function apply({ animate = true } = {}) {
       settleFilters();
       const q = state.q.trim();
       const byQ = tools.filter((t) => matches(t._hay, q));
-      const shown = ordered(byQ.filter(passes));
+      const shown = ordered(byQ.filter((t) => hasTag(t) && hasOut(t)));
       const showIds = new Set(shown.map((t) => t.id));
       const cells = new Map(toolCells().map((c) => [c.dataset.id, c]));
       // Coming soon cards have no tags or outputs: a filter leaves them out.
@@ -308,7 +244,6 @@
       const soonShown = soon.filter((c) => !state.tag && !state.out && matches(soonHay(c), q));
 
       const mutate = () => {
-        grid.dataset.sort = state.sort;
         shown.forEach((t) => { const c = cells.get(t.id); if (c) { c.hidden = false; grid.appendChild(c); } });
         soon.forEach((c) => { c.hidden = !soonShown.includes(c); grid.appendChild(c); });
         cells.forEach((c, id) => { if (!showIds.has(id)) { c.hidden = true; grid.appendChild(c); } });
@@ -317,44 +252,46 @@
       else mutate();
       firstApply = false;
 
-      // Filters: which one is checked, and how many tools each would leave given the search.
+      // Which option is on, and how many tools it would leave given the rest.
+      const byTag = byQ.filter(hasOut), byOut = byQ.filter(hasTag);
       const tagCount = new Map(), outCount = new Map();
-      byQ.forEach((t) => {
-        (t.tags || []).forEach((x) => tagCount.set(fold(x), (tagCount.get(fold(x)) || 0) + 1));
-        outsOf(t).forEach((o) => outCount.set(o, (outCount.get(o) || 0) + 1));
-      });
-      let checked = null;
-      $$('.st-chip', tagList).forEach((chip) => {
-        const isOut = chip.dataset.out !== undefined;
-        const key = isOut ? chip.dataset.out : fold(chip.dataset.tag || '');
-        const on = isOut ? key === state.out : (key ? key === state.tag : !state.tag && !state.out);
-        if (on) checked = chip;
-        const n = isOut ? (outCount.get(key) || 0) : key ? (tagCount.get(key) || 0) : byQ.length;
-        const count = $('.pv-chip__count', chip);
+      byTag.forEach((t) => (t.tags || []).forEach((x) => tagCount.set(fold(x), (tagCount.get(fold(x)) || 0) + 1)));
+      byOut.forEach((t) => outsOf(t).forEach((o) => outCount.set(o, (outCount.get(o) || 0) + 1)));
+      const paint = (opt, on, n) => {
+        opt.setAttribute('aria-pressed', String(on));
+        const count = $('.st-opt__n', opt);
         if (count) count.textContent = String(n);
-        chip.toggleAttribute('data-empty', n === 0);
-      });
-      checkOne(tagList, checked || $('.st-chip', tagList));
+        opt.toggleAttribute('data-empty', n === 0);
+      };
+      $$('.st-opt', tagList).forEach((o) => { const key = fold(o.dataset.tag); paint(o, key === state.tag, tagCount.get(key) || 0); });
+      $$('.st-opt', outList).forEach((o) => { const key = o.dataset.out; paint(o, key === state.out, outCount.get(key) || 0); });
+      $$('.st-opt', sortBox).forEach((o) => o.setAttribute('aria-pressed', String(o.value === state.sort)));
 
       const filtered = Boolean(q || state.tag || state.out);
-      const text = countText(shown.length, filtered);
-      if (countEl) countEl.textContent = text;
-      announce(text);
-
-      if (activeBtn) {
-        const label = state.tag || state.out;
-        activeBtn.hidden = !label;
-        const lab = $('.st-active__label', activeBtn);
-        if (lab) lab.textContent = label;
-        activeBtn.setAttribute('aria-label', label ? `Remove the filter ${label}` : '');
+      const n = shown.length + soonShown.length;
+      if (countEl) {
+        countEl.hidden = !filtered;
+        countEl.textContent = filtered ? `${n} of ${total + soon.length}` : '';
       }
+      // Said only in answer to the reader, not when the page loads.
+      if (animate) announce(filtered ? `${n} of ${total + soon.length} tools` : `${total + soon.length} tools`);
+
+      if (pill) {
+        const label = [state.tag, state.out].filter(Boolean).join(' · ');
+        pill.hidden = !label;
+        if (pillLabel) pillLabel.textContent = label;
+        pill.setAttribute('aria-label', label ? `Remove the filter ${label}` : '');
+      }
+      if (toggle) toggle.classList.toggle('is-on', Boolean(state.tag || state.out || state.sort !== 'newest'));
+      shownCount = n;
+      placeEnd();
 
       if (empty) {
-        const none = shown.length === 0 && soonShown.length === 0 && total > 0;
+        const none = n === 0 && total > 0;
         empty.hidden = !none;
         if (none) {
           emptyTitle.textContent = 'Nothing matches that';
-          emptyText.textContent = 'Try a broader search, or clear the tag filter.';
+          emptyText.textContent = 'Try a broader search, or clear the filter.';
           emptyAction.textContent = 'Clear search and filters';
           emptyAction.dataset.action = 'clear';
         }
@@ -362,12 +299,28 @@
       writeURL();
     }
 
+    /* ---- the closing block takes what the last row leaves free ---------- */
+
+    const endBox = $('#end');
+    let shownCount = 0;
+    function placeEnd() {
+      if (!endBox) return;
+      const box = endBox.parentElement;
+      const cols = getComputedStyle(box).gridTemplateColumns.split(' ').length;
+      const free = shownCount ? (cols - (shownCount % cols)) % cols : 0;
+      endBox.classList.toggle('st-end--beside', free > 0);
+      endBox.style.setProperty('--st-end-col', free ? `span ${free}` : '1 / -1');
+    }
+    window.addEventListener('resize', placeEnd, { passive: true });
+
     /* ---- FLIP: cards travel to their new places ----------------------- */
 
     function flip(mutate) {
       $$('.st-ghost', grid).forEach((g) => g.remove());
       const cells = $$('.st-cell', grid);
-      const gridBox = grid.getBoundingClientRect();
+      // Inside the zoomed page, lengths are in the zoomed unit.
+      const k = scaleK();
+      const gridBox = grid.parentElement.getBoundingClientRect();
       const before = new Map();
       cells.forEach((c) => { if (!c.hidden) before.set(c, c.getBoundingClientRect()); });
       cells.forEach((c) => c.getAnimations().forEach((a) => a.cancel()));
@@ -386,8 +339,8 @@
           ghost.inert = true;
           Object.assign(ghost.style, {
             position: 'absolute', margin: '0', pointerEvents: 'none', zIndex: '0',
-            left: `${was.left - gridBox.left}px`, top: `${was.top - gridBox.top}px`,
-            width: `${was.width}px`, height: `${was.height}px`,
+            left: `${(was.left - gridBox.left) / k}px`, top: `${(was.top - gridBox.top) / k}px`,
+            width: `${was.width / k}px`, height: `${was.height / k}px`,
           });
           grid.appendChild(ghost);
           const anim = ghost.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(0.97)' }],
@@ -398,7 +351,7 @@
         }
         const now = c.getBoundingClientRect();
         if (was) {
-          const dx = was.left - now.left, dy = was.top - now.top;
+          const dx = (was.left - now.left) / k, dy = (was.top - now.top) / k;
           if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
             c.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }], { duration: 420, easing: ease });
           }
@@ -409,21 +362,68 @@
       });
     }
 
-    /* ---- controls ------------------------------------------------------ */
+    /* ---- the filters panel --------------------------------------------- */
 
-    function pickChip(chip) {
-      if (chip.dataset.out !== undefined) { state.out = chip.dataset.out; state.tag = ''; }
-      else { state.tag = fold(chip.dataset.tag || ''); state.out = ''; }
-      apply();
+    // Beside the button, a press elsewhere closes the panel and does what it does. As
+    // a sheet on a phone, the scrim takes the tap, so nothing under it is opened by it.
+    function outsideDown(e) {
+      if (!panel.contains(e.target) && !toggle.contains(e.target) && e.target !== scrim) closePanel(false);
     }
 
-    if (tagList) {
-      tagList.addEventListener('click', (e) => {
-        const chip = e.target.closest('.st-chip');
-        if (chip) pickChip(chip);
+    function openPanel() {
+      panel.hidden = false;
+      if (scrim) scrim.hidden = false;
+      toggle.setAttribute('aria-expanded', 'true');
+      doc.addEventListener('pointerdown', outsideDown, true);
+      const first = $('.st-opt[aria-pressed="true"]:not([value])', panel) || $('.st-opt', panel);
+      if (first) first.focus({ preventScroll: true });
+    }
+
+    function closePanel(refocus = true) {
+      if (panel.hidden) return;
+      panel.hidden = true;
+      if (scrim) scrim.hidden = true;
+      toggle.setAttribute('aria-expanded', 'false');
+      doc.removeEventListener('pointerdown', outsideDown, true);
+      if (refocus) toggle.focus({ preventScroll: true });
+    }
+
+    if (toggle && panel) {
+      toggle.addEventListener('click', () => { if (panel.hidden) openPanel(); else closePanel(); });
+      panel.addEventListener('click', (e) => {
+        const opt = e.target.closest('.st-opt');
+        if (!opt) return;
+        if (opt.dataset.tag !== undefined) {
+          const v = fold(opt.dataset.tag);
+          state.tag = state.tag === v ? '' : v;
+        } else if (opt.dataset.out !== undefined) {
+          state.out = state.out === opt.dataset.out ? '' : opt.dataset.out;
+        } else if (opt.value) {
+          state.sort = SORTS[opt.value] || 'newest';
+        }
+        apply();
       });
-      radioKeys(tagList, pickChip);
+      // Arrows walk the options; Tab leaves, and leaving closes.
+      panel.addEventListener('keydown', (e) => {
+        const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+        if (!step) return;
+        const opts = $$('.st-opt', panel);
+        const i = opts.indexOf(doc.activeElement);
+        if (i < 0) return;
+        e.preventDefault();
+        opts[(i + step + opts.length) % opts.length].focus();
+      });
+      panel.addEventListener('focusout', (e) => {
+        const to = e.relatedTarget;
+        if (to && !panel.contains(to) && !toggle.contains(to)) closePanel(false);
+      });
+      const closer = $('#filters-close');
+      if (closer) closer.addEventListener('click', () => closePanel());
+      if (scrim) scrim.addEventListener('click', () => closePanel());
+      doc.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !panel.hidden) closePanel(); });
     }
+
+    /* ---- controls ------------------------------------------------------ */
 
     if (input) {
       input.addEventListener('input', () => { state.q = input.value; apply(); });
@@ -450,35 +450,7 @@
       input.select();
     });
 
-    // Sort: a radio group, drawn as the system's segmented control with its thumb.
-    let placeThumb = () => {};
-    if (sortSeg) {
-      const buttons = $$('[role="radio"]', sortSeg);
-      const thumb = doc.createElement('span');
-      thumb.className = 'pv-seg__thumb';
-      thumb.setAttribute('aria-hidden', 'true');
-      sortSeg.prepend(thumb);
-      placeThumb = (instant) => {
-        const on = buttons.find((b) => b.getAttribute('aria-checked') === 'true');
-        if (!on) return;
-        if (instant) thumb.style.transition = 'none';
-        thumb.style.width = `${on.offsetWidth}px`;
-        thumb.style.transform = `translateX(${on.offsetLeft}px)`;
-        if (instant) { thumb.getBoundingClientRect(); thumb.style.transition = ''; }
-      };
-      const pickSort = (b) => {
-        if (b.getAttribute('aria-checked') === 'true') return;
-        checkOne(sortSeg, b);
-        placeThumb(false);
-        state.sort = SORTS[b.value] || 'newest';
-        apply();
-      };
-      buttons.forEach((b) => b.addEventListener('click', () => pickSort(b)));
-      radioKeys(sortSeg, pickSort);
-      if ('ResizeObserver' in window) new ResizeObserver(() => placeThumb(true)).observe(sortSeg);
-    }
-
-    if (activeBtn) activeBtn.addEventListener('click', () => { state.tag = ''; state.out = ''; apply(); if (input) input.focus(); });
+    if (pill) pill.addEventListener('click', () => { state.tag = ''; state.out = ''; apply(); if (toggle) toggle.focus({ preventScroll: true }); });
 
     if (emptyAction) {
       emptyAction.addEventListener('click', () => {
@@ -492,51 +464,113 @@
       });
     }
 
-    // The bar takes its glass and dotted rule only once it is stuck, and only
-    // where it sticks (not on phones, where it scrolls with the page).
-    if (toolbar && sentinel && 'IntersectionObserver' in window) {
-      const wide = window.matchMedia('(min-width: 760px)');
-      let io = null;
-      let barH = 0;
-      // The room the top bar takes: its height times the large-screen chrome
-      // scale --k (pv.css: --pv-topbar-block).
-      const bar = () => {
-        const css = getComputedStyle(doc.documentElement);
-        return Math.round((parseFloat(css.getPropertyValue('--pv-topbar-h')) || 64) * (parseFloat(css.getPropertyValue('--k')) || 1));
-      };
-      const observe = () => {
-        if (io) { io.disconnect(); io = null; }
-        toolbar.classList.remove('is-stuck');
-        if (!wide.matches) return;
-        const h = barH = bar();
-        io = new IntersectionObserver(([entry]) => {
-          toolbar.classList.toggle('is-stuck', !entry.isIntersecting && entry.boundingClientRect.top < h + 2);
-        }, { rootMargin: `-${h + 1}px 0px 0px 0px`, threshold: 0 });
-        io.observe(sentinel);
-      };
-      observe();
-      wide.addEventListener('change', observe);
-      // A window resized across 1440 x 900 changes the bar's height (pv.js
-      // updates --k on the next frame; check once the resizing settles).
-      let settle = 0;
-      window.addEventListener('resize', () => {
-        window.clearTimeout(settle);
-        settle = window.setTimeout(() => { if (wide.matches && bar() !== barH) observe(); }, 200);
-      }, { passive: true });
+    /* ---- the hero: the field, and the plate it is speaking of ---------- */
+
+    const field = hero && window.STField ? window.STField.hero(hero) : null;
+    if (hero && (!field || !field.drawn)) hero.classList.add('no-field');
+    if (field) {
+      const warm = (img) => field.warm(img.currentSrc || img.src);
+      $$('img', grid).forEach((img) => {
+        if (img.complete && img.naturalWidth) warm(img);
+        else img.addEventListener('load', () => warm(img), { once: true });
+      });
     }
+    const nowName = $('#now-name');
+    const nowDesc = $('#now-desc');
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
+    let shownCell = null, restTimer = 0, leaveTimer = 0, lastScroll = -1e4;
+    window.addEventListener('scroll', () => { lastScroll = performance.now(); }, { passive: true });
+
+    // How much of the hero is on screen: whether its band has stuck under the top bar,
+    // whether the hero's words still have their place, and how wide a picture is.
+    function heroState() {
+      if (!hero) return;
+      const H = hero.offsetHeight;
+      const k = scaleK();
+      const band = 80 * k;
+      const sticky = getComputedStyle(hero).position === 'sticky';
+      const covered = sticky ? Math.max(0, Math.min(H - band, barBlock() - hero.getBoundingClientRect().top)) : 0;
+      hero.classList.toggle('is-stuck', sticky && covered >= H - band - 1);
+      hero.classList.toggle('is-compact', covered > 20 * k);
+      const can = field && field.canShow();
+      hero.style.setProperty('--st-pic-w', can ? `${((H - covered - 20 * k) * 12) / 7 / k}px` : '0px');
+    }
+    let stateFrame = 0;
+    const queueState = () => { if (!stateFrame) stateFrame = requestAnimationFrame(() => { stateFrame = 0; heroState(); }); };
+    window.addEventListener('scroll', queueState, { passive: true });
+    window.addEventListener('resize', queueState, { passive: true });
+    heroState();
+
+    function preview(cell) {
+      window.clearTimeout(leaveTimer);
+      if (cell === shownCell) return;
+      shownCell = cell;
+      if (nowName) nowName.textContent = cell.dataset.name || '';
+      const line = ($('.st-card__desc, .st-card__line', cell) || {}).textContent || '';
+      if (nowDesc) nowDesc.textContent = line;
+      // An unusually long description is set smaller rather than cut.
+      if (hero) {
+        hero.classList.toggle('is-long', line.length > 190);
+        hero.classList.toggle('is-xlong', line.length > 420);
+        hero.classList.toggle('is-long-name', (cell.dataset.name || '').length > 48);
+      }
+      if (hero) hero.classList.add('is-preview');
+      const img = $('img', cell);
+      if (!field) return;
+      if (!img) { field.quiet(); return; }
+      field.show(img.currentSrc || img.src).then((accent) => {
+        // A number from the artwork's pixels, for the plate's edge.
+        if (accent && cell.isConnected) cell.style.setProperty('--st-cell-art', accent);
+      });
+    }
+
+    function release() {
+      window.clearTimeout(restTimer);
+      shownCell = null;
+      if (hero) hero.classList.remove('is-preview');
+      if (field) field.clear();
+    }
+
+    const previewing = () => canHover.matches && window.innerWidth >= 760;
+    grid.addEventListener('pointerover', (e) => {
+      if (e.pointerType !== 'mouse' || !previewing()) return;
+      const cell = e.target.closest('.st-cell');
+      if (!cell || cell.classList.contains('st-ghost')) return;
+      // A plate reached by keyboard keeps the hero, whatever a parked pointer is over.
+      const focused = $('.st-card:focus-visible', grid);
+      if (focused && !cell.contains(focused)) return;
+      window.clearTimeout(leaveTimer);
+      window.clearTimeout(restTimer);
+      // Resting, not crossing: a pointer on its way somewhere starts nothing, and
+      // nor do plates passing under it while the page scrolls.
+      const rest = () => {
+        if (performance.now() - lastScroll < 120) restTimer = window.setTimeout(rest, 120);
+        else preview(cell);
+      };
+      restTimer = window.setTimeout(rest, shownCell ? 60 : 110);
+    });
+    grid.addEventListener('pointerleave', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      window.clearTimeout(restTimer);
+      window.clearTimeout(leaveTimer);
+      leaveTimer = window.setTimeout(release, 420);
+    });
+    grid.addEventListener('focusin', (e) => {
+      if (!previewing() || !e.target.matches(':focus-visible')) return;
+      const cell = e.target.closest('.st-cell');
+      if (cell) preview(cell);
+    });
+    grid.addEventListener('focusout', (e) => {
+      if (e.relatedTarget && grid.contains(e.relatedTarget)) return;
+      window.clearTimeout(leaveTimer);
+      leaveTimer = window.setTimeout(release, 200);
+    });
 
     /* ---- boot ---------------------------------------------------------- */
 
     readURL();
     if (input) input.value = state.q;
-    if (sortSeg) {
-      const b = $(`[role="radio"][value="${state.sort}"]`, sortSeg);
-      if (b) checkOne(sortSeg, b);
-      placeThumb(true);
-      sortSeg.classList.add('is-ready');
-    }
     apply({ animate: false });
-    if (live) live.textContent = '';
 
     fetch('data/tools-index.json', { cache: 'no-cache' })
       .then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
@@ -553,57 +587,198 @@
           emptyAction.textContent = 'Reload';
           emptyAction.dataset.action = 'reload';
         }
-        if (countEl) countEl.textContent = '';
       });
   }
 
   /* ======================================================= tool page */
 
   function toolPage() {
-    const onpage = $('.st-onpage');
-    if (onpage && 'IntersectionObserver' in window) {
-      const links = $$('a[href^="#"]', onpage);
-      const rail = $('ul', onpage);
-      const secs = links.map((a) => doc.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
-      const visible = new Map();
-      let current = null;
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((e) => visible.set(e.target.id, e.isIntersecting));
-        const first = secs.find((s) => visible.get(s.id));
-        if (!first || first === current) return;
-        current = first;
-        links.forEach((a) => {
-          const on = a.getAttribute('href') === `#${first.id}`;
-          if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
-          // In the row of pills, keep the current one in view.
-          if (on && rail && rail.scrollWidth > rail.clientWidth + 1) {
-            a.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: reduced() ? 'auto' : 'smooth' });
-          }
-        });
-      }, { rootMargin: '-30% 0px -55% 0px' });
-      secs.forEach((s) => io.observe(s));
+    const host = $('.st-top');
+    const plate = $('.st-artplate');
+    const img = plate && $('img', plate);
+    if (host && plate && img) {
+      const reveal = () => plate.classList.add('is-shown');
+      if (window.STField) window.STField.develop({ host, plate, img, onReveal: reveal });
+      else reveal();
+    }
+    views();
+    testSummary();
+    formulas();
+  }
+
+  // The views: real links to real sections. Without JavaScript they are a list of
+  // what is on the page; with it, a tab bar that shows one section at a time.
+  function views() {
+    const bar = $('#view-bar');
+    const tabsBox = $('#view-tabs');
+    if (!bar || !tabsBox) return;
+    const tabs = $$('[data-view-link]', tabsBox);
+    const ids = tabs.map((t) => t.dataset.viewLink);
+    const panels = new Map(ids.map((id) => [id, doc.getElementById(id)]));
+    const ind = doc.createElement('span');
+    ind.className = 'st-tabs__ind';
+    ind.setAttribute('aria-hidden', 'true');
+    tabsBox.append(ind);
+    tabsBox.setAttribute('role', 'tablist');
+    tabs.forEach((t) => {
+      const id = t.dataset.viewLink;
+      t.id = `tab-${id}`;
+      t.setAttribute('role', 'tab');
+      t.setAttribute('aria-controls', id);
+      const p = panels.get(id);
+      if (p) { p.setAttribute('role', 'tabpanel'); p.setAttribute('aria-labelledby', t.id); }
+    });
+
+    function place() {
+      const on = tabs.find((t) => t.getAttribute('aria-selected') === 'true');
+      if (!on) return;
+      ind.style.setProperty('--w', `${on.offsetWidth - 28}px`);
+      ind.style.setProperty('--x', `${on.offsetLeft + 14}px`);
     }
 
-    // A formula wider than its column scrolls: it takes focus (arrow keys
-    // scroll it) and fades at the edge it continues past.
-    const formulas = $$('.st-formula');
-    if (formulas.length) {
-      const check = (box) => {
-        const scrolls = box.scrollWidth > box.clientWidth + 1;
-        box.classList.toggle('is-scroll', scrolls);
-        box.classList.toggle('is-end', scrolls && box.scrollLeft + box.clientWidth >= box.scrollWidth - 2);
-        if (scrolls) box.tabIndex = 0; else box.removeAttribute('tabindex');
-      };
-      formulas.forEach((box) => {
-        box.addEventListener('scroll', () => check(box), { passive: true });
-        check(box);
+    function show(view, { focus = false, scroll = false } = {}) {
+      root.setAttribute('data-view', view);
+      tabs.forEach((t) => {
+        const on = t.dataset.viewLink === view;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        if (on && focus) t.focus();
       });
-      if ('ResizeObserver' in window) {
-        const ro = new ResizeObserver((entries) => entries.forEach((e) => check(e.target)));
-        formulas.forEach((box) => ro.observe(box));
+      place();
+      // A view starts at its top, with the bar stuck above it: a press from the first
+      // screen glides there, and from further down the view simply starts at its top.
+      if (scroll) {
+        const holder = bar.parentElement;
+        const y = Math.max(0, holder.getBoundingClientRect().top + window.scrollY - barBlock());
+        const glide = !bar.classList.contains('is-stuck') && !reduced();
+        window.scrollTo({ top: y, behavior: glide ? 'smooth' : 'auto' });
       }
-      if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(() => formulas.forEach(check));
     }
+
+    tabsBox.addEventListener('click', (e) => {
+      const t = e.target.closest('[data-view-link]');
+      if (!t) return;
+      e.preventDefault();
+      const view = t.dataset.viewLink;
+      root.setAttribute('data-view-live', '');
+      try { window.history.pushState(null, '', `#${view}`); } catch (err) { /* sandboxed */ }
+      show(view, { scroll: true });
+    });
+    tabsBox.addEventListener('keydown', (e) => {
+      const i = tabs.indexOf(doc.activeElement);
+      if (i < 0) return;
+      if (e.key === ' ') { e.preventDefault(); tabs[i].click(); return; }
+      const last = tabs.length - 1;
+      const next = { ArrowRight: i === last ? 0 : i + 1, ArrowLeft: i === 0 ? last : i - 1, Home: 0, End: last }[e.key];
+      if (next === undefined) return;
+      e.preventDefault();
+      const view = ids[next];
+      root.setAttribute('data-view-live', '');
+      try { window.history.replaceState(null, '', `#${view}`); } catch (err) { /* sandboxed */ }
+      show(view, { focus: true, scroll: true });
+    });
+    window.addEventListener('hashchange', () => {
+      const h = window.location.hash.slice(1);
+      if (ids.includes(h)) {
+        show(h);
+        const p = panels.get(h);
+        if (p) p.scrollIntoView({ block: 'start' });
+      }
+    });
+    window.addEventListener('popstate', () => {
+      const h = window.location.hash.slice(1);
+      show(ids.includes(h) ? h : ids[0], { scroll: true });
+    });
+
+    const first = root.getAttribute('data-view');
+    show(ids.includes(first) ? first : ids[0]);
+    if ('ResizeObserver' in window) new ResizeObserver(place).observe(tabsBox);
+    if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(place);
+
+    // Once the first screen has gone, the bar also says the name and offers Download.
+    const top = $('.st-top');
+    const nameEl = $('.st-bar__name', bar);
+    const dl = $('.st-bar__dl', bar);
+    const measure = () => {
+      if (!nameEl) return;
+      const k = scaleK();
+      const w = nameEl.offsetParent ? nameEl.getBoundingClientRect().width / k + 24 : 0;
+      bar.style.setProperty('--st-name-w', `${w}px`);
+      if (dl) bar.style.setProperty('--st-dl-w', `${dl.getBoundingClientRect().width / k + 10}px`);
+    };
+    measure();
+    window.addEventListener('resize', measure, { passive: true });
+    if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(measure);
+    if (top && 'IntersectionObserver' in window) {
+      let io = null;
+      const watch = () => {
+        if (io) io.disconnect();
+        const offset = Math.round(barBlock() + bar.offsetHeight);
+        io = new IntersectionObserver(([entry]) => {
+          const gone = !entry.isIntersecting && entry.boundingClientRect.top < offset;
+          bar.classList.toggle('is-stuck', gone);
+          bar.classList.toggle('is-gone', gone);
+          if (dl) dl.tabIndex = gone ? 0 : -1;
+        }, { rootMargin: `-${offset}px 0px 0px 0px`, threshold: 0 });
+        io.observe(top);
+      };
+      watch();
+      let settle = 0;
+      window.addEventListener('resize', () => { window.clearTimeout(settle); settle = window.setTimeout(watch, 200); }, { passive: true });
+    }
+  }
+
+  // Tool test summary: a modal dialog, so Escape closes it and focus comes back.
+  function testSummary() {
+    const dialog = $('#test-summary');
+    const opener = $('#test-summary-open');
+    if (!dialog || !opener || !dialog.showModal) return;
+    // The address #tool-check belongs to this script now: left in place, the browser's
+    // own jump to it would pull focus back out of the dialog.
+    const anchor = $('#tool-check');
+    if (anchor) anchor.removeAttribute('id');
+    const open = () => { if (!dialog.open) dialog.showModal(); };
+    opener.addEventListener('click', open);
+    // On a phone the bar has room for the views only: the button stands with Download.
+    const home = opener.parentElement, next = opener.nextSibling, spot = $('.st-get');
+    const phone = window.matchMedia('(max-width: 759.98px)');
+    const place = () => { if (phone.matches && spot) spot.append(opener); else home.insertBefore(opener, next); };
+    phone.addEventListener('change', place);
+    place();
+    dialog.addEventListener('close', () => {
+      opener.focus({ preventScroll: true });
+      if (window.location.hash === '#tool-check') {
+        try { window.history.replaceState(null, '', window.location.pathname + window.location.search); } catch (e) { /* sandboxed */ }
+      }
+    });
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog || e.target.closest('[data-close-tests]')) dialog.close();
+    });
+    const fromAddress = () => { if (window.location.hash === '#tool-check') open(); };
+    window.addEventListener('hashchange', fromAddress);
+    fromAddress();
+  }
+
+  // A formula wider than its column scrolls: it takes focus (arrow keys scroll
+  // it) and fades at the edge it continues past.
+  function formulas() {
+    const boxes = $$('.st-formula');
+    if (!boxes.length) return;
+    const check = (box) => {
+      const scrolls = box.scrollWidth > box.clientWidth + 1;
+      box.classList.toggle('is-scroll', scrolls);
+      box.classList.toggle('is-end', scrolls && box.scrollLeft + box.clientWidth >= box.scrollWidth - 2);
+      if (scrolls) box.tabIndex = 0; else box.removeAttribute('tabindex');
+    };
+    boxes.forEach((box) => {
+      box.addEventListener('scroll', () => check(box), { passive: true });
+      check(box);
+    });
+    if ('ResizeObserver' in window) {
+      const ro = new ResizeObserver((entries) => entries.forEach((e) => check(e.target)));
+      boxes.forEach((box) => ro.observe(box));
+    }
+    if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(() => boxes.forEach(check));
   }
 
   /* ======================================================= 404 */

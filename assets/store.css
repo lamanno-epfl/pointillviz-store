@@ -2,263 +2,83 @@
    store.pointillviz.com · store.css
    The Tool Store's own parts. Loads after the shared pv.css (assets/pv/,
    synced from WEB/shared/pv/), uses its tokens and never restyles its chrome.
-   The 404 page, the status chip and every former local fix of shared rules
-   (search focus, the 11 px floor, gates, current site, phones without
-   JavaScript) are pv.css's now.
+   Its signature, the field of points, is drawn by assets/field.js.
 
-   1  Page and masthead           6  The Tools tab band, safety, publish teaser
-   2  How to, and installing      7  Tool page
-   3  Toolbar and filters         8  Readme: prose and formulas
-   4  Cards                       9  Build & publish page
-   5  Empty and error states
+   1  Page and title              6  Tool page: the first screen
+   2  The hero and its field      7  Tool page: views, details, test summary
+   3  The filters panel           8  Readme: prose and formulas
+   4  The plates                  9  Build & publish page
+   5  Empty state, closing band   10 Responsive
    ========================================================================== */
 
 
-/* 1 · Page and masthead =================================================== */
+/* 1 · Page and title ======================================================
+   Titles in the face of the homepage and the docs: DM Sans 600, tight. On a
+   large screen the content follows the chrome's scale (--k), as the homepage
+   does, so a page keeps its composition from 1440 × 900 to 2560 × 1440. */
 
+:root {
+  --st-read: #D8D0BF;                          /* running text beside a heading */
+  --st-quiet: #A8A091;                         /* small labels, on the ink at 7.6:1 */
+  --st-hair: rgba(239, 230, 210, 0.1);         /* a rule between rows */
+}
 .st-page { background: var(--pv-bg); }
-
-.st-mast {
-  position: relative;
-  isolation: isolate;
-  padding-block: clamp(22px, 0.75rem + 1.8vw, 40px) clamp(18px, 0.5rem + 1.2vw, 28px);
-}
-/* The instrument's plate grid, fading towards the tools. */
-.st-mast::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-image: radial-gradient(circle at center, var(--pv-line) 1px, transparent 1.5px);
-  background-size: 24px 24px;
-  background-position: calc(50% + 12px) 12px;
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.5) 50%, transparent 100%);
-  mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.5) 50%, transparent 100%);
-  pointer-events: none;
-}
-/* The local store's two faint washes: its quotation of the viewer's hero. */
-.st-mast::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    radial-gradient(900px 520px at 6% -12%, rgba(111, 224, 189, 0.085), transparent 62%),
-    radial-gradient(760px 460px at 98% -4%, rgba(91, 123, 255, 0.075), transparent 60%);
-  pointer-events: none;
-}
-.st-mast__inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(360px, 460px);
-  gap: 24px clamp(32px, 5vw, 80px);
-  align-items: start;
-}
-.st-mast__lede { min-width: 0; }
-
-/* The store's wordmark: the instrument's mono, tracked into a sign, with the
-   viewer's phosphor halo at a third of its strength. The page's one glow. */
-.st-wordmark {
-  margin: 16px 0 14px;
-  margin-inline-end: -0.14em;
-  font: 500 clamp(2rem, 1.3rem + 2.6vw, 3.25rem) / 1 var(--pv-font-mono);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+.st-title {
+  font-family: var(--pv-font-sans);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.026em;
   color: var(--pv-text);
-  text-shadow: 0 0 18px rgba(111, 224, 189, 0.2), 0 0 60px rgba(111, 224, 189, 0.1);
+  overflow-wrap: break-word;
   text-wrap: balance;
 }
-.st-mast__text { max-width: 44em; }
-.st-file {
-  font-family: var(--pv-font-mono);
-  font-size: 0.88em;
-  font-variant-ligatures: none;
-  color: var(--pv-edition);
-  white-space: nowrap;
+.st-wrap {
+  width: 100%;
+  max-width: calc(var(--pv-page-wide) + 2 * var(--pv-gutter));
+  margin-inline: auto;
+  padding-inline: var(--pv-gutter);
 }
+.st-wrap, .st-hero__in, .st-results__in { zoom: var(--k); }
+.st-keep { display: inline-block; max-width: 100%; }
+.st-empty-line { color: var(--pv-text-2); font-style: italic; }
 
 
-/* 2 · How to, and installing ===============================================
-   One panel beside the wordmark: the three steps, then how installing works,
-   folded to its one-line summary until asked. */
+/* 2 · The hero and its field ==============================================
+   A third of the screen, and one sticky element: as the page scrolls its top
+   slides under the top bar and its foot, the band with search and Filters, stays.
+   field.js gathers the points into a tool's artwork in whatever part is on screen. */
 
-.st-start {
-  position: relative;
-  min-width: 0;
-  padding: 18px 20px 14px;
-  border: 1px solid var(--pv-line);
-  border-radius: var(--pv-radius-lg);
-  background: color-mix(in srgb, var(--pv-surface) 88%, transparent);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+:root {
+  --st-hero-h: calc(clamp(196px, 26.2vh, 236px) * var(--k));
+  --st-band-h: calc(80px * var(--k));
 }
-
-/* Three numbered points joined by a dotted line. */
-.st-howto {
-  display: grid;
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  counter-reset: st-step;
-}
-.st-howto > li {
-  position: relative;
-  min-height: 22px;
-  padding: 1px 0 0 34px;
-  counter-increment: st-step;
-  font-size: 0.9375rem;
-  line-height: 1.4;
-  color: var(--pv-text-2);
-  text-wrap: pretty;
-}
-.st-howto > li::before {
-  content: counter(st-step);
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: grid;
-  place-items: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--pv-accent);
-  color: var(--pv-accent-ink);
-  font: 600 var(--pv-text-2xs) / 1 var(--pv-font-mono);
-}
-.st-howto > li:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  top: 26px;
-  bottom: -8px;
-  left: 10px;
-  width: 2px;
-  background-image: radial-gradient(circle at center, var(--pv-dot) 1px, transparent 1.4px);
-  background-size: 2px 6px;
-  background-repeat: repeat-y;
-}
-
-.st-install { position: relative; margin-top: 14px; padding-top: 10px; }
-.st-install::before,
-.st-install__close::before,
-.st-dotted::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 3px;
-  background-image: radial-gradient(circle at center, var(--pv-dot) 1px, transparent 1.4px);
-  background-size: 6px 3px;
-  background-repeat: repeat-x;
-}
-.st-install__sum {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2px 16px;
-}
-.st-install__lead {
-  order: 1;
-  flex: 1 1 220px;
-  font-size: 0.875rem;
-  line-height: 1.45;
-  color: var(--pv-text);
-  text-wrap: pretty;
-}
-.st-install__h { order: 2; margin: 0; font-size: inherit; letter-spacing: normal; }
-.st-install__toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 36px;
-  margin: 0 -6px 0 0;
-  padding: 0 6px;
-  border: 0;
-  border-radius: var(--pv-radius-sm);
-  background: none;
-  white-space: nowrap;
-  font: 500 var(--pv-text-xs) / 1.3 var(--pv-font-mono);
-  letter-spacing: var(--pv-track-label);
-  text-transform: uppercase;
-  color: var(--pv-text-2);
-  transition: color var(--pv-dur-hover) ease;
-}
-.st-install__chev { width: 18px; height: 18px; flex: none; transition: transform var(--pv-dur-travel) var(--pv-ease-out); }
-.st-install__toggle[aria-expanded="true"] .st-install__chev { transform: rotate(180deg); }
-@media (hover: hover) and (pointer: fine) {
-  .st-install__toggle:hover { color: var(--pv-text); }
-}
-/* Without JavaScript the body is simply open and the toggle is a label. */
-html:not(.st-js) .st-install__chev { display: none; }
-html:not(.st-js) .st-install__toggle { cursor: default; }
-.st-js .st-install:not(.is-open) .st-install__body { display: none; }
-.st-install.is-open .st-install__body { animation: st-open var(--pv-dur-panel) var(--pv-ease-out); }
-
-.st-routes {
-  display: grid;
-  gap: 12px;
-  margin: 12px 0 0;
-  padding: 0;
-  list-style: none;
-}
-.st-route { position: relative; padding-inline-start: 24px; }
-/* Available: a filled point. Not yet: a hollow one (the chips' language). */
-.st-route::before {
-  content: "";
-  position: absolute;
-  left: 1px;
-  top: 0.42em;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  border: 1.5px solid var(--pv-text-3);
-}
-.st-route[data-on]::before {
-  border-color: var(--pv-accent);
-  background: var(--pv-accent);
-}
-.st-route__title {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px 10px;
-  font-size: 0.9688rem;
-  font-weight: 600;
-  line-height: 1.35;
-}
-.st-route__text {
-  margin-top: 4px;
-  font-size: 0.875rem;
-  line-height: 1.52;
-  color: var(--pv-text-2);
-}
-.st-route__text b { font-weight: 600; color: var(--pv-text); }
-.st-install__close {
-  position: relative;
-  margin-top: 14px;
-  padding-top: 12px;
-  font-size: 0.875rem;
-  line-height: 1.52;
-  color: var(--pv-text-2);
-}
-.st-install__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 20px;
-  margin-top: 6px;
-  font-size: 0.875rem;
-}
-
-
-/* 3 · Toolbar and filters ================================================= */
-
 .st-shop { position: relative; }
-.st-sentinel { height: 1px; margin-bottom: -1px; }
-.st-toolbar {
-  position: sticky;
-  top: var(--pv-topbar-block);
-  z-index: var(--pv-z-sticky);
-  transition: background-color var(--pv-dur-ui) ease;
+.st-hero {
+  position: relative;
+  background: var(--pv-bg);
 }
-.st-toolbar::after {
+.st-field {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+/* Without canvas: the instrument's faint plate grid, fading towards the tools. */
+.st-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, var(--pv-line) 1px, transparent 1.5px) 0 0 / 16px 14px;
+  -webkit-mask-image: linear-gradient(90deg, transparent 30%, #000), linear-gradient(transparent, #000 2%, #000 60%, transparent);
+  mask-image: linear-gradient(90deg, transparent 30%, #000), linear-gradient(transparent, #000 2%, #000 60%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+  pointer-events: none;
+}
+.st-js .st-hero:not(.no-field)::before { content: none; }
+/* The chrome's dotted rule, once the band has stuck. */
+.st-hero::after {
   content: "";
   position: absolute;
   inset: auto 0 -2px;
@@ -270,234 +90,339 @@ html:not(.st-js) .st-install__toggle { cursor: default; }
   transition: opacity var(--pv-dur-ui) ease;
   pointer-events: none;
 }
-.st-toolbar.is-stuck {
-  background: var(--pv-topbar-bg);
-  -webkit-backdrop-filter: var(--pv-glass-filter);
-  backdrop-filter: var(--pv-glass-filter);
+.st-hero.is-stuck::after { opacity: 1; }
+.st-hero__in {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 0 24px;
+  padding-top: 14px;
 }
-.st-toolbar.is-stuck::after { opacity: 1; }
-.st-toolbar__inner {
-  display: flex;
+.st-hero__words {
+  grid-area: 1 / 1 / 2 / -1;
+  align-self: end;
+  min-width: 0;
+  transition: opacity 200ms ease, transform 320ms var(--pv-ease-out);
+}
+.st-hero__title { font-size: clamp(2.625rem, 8vh, 4.5rem); margin-inline-start: -0.02em; }
+.st-hero__how { margin-top: 6px; }
+.st-howto {
+  display: inline-flex;
   align-items: center;
-  gap: 12px 20px;
-  padding-block: 10px;
+  gap: 7px;
+  font-size: 0.9688rem;
+  line-height: 1.5;
+  color: var(--pv-text-2);
+  transition: color var(--pv-dur-hover) ease;
 }
-.st-search { flex: 1 1 340px; max-width: 600px; margin: 0; }
-.st-search .pv-search__input { padding-inline-end: 44px; }
+.st-howto .pv-icon { width: 15px; height: 15px; transition: transform var(--pv-dur-ui) var(--pv-ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .st-howto:hover { color: var(--pv-text); }
+  .st-howto:hover .pv-icon { transform: translateX(3px); }
+}
+
+/* While the pointer rests on a plate the hero speaks of that tool: its name in the
+   title's place and its whole description under it. */
+.st-now {
+  container-type: inline-size;
+  grid-area: 1 / 1 / 2 / -1;
+  align-self: end;
+  max-width: min(44em, calc(100% - var(--st-pic-w, 0px) - 32px));
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 160ms ease, transform 280ms var(--pv-ease-out);
+  pointer-events: none;
+}
+.st-now__name {
+  font: 600 clamp(1.75rem, 5vh, 2.625rem) / 1.08 var(--pv-font-sans);
+  letter-spacing: -0.024em;
+  color: var(--pv-text);
+  text-wrap: balance;
+}
+.st-now__desc {
+  margin-top: 7px;
+  font-size: 1rem;
+  line-height: 1.45;
+  color: var(--pv-text);
+  text-wrap: pretty;
+  text-shadow: 0 0 10px var(--pv-bg), 0 0 3px var(--pv-bg);
+}
+.st-hero.is-long .st-now__desc { font-size: 0.875rem; line-height: 1.36; }
+.st-hero.is-xlong .st-now__desc { display: none; }
+.st-hero.is-long-name:not(.is-compact) .st-now__name { font-size: 1.5rem; line-height: 1.14; letter-spacing: -0.016em; }
+/* One at a time, so that the two never stand over each other: the words leaving go
+   quickly and the words arriving wait for them. */
+.st-hero:not(.is-preview) .st-now { transition: opacity 80ms ease, transform 80ms ease; }
+.st-hero:not(.is-preview) .st-hero__words { transition: opacity 200ms ease 80ms, transform 320ms var(--pv-ease-out) 80ms; }
+.st-hero.is-preview .st-hero__words { opacity: 0; transform: translateY(-5px); transition: opacity 80ms ease, transform 80ms ease; }
+.st-hero.is-stuck .st-hero__words { opacity: 0; visibility: hidden; transition: opacity 120ms ease, visibility 0s linear 120ms; }
+.st-hero.is-preview .st-now { opacity: 1; transform: none; transition: opacity 160ms ease 80ms, transform 280ms var(--pv-ease-out) 80ms; }
+/* As the hero slides under the top bar the words move into the band, beside the
+   picture, which shrinks with what is left on screen. */
+.st-hero.is-compact .st-now {
+  grid-area: 2 / 2;
+  align-self: center;
+  max-width: calc(100% - var(--st-pic-w, 0px) - 24px);
+}
+.st-hero.is-compact .st-now__name { font-size: 0.9688rem; line-height: 1.3; letter-spacing: -0.008em; }
+/* Too little room for the whole line: the name alone, and then not even that. The tool's
+   page holds the rest. */
+@container (max-width: 439.98px) {
+  .st-hero.is-compact .st-now__desc { display: none; }
+}
+@container (max-width: 139.98px) {
+  .st-hero.is-compact .st-now__name { display: none; }
+}
+.st-hero.is-compact .st-now__desc { margin-top: 1px; font-size: 0.8438rem; line-height: 1.32; }
+.st-hero.is-compact.is-long .st-now__desc { font-size: 0.75rem; line-height: 1.26; }
+
+.st-controls {
+  grid-area: 2 / 1 / 3 / -1;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  min-height: 80px;
+  padding-block: 12px;
+}
+.st-hero.is-compact .st-controls { grid-area: 2 / 1; }
+.st-search { flex: 0 1 440px; width: 440px; max-width: 100%; }
+.st-search .pv-search__input { padding-inline-end: 44px; background: rgba(6, 7, 13, 0.86); }
 .st-search .pv-search__input::-webkit-search-cancel-button { -webkit-appearance: none; }
 .st-search__kbd { right: 14px; }
 @media (hover: none), (pointer: coarse) {
   .st-search__kbd { display: none; }
 }
-
-/* The filter in force, shown in the bar while the filter row is scrolled away. */
-.st-active {
+.st-filterbtn {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
+  height: 46px;
+  padding: 0 18px 0 15px;
+  border: 1px solid var(--pv-line-2);
+  border-radius: var(--pv-radius-pill);
+  background: rgba(6, 7, 13, 0.86);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--pv-text);
+  transition: border-color var(--pv-dur-hover) ease, background-color var(--pv-dur-hover) ease, transform var(--pv-dur-press) var(--pv-ease-out);
+}
+.st-filterbtn__mark { width: 16px; height: 16px; color: var(--pv-text-2); }
+.st-filterbtn:active { transform: scale(var(--pv-press)); }
+.st-filterbtn[aria-expanded="true"] { border-color: var(--pv-accent); }
+.st-filterbtn[aria-expanded="true"] .st-filterbtn__mark, .st-filterbtn.is-on .st-filterbtn__mark { color: var(--pv-accent); }
+@media (hover: hover) and (pointer: fine) {
+  .st-filterbtn:hover { border-color: color-mix(in srgb, var(--pv-text) 45%, transparent); }
+}
+/* The one sign of a filter in force: small, and a press removes it. */
+.st-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   min-height: 32px;
-  max-width: 220px;
+  max-width: 240px;
   padding: 0 8px 0 12px;
   border: 1px solid var(--pv-accent-line);
   border-radius: var(--pv-radius-pill);
   background: var(--pv-accent-soft);
   color: var(--pv-accent);
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: border-color var(--pv-dur-hover) ease;
+}
+.st-pill__label { overflow: hidden; text-overflow: ellipsis; }
+.st-pill__x { width: 14px; height: 14px; flex: none; }
+.st-pill:active { transform: scale(var(--pv-press)); }
+@media (hover: hover) and (pointer: fine) {
+  .st-pill:hover { border-color: var(--pv-accent); }
+}
+.st-count {
   font: 500 var(--pv-text-xs) / 1 var(--pv-font-mono);
   letter-spacing: 0.02em;
-  white-space: nowrap;
-  transition: border-color var(--pv-dur-hover) ease, background-color var(--pv-dur-hover) ease;
-}
-.st-active__label { overflow: hidden; text-overflow: ellipsis; }
-.st-active__x { width: 14px; height: 14px; flex: none; }
-.st-active[hidden] { display: none; }
-.st-toolbar:not(.is-stuck) .st-active { display: none; }
-@media (hover: hover) and (pointer: fine) {
-  .st-active:hover { border-color: var(--pv-accent); }
-}
-
-/* Sort: a radio group drawn as the system's segmented control; store.js
-   slides the shared thumb (pv-seg__thumb) under the checked option. */
-.st-sort { display: flex; align-items: center; gap: 10px; flex: none; }
-.st-seg > button[aria-checked="true"] {
-  color: var(--pv-text);
-  background: linear-gradient(180deg, color-mix(in srgb, var(--pv-accent) 28%, transparent), color-mix(in srgb, var(--pv-accent) 12%, transparent));
-  box-shadow: inset 0 0 0 1px var(--pv-accent-line), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-.st-seg.is-ready > button[aria-checked="true"] { background: transparent; box-shadow: none; }
-.st-count {
-  margin-inline-start: auto;
+  color: var(--pv-text-2);
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
 
-.st-tags { padding-block: 2px 20px; }
-.st-tags__list {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 6px;
+
+/* 3 · The filters panel ===================================================
+   A legend, not a heap of chips: tags, outputs and the order, each option a point
+   and a word. On a phone it is a sheet from the foot of the screen. */
+
+.st-filters {
+  position: absolute;
+  top: calc(100% - 6px);
+  left: 0;
+  z-index: 5;
+  width: min(780px, calc(100vw - 2 * var(--pv-gutter)));
+  padding: 20px 20px 16px;
+  border: 1px solid var(--pv-line);
+  border-radius: var(--pv-radius-lg);
+  background: #0D0F1E;
+  box-shadow: var(--pv-shadow-3);
+  transform-origin: 18% 0;
+  animation: st-pop 200ms var(--pv-ease-out);
 }
-/* The tags, then the outputs: each wraps onto its own line as a whole. */
-.st-tags__group { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 6px; }
-.st-tags__list .pv-chip { gap: 7px; padding: 0 11px 0 9px; }
-.st-chip .pv-chip__count { margin-inline-start: 1px; }
-/* Checked: as the system's pressed chip, a filled point in the accent. */
-.st-chip[aria-checked="true"] {
-  color: var(--pv-accent);
-  border-color: var(--pv-accent-line);
-  background: var(--pv-accent-soft);
+@keyframes st-pop {
+  from { opacity: 0; transform: translateY(-6px) scale(0.985); }
+  to { opacity: 1; transform: none; }
 }
-.st-chip[aria-checked="true"]::before { background: currentColor; opacity: 1; }
-@media (hover: hover) and (pointer: fine) {
-  .st-chip[aria-checked="true"]:hover { color: var(--pv-accent); border-color: var(--pv-accent); }
+.st-filters__scrim { display: none; }
+.st-filters__head { display: none; }
+.st-filters__body {
+  display: grid;
+  grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.1fr) minmax(0, 0.8fr);
+  gap: 18px 28px;
 }
-/* What a tool draws: the indigo of the output tags on the cards. */
-.st-chip--out[aria-checked="false"] { color: var(--pv-output); border-color: color-mix(in srgb, var(--pv-output) 34%, transparent); }
-.st-chip--out[aria-checked="false"] .pv-chip__count { color: color-mix(in srgb, var(--pv-output) 70%, var(--pv-text-3)); }
-@media (hover: hover) and (pointer: fine) {
-  .st-chip--out[aria-checked="false"]:hover { color: var(--pv-text); border-color: color-mix(in srgb, var(--pv-output) 60%, transparent); }
-}
-/* A filter the search leaves empty: quieter, with a broken edge; still clickable. */
-.st-chip[data-empty] { color: var(--pv-text-3); border-style: dashed; }
-.st-chip[data-empty] .pv-chip__count { color: var(--pv-text-3); }
-.st-tags__sep {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  margin-inline: 10px 4px;
-  font: 500 var(--pv-text-2xs) / 1 var(--pv-font-mono);
+.st-filters__h {
+  margin-bottom: 8px;
+  padding-inline-start: 8px;
+  font: 500 var(--pv-text-2xs) / 1.3 var(--pv-font-mono);
   letter-spacing: var(--pv-track-label);
   text-transform: uppercase;
   color: var(--pv-text-3);
-  white-space: nowrap;
 }
-.st-tags__sep::before {
-  content: "";
-  width: 2px;
-  height: 22px;
-  background-image: radial-gradient(circle at center, var(--pv-dot) 1px, transparent 1.4px);
-  background-size: 2px 6px;
-  background-repeat: repeat-y;
-}
-/* The label of a group that starts its row has no rule before it. */
-.st-tags__sep--lead { margin-inline-start: 0; }
-.st-tags__sep--lead::before { content: none; }
-/* A laptop: the outputs stay on the filters' line (they took a second line
-   until 1440 px). The dotted rule alone divides them there: their indigo says
-   what they are, and each reads "Output: …" to a screen reader. */
-@media (min-width: 1280px) and (max-width: 1439.98px) {
-  .st-tags__list, .st-tags__group { column-gap: 5px; }
-  .st-tags__list .pv-chip { gap: 6px; padding: 0 9px 0 8px; }
-  .st-tags__list .st-tags__sep { gap: 0; margin-inline: 6px; font-size: 0; letter-spacing: 0; }
-}
-
-
-/* 4 · Cards =================================================================
-   One card per tool, its own artwork on the viewer's plate grid. The card
-   answers hover and focus with its edge and tone, never with a lift. */
-
-.st-results { padding-bottom: clamp(16px, 2vw, 32px); }
-.st-grid {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 272px), 1fr));
-  gap: var(--pv-gap);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.st-cell { display: flex; min-width: 0; }
-.st-cell[hidden] { display: none; }
-.st-card {
-  --pv-card-pad: 18px;
-  flex: 1;
-  min-width: 0;
+.st-filters__opts { display: grid; gap: 1px; }
+.st-filters__group--tags .st-filters__opts { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 8px; }
+.st-opt {
+  display: flex;
+  align-items: center;
   gap: 9px;
-}
-/* The plate's ink is a layer of its own, under the dot grid. Painted as a
-   background-color under a tiled image in a rounded box, Chromium drops it or
-   splits it along a raster tile edge, at every width from 520 px up. */
-.st-card__art {
-  position: relative;
-  margin: -10px -10px 5px;
-  padding: clamp(8px, 3.2%, 12px);
-  border: 1px solid var(--pv-line-soft);
-  border-radius: 10px;
-  background:
-    radial-gradient(circle at center, rgba(239, 230, 210, 0.075) 1px, transparent 1.5px) 8px 8px / 16px 16px,
-    linear-gradient(var(--pv-bg-2), var(--pv-bg-2));
-  overflow: hidden;
-  transition: border-color var(--pv-dur-hover) ease;
-}
-.st-card__art img {
   width: 100%;
-  height: auto;
-  aspect-ratio: 12 / 7;
-  transition: filter var(--pv-dur-ui) ease;
+  min-height: 34px;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  font-size: 0.9375rem;
+  line-height: 1.25;
+  text-align: start;
+  color: var(--pv-text);
+  transition: background-color var(--pv-dur-hover) ease;
 }
-.st-card__title { font-size: 1.125rem; line-height: 1.28; text-wrap: balance; }
-.st-card__title a { text-decoration: none; }
-.st-card__by { margin-top: -6px; overflow-wrap: anywhere; }
-/* Two lines; the whole description is on the tool's page. */
-.st-card__desc {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  overflow: hidden;
-  text-wrap: pretty;
+.st-opt::before {
+  content: "";
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid var(--pv-text-3);
+  transition: background-color var(--pv-dur-hover) ease, border-color var(--pv-dur-hover) ease;
 }
-.st-card__outs { gap: 5px; margin-top: 1px; }
-.st-card__foot { gap: 10px; padding-top: 12px; }
-.st-card__ver {
-  margin-inline-start: auto;
-  color: var(--pv-edition);
+.st-opt__label { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.st-opt__n {
+  flex: none;
+  font: 400 var(--pv-text-xs) / 1 var(--pv-font-mono);
+  color: var(--pv-text-3);
   font-variant-numeric: tabular-nums;
 }
-/* While Newest sorts, each card says when it was released, under its author. */
-.st-card__date { display: none; margin-top: 2px; white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--pv-text-2); }
-.st-grid[data-sort="newest"] .st-card__date { display: block; }
+.st-opt[aria-pressed="true"] { font-weight: 600; }
+.st-opt[aria-pressed="true"]::before { background: var(--pv-accent); border-color: var(--pv-accent); }
+.st-opt[aria-pressed="true"] .st-opt__n { color: var(--pv-text-2); }
+.st-opt[data-empty] { color: var(--pv-text-3); }
+.st-opt:active { background: var(--pv-line-soft); }
 @media (hover: hover) and (pointer: fine) {
-  .st-card:hover .st-card__art { border-color: var(--pv-line); }
-  .st-card:hover .st-card__art img { filter: brightness(1.08) saturate(1.06); }
-  .st-card:hover .st-card__title a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; text-decoration-color: var(--pv-line-2); }
+  .st-opt:hover { background: var(--pv-tint); }
 }
-.st-card:focus-within .st-card__art { border-color: var(--pv-line); }
 
-/* What a tool is written in, and whether it can use a GPU: plain facts, so
-   cream on the system's tag rather than a colour of their own. */
-.st-badge { color: var(--pv-text); border-color: var(--pv-line-2); }
 
-.st-risk {
-  display: inline-flex;
-  align-items: center;
-  height: 24px;
-  padding: 0 10px;
-  border-radius: var(--pv-radius-pill);
-  font: 500 var(--pv-text-2xs) / 1 var(--pv-font-mono);
-  letter-spacing: var(--pv-track-label);
-  text-transform: uppercase;
+/* 4 · The plates ===========================================================
+   The artwork, edge to edge on its plate, and the name. A plate answers the
+   pointer by enlarging a little inside its frame, its edge lit in the artwork's
+   colour; the description is said once, by the hero. */
+
+.st-results { padding-block: 10px clamp(48px, 6vw, 88px); }
+/* One grid holds the plates and the closing block, which takes what the last row
+   leaves free (store.js says how much). Four to a row; fewer as the screen narrows. */
+.st-grid, .st-results__in {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(22px, 2.2vw, 30px) clamp(14px, 1.5vw, 22px);
+}
+.st-results__in { position: relative; }
+.st-grid { margin: 0; padding: 0; list-style: none; }
+.st-results .st-grid { display: contents; }
+.st-cell { min-width: 0; }
+.st-cell[hidden] { display: none; }
+.st-card { position: relative; display: grid; gap: 11px; border-radius: 12px; color: inherit; }
+.st-card:focus-visible { outline-offset: 4px; }
+.st-card { scroll-margin-block: 72px 24px; }
+.st-card__art {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 12 / 7;
+  border-radius: 12px;
+  background: var(--pv-bg-2);
+}
+.st-card__art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 520ms var(--pv-ease-out);
+}
+/* The plate's edge, drawn over the picture. Under the pointer it takes the colour of
+   the artwork (store.js), and nothing is printed over the picture itself. */
+.st-card__art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--pv-line-soft);
+  transition: box-shadow 220ms ease;
+  pointer-events: none;
+}
+.st-card__name {
+  font-size: 1.0313rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.012em;
+  color: var(--pv-text);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+/* Without JavaScript the description simply stands under the name. With it, the
+   hero says it, and it stays here for screen readers. */
+.st-card__desc { font-size: 0.9375rem; line-height: 1.45; color: var(--pv-text-2); text-wrap: pretty; }
+.st-js .st-card__desc {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
   white-space: nowrap;
 }
-.st-risk { border: 1px solid color-mix(in srgb, var(--pv-danger) 40%, transparent); background: color-mix(in srgb, var(--pv-danger) 8%, transparent); color: var(--pv-danger); }
+.st-cell:is(:hover, :focus-within) .st-card__art::after { box-shadow: inset 0 0 0 1.5px rgb(var(--st-cell-art, 239 230 210) / 0.7); }
+@media (hover: hover) and (pointer: fine) {
+  .st-cell:hover .st-card__art img { transform: scale(1.022); }
+}
+.st-cell:focus-within .st-card__art img { transform: scale(1.022); }
+.st-card:active .st-card__art img { transform: scale(1.008); transition-duration: var(--pv-dur-press); }
 
-/* A tool that is announced, not published: an empty plate under a dashed edge,
-   and no link. Its plate keeps the artwork's 12:7, so rows stay even. */
-.st-card--soon { border-style: dashed; background: transparent; }
-.st-card__art--soon::before { content: ""; display: block; aspect-ratio: 12 / 7; }
-.st-card--soon .st-card__title { color: var(--pv-text-2); }
-.st-card--soon .pv-soon { color: var(--pv-text-2); }
+/* A tool that is announced, not published: an empty plate, its name, one line. */
+.st-card__art--soon {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at center, rgba(239, 230, 210, 0.11) 1px, transparent 1.5px) 0 0 / 14px 12px,
+    linear-gradient(var(--pv-bg-2), var(--pv-bg-2));
+}
+.st-card--soon .st-card__name { color: var(--pv-text-2); }
+.st-card__line { font-size: 0.9375rem; line-height: 1.45; color: var(--pv-text-2); text-wrap: pretty; }
 
 
-/* 5 · Empty and error states ============================================= */
+/* 5 · Empty state, closing band =========================================== */
 
 .st-empty {
+  grid-column: 1 / -1;
   display: grid;
   justify-items: center;
   gap: 10px;
   padding: 48px 20px 56px;
-  border: 1px dashed var(--pv-line-2);
-  border-radius: var(--pv-radius-lg);
   text-align: center;
 }
 .st-empty[hidden] { display: none; }
@@ -517,443 +442,657 @@ html:not(.st-js) .st-install__toggle { cursor: default; }
 .st-empty__text { max-width: 44ch; color: var(--pv-text-2); }
 .st-empty .pv-btn { margin-top: 10px; }
 
-
-/* 6 · The Tools tab band, safety, publish teaser ==========================
-   What a reader gets: the launcher, at the app's real size, and what it draws. */
-
-.st-land { padding-block: clamp(40px, 5vw, 80px) 0; }
-.st-land__head {
+/* The closing block: one link and one honest line. Beside the last plates when they
+   leave room, as a slim band of its own when they do not. */
+.st-end {
+  position: relative;
+  grid-column: var(--st-end-col, 1 / -1);
+  align-self: end;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: 6px 24px;
-  margin-bottom: 18px;
+  gap: 10px 32px;
+  padding-top: 22px;
 }
-.st-land__h { font-size: var(--pv-text-h3); font-weight: 600; line-height: 1.2; letter-spacing: -0.014em; }
-.st-land__pair {
+.st-end::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background-image: radial-gradient(circle at center, var(--pv-dot) 1px, transparent 1.4px);
+  background-size: 6px 3px;
+  background-repeat: repeat-x;
+}
+/* Beside plates it sits on the foot of their artwork: the height of a name above the row's end. */
+.st-end--beside { margin-bottom: 36px; margin-inline-start: clamp(10px, 1.6vw, 26px); }
+.st-end:has(.st-safety:target) { grid-column: 1 / -1; margin-inline-start: 0; }
+.st-end__publish {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--pv-text);
+}
+.st-end__publish .pv-icon { width: 17px; height: 17px; color: var(--pv-text-2); transition: transform var(--pv-dur-ui) var(--pv-ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .st-end__publish:hover .pv-icon { transform: translateX(3px); }
+}
+.st-safety { min-width: 0; font-size: 0.9375rem; line-height: 1.55; color: var(--pv-text-2); scroll-margin-top: 170px; }
+.st-safety:focus { outline: none; }
+.st-safety__full { display: none; max-width: 68ch; color: var(--pv-text); }
+.st-safety__full b { font-weight: 600; color: var(--pv-edition); }
+/* The address #safety (tool pages and the docs link here) shows the whole note. */
+.st-safety:target { flex-basis: 100%; }
+.st-safety:target .st-safety__line { display: none; }
+.st-safety:target .st-safety__full { display: block; font-size: 1.0625rem; line-height: 1.6; animation: st-note 420ms var(--pv-ease-out); }
+@keyframes st-note {
+  from { opacity: 0; transform: translateY(var(--pv-rise)); }
+  to { opacity: 1; transform: none; }
+}
+
+
+/* 6 · Tool page: the first screen ==========================================
+   What it is, what it looks like, how to get it. The artwork develops out of
+   points once (field.js); a still halo of its colours stays around the plate. */
+
+.st-top { position: relative; isolation: isolate; }
+.st-halo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.st-halo.is-over { z-index: 2; }
+.st-top__in {
   display: grid;
-  grid-template-columns: minmax(0, 508fr) 64px minmax(0, 760fr);
-  align-items: start;
+  grid-template-columns: minmax(0, 4.6fr) minmax(0, 7.9fr);
+  gap: clamp(32px, 4.2vw, 60px);
+  padding-block: 18px 26px;
 }
-.st-land__fig { gap: 12px; min-width: 0; }
-.st-land__fig--result { position: relative; grid-column: 3; grid-row: 1; container-type: inline-size; }
-.st-land__stage { background: #000; }
-.st-land__stage img { width: 100%; height: auto; }
-.st-land__cap {
-  max-width: 60ch;
+.st-top__words { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+.st-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 32px;
   font-size: 0.9375rem;
-  line-height: 1.5;
   color: var(--pv-text-2);
+  transition: color var(--pv-dur-hover) ease;
+}
+.st-back .pv-icon { width: 15px; height: 15px; transition: transform var(--pv-dur-ui) var(--pv-ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .st-back:hover { color: var(--pv-text); }
+  .st-back:hover .pv-icon { transform: translateX(-3px); }
+}
+.st-top__name { margin-top: 16px; font-size: clamp(2.25rem, 1.5rem + 2.2vw, 3.5rem); }
+.st-top__name[data-len="long"] { font-size: clamp(1.875rem, 1.4rem + 1.3vw, 2.5rem); letter-spacing: -0.022em; }
+.st-top__name[data-len="xlong"] { font-size: clamp(1.5rem, 1.3rem + 0.6vw, 1.75rem); letter-spacing: -0.016em; line-height: 1.14; }
+.st-top__desc {
+  margin-top: 16px;
+  max-width: 32em;
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  line-height: 1.48;
+  color: var(--pv-text);
   text-wrap: pretty;
 }
-.st-land__k {
+.st-get { display: grid; gap: 13px; margin-top: auto; padding-top: 24px; max-width: 32em; }
+.st-get__btn { justify-self: start; min-width: 248px; justify-content: flex-start; gap: 13px; }
+.st-get__btn svg { width: 18px; height: 18px; }
+/* The file's name and size, as written: ".pvtool · 33.3 kB", not capitals. */
+.st-get__btn .pv-btn__stack { text-align: start; }
+.st-get__btn .pv-btn__sub { text-transform: none; letter-spacing: 0.02em; }
+.st-get__how { font-size: 0.9688rem; line-height: 1.5; color: var(--pv-text); text-wrap: pretty; }
+.st-get__how b { font-weight: 600; }
+.st-get__note { font-size: 0.875rem; line-height: 1.5; color: var(--pv-text-2); text-wrap: pretty; }
+.st-risks {
+  margin: 0;
+  padding: 9px 13px;
+  border: 1px solid color-mix(in srgb, var(--pv-danger) 45%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--pv-danger) 9%, transparent);
+  list-style: none;
+  font-size: 0.9063rem;
+  line-height: 1.45;
+  color: var(--pv-text);
+}
+.st-top__art { position: relative; min-width: 0; align-self: start; }
+.st-artplate {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 12 / 7;
+  border-radius: 14px;
+  background: #07080F;
+  box-shadow: 0 0 0 1px var(--pv-line-soft);
+}
+.st-artplate img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* The real picture stays back until the points have drawn it, on the plate's own faint
+   grid. If the script never comes it shows by itself; with reduced motion it is there. */
+.st-js .st-artplate:not(.is-shown) {
+  background:
+    radial-gradient(circle at center, rgba(239, 230, 210, 0.1) 1px, transparent 1.5px) 0 0 / 14px 12px,
+    linear-gradient(#07080F, #07080F);
+}
+.st-js .st-artplate img { opacity: 0; animation: st-appear 0s linear 2.6s forwards; }
+.st-js .st-artplate.is-shown img { opacity: 1; animation: none; transition: opacity 240ms ease; }
+@keyframes st-appear { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .st-js .st-artplate img { opacity: 1; animation: none; }
+}
+
+
+/* 7 · Tool page: views, details, test summary ============================== */
+
+/* One bar for the ways around the page: it sticks under the top bar, and once
+   the first screen has gone it also says the name and offers Download. */
+.st-views { position: relative; }
+.st-bar {
+  position: sticky;
+  top: var(--pv-topbar-block);
+  z-index: var(--pv-z-sticky);
+  background: var(--pv-bg);
+}
+.st-bar::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -2px;
+  height: 3px;
+  background-image: radial-gradient(circle at center, var(--pv-dot) 1px, transparent 1.4px);
+  background-size: 6px 3px;
+  background-repeat: repeat-x;
+  pointer-events: none;
+}
+.st-bar__in { position: relative; display: flex; align-items: center; gap: 10px; height: 58px; }
+.st-bar__name {
+  position: absolute;
+  left: var(--pv-gutter);
+  top: 50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 340px;
+  font-size: 0.9688rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--pv-text);
+  opacity: 0;
+  transform: translateY(-50%) translateX(-6px);
+  transition: opacity 180ms ease, transform 320ms var(--pv-ease-out);
+  pointer-events: none;
+}
+.st-bar__name span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.st-bar__thumb {
+  flex: none;
+  width: 46px;
+  height: 27px;
+  object-fit: cover;
+  border-radius: 5px;
+  background: #07080F;
+  box-shadow: 0 0 0 1px var(--pv-line);
+}
+.st-tabs {
+  position: relative;
+  display: flex;
+  align-self: stretch;
+  gap: 2px;
+  margin-inline-start: -14px;
+  transition: transform 320ms var(--pv-ease-out);
+}
+.st-bar.is-stuck .st-bar__name { opacity: 1; transform: translateY(-50%); }
+.st-bar.is-stuck .st-tabs { transform: translateX(var(--st-name-w, 0px)); }
+.st-tab {
+  display: inline-flex;
+  align-items: center;
+  padding-inline: 14px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--pv-text-2);
+  transition: color var(--pv-dur-hover) ease;
+}
+.st-tab[aria-selected="true"] { color: var(--pv-text); font-weight: 600; }
+.st-tab:focus-visible { outline-offset: -6px; }
+@media (hover: hover) and (pointer: fine) {
+  .st-tab:hover { color: var(--pv-text); }
+}
+.st-tabs__ind {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 3px;
+  width: var(--w, 0);
+  border-radius: 3px;
+  background: rgb(var(--st-art, 111 224 189));
+  transform: translateX(var(--x, 0));
+  transition: transform 320ms var(--pv-ease-out), width 320ms var(--pv-ease-out), background-color 300ms ease;
+}
+.st-testbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-inline-start: auto;
+  height: 38px;
+  padding: 0 15px 0 13px;
+  border: 1px solid var(--pv-line-2);
+  border-radius: var(--pv-radius-pill);
+  background: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--pv-text);
+  transition: border-color var(--pv-dur-hover) ease, transform 320ms var(--pv-ease-out);
+}
+.st-bar.is-gone .st-testbtn { transform: translateX(calc(-1 * var(--st-dl-w, 0px))); }
+.st-testbtn::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pv-accent);
+}
+@media (hover: hover) and (pointer: fine) {
+  .st-testbtn:hover { border-color: color-mix(in srgb, var(--pv-text) 45%, transparent); }
+}
+.st-testbtn[data-state="advisory"]::before { background: var(--pv-caution); }
+.st-testbtn[data-state="fail"]::before { background: var(--pv-danger); }
+.st-testbtn[data-state="none"]::before { background: none; box-shadow: inset 0 0 0 1.5px var(--pv-text-3); }
+html:not(.st-js) .st-testbtn { display: none; }
+/* Download comes into the bar when the one in the first screen has left it. */
+.st-bar__dl {
+  position: absolute;
+  right: var(--pv-gutter);
+  min-height: 38px;
+  padding: 0 14px 0 12px;
+  gap: 8px;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(3px);
+  transition: opacity 180ms ease, transform 320ms var(--pv-ease-out), visibility 0s linear 180ms;
+}
+.st-bar__dl svg { width: 15px; height: 15px; }
+.st-bar.is-gone .st-bar__dl { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+
+.st-views__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 276px;
+  gap: clamp(40px, 5.4vw, 80px);
+  align-items: start;
+  padding-block: 36px 40px;
+}
+.st-panels { min-width: 0; }
+.st-panel { scroll-margin-top: calc(var(--pv-topbar-h) + 58px + 28px); }
+.st-panel + .st-panel { margin-top: 56px; }
+.st-panel__h { margin-bottom: 18px; font-size: var(--pv-text-h3); letter-spacing: -0.014em; }
+/* With JavaScript the bar names the view, and only that view is on the page.
+   Without it the three simply follow one another, under their headings. */
+.st-js .st-panel__h {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.st-js .st-panel + .st-panel { margin-top: 0; }
+.st-js[data-view-live] .st-panel { animation: st-view 240ms var(--pv-ease-out); }
+@keyframes st-view {
+  from { opacity: 0; transform: translateY(calc(var(--pv-rise) * 0.3)); }
+  to { opacity: 1; transform: none; }
+}
+.st-js[data-view="readme"] .st-panel:not(#readme),
+.st-js[data-view="parameters"] .st-panel:not(#parameters),
+.st-js[data-view="outputs"] .st-panel:not(#outputs) { display: none; }
+
+/* The sentence every README opens with, lifted into a heading of its own. */
+.st-question {
+  max-width: 46rem;
+  margin-bottom: 26px;
+  font-size: clamp(1.4375rem, 1.2rem + 0.9vw, 1.875rem);
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+  color: var(--pv-text);
+  text-wrap: balance;
+}
+
+/* Details: quiet, in one tidy column beside the view. */
+.st-facts { position: sticky; top: calc(var(--pv-topbar-h) + 58px + 36px); min-width: 0; }
+.st-facts__list { margin: 0; }
+.st-facts__row {
+  display: grid;
+  grid-template-columns: 82px minmax(0, 1fr);
+  gap: 10px;
+  padding-block: 9px;
+  border-top: 1px solid var(--pv-line-soft);
+}
+.st-facts__row:first-child { border-top: 0; padding-top: 0; }
+.st-facts dt {
+  font: 500 var(--pv-text-2xs) / 1.75 var(--pv-font-mono);
+  letter-spacing: var(--pv-track-label);
+  text-transform: uppercase;
+  color: var(--pv-text-3);
+}
+.st-facts dd { margin: 0; font-size: 0.9375rem; line-height: 1.42; color: var(--pv-text); overflow-wrap: anywhere; }
+.st-facts__num { font-family: var(--pv-font-mono); font-size: 0.875rem; }
+.st-facts__src { margin-top: 10px; padding-top: 12px; border-top: 1px solid var(--pv-line-soft); font-size: 0.9375rem; }
+.st-facts__src .pv-icon { width: 15px; height: 15px; margin-inline-start: 5px; vertical-align: -2px; }
+
+/* Parameters: one row each. What it is called and what it does; beside that its
+   default, and a numeric one's range as a dotted line with a lit point at the default.
+   A list this wide keeps the value within reach of the name. */
+.st-ptable { display: block; width: 100%; max-width: 860px; border-collapse: collapse; }
+.st-ptable :is(thead, tbody) { display: block; }
+.st-p {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 236px);
+  grid-template-areas: "head val" "help val";
+  gap: 8px clamp(20px, 3vw, 44px);
+  padding-block: 18px;
+  border-bottom: 1px solid var(--st-hair);
+  text-align: start;
+}
+.st-p--names { grid-template-areas: "head val"; padding-block: 0 10px; }
+.st-p--names th {
+  font: 500 var(--pv-text-xs) / 1.2 var(--pv-font-mono);
+  letter-spacing: var(--pv-track-label);
+  text-transform: uppercase;
+  color: var(--st-quiet);
+}
+.st-p__head { grid-area: head; font: inherit; text-align: start; }
+.st-p__label {
   display: block;
-  margin-bottom: 4px;
+  font: 600 1.0625rem / 1.3 var(--pv-font-sans);
+  letter-spacing: -0.012em;
+  color: var(--pv-text);
+}
+.st-p__name {
+  font: 400 0.8125rem / 1.5 var(--pv-font-mono);
+  color: var(--st-quiet);
+  overflow-wrap: anywhere;
+}
+.st-p__sweep {
+  display: inline-block;
+  margin-inline-start: 8px;
+  font-size: 0.8125rem;
+  color: var(--pv-accent);
+  cursor: help;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+.st-p__val { grid-area: val; display: grid; align-content: start; justify-items: end; gap: 3px; text-align: end; }
+.st-p__default {
+  font: 500 1rem / 1.3 var(--pv-font-sans);
+  font-variant-numeric: tabular-nums;
+  color: var(--pv-text);
+}
+.st-p__kind { font-size: 0.8125rem; color: var(--st-quiet); }
+.st-p__dl { display: none; font-size: 0.875rem; font-weight: 400; color: var(--st-quiet); }
+.st-p__help { grid-area: help; font-size: 0.9688rem; line-height: 1.52; color: var(--st-read); }
+.st-p__text { display: block; max-width: 70ch; white-space: pre-line; text-wrap: pretty; }
+.st-p__opts { margin-top: 5px; font-size: 0.9063rem; line-height: 1.45; color: var(--pv-text-2); }
+.st-range {
+  display: grid;
+  grid-template-columns: auto minmax(44px, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  width: min(100%, 210px);
+  margin-top: 2px;
+  font: 400 0.75rem / 1.2 var(--pv-font-mono);
+  color: var(--st-quiet);
+  white-space: nowrap;
+}
+.st-range__track {
+  position: relative;
+  height: 9px;
+  background: radial-gradient(circle at center, var(--pv-dot) 1px, transparent 1.4px) 0 3px / 6px 3px repeat-x;
+}
+.st-range__pt {
+  position: absolute;
+  top: 0;
+  left: calc(var(--x) * (100% - 9px));
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--pv-accent);
+  box-shadow: 0 0 8px var(--pv-accent-glow);
+}
+
+/* Outputs: what the tool gives back, one line each, each with its drawing. */
+.st-outs { max-width: 860px; margin: 0; padding: 0; list-style: none; }
+.st-out {
+  display: grid;
+  grid-template-columns: auto 6.4em minmax(0, 1fr);
+  align-items: baseline;
+  gap: 4px 16px;
+  padding-block: 13px;
+  border-bottom: 1px solid var(--st-hair);
+  font-size: 1rem;
+  line-height: 1.45;
+}
+.st-out:first-child { padding-top: 0; }
+.st-glyph { display: block; flex: none; }
+.st-out .st-glyph { align-self: center; width: 20px; height: 20px; color: var(--pv-text-2); }
+.st-out__name { font: 500 0.9063rem / 1.4 var(--pv-font-mono); color: var(--pv-text); overflow-wrap: anywhere; }
+.st-out__what { color: var(--st-read); }
+.st-out__opt { margin-inline-start: 10px; font-size: 0.875em; color: var(--st-quiet); }
+
+/* A README section that repeats what stands above it, folded, as wide as the list. */
+.st-fold { max-width: 860px; margin-top: 26px; border-top: 1px solid var(--pv-line); }
+.st-fold__sum {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 48px;
+  font-size: 0.9688rem;
+  font-weight: 500;
+  color: var(--pv-text);
+  cursor: pointer;
+  list-style: none;
+  border-radius: 6px;
+}
+.st-fold__sum::-webkit-details-marker { display: none; }
+.st-fold__chev { flex: none; width: 18px; height: 18px; color: var(--pv-text-2); transition: transform 260ms var(--pv-ease-out); }
+.st-fold[open] .st-fold__chev { transform: rotate(180deg); }
+.st-fold__body { padding-block: 4px 12px; font-size: 1.0625rem; }
+
+/* The references, one block at the end of the reading view. */
+.st-refs { position: relative; margin-top: 36px; padding-top: 18px; max-width: 44rem; }
+.st-refs::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background-image: radial-gradient(circle at center, var(--pv-dot) 1px, transparent 1.4px);
+  background-size: 6px 3px;
+  background-repeat: repeat-x;
+}
+.st-refs__h {
+  margin-bottom: 8px;
   font: 500 var(--pv-text-2xs) / 1.3 var(--pv-font-mono);
   letter-spacing: var(--pv-track-label);
   text-transform: uppercase;
   color: var(--pv-text-3);
 }
-/* A dotted arrow from the launcher to the result, at the result's mid-height. */
-.st-land__arrow { grid-column: 2; grid-row: 1; }
-.st-land__fig--result::before {
+.st-refs .st-md { font-size: 1rem; line-height: 1.6; }
+
+/* Tool test summary: a drawer, only on request. Without JavaScript it is a plain
+   section at the end of the page. */
+.st-tests {
+  position: fixed;
+  inset: 0 0 0 auto;
+  width: min(calc(620px * var(--k)), 100vw);
+  max-width: none;
+  height: 100vh;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-inline-start: 1px solid var(--pv-line);
+  background: var(--pv-bg-2);
+  color: var(--pv-text);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(28px);
+  transition: opacity 180ms ease, transform 320ms var(--pv-ease-drawer), display 320ms allow-discrete, overlay 320ms allow-discrete;
+}
+.st-tests[open] { display: flex; flex-direction: column; opacity: 1; transform: none; }
+@starting-style {
+  .st-tests[open] { opacity: 0; transform: translateX(28px); }
+}
+.st-tests::backdrop {
+  background: rgba(6, 7, 13, 0);
+  transition: background-color 240ms ease, display 320ms allow-discrete, overlay 320ms allow-discrete;
+}
+.st-tests[open]::backdrop { background: rgba(6, 7, 13, 0.66); }
+@starting-style {
+  .st-tests[open]::backdrop { background: rgba(6, 7, 13, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .st-tests, .st-tests::backdrop { transition: none; }
+}
+.st-tests__head {
+  zoom: var(--k);
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 20px 12px 28px;
+}
+.st-tests__title { font-size: 1.5rem; font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; }
+.st-tests__close {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--pv-text-2);
+  transition: background-color var(--pv-dur-hover) ease, color var(--pv-dur-hover) ease;
+}
+.st-tests__close svg { width: 20px; height: 20px; }
+@media (hover: hover) and (pointer: fine) {
+  .st-tests__close:hover { background: var(--pv-tint); color: var(--pv-text); }
+}
+.st-tests__body { zoom: var(--k); flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 4px 28px 28px; scrollbar-width: thin; scrollbar-color: var(--pv-line-2) transparent; }
+.st-tests__lead { margin-top: 16px; font-size: 0.9688rem; line-height: 1.5; color: var(--pv-text); text-wrap: pretty; }
+/* Nine points on a dotted line: the whole result at a glance. */
+.st-strip {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.st-strip::before {
   content: "";
   position: absolute;
-  left: -52px;
-  top: calc(100cqw * 309 / 760 / 2 - 1px);
-  width: 40px;
+  inset: 50% 0 auto;
   height: 3px;
-  background-image: radial-gradient(circle at center, var(--pv-text-3) 1.1px, transparent 1.5px);
+  margin-top: -1.5px;
+  background-image: radial-gradient(circle at center, var(--pv-dot) 1px, transparent 1.4px);
   background-size: 6px 3px;
   background-repeat: repeat-x;
 }
-.st-land__fig--result::after {
-  content: "";
-  position: absolute;
-  left: -16px;
-  top: calc(100cqw * 309 / 760 / 2 - 4px);
-  border-block: 4.5px solid transparent;
-  border-inline-start: 7px solid var(--pv-text-3);
-}
-
-.st-notes { padding-block: clamp(40px, 5vw, 80px) clamp(56px, 7vw, 112px); }
-.st-notes__inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-  gap: var(--pv-gap);
-  align-items: stretch;
-}
-.st-safety {
+.st-strip__dot {
   position: relative;
-  padding: clamp(22px, 2.4vw, 32px);
-  border: 1px solid color-mix(in srgb, var(--pv-caution) 32%, transparent);
-  border-radius: var(--pv-radius-lg);
-  background: color-mix(in srgb, var(--pv-caution) 6%, var(--pv-surface));
-  scroll-margin-top: calc(var(--pv-topbar-block) + 24px);
-}
-/* Reached from a link: a static caution ring, and a short flash with motion. */
-.st-safety:focus { outline: none; }
-.st-safety:focus-visible, .st-safety:target, .st-safety.is-flash { outline: 2px solid var(--pv-caution); outline-offset: 3px; }
-.st-safety:target, .st-safety.is-flash { animation: st-flash 1.6s var(--pv-ease-out) 1; }
-@keyframes st-flash {
-  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--pv-caution) 0%, transparent); }
-  25% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--pv-caution) 30%, transparent); }
-  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--pv-caution) 0%, transparent); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .st-safety:target, .st-safety.is-flash { animation: none; }
-}
-.st-safety__title {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: var(--pv-text-h3);
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.014em;
-}
-.st-safety__title::before {
-  content: "";
-  flex: none;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--pv-caution);
-}
-.st-safety__text {
-  margin-top: 14px;
-  max-width: 64ch;
-  font-size: 1.0313rem;
-  line-height: 1.65;
-  color: var(--pv-text-2);
-}
-
-.st-teaser { --pv-card-pad: clamp(22px, 2.4vw, 32px); gap: 12px; padding-inline-end: calc(var(--pv-card-pad) + 36px); }
-.st-teaser__title { font-size: var(--pv-text-h4); font-weight: 600; line-height: 1.3; }
-.st-teaser__text { color: var(--pv-text-2); line-height: 1.55; max-width: 44ch; }
-.st-teaser__gates {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 14px;
-  margin: auto 0 0;
-  padding: 14px 0 0;
-  list-style: none;
-  font: 400 var(--pv-text-xs) / 1 var(--pv-font-mono);
-  color: var(--pv-text-3);
-}
-.st-teaser__gates li { display: inline-flex; align-items: center; gap: 6px; }
-.st-teaser__gates li::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--pv-accent);
-}
-/* The advisory gate as it shows when it passes: a mint ring (§4). */
-.st-teaser__gates li[data-adv]::before { background: none; box-shadow: inset 0 0 0 1.5px var(--pv-accent); }
-.st-teaser__go {
-  position: absolute;
-  top: var(--pv-card-pad);
-  right: var(--pv-card-pad);
-  display: inline-grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border: 1px solid var(--pv-line-2);
-  border-radius: 50%;
-  color: var(--pv-text-2);
-  transition: color var(--pv-dur-hover) ease, border-color var(--pv-dur-hover) ease, transform var(--pv-dur-ui) var(--pv-ease-out);
-}
-.st-teaser__go .pv-icon { width: 18px; height: 18px; vertical-align: 0; }
-@media (hover: hover) and (pointer: fine) {
-  .st-teaser:hover .st-teaser__go { color: var(--pv-accent); border-color: var(--pv-accent-line); transform: translateX(3px); }
-}
-
-
-/* 7 · Tool page ============================================================ */
-
-.st-tool { padding-top: clamp(16px, 2vw, 28px); }
-.st-back { margin-bottom: clamp(18px, 3vw, 40px); }
-.st-back__link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 36px;
-  padding-inline-end: 6px;
-  border-radius: var(--pv-radius-sm);
-  font: 500 var(--pv-text-xs) / 1 var(--pv-font-mono);
-  letter-spacing: var(--pv-track-label);
-  text-transform: uppercase;
-  color: var(--pv-text-3);
-  transition: color var(--pv-dur-hover) ease;
-}
-.st-back__link .pv-icon { width: 16px; height: 16px; vertical-align: 0; transition: transform var(--pv-dur-ui) var(--pv-ease-out); }
-@media (hover: hover) and (pointer: fine) {
-  .st-back__link:hover { color: var(--pv-text); }
-  .st-back__link:hover .pv-icon { transform: translateX(-3px); }
-}
-
-/* Title and artwork in the reading column; "Get this tool" and the section
-   list beside them from the top, sticky, so the action and the way around the
-   page stay on screen. */
-.st-tool__layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(300px, 340px);
-  grid-template-areas: "hero side" "art side" "main side";
-  column-gap: clamp(32px, 4.4vw, 72px);
-  align-items: start;
-}
-.st-hero { grid-area: hero; min-width: 0; padding-bottom: clamp(24px, 2.6vw, 36px); }
-.st-hero__title { overflow-wrap: break-word; }
-.st-hero__by {
-  margin-top: 12px;
-  font: 400 var(--pv-text-sm) / 1.4 var(--pv-font-mono);
-  letter-spacing: 0.01em;
-  color: var(--pv-text-3);
-}
-.st-hero__desc { margin-top: 18px; }
-.st-hero__badges { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 24px; }
-/* The tool's tags, then what it draws after the gallery's dotted "Outputs"
-   divider; each group wraps onto its own line as a whole. */
-.st-hero__chips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 6px; margin-top: 10px; }
-/* The divider stays beside the outputs; on a narrow screen they wrap to its
-   right, so the group reads as one labelled row. */
-.st-hero__outs { display: flex; align-items: flex-start; gap: 6px; min-width: 0; }
-.st-hero__outs > .pv-tags { flex: 1 1 auto; min-width: 0; row-gap: 8px; }
-.st-hero__outs .st-tags__sep { min-height: 24px; margin-inline-end: 2px; }
-.st-hero__art { grid-area: art; min-width: 0; max-width: 720px; }
-/* Its ink as a layer too, for the same reason as the card plates (§4). */
-.st-artstage {
-  padding: clamp(14px, 2.4vw, 28px);
-  background:
-    radial-gradient(circle at center, rgba(239, 230, 210, 0.075) 1px, transparent 1.5px) 10px 10px / 20px 20px,
-    linear-gradient(var(--pv-bg-2), var(--pv-bg-2));
-}
-.st-artstage img { width: 100%; height: auto; aspect-ratio: 12 / 7; object-fit: contain; }
-.st-hero__art .pv-figure__caption { font-size: 0.875rem; color: var(--pv-text-3); }
-.st-hero__art .pv-figure__caption > span:first-child { max-width: 62ch; }
-
-.st-tool__main { grid-area: main; min-width: 0; padding-top: clamp(4px, 1vw, 16px); }
-
-.st-side {
-  grid-area: side;
-  position: sticky;
-  top: calc(var(--pv-topbar-block) + 24px);
-  display: grid;
-  gap: 14px;
-  max-height: calc(100vh - var(--pv-topbar-block) - 40px);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-  scrollbar-color: var(--pv-line-2) transparent;
-}
-
-/* Get this tool */
-.st-get {
-  display: grid;
-  gap: 14px;
-  padding: 22px;
-  border: 1px solid var(--pv-line);
-  border-radius: var(--pv-radius-lg);
-  background: var(--pv-surface);
-}
-.st-get__title { font-size: var(--pv-text-h4); font-weight: 600; line-height: 1.3; }
-.st-get__btn { width: 100%; gap: 10px; }
-.st-get__btn svg { width: 17px; height: 17px; }
-/* The file's name and size, as written: ".pvtool · 33.3 kB", not capitals. */
-.st-get__btn .pv-btn__sub { text-transform: none; letter-spacing: 0.02em; }
-.st-get__how {
-  display: grid;
-  gap: 8px;
-  padding: 14px 16px;
-  border: 1px solid var(--pv-accent-line);
-  border-radius: 12px;
-  background: var(--pv-accent-soft);
-  font-size: 0.9063rem;
-  line-height: 1.55;
-  color: var(--pv-text);
-}
-.st-get__how b { font-weight: 600; white-space: nowrap; }
-@keyframes st-open {
-  from { opacity: 0; transform: translateY(calc(var(--pv-rise) * -0.4)); }
-  to { opacity: 1; transform: none; }
-}
-.st-get__src { font-size: 0.9063rem; }
-.st-get__src .pv-icon { width: 15px; height: 15px; margin-inline-start: 5px; vertical-align: -2px; }
-.st-get__note { font-size: 0.875rem; line-height: 1.55; color: var(--pv-text-2); }
-.st-get__note b { font-weight: 600; color: var(--pv-edition); }
-.st-get__note .pv-link { white-space: nowrap; }
-.st-get__facts-h { margin-top: 4px; }
-.st-facts { display: grid; margin: 0; }
-.st-facts__row {
-  display: grid;
-  grid-template-columns: 112px minmax(0, 1fr);
-  gap: 12px;
-  padding-block: 6px;
-  border-top: 1px solid var(--pv-line-soft);
-}
-.st-facts dt {
-  font: 500 var(--pv-text-2xs) / 1.6 var(--pv-font-mono);
-  letter-spacing: var(--pv-track-label);
-  text-transform: uppercase;
-  color: var(--pv-text-3);
-}
-.st-facts dd { margin: 0; font-size: 0.9063rem; line-height: 1.45; color: var(--pv-text); overflow-wrap: anywhere; }
-.st-facts__ver { font-family: var(--pv-font-mono); color: var(--pv-edition); }
-.st-nowrap { white-space: nowrap; }
-
-/* On this page: a list in the side column; a sticky row of pills on narrower
-   screens (§ Responsive). The point marks the section in view. */
-.st-onpage {
-  padding: 14px 22px 12px;
-  border: 1px solid var(--pv-line-soft);
-  border-radius: var(--pv-radius-lg);
-}
-.st-onpage__h { margin-bottom: 6px; }
-.st-onpage ul { display: grid; gap: 0; }
-.st-onpage a {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-height: 32px;
-  border-radius: var(--pv-radius-sm);
-  font-size: 0.9375rem;
-  color: var(--pv-text-2);
-  transition: color var(--pv-dur-hover) ease;
-}
-.st-onpage a::before {
-  content: "";
-  flex: none;
-  width: 7px;
-  height: 7px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
   border: 1.5px solid var(--pv-line-2);
-  transition: background-color var(--pv-dur-hover) ease, border-color var(--pv-dur-hover) ease;
+  background: var(--pv-bg-2);
 }
-.st-onpage a[aria-current="true"] { color: var(--pv-text); }
-.st-onpage a[aria-current="true"]::before { border-color: var(--pv-accent); background: var(--pv-accent); }
-@media (hover: hover) and (pointer: fine) {
-  .st-onpage a:hover { color: var(--pv-text); }
-}
-
-/* A laptop screen is short: the side column tightens so that the section list
-   stays on screen with the action (it scrolls on its own only below this). */
-@media (min-width: 1100px) and (max-height: 879.98px) {
-  .st-side { gap: 12px; }
-  .st-get { gap: 11px; padding: 18px 20px; }
-  .st-get__btn { min-height: 46px; }
-  .st-get__note { font-size: 0.8125rem; line-height: 1.5; }
-  .st-facts__row { padding-block: 4px; }
-  .st-facts dd { font-size: 0.875rem; }
-  .st-onpage { padding: 10px 20px 8px; }
-  .st-onpage__h { margin-bottom: 2px; }
-  .st-onpage a { min-height: 27px; font-size: 0.875rem; }
-}
-@media (min-width: 1100px) and (max-height: 779.98px) {
-  .st-get__facts-h { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-}
-
-/* Sections */
-.st-sec { padding-top: clamp(36px, 4vw, 52px); scroll-margin-top: calc(var(--pv-topbar-block) + 12px); }
-.st-sec:first-child { padding-top: clamp(20px, 2.4vw, 32px); }
-.st-sec__h {
-  margin-bottom: 18px;
-  font-size: var(--pv-text-h3);
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.014em;
-}
-.st-sec__intro { color: var(--pv-text-2); margin-bottom: 18px; max-width: 64ch; }
-.st-sec__note { margin-top: 16px; max-width: 64ch; font-size: 0.875rem; line-height: 1.55; color: var(--pv-text-3); }
-.st-empty-line { color: var(--pv-text-3); font-style: italic; }
-
-/* Parameters */
-.st-params .pv-table th[scope="row"] { min-width: 180px; font-weight: 400; vertical-align: top; text-align: start; padding: 12px 16px; border-bottom: 1px solid var(--pv-line-soft); background: transparent; font: inherit; letter-spacing: normal; text-transform: none; color: var(--pv-text); white-space: normal; }
-.st-params tbody tr:last-child th { border-bottom: 0; }
-.st-param__label { display: block; font-weight: 600; }
-.st-param__name { display: inline-block; margin-top: 3px; font-size: 0.75rem; color: var(--pv-text-3); }
-.st-param__type { font: 400 0.8125rem / 1.45 var(--pv-font-mono); color: var(--pv-output); white-space: nowrap; }
-.st-param__default { font: 400 0.8125rem / 1.45 var(--pv-font-mono); color: var(--pv-text); }
-.st-params td[data-label="Default"] { min-width: 132px; }
-.st-params td:last-child { min-width: 260px; color: var(--pv-text-2); }
-.st-sweep { margin-inline-start: 6px; height: 20px; color: var(--pv-edition); border-color: color-mix(in srgb, var(--pv-edition) 40%, transparent); vertical-align: 1px; }
-
-/* Outputs */
-.st-outputs { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
-/* The words wrap beside their chip, so a long one (labels) does not drop below it on a phone. */
-.st-outputs li { display: flex; align-items: center; gap: 6px 14px; }
-.st-outputs .pv-tag { flex: none; min-width: 72px; justify-content: center; }
-.st-outputs__what { min-width: 0; color: var(--pv-text-2); }
-.st-opt { margin-inline-start: 8px; font: 500 var(--pv-text-2xs) / 1 var(--pv-font-mono); letter-spacing: var(--pv-track-label); text-transform: uppercase; color: var(--pv-text-3); }
-
-/* Tool check */
-.st-check {
-  padding: 20px 22px 6px;
-  border: 1px solid var(--pv-line);
-  border-radius: var(--pv-radius-lg);
-  background: var(--pv-surface);
-}
-/* The strip is pv.css's gate report: all in a row while every name fits on
-   one line, three rows of three below that, and the advisory gate that passed
-   (data-adv) as a mint ring. */
-.st-check__strip { margin-top: 4px; }
-.st-gatelog { margin: 20px 0 0; padding: 0; list-style: none; }
-.st-gatelog__row {
-  display: grid;
-  grid-template-columns: 148px 64px minmax(0, 1fr);
-  gap: 4px 16px;
-  align-items: baseline;
-  padding-block: 11px;
-  border-top: 1px solid var(--pv-line-soft);
-}
-.st-gatelog__name { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px; }
-.st-gatelog__name code { font: 500 0.8438rem / 1.4 var(--pv-font-mono); color: var(--pv-text); }
-/* What kind of gate it is, not a warning: neutral, not gold. */
-.st-adv { font: 500 var(--pv-text-2xs) / 1 var(--pv-font-mono); letter-spacing: var(--pv-track-label); text-transform: uppercase; color: var(--pv-text-3); }
-.st-gatelog__status {
-  position: relative;
-  padding-inline-start: 14px;
-  font: 500 0.75rem / 1.4 var(--pv-font-mono);
-  color: var(--pv-text-2);
-}
-.st-gatelog__status::before {
+.st-strip__dot[data-state="pass"] { background: var(--pv-accent); border-color: var(--pv-accent); }
+.st-strip__dot[data-state="pass"][data-adv] { background: var(--pv-bg-2); }
+.st-strip__dot[data-state="advisory"] { border-color: var(--pv-caution); }
+.st-strip__dot[data-state="fail"] { background: var(--pv-danger); border-color: var(--pv-danger); }
+/* What each gate saw, in the order they ran. */
+.st-gates { margin: 18px 0 0; padding: 0; list-style: none; }
+.st-gate { position: relative; padding: 0 0 15px 24px; }
+.st-gate::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 0.42em;
-  width: 7px;
-  height: 7px;
+  top: 6px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   border: 1.5px solid var(--pv-line-2);
 }
-.st-gatelog__row[data-state="pass"] .st-gatelog__status::before { background: var(--pv-accent); border-color: var(--pv-accent); }
-.st-gatelog__row[data-state="fail"] .st-gatelog__status::before { background: var(--pv-danger); border-color: var(--pv-danger); }
-.st-gatelog__row[data-adv][data-state="pass"] .st-gatelog__status::before { background: none; }
-.st-gatelog__row[data-state="advisory"] .st-gatelog__status::before { border-color: var(--pv-caution); background: radial-gradient(circle, var(--pv-caution) 0 1.4px, transparent 1.8px); }
-.st-gatelog__msg { font-size: 0.875rem; line-height: 1.55; color: var(--pv-text-2); overflow-wrap: anywhere; }
+.st-gate:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 21px;
+  bottom: 1px;
+  width: 2px;
+  background-image: radial-gradient(circle at center, var(--pv-dot) 1px, transparent 1.4px);
+  background-size: 2px 6px;
+  background-repeat: repeat-y;
+}
+.st-gate[data-state="pass"]::before { background: var(--pv-accent); border-color: var(--pv-accent); }
+.st-gate[data-state="pass"][data-adv]::before { background: none; border-color: var(--pv-accent); }
+.st-gate[data-state="advisory"]::before { border-color: var(--pv-caution); }
+.st-gate[data-state="fail"]::before { background: var(--pv-danger); border-color: var(--pv-danger); }
+.st-gate__head { display: flex; align-items: baseline; gap: 8px; }
+.st-gate__name { font: 500 0.9063rem / 1.5 var(--pv-font-mono); color: var(--pv-text); }
+.st-gate__adv, .st-gate__word { font: 500 var(--pv-text-2xs) / 1 var(--pv-font-mono); letter-spacing: var(--pv-track-label); text-transform: uppercase; color: var(--pv-text-3); }
+.st-gate__word { margin-inline-start: auto; color: var(--pv-text-2); }
+.st-gate[data-state="fail"] .st-gate__word { color: var(--pv-danger); }
+.st-gate[data-state="advisory"] .st-gate__word { color: var(--pv-caution); }
+.st-gate__msg { margin-top: 2px; font-size: 0.9063rem; line-height: 1.5; color: var(--pv-text); overflow-wrap: anywhere; text-wrap: pretty; }
+.st-tests__note { position: relative; margin-top: 6px; padding-top: 16px; font-size: 0.9688rem; line-height: 1.5; color: var(--pv-text); text-wrap: pretty; }
+.st-tests__note::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background-image: radial-gradient(circle at center, var(--pv-dot) 1px, transparent 1.4px);
+  background-size: 6px 3px;
+  background-repeat: repeat-x;
+}
+.st-tests__more { margin-top: 10px; font-size: 0.9375rem; }
+html:not(.st-js) .st-tests {
+  position: static;
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: calc(var(--pv-page-wide) + 2 * var(--pv-gutter));
+  margin-inline: auto;
+  padding-inline: var(--pv-gutter);
+  border: 0;
+  background: none;
+  opacity: 1;
+  transform: none;
+}
+html:not(.st-js) .st-tests__close { display: none; }
 
-/* A tool that is coming soon keeps its address: its name and one line, with
-   the footer at the foot of a tall screen (as on the 404). */
+/* The 404's headline, in the store's face and on its scale. */
+.st-404__title { font-size: clamp(2rem, 1.5rem + 1.8vw, 3rem); }
+
+/* A tool that is coming soon keeps its address: its name and one line, with the
+   footer at the foot of a tall screen (as on the 404). */
 body.st-page--soon { display: flex; flex-direction: column; }
-.st-soon { flex: 1 0 auto; }
-.st-soon__head { max-width: 720px; padding-bottom: clamp(56px, 8vw, 120px); }
-.st-soon__head .pv-title { margin-top: 16px; }
+.st-soon { flex: 1 0 auto; padding-top: 18px; }
+.st-soon__head { max-width: 720px; padding-block: clamp(32px, 6vw, 72px) clamp(56px, 8vw, 120px); }
+.st-soon__name { margin-top: 16px; font-size: clamp(2.25rem, 1.5rem + 2.2vw, 3.5rem); }
 
 /* More tools */
-.st-more { padding-block: clamp(56px, 6vw, 96px) clamp(56px, 7vw, 112px); }
-.st-more__h {
-  margin-bottom: 20px;
-  font-size: var(--pv-text-h3);
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.014em;
-}
-/* Three tools: where a fourth track would fit, it collapses (auto-fit) and the
-   three share the row, so no column stands empty; a card stays 280 px or wider,
-   so its footer keeps to one line. */
-.st-grid--more { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+.st-more { padding-block: clamp(24px, 3vw, 40px) clamp(48px, 6vw, 88px); }
+.st-more__h { margin-bottom: 18px; font-size: var(--pv-text-h3); font-weight: 600; line-height: 1.2; letter-spacing: -0.016em; }
 
 
 /* 8 · Readme: prose and formulas =========================================
@@ -968,12 +1107,13 @@ body.st-page--soon { display: flex; flex-direction: column; }
 }
 
 .st-md {
-  font-size: 1.0313rem;
-  line-height: 1.7;
-  color: var(--pv-text-2);
+  --st-measure: 44rem;
+  font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.125rem);
+  line-height: 1.66;
+  color: color-mix(in srgb, var(--pv-text) 90%, var(--pv-bg));
 }
-/* Prose keeps its measure; a formula may use the column's full width. */
-.st-md > :not(.st-formula) { max-width: 72ch; }
+/* Prose keeps its measure, about 80 characters; a formula may use the column's full width. */
+.st-md > :not(.st-formula) { max-width: var(--st-measure); }
 .st-md > * + * { margin-top: 1em; }
 .st-md > :first-child { margin-top: 0; }
 .st-md :is(h3, h4) { margin-top: 1.9em; color: var(--pv-text); font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; }
@@ -1022,6 +1162,9 @@ body.st-page--soon { display: flex; flex-direction: column; }
 /* A display formula: its equations side by side, each split at its = so that
    a long chain wraps onto lines that start with the relation, indented. */
 .st-formula {
+  width: fit-content;
+  min-width: min(var(--st-measure), 100%);
+  max-width: 100%;
   margin-block: 1.3em;
   padding: 16px 22px;
   border: 1px solid var(--pv-line-soft);
@@ -1032,6 +1175,7 @@ body.st-page--soon { display: flex; flex-direction: column; }
   scrollbar-color: var(--pv-line-2) transparent;
 }
 .st-md > .st-formula + * { margin-top: 1.3em; }
+.st-md > p:has(> strong:first-child) { margin-top: 1.5em; }
 .st-formula__row {
   display: flex;
   flex-wrap: wrap;
@@ -1068,23 +1212,13 @@ body.st-page--soon { display: flex; flex-direction: column; }
 .st-formula.is-scroll.is-end { -webkit-mask-image: none; mask-image: none; }
 .st-formula:focus-visible { outline: 2px solid var(--pv-focus); outline-offset: 2px; }
 
-.st-refs { margin-top: 28px; max-width: 72ch; padding-top: 18px; position: relative; }
-.st-refs::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 3px;
-  background-image: radial-gradient(circle at center, var(--pv-dot) 1px, transparent 1.4px);
-  background-size: 6px 3px;
-  background-repeat: repeat-x;
-}
-.st-refs__h { font: 500 var(--pv-text-xs) / 1.3 var(--pv-font-mono); letter-spacing: var(--pv-track-label); text-transform: uppercase; color: var(--pv-text-3); }
-.st-refs p { margin-top: 8px; font-size: 0.9063rem; line-height: 1.6; color: var(--pv-text-2); }
-
 
 /* 9 · Build & publish page ================================================ */
 
-.st-pub-hero { padding-block: clamp(24px, 3vw, 48px) clamp(28px, 3vw, 44px); }
+.st-pub-hero { padding-block: clamp(18px, 2vw, 28px) clamp(28px, 3vw, 44px); }
+.st-nowrap { white-space: nowrap; }
+.st-adv { font: 500 var(--pv-text-2xs) / 1 var(--pv-font-mono); letter-spacing: var(--pv-track-label); text-transform: uppercase; color: var(--pv-text-3); }
+.st-pub-hero__title { margin-top: 16px; font-size: clamp(2.25rem, 1.5rem + 2.2vw, 3.5rem); }
 .st-pub-hero__inner { max-width: 840px; }
 .st-pub-hero__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 20px; }
 .st-docs-link { font-size: 0.9375rem; }
@@ -1117,8 +1251,6 @@ body.st-page--soon { display: flex; flex-direction: column; }
 .st-loop__aside { position: sticky; top: calc(var(--pv-topbar-block) + 32px); }
 .st-loop .pv-steps { gap: 28px; }
 .st-loop .pv-steps > li:not(:last-child)::after { bottom: -22px; }
-.st-step__cmd { font: 500 0.8125rem / 1 var(--pv-font-mono); color: var(--pv-edition); }
-.st-step__title { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
 .st-step__gates { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; font: 500 var(--pv-text-2xs) / 1 var(--pv-font-mono); letter-spacing: var(--pv-track-label); text-transform: uppercase; color: var(--pv-text-3); }
 .st-step__dots { display: inline-flex; gap: 4px; }
 .st-step__dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--pv-accent); }
@@ -1162,154 +1294,145 @@ body.st-page--soon { display: flex; flex-direction: column; }
   align-items: center;
   gap: 10px 28px;
 }
-.st-safety--short .st-safety__title { font-size: var(--pv-text-h4); }
-.st-safety--short .st-safety__text { margin-top: 0; }
+.st-safety--short { padding: clamp(18px, 2.2vw, 26px); border: 1px solid var(--pv-line); border-radius: var(--pv-radius-lg); scroll-margin-top: var(--pv-scroll-offset); }
+.st-safety--short .st-safety__title { font-size: var(--pv-text-h4); font-weight: 600; letter-spacing: -0.012em; }
+.st-safety--short .st-safety__text { max-width: 64ch; color: var(--pv-text); }
 @media (max-width: 759.98px) {
   .st-safety--short { grid-template-columns: minmax(0, 1fr); justify-items: start; }
 }
 .st-safety__link { font-size: 0.9375rem; }
 
 
-/* Responsive ================================================================ */
+/* 10 · Responsive ========================================================== */
 
-@media (max-width: 1099.98px) {
-  .st-mast__inner { grid-template-columns: minmax(0, 1fr); gap: 22px; align-items: start; }
-  .st-start { max-width: 760px; }
-  .st-sort > .pv-label { display: none; }
-  .st-search { flex-basis: 300px; min-width: 260px; }
-  .st-routes { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 14px 28px; }
-
-  /* Tool page: one column; the section list becomes a sticky row of pills. */
-  .st-tool__layout { grid-template-columns: minmax(0, 1fr); grid-template-areas: "hero" "art" "get" "onpage" "main"; }
-  .st-side { display: contents; }
-  .st-get { grid-area: get; margin-top: 28px; }
-  .st-onpage {
-    grid-area: onpage;
+/* The hero sticks, and is a third of the screen, wherever there is room for both. */
+@media (min-width: 760px) and (min-height: 600px) {
+  .st-hero {
     position: sticky;
-    top: var(--pv-topbar-block);
+    top: calc(var(--pv-topbar-block) - var(--st-hero-h) + var(--st-band-h));
     z-index: var(--pv-z-sticky);
-    margin: 20px calc(var(--pv-gutter) * -1) 0;
-    padding: 9px var(--pv-gutter);
-    border: 0;
-    border-radius: 0;
-    background: var(--pv-topbar-bg);
-    -webkit-backdrop-filter: var(--pv-glass-filter);
-    backdrop-filter: var(--pv-glass-filter);
+    height: var(--st-hero-h);
   }
-  .st-onpage::after {
-    content: "";
-    position: absolute;
-    inset: auto 0 -2px;
-    height: 3px;
-    background-image: radial-gradient(circle at center, var(--pv-dot) 1px, transparent 1.4px);
-    background-size: 6px 3px;
-    background-repeat: repeat-x;
-    pointer-events: none;
-  }
-  .st-onpage__h { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-  .st-onpage ul {
-    display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    margin-inline: -2px;
-    padding: 2px;
-  }
-  .st-onpage ul::-webkit-scrollbar { display: none; }
-  @media (max-width: 599.98px) {
-    .st-onpage ul { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent); padding-inline-end: 28px; }
-  }
-  .st-onpage li { flex: none; }
-  .st-onpage a {
-    gap: 8px;
-    min-height: 34px;
-    padding: 0 12px 0 10px;
-    border: 1px solid var(--pv-line);
-    border-radius: var(--pv-radius-pill);
-    font: 500 var(--pv-text-xs) / 1 var(--pv-font-mono);
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-  }
-  .st-onpage a[aria-current="true"] { border-color: var(--pv-accent-line); background: var(--pv-accent-soft); }
-  .st-sec { scroll-margin-top: calc(var(--pv-topbar-block) + 66px); }
-
-  .st-loop__grid { grid-template-columns: minmax(0, 1fr); }
-  .st-loop__aside { position: static; }
+  .st-hero__in { height: calc(var(--st-hero-h) / var(--k)); }
+  /* Tabbing to a plate brings it clear of the sticky band. */
+  .st-card { scroll-margin-block: 160px 24px; }
+  /* Without JavaScript there is no search or filter to keep on screen. */
+  html:not(.st-js) .st-hero { position: relative; top: auto; height: auto; }
+  html:not(.st-js) .st-hero__in { height: auto; padding-block: 28px 18px; }
 }
 
-@media (min-width: 600px) and (max-width: 1099.98px) {
-  /* Tablets: the three steps side by side, joined by a dotted line. */
-  .st-howto { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
-  .st-howto > li { padding: 32px 0 0; }
-  .st-howto > li:not(:last-child)::after { top: 10px; bottom: auto; left: 32px; right: -12px; width: auto; height: 2px; background-size: 6px 2px; background-repeat: repeat-x; }
-}
-
-@media (min-width: 680px) and (max-width: 1099.98px) {
-  /* Tablets: the action on the left, the facts beside it. */
-  .st-get { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 32px; align-items: start; }
-  .st-get > :not(.st-get__facts-h):not(.st-facts) { grid-column: 1; }
-  .st-get__facts-h { grid-column: 2; grid-row: 1; margin-top: 4px; }
-  .st-facts { grid-column: 2; grid-row: 2 / span 3; }
+/* Under this the words and a picture no longer fit side by side. */
+@media (max-width: 1179.98px) {
+  .st-hero.is-compact .st-now { display: none; }
 }
 
 @media (max-width: 1023.98px) {
-  .st-land__pair { grid-template-columns: minmax(0, 1fr); gap: 28px; }
-  .st-land__fig--result { grid-column: auto; grid-row: auto; }
-  .st-land__fig--result::before, .st-land__fig--result::after, .st-land__arrow { display: none; }
-  .st-land__fig--tab .st-land__stage { max-width: 508px; }
+  /* Tool page: one column; the artwork right under the name. */
+  .st-top__in { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .st-top__words { display: contents; }
+  .st-back { justify-self: start; }
+  .st-top__name { order: 1; margin-top: 8px; }
+  .st-top__art { order: 2; margin-top: 18px; align-self: auto; }
+  .st-top__desc { order: 3; }
+  .st-get { order: 4; margin-top: 0; padding-top: 18px; }
+  .st-bar__name { display: none; }
+  .st-bar.is-stuck .st-tabs { transform: none; }
+  .st-views__grid { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-block-start: 28px; }
+  .st-facts { position: static; }
+  .st-facts__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); column-gap: 32px; }
+  .st-facts__row:nth-child(2) { border-top: 1px solid var(--pv-line-soft); padding-top: 9px; }
+}
+
+@media (max-width: 1099.98px) {
+  .st-grid, .st-results__in { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  /* More tools stays one full row. */
+  .st-more .st-cell:nth-child(4) { display: none; }
 }
 
 @media (max-width: 899.98px) {
-  .st-notes__inner { grid-template-columns: minmax(0, 1fr); }
+  /* The search gives way before the band's controls wrap. */
+  .st-search { flex: 1 1 200px; width: auto; }
+}
+
+@media (max-width: 819.98px) {
+  .st-grid, .st-results__in { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .st-more .st-cell:nth-child(4) { display: block; }
 }
 
 @media (max-width: 759.98px) {
-  .st-start { padding: 16px 16px 10px; }
-  .st-install__toggle { min-height: 44px; }
-  /* Phones: the toolbar scrolls with the page, and does not take a rule. */
-  .st-toolbar { position: relative; top: auto; }
-  .st-toolbar.is-stuck { background: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
-  .st-toolbar.is-stuck::after { opacity: 0; }
-  .st-toolbar__inner { flex-wrap: wrap; padding-block: 8px 2px; }
-  .st-search { flex-basis: 100%; max-width: none; }
-  .st-search__kbd { display: none; }
-  .st-sort { order: 2; }
-  .st-count { order: 3; }
-  /* Filters: one swipeable rail, bleeding to the screen edges. */
-  .st-tags { padding-block: 4px 14px; }
-  .st-tags__list {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    margin-inline: calc(var(--pv-gutter) * -1);
-    padding: 6px var(--pv-gutter) 8px;
-    scroll-padding-inline: var(--pv-gutter);
-    scrollbar-width: none;
-    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 44px), transparent);
-    mask-image: linear-gradient(90deg, #000 calc(100% - 44px), transparent);
+  /* Phones: the hero scrolls with the page, and the filters are a sheet. */
+  .st-hero__in { padding-top: 20px; }
+  .st-hero__title { font-size: clamp(2.5rem, 12vw, 3.25rem); white-space: nowrap; }
+  .st-controls { min-height: 0; padding-block: 16px 14px; }
+  .st-filterbtn { padding-inline: 13px 15px; }
+  .st-filters {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 300;
+    width: auto;
+    max-height: 84vh;
+    max-height: 84dvh;
+    overflow-y: auto;
+    padding: 6px 16px 20px;
+    border-width: 1px 0 0;
+    border-radius: 20px 20px 0 0;
+    box-shadow: var(--pv-shadow-3);
+    overscroll-behavior: contain;
+    animation-name: st-sheet;
+    animation-duration: 320ms;
+    animation-timing-function: var(--pv-ease-drawer);
   }
-  .st-tags__list::-webkit-scrollbar { display: none; }
-  .st-tags__group { flex-wrap: nowrap; flex: none; }
-  .st-tags__group > * { flex: none; }
+  @keyframes st-sheet {
+    from { transform: translateY(32px); opacity: 0; }
+    to { transform: none; opacity: 1; }
+  }
+  .st-filters__scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 299;
+    background: rgba(6, 7, 13, 0.66);
+    touch-action: none;
+  }
+  .st-filters__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+  .st-filters__title { font-size: 1.125rem; font-weight: 600; letter-spacing: -0.012em; }
+  .st-filters__close {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-inline-end: -10px;
+    border: 0;
+    background: none;
+    color: var(--pv-text-2);
+  }
+  .st-filters__close svg { width: 20px; height: 20px; }
+  .st-filters__body { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .st-filters__opts, .st-filters__group--tags .st-filters__opts { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 8px; }
+  .st-opt { min-height: 42px; }
 
   /* Parameters as a stack of entries. Roles on the markup keep it a table. */
-  .st-params { border: 0; background: none; overflow: visible; }
-  .st-params :is(table, tbody, tr, th, td) { display: block; }
-  .st-params thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-  .st-params tr { padding: 14px 16px 6px; margin-bottom: 10px; border: 1px solid var(--pv-line); border-radius: 12px; background: var(--pv-surface); }
-  .st-params .pv-table th[scope="row"], .st-params .pv-table td { padding: 0 0 10px; border: 0; min-width: 0; }
-  .st-params td[data-label]::before {
-    content: attr(data-label);
-    display: block;
-    margin-bottom: 2px;
-    font: 500 var(--pv-text-2xs) / 1.4 var(--pv-font-mono);
-    letter-spacing: var(--pv-track-label);
-    text-transform: uppercase;
-    color: var(--pv-text-3);
-  }
-  .st-params tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 16px; }
-  .st-params .pv-table th[scope="row"], .st-params td[data-label="What it does"] { grid-column: 1 / -1; }
-  .st-params td[data-label="Default"] { min-width: 0; }
-  /* The gates: number and name on one line, what it checks below. */
+  .st-ptable thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .st-p { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "val" "help"; gap: 6px; }
+  .st-p__val { justify-items: start; text-align: start; }
+  .st-p__dl { display: inline; }
+  .st-out { grid-template-columns: auto minmax(0, 1fr); }
+  .st-out__what { grid-column: 2; }
+  /* The bar holds the three views, and Download as a mark once the first one has
+     gone. The test summary stands with Download (store.js moves it there). */
+  .st-bar__in { gap: 4px; height: 52px; }
+  .st-tab { padding-inline: 12px; font-size: 0.9688rem; }
+  .st-tabs { margin-inline-start: -12px; }
+  .st-get .st-testbtn { justify-self: stretch; justify-content: center; height: 44px; margin-inline-start: 0; }
+  /* Its place is kept from the first paint, so that nothing moves when it arrives. */
+  .st-js .st-bar .st-testbtn { position: absolute; visibility: hidden; }
+  .st-js .st-get::after { content: ""; height: 44px; }
+  .st-js .st-get:has(.st-testbtn)::after { content: none; }
+  .st-bar__dl { width: 38px; padding: 0; justify-content: center; }
+  .st-bar__dl span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  /* Tools are installed from inside PointillViz, not from a phone: the link is enough here. */
+  .st-get__steps { display: none; }
+  /* The publish page. */
   .st-gates9 .pv-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .st-gates9 .pv-table :is(tbody, tr, td) { display: block; }
   .st-gates9 .pv-table tr { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 10px; align-items: baseline; padding: 12px 16px; border-bottom: 1px solid var(--pv-line-soft); }
@@ -1317,56 +1440,34 @@ body.st-page--soon { display: flex; flex-direction: column; }
   .st-gates9 .pv-table td { padding: 0; border: 0; }
   .st-gates9 .pv-table td:last-child { grid-column: 2; margin-top: 4px; }
   .st-gates9 .pv-table td.st-gates9__n { min-width: 1.2em; text-align: start; font: 500 0.875rem / 1.4 var(--pv-font-mono); color: var(--pv-text-3); }
-  .st-gatelog__row { grid-template-columns: minmax(0, 1fr) auto; }
-  .st-gatelog__msg { grid-column: 1 / -1; }
   .st-agent__card { grid-template-columns: minmax(0, 1fr); }
   .st-anatomy__wide { display: none; }
   .st-anatomy__narrow { display: block; }
 }
 
-@media (max-width: 519.98px) {
-  .st-facts__row { grid-template-columns: 104px minmax(0, 1fr); }
-  .st-hero__title { font-size: clamp(1.875rem, 1.3rem + 2.8vw, 2.25rem); }
-  .st-count { margin-inline-start: auto; font-size: var(--pv-text-2xs); letter-spacing: 0.05em; }
-  .st-sort .pv-label { display: none; }
-  .st-sort .pv-seg > button { padding: 0 9px; letter-spacing: 0.06em; }
+@media (max-width: 1099.98px) {
+  .st-loop__grid { grid-template-columns: minmax(0, 1fr); }
+  .st-loop__aside { position: static; }
+}
 
-  /* Phones: a compact card, its artwork as a thumbnail beside the name. The
-     filter rail sits as close above the first card as below the sort row, so
-     the whole first card shows on a 390 × 844 screen. */
-  .st-tags { padding-bottom: 6px; }
-  .st-grid { gap: 10px; }
-  .st-card {
-    --pv-card-pad: 12px;
-    display: grid;
-    grid-template-columns: 104px minmax(0, 1fr);
-    grid-template-areas: "art title" "art by" "art desc" "art foot";
-    grid-template-rows: auto auto auto 1fr;
-    column-gap: 14px;
-    row-gap: 3px;
-    align-items: start;
-  }
-  .st-card__art { grid-area: art; margin: 0; padding: 4px; border-radius: 8px; background-size: 10px 10px, auto; background-position: 5px 5px, 0 0; }
-  .st-card__title { grid-area: title; font-size: 1rem; line-height: 1.3; }
-  .st-card__outs { display: none; }
-  /* Only the date shows in the author's line, and only while Newest sorts. */
-  .st-card__by { display: none; grid-area: by; margin: 0; }
-  .st-grid[data-sort="newest"] .st-card__by { display: block; }
-  .st-grid[data-sort="newest"] .st-card__author { display: none; }
-  .st-grid[data-sort="newest"] .st-card__date { margin-top: 0; }
-  .st-card__desc { grid-area: desc; font-size: 0.875rem; line-height: 1.45; }
-  .st-card__foot { grid-area: foot; align-self: end; gap: 8px; margin-top: 0; padding-top: 4px; }
-
+@media (max-width: 559.98px) {
+  .st-grid, .st-results__in { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .st-more .st-cell:nth-child(4) { display: none; }
+  .st-card__name { font-size: 1.0625rem; }
+  .st-get__btn { justify-self: stretch; }
   .st-formula { padding: 12px 14px; }
   .st-formula__row { font-size: 0.96875rem; column-gap: 1.25em; }
 }
 
 @media (max-width: 379.98px) {
-  .st-count { margin-inline-start: 0; flex-basis: 100%; }
+  .st-tab { padding-inline: 9px; font-size: 0.9063rem; }
+  .st-tabs { margin-inline-start: -9px; }
 }
 
 /* Reduced motion: the travel tokens are already zero; cancel the rest. */
 @media (prefers-reduced-motion: reduce) {
-  .st-install.is-open .st-install__body { animation: none; }
-  .st-card__art img, .st-teaser__go, .st-back__link .pv-icon { transition: none; }
+  .st-card__art img, .st-howto .pv-icon, .st-back .pv-icon, .st-end__publish .pv-icon, .st-tabs, .st-tabs__ind, .st-fold__chev { transition: none; }
+  .st-filters, .st-safety:target .st-safety__full, .st-js[data-view-live] .st-panel { animation: none; }
+  .st-bar__name, .st-bar__dl { transition-duration: 0s; }
+  .st-hero .st-hero__words, .st-hero .st-now { transition: none !important; }
 }

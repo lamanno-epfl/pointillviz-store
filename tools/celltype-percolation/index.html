@@ -22,12 +22,13 @@
 <link rel="icon" href="../../assets/pv/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&amp;family=Fraunces:opsz,wght@9..144,600&amp;family=JetBrains+Mono:wght@400..600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&amp;family=JetBrains+Mono:wght@400..600&amp;display=swap">
 <link rel="stylesheet" href="../../assets/pv/pv.css">
 <link rel="stylesheet" href="../../assets/store.css">
 <script src="../../assets/pv/pv.js" defer></script>
-<script src="../../assets/store.js" defer></script>
-<script>document.documentElement.classList.add('st-js')</script>
+<script src="../../assets/field.js" defer></script>
+<script src="../../assets/store.js" defer onerror="document.documentElement.classList.remove('st-js')"></script>
+<script>document.documentElement.classList.add('st-js');(function(d,m){d.setAttribute('data-view',m?m[1]:'readme')})(document.documentElement,/^#(readme|parameters|outputs)$/.exec(location.hash))</script>
 <noscript><style>.pv-topbar__menu { display: none !important; }</style></noscript>
 </head>
 <body class="st-page st-page--tool">
@@ -80,50 +81,43 @@
   </div>
 </dialog>
 <main id="main" class="st-tool">
-  <div class="pv-container">
-    <nav class="st-back" aria-label="Back">
-      <a class="st-back__link" href="../../"><svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-arrow-left"/></svg>All tools</a>
-    </nav>
-    <div class="st-tool__layout">
-      <header class="st-hero">
-        <h1 class="pv-title st-hero__title">Cell-Type Percolation</h1>
-        <p class="st-hero__by">by PointillViz reference tools</p>
-        <p class="pv-lede st-hero__desc">Whether a cell type is one connected mass or many islands.</p>
-        <div class="st-hero__badges"><span class="pv-tag st-badge" title="Written in Python">Python</span><span class="pv-tag pv-tag--ver">v2.0.0</span></div>
-        <div class="st-hero__chips"><ul class="pv-tags" aria-label="Tags"><li class="pv-tag">spatial</li><li class="pv-tag">cell types</li><li class="pv-tag">connectivity</li><li class="pv-tag">topology</li></ul><div class="st-hero__outs"><span class="st-tags__sep" aria-hidden="true">Outputs</span><ul class="pv-tags" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="writes a summary">summary</li><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul></div></div>
-      </header>
-      <figure class="pv-figure st-hero__art">
-        <div class="pv-figure__stage st-artstage"><img src="../../assets/media/tools/celltype-percolation.webp?v=671e35079f" srcset="../../assets/media/tools/celltype-percolation.webp?v=671e35079f 720w, ../../assets/media/tools/celltype-percolation@2x.webp?v=524dcd17f2 1440w" sizes="(min-width: 1320px) 820px, (min-width: 1100px) 62vw, 94vw" width="720" height="420" alt="Percolation curves: the largest connected component of ten colon cell types against linking distance, one crossing the half line early and one late, over the pooled random-subset band" fetchpriority="high" decoding="async"></div>
-        <figcaption class="pv-figure__caption"><span>Percolation curves: the largest connected component of ten colon cell types against linking distance, one crossing the half line early and one late, over the pooled random-subset band</span><span class="pv-figure__meta">Artwork from the tool’s bundle</span></figcaption>
-      </figure>
-      <div class="st-side">
-        <aside class="st-get" aria-labelledby="get-h">
-          <h2 class="st-get__title" id="get-h">Get this tool</h2>
+  <header class="st-top">
+    <div class="st-wrap st-top__in">
+      <div class="st-top__words">
+        <a class="st-back" href="../../"><svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-arrow-left"/></svg>All tools</a>
+        <h1 class="st-title st-top__name"><span class="st-keep">Cell-Type</span> Percolation</h1>
+        <p class="st-top__desc">Whether a cell type is one connected mass or many islands.</p>
+        <div class="st-get">
           <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/celltype-percolation-v2.0.0/celltype-percolation-2.0.0.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 34.0 kB</span></span></a>
-          <div class="st-get__how">
-            <p>Install in PointillViz: <b>Tools → Store → Install</b>, or use <b>Install from file</b> with the download.</p>
-            <p class="st-get__docs"><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How tools work · Docs</a></p>
-          </div>
-          <p class="st-get__src"><a class="pv-link" href="https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/celltype-percolation">Source in the public registry<svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-external"/></svg></a></p>
-          <p class="st-get__note"><b>This runs as you.</b> A tool is arbitrary code, run with the privileges of whoever started PointillViz. <a class="pv-link" href="../../#safety">Read the safety note</a></p>
-          <h3 class="pv-label st-get__facts-h">Facts</h3>
-          <dl class="st-facts"><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__ver">2.0.0</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-10-28">28 Oct 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Needs</dt><dd><span class="st-nowrap">a categorical column</span> · <span class="st-nowrap">200+ cells</span></dd></div></dl>
-        </aside>
-        <nav class="st-onpage" aria-labelledby="onpage-h">
-          <p class="pv-label st-onpage__h" id="onpage-h">On this page</p>
-          <ul>
-            <li><a href="#readme">Readme</a></li>
-            <li><a href="#parameters">Parameters</a></li>
-            <li><a href="#outputs">Outputs</a></li>
-            <li><a href="#tool-check">Tool check</a></li>
-          </ul>
-        </nav>
+          <p class="st-get__how"><span class="st-get__steps">In PointillViz: <b>Tools → Store → Install</b>, or <b>Install from file</b> with the download. </span><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How to install and run a tool</a></p>
+          
+          <p class="st-get__note">This runs as you: a tool is arbitrary code, with your privileges. <a class="pv-link" href="../../#safety">Safety note</a></p>
+        </div>
       </div>
-      <div class="st-tool__main">
-        <section class="st-sec" id="readme" aria-labelledby="readme-h">
-          <h2 class="st-sec__h" id="readme-h">Readme</h2>
+      <figure class="st-top__art">
+        <div class="st-artplate" title="Percolation curves: the largest connected component of ten colon cell types against linking distance, one crossing the half line early and one late, over the pooled random-subset band"><img src="../../assets/media/tools/celltype-percolation.webp?v=671e35079f" srcset="../../assets/media/tools/celltype-percolation.webp?v=671e35079f 720w, ../../assets/media/tools/celltype-percolation@2x.webp?v=524dcd17f2 1440w" sizes="(max-width: 1023.98px) 92vw, 58vw" width="720" height="420" alt="Percolation curves: the largest connected component of ten colon cell types against linking distance, one crossing the half line early and one late, over the pooled random-subset band" fetchpriority="high" decoding="async"></div>
+      </figure>
+    </div>
+  </header>
+  <div class="st-views">
+    <div class="st-bar" id="view-bar">
+      <div class="st-wrap st-bar__in">
+        <p class="st-bar__name" aria-hidden="true"><img class="st-bar__thumb" src="../../assets/media/tools/celltype-percolation.webp?v=671e35079f" width="720" height="420" alt="" loading="lazy" decoding="async"><span>Cell-Type Percolation</span></p>
+        <nav class="st-tabs" aria-label="About this tool" id="view-tabs">
+          <a class="st-tab" href="#readme" data-view-link="readme">Readme</a>
+          <a class="st-tab" href="#parameters" data-view-link="parameters">Parameters</a>
+          <a class="st-tab" href="#outputs" data-view-link="outputs">Outputs</a>
+        </nav>
+        <button class="st-testbtn" id="test-summary-open" type="button" aria-haspopup="dialog" aria-controls="test-summary" data-state="pass">Tool test summary</button>
+        <a class="pv-btn pv-btn--primary st-bar__dl" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/celltype-percolation-v2.0.0/celltype-percolation-2.0.0.pvtool" download tabindex="-1"><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span>Download</span></a>
+      </div>
+    </div>
+    <div class="st-wrap st-views__grid">
+      <div class="st-panels">
+        <section class="st-panel" id="readme" aria-labelledby="readme-h">
+          <h2 class="st-panel__h" id="readme-h">Readme</h2>
+          <p class="st-question">Which cell types form one connected structure, and which are split into separate patches?</p>
           <div class="st-md">
-<p>Answers the question: <strong>Which cell types form one connected structure, and which are split into separate patches?</strong></p>
 <p>For each group in the selected annotation, two cells are connected when they are no more than a distance <math translate="no"><mi>r</mi></math> apart. Connections can form chains: if cell A is connected to B and B to C, all three belong to the same patch. As <math translate="no"><mi>r</mi></math> increases, smaller patches merge into larger structures.</p>
 <p><strong>Map.</strong> Each cell is colored by the <code translate="no">log10</code> size of its connected same-group patch at a fixed linking distance. Brighter colors indicate larger patches, darker colors indicate smaller patches, and unpainted cells have no result.</p>
 <p><strong>Plot.</strong> The x-axis shows the linking distance <math translate="no"><mi>r</mi></math>, normalized by the typical nearest-neighbor distance within each group. The y-axis shows the fraction of the group’s cells contained in its largest connected patch.</p>
@@ -131,160 +125,145 @@
 <p>Each line represents one group. Curves rising further to the left indicate greater connectivity, while curves rising further to the right indicate greater fragmentation.</p>
 <p><strong>Table.</strong> The percolation threshold <code translate="no">r*</code> is the smallest distance at which the largest patch contains the selected fraction of the group, <strong>50%</strong> by default. <code translate="no">r*/NN</code> expresses this threshold relative to the group’s own spacing. <code translate="no">r*/null</code> compares it with random groups of the same size: values below <strong>1</strong> indicate greater connectivity than expected, while values above <strong>1</strong> indicate greater fragmentation.</p>
           </div>
-          <div class="st-refs"><h3 class="st-refs__h">References</h3><p>Stauffer, D. &amp; Aharony, A. (1994). Introduction to Percolation Theory, 2nd ed. Taylor &amp; Francis. Gower, J. C. &amp; Ross, G. J. S. (1969). Minimum spanning trees and single linkage cluster analysis. Applied Statistics 18(1), 54-64.</p></div>
+          <div class="st-refs"><h3 class="st-refs__h">References</h3><div class="st-md"><p>Stauffer, D. &amp; Aharony, A. (1994). Introduction to Percolation Theory, 2nd ed. Taylor &amp; Francis. Gower, J. C. &amp; Ross, G. J. S. (1969). Minimum spanning trees and single linkage cluster analysis. Applied Statistics 18(1), 54-64.</p></div></div>
         </section>
-        <section class="st-sec" id="parameters" aria-labelledby="parameters-h">
-          <h2 class="st-sec__h" id="parameters-h">Parameters</h2>
-          <div class="pv-table-wrap st-params">
-<table class="pv-table" role="table" aria-labelledby="parameters-h">
-<thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Parameter</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Default</th><th scope="col" role="columnheader">What it does</th></tr></thead>
+        <section class="st-panel" id="parameters" aria-labelledby="parameters-h">
+          <h2 class="st-panel__h" id="parameters-h">Parameters</h2>
+          <table class="st-ptable" role="table" aria-labelledby="parameters-h">
+<thead role="rowgroup"><tr role="row" class="st-p st-p--names"><th scope="col" role="columnheader" class="st-p__head">Parameter</th><th scope="col" role="columnheader" class="st-p__val">Default</th><th scope="col" role="columnheader" class="pv-sr-only">What it does</th></tr></thead>
 <tbody role="rowgroup">
-<tr role="row">
-  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Grouping column</span><code class="st-param__name" translate="no">field</code></th>
-  <td role="cell" data-label="Type"><span class="st-param__type">categorical_field</span></td>
-  <td role="cell" data-label="Default"><span class="st-param__default">optional</span></td>
-  <td role="cell" data-label="What it does">Selects the annotation used to define the groups.</td>
+<tr role="row" class="st-p">
+  <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Grouping column</span> <code class="st-p__name" translate="no">field</code></th>
+  <td role="cell" class="st-p__val"><span class="st-p__default">optional</span><span class="st-p__kind">a categorical column</span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Selects the annotation used to define the groups.</span></td>
 </tr>
-<tr role="row">
-  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Minimum cells per category</span><code class="st-param__name" translate="no">min_cells</code></th>
-  <td role="cell" data-label="Type"><span class="st-param__type">int, 10–5,000</span></td>
-  <td role="cell" data-label="Default"><span class="st-param__default">50</span></td>
-  <td role="cell" data-label="What it does">Categories with fewer placed cells than this are not scored and appear unpainted (grey) on the map.</td>
+<tr role="row" class="st-p">
+  <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Minimum cells per category</span> <code class="st-p__name" translate="no">min_cells</code></th>
+  <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>50</span><span class="st-range" aria-hidden="true"><span class="st-range__end">10</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.0080"></i></span><span class="st-range__end">5,000</span></span><span class="pv-sr-only">Range 10 to 5,000. </span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Categories with fewer placed cells than this are not scored and appear unpainted (grey) on the map.</span></td>
 </tr>
-<tr role="row">
-  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Giant-component fraction</span><code class="st-param__name" translate="no">giant_frac</code></th>
-  <td role="cell" data-label="Type"><span class="st-param__type">float, 0.1–0.9</span></td>
-  <td role="cell" data-label="Default"><span class="st-param__default">0.5</span></td>
-  <td role="cell" data-label="What it does">Sets the fraction of a group that must belong to its largest connected patch to define the percolation threshold r*.</td>
+<tr role="row" class="st-p">
+  <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Giant-component fraction</span> <code class="st-p__name" translate="no">giant_frac</code></th>
+  <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>0.5</span><span class="st-range" aria-hidden="true"><span class="st-range__end">0.1</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.5000"></i></span><span class="st-range__end">0.9</span></span><span class="pv-sr-only">Range 0.1 to 0.9. </span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Sets the fraction of a group that must belong to its largest connected patch to define the percolation threshold r*.</span></td>
 </tr>
-<tr role="row">
-  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Null draws</span><code class="st-param__name" translate="no">n_sims</code></th>
-  <td role="cell" data-label="Type"><span class="st-param__type">int, 0–49</span></td>
-  <td role="cell" data-label="Default"><span class="st-param__default">19</span></td>
-  <td role="cell" data-label="What it does">Sets the number of random groups used for comparison. More draws provide a more precise comparison but increase runtime; 0 disables the null results and grey band.</td>
+<tr role="row" class="st-p">
+  <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Null draws</span> <code class="st-p__name" translate="no">n_sims</code></th>
+  <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>19</span><span class="st-range" aria-hidden="true"><span class="st-range__end">0</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.3878"></i></span><span class="st-range__end">49</span></span><span class="pv-sr-only">Range 0 to 49. </span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Sets the number of random groups used for comparison. More draws provide a more precise comparison but increase runtime; 0 disables the null results and grey band.</span></td>
 </tr>
-<tr role="row">
-  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Patch-map link radius</span><code class="st-param__name" translate="no">link_scale</code></th>
-  <td role="cell" data-label="Type"><span class="st-param__type">float, 0.5–20</span></td>
-  <td role="cell" data-label="Default"><span class="st-param__default">3</span></td>
-  <td role="cell" data-label="What it does">Sets the distance used to define map patches. Cells are colored by patch size at that distance; the plot and r* are unchanged.</td>
+<tr role="row" class="st-p">
+  <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Patch-map link radius</span> <code class="st-p__name" translate="no">link_scale</code></th>
+  <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>3</span><span class="st-range" aria-hidden="true"><span class="st-range__end">0.5</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.1282"></i></span><span class="st-range__end">20</span></span><span class="pv-sr-only">Range 0.5 to 20. </span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Sets the distance used to define map patches. Cells are colored by patch size at that distance; the plot and r* are unchanged.</span></td>
 </tr>
-<tr role="row">
-  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Maximum cells per category</span><code class="st-param__name" translate="no">max_per_type</code></th>
-  <td role="cell" data-label="Type"><span class="st-param__type">int, 5,000–200,000</span></td>
-  <td role="cell" data-label="Default"><span class="st-param__default">40,000</span></td>
-  <td role="cell" data-label="What it does">Limits runtime by reproducibly subsampling larger categories. Subsampling may change the map and threshold results.</td>
+<tr role="row" class="st-p">
+  <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Maximum cells per category</span> <code class="st-p__name" translate="no">max_per_type</code></th>
+  <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>40,000</span><span class="st-range" aria-hidden="true"><span class="st-range__end">5,000</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.1795"></i></span><span class="st-range__end">200,000</span></span><span class="pv-sr-only">Range 5,000 to 200,000. </span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Limits runtime by reproducibly subsampling larger categories. Subsampling may change the map and threshold results.</span></td>
 </tr>
 </tbody>
 </table>
-</div>
+          
         </section>
-        <section class="st-sec" id="outputs" aria-labelledby="outputs-h">
-          <h2 class="st-sec__h" id="outputs-h">Outputs</h2>
-          <ul class="st-outputs"><li><span class="pv-tag pv-tag--out">summary</span><span class="st-outputs__what">writes a summary</span></li><li><span class="pv-tag pv-tag--out">cells</span><span class="st-outputs__what">paints the spatial view</span></li><li><span class="pv-tag pv-tag--out">series</span><span class="st-outputs__what">returns a line chart</span></li><li><span class="pv-tag pv-tag--out">table</span><span class="st-outputs__what">returns a table</span></li></ul>
-        </section>
-        <section class="st-sec" id="tool-check" aria-labelledby="check-h">
-          <h2 class="st-sec__h" id="check-h">Tool check</h2>
-          <p class="st-sec__intro">The gates this version passed when it was released, in the order they ran.</p>
-          <div class="st-check">
-  <ol class="pv-gates st-check__strip" aria-label="The gates, in the order they ran"><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">bundle</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">manifest</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">environment</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">entry</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass" data-adv><span class="pv-gate__name" translate="no">imports</span><span class="pv-sr-only"> pass, advisory</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">fixture</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">result</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">edge</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">no_mutation</span><span class="pv-sr-only"> pass</span></li></ol>
-  <ol class="st-gatelog" aria-label="What each gate saw">
-<li class="st-gatelog__row" data-state="pass">
-  <span class="st-gatelog__name"><code translate="no">bundle</code></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">6 files, 34.0 kB packed and 131.6 kB unpacked, plugin.json at the root.</p>
-</li>
-<li class="st-gatelog__row" data-state="pass">
-  <span class="st-gatelog__name"><code translate="no">manifest</code></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">celltype-percolation 2.0.0 by PointillViz reference tools; Python entry tool.py, outputs summary, cells, series, table.</p>
-</li>
-<li class="st-gatelog__row" data-state="pass">
-  <span class="st-gatelog__name"><code translate="no">environment</code></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default.</p>
-</li>
-<li class="st-gatelog__row" data-state="pass">
-  <span class="st-gatelog__name"><code translate="no">entry</code></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">tool.py imported in 0.00 s and defines run(ds, params).</p>
-</li>
-<li class="st-gatelog__row" data-state="pass" data-adv>
-  <span class="st-gatelog__name"><code translate="no">imports</code> <span class="st-adv">advisory</span></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">1 source file, using __future__, hashlib, numpy, pointillviz_tool, scipy; no network, subprocess, filesystem-write, dynamic-exec or environment use found.</p>
-</li>
-<li class="st-gatelog__row" data-state="pass">
-  <span class="st-gatelog__name"><code translate="no">fixture</code></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">ran on the 600-cell fixture in 0.23 s, returning summary, cells, table, series and 1 log line.</p>
-</li>
-<li class="st-gatelog__row" data-state="pass">
-  <span class="st-gatelog__name"><code translate="no">result</code></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">returned the declared outputs: summary, cells, table, series.</p>
-</li>
-<li class="st-gatelog__row" data-state="pass">
-  <span class="st-gatelog__name"><code translate="no">edge</code></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">ran at the minimum corner (giant_frac=0.1, link_scale=0.5, max_per_type=5000, min_cells=10, n_sims=0) in 0.13 s; at the maximum corner (giant_frac=0.9, link_scale=20.0, max_per_type=200000, min_cells=5000, n_sims=49) it refused in words rather than crashing: No category has 5,000 cells with coordinates — the largest has 235. Lower the minimum-cells parameter, or pick a coarser annotation column. (code: no_types).</p>
-</li>
-<li class="st-gatelog__row" data-state="pass">
-  <span class="st-gatelog__name"><code translate="no">no_mutation</code></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">the fixture dataset&#x27;s 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design).</p>
-</li>
-  </ol>
-</div>
-          <p class="st-sec__note">Passing the gates is a statement about the gates, not about whether the code is safe to run.</p>
+        <section class="st-panel" id="outputs" aria-labelledby="outputs-h">
+          <h2 class="st-panel__h" id="outputs-h">Outputs</h2>
+          <ul class="st-outs"><li class="st-out"><svg class="st-glyph" aria-hidden="true"><use href="../../assets/outputs.svg#o-summary"/></svg><code class="st-out__name" translate="no">summary</code><span class="st-out__what">Writes a summary</span></li><li class="st-out"><svg class="st-glyph" aria-hidden="true"><use href="../../assets/outputs.svg#o-cells"/></svg><code class="st-out__name" translate="no">cells</code><span class="st-out__what">Paints the spatial view</span></li><li class="st-out"><svg class="st-glyph" aria-hidden="true"><use href="../../assets/outputs.svg#o-series"/></svg><code class="st-out__name" translate="no">series</code><span class="st-out__what">Returns a line chart</span></li><li class="st-out"><svg class="st-glyph" aria-hidden="true"><use href="../../assets/outputs.svg#o-table"/></svg><code class="st-out__name" translate="no">table</code><span class="st-out__what">Returns a table</span></li></ul>
+          
         </section>
       </div>
+      <aside class="st-facts" aria-labelledby="facts-h">
+        <h2 class="pv-sr-only" id="facts-h">Details</h2>
+        <dl class="st-facts__list"><div class="st-facts__row"><dt>Author</dt><dd>PointillViz reference tools</dd></div><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__num" translate="no">2.0.0</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-10-28">28 Oct 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Language</dt><dd>Python</dd></div><div class="st-facts__row"><dt>GPU</dt><dd>Not used</dd></div><div class="st-facts__row"><dt>Needs</dt><dd>a categorical column<br>200+ cells</dd></div></dl>
+        <p class="st-facts__src"><a class="pv-link" href="https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/celltype-percolation">Source in the public registry<svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-external"/></svg></a></p>
+      </aside>
     </div>
-    <section class="st-more" aria-labelledby="more-h">
+  </div>
+  <dialog class="st-tests" id="test-summary" aria-labelledby="test-summary-h">
+    <div class="st-tests__head" id="tool-check">
+      <h2 class="st-tests__title" id="test-summary-h">Tool test summary</h2>
+      <button class="st-tests__close" type="button" data-close-tests aria-label="Close the test summary"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15"/></svg></button>
+    </div>
+    <div class="st-tests__body">
+      <ol class="st-strip" aria-hidden="true"><li class="st-strip__dot" data-state="pass" title="bundle: pass"></li><li class="st-strip__dot" data-state="pass" title="manifest: pass"></li><li class="st-strip__dot" data-state="pass" title="environment: pass"></li><li class="st-strip__dot" data-state="pass" title="entry: pass"></li><li class="st-strip__dot" data-state="pass" data-adv title="imports: pass"></li><li class="st-strip__dot" data-state="pass" title="fixture: pass"></li><li class="st-strip__dot" data-state="pass" title="result: pass"></li><li class="st-strip__dot" data-state="pass" title="edge: pass"></li><li class="st-strip__dot" data-state="pass" title="no_mutation: pass"></li></ol>
+<p class="st-tests__lead">9 of 9 gates passed when this version was released. They ran in this order:</p>
+<ol class="st-gates">
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">bundle</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">6 files, 34.0 kB packed and 131.6 kB unpacked, plugin.json at the root.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">manifest</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">celltype-percolation 2.0.0 by PointillViz reference tools; Python entry tool.py, outputs summary, cells, series, table.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">environment</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">entry</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">tool.py imported in 0.00 s and defines run(ds, params).</p>
+</li>
+<li class="st-gate" data-state="pass" data-adv>
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">imports</code> <span class="st-gate__adv">advisory</span><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">1 source file, using __future__, hashlib, numpy, pointillviz_tool, scipy; no network, subprocess, filesystem-write, dynamic-exec or environment use found.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">fixture</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">ran on the 600-cell fixture in 0.23 s, returning summary, cells, table, series and 1 log line.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">result</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">returned the declared outputs: summary, cells, table, series.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">edge</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">ran at the minimum corner (giant_frac=0.1, link_scale=0.5, max_per_type=5000, min_cells=10, n_sims=0) in 0.13 s; at the maximum corner (giant_frac=0.9, link_scale=20.0, max_per_type=200000, min_cells=5000, n_sims=49) it refused in words rather than crashing: No category has 5,000 cells with coordinates — the largest has 235. Lower the minimum-cells parameter, or pick a coarser annotation column. (code: no_types).</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">no_mutation</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">the fixture dataset&#x27;s 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design).</p>
+</li>
+</ol>
+<p class="st-tests__note">Passing the gates is a statement about the gates, not about whether the code is safe to run.</p>
+      <p class="st-tests__more"><a class="pv-link" href="../../publish/#gates-h">What each gate checks</a></p>
+    </div>
+  </dialog>
+  <section class="st-more" aria-labelledby="more-h">
+    <div class="st-wrap">
       <h2 class="st-more__h" id="more-h">More tools</h2>
-      <ul class="st-grid st-grid--more">
-<li class="st-cell" data-id="tissue-permeability" data-name="Tissue Permeability" data-tags="spatial|cell types|geometry|barrier|connectivity" data-outputs="summary|cells|series|table" data-published="2026-11-03" data-version="2.0.1">
-<article class="pv-card pv-card--link st-card">
-  <div class="st-card__art"><img src="../../assets/media/tools/tissue-permeability.webp?v=01d317a24b" srcset="../../assets/media/tools/tissue-permeability.webp?v=01d317a24b 720w, ../../assets/media/tools/tissue-permeability@2x.webp?v=dacb2e9317 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
-  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/tissue-permeability/">Tissue Permeability</a></h3>
-  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-11-03">3 Nov 2026</time></p>
-  <p class="pv-card__body st-card__desc">Which cells one cell type seals off from the rest of the tissue.</p>
-  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a line chart">series</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
-  <div class="pv-card__foot st-card__foot">
-    <span class="pv-tag st-badge" title="Written in Python">Python</span>
-    <span class="st-card__ver" title="Version">v2.0.1</span>
-  </div>
-</article>
+      <ul class="st-grid">
+<li class="st-cell" data-id="tissue-permeability" data-name="Tissue Permeability" data-author="PointillViz reference tools" data-tags="spatial|cell types|geometry|barrier|connectivity" data-outputs="summary|cells|series|table" data-published="2026-11-03" data-version="2.0.1">
+<a class="st-card" href="../../tools/tissue-permeability/">
+  <div class="st-card__art"><img src="../../assets/media/tools/tissue-permeability.webp?v=01d317a24b" srcset="../../assets/media/tools/tissue-permeability.webp?v=01d317a24b 720w, ../../assets/media/tools/tissue-permeability@2x.webp?v=dacb2e9317 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="st-card__name">Tissue Permeability</h3>
+  <p class="st-card__desc">Which cells one cell type seals off from the rest of the tissue.</p>
+</a>
 </li>
-<li class="st-cell" data-id="categorical-chords" data-name="Categorical Chords" data-tags="spatial|cell types|categorical|chord" data-outputs="chord|matrix|table|summary" data-published="2026-10-28" data-version="2.0.0">
-<article class="pv-card pv-card--link st-card">
-  <div class="st-card__art"><img src="../../assets/media/tools/categorical-chords.webp?v=1e6c2812c0" srcset="../../assets/media/tools/categorical-chords.webp?v=1e6c2812c0 720w, ../../assets/media/tools/categorical-chords@2x.webp?v=6a86392478 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
-  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/categorical-chords/">Categorical Chords</a></h3>
-  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-28">28 Oct 2026</time></p>
-  <p class="pv-card__body st-card__desc">Explore spatial contacts or shared membership between categorical annotations with count-weighted ribbons and enrichment colors.</p>
-  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="returns a chord diagram">chord</li><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
-  <div class="pv-card__foot st-card__foot">
-    <span class="pv-tag st-badge" title="Written in Python">Python</span>
-    <span class="st-card__ver" title="Version">v2.0.0</span>
-  </div>
-</article>
+<li class="st-cell" data-id="categorical-chords" data-name="Categorical Chords" data-author="PointillViz reference tools" data-tags="spatial|cell types|categorical|chord" data-outputs="chord|matrix|table|summary" data-published="2026-10-28" data-version="2.0.0">
+<a class="st-card" href="../../tools/categorical-chords/">
+  <div class="st-card__art"><img src="../../assets/media/tools/categorical-chords.webp?v=1e6c2812c0" srcset="../../assets/media/tools/categorical-chords.webp?v=1e6c2812c0 720w, ../../assets/media/tools/categorical-chords@2x.webp?v=6a86392478 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="st-card__name">Categorical Chords</h3>
+  <p class="st-card__desc">Explore spatial contacts or shared membership between categorical annotations with count-weighted ribbons and enrichment colors.</p>
+</a>
 </li>
-<li class="st-cell" data-id="celltype-cooccurrence" data-name="Cell-Type Co-occurrence" data-tags="spatial|cell types|enrichment" data-outputs="matrix|table|summary" data-published="2026-10-28" data-version="2.0.0">
-<article class="pv-card pv-card--link st-card">
-  <div class="st-card__art"><img src="../../assets/media/tools/celltype-cooccurrence.webp?v=e671ff38b9" srcset="../../assets/media/tools/celltype-cooccurrence.webp?v=e671ff38b9 720w, ../../assets/media/tools/celltype-cooccurrence@2x.webp?v=3dd6b848eb 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
-  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/celltype-cooccurrence/">Cell-Type Co-occurrence</a></h3>
-  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-28">28 Oct 2026</time></p>
-  <p class="pv-card__body st-card__desc">Which cell types are found near each other more often than expected by chance.</p>
-  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
-  <div class="pv-card__foot st-card__foot">
-    <span class="pv-tag st-badge" title="Written in Python">Python</span>
-    <span class="st-card__ver" title="Version">v2.0.0</span>
-  </div>
-</article>
+<li class="st-cell" data-id="celltype-cooccurrence" data-name="Cell-Type Co-occurrence" data-author="PointillViz reference tools" data-tags="spatial|cell types|enrichment" data-outputs="matrix|table|summary" data-published="2026-10-28" data-version="2.0.0">
+<a class="st-card" href="../../tools/celltype-cooccurrence/">
+  <div class="st-card__art"><img src="../../assets/media/tools/celltype-cooccurrence.webp?v=e671ff38b9" srcset="../../assets/media/tools/celltype-cooccurrence.webp?v=e671ff38b9 720w, ../../assets/media/tools/celltype-cooccurrence@2x.webp?v=3dd6b848eb 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="st-card__name">Cell-Type Co-occurrence</h3>
+  <p class="st-card__desc">Which cell types are found near each other more often than expected by chance.</p>
+</a>
+</li>
+<li class="st-cell" data-id="celltype-contact-network" data-name="Cell-type contact network" data-author="PointillViz authors" data-tags="spatial|cell types|contacts|neighbours|network|enrichment|figure" data-outputs="summary|images|table|files" data-published="2026-11-05" data-version="1.0.1">
+<a class="st-card" href="../../tools/celltype-contact-network/">
+  <div class="st-card__art"><img src="../../assets/media/tools/celltype-contact-network.webp?v=db7af568c4" srcset="../../assets/media/tools/celltype-contact-network.webp?v=db7af568c4 720w, ../../assets/media/tools/celltype-contact-network@2x.webp?v=d954fa7ca0 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="st-card__name">Cell-type contact network</h3>
+  <p class="st-card__desc">Which cell types touch which, from a Delaunay triangulation of the cells, as a network and a matrix corrected for abundance.</p>
+</a>
 </li>
       </ul>
-    </section>
-  </div>
+    </div>
+  </section>
 </main>
 <footer class="pv-footer">
   <div class="pv-footer__inner">

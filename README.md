@@ -12,7 +12,7 @@ Everything here is static. GitHub Pages serves the files as they are, with no bu
 
 | Path | What it is |
 |---|---|
-| `index.html` | The gallery: search, filters (shared tags, then outputs), sort and the cards, then a Coming soon card per announced tool. Written by hand, except the regions between `<!-- store:… -->` markers, which the page script fills. |
+| `index.html` | The gallery: a hero with the field of points, search and the Filters button (shared tags, outputs and the sort order, in a panel), the plates, then a Coming soon card per announced tool, one link to Build & publish and the safety line. Written by hand, except the regions between `<!-- store:… -->` markers, which the page script fills. |
 | `tools/<id>/index.html` | One page per tool, so every tool has its own address, and a Coming soon page (its name and one line) per announced tool. Generated. |
 | `publish/index.html` | Build & publish: the author's loop, publishing by pull request to the public registry, and the gates. Written by hand. |
 | `404.html` | The page GitHub Pages shows for a missing address. Written by hand, except its logos (`<!-- store:logo-* -->`), which the page script fills as data URIs. |
@@ -20,11 +20,13 @@ Everything here is static. GitHub Pages serves the files as they are, with no bu
 | `data/tools-index.json` | The same tools with only what a card shows and search reads (14 kB instead of 145 kB). The gallery loads this. Generated. |
 | `sitemap.xml`, `robots.txt` | For search engines. Generated. |
 | `assets/store.css`, `assets/store.js` | The store's own styles and behaviour. Written by hand. |
+| `assets/field.js` | The field of points: the gallery's hero, which gathers into the artwork of the plate under the pointer, and the artwork that develops once on a tool page. WebGL2, a still frame without it, nothing at all without a canvas. Written by hand. |
+| `assets/outputs.svg` | A small drawing for each kind of output, on a tool page's Outputs view. A kind it does not know gets a plain point. Written by hand. |
 | `assets/pv/` | The shared PointillViz design system. A copy: do not edit it here (see below). |
 | `assets/vendor/noto-sans-math-3.000/` | A subset of the Noto Sans Math font (SIL OFL 1.1, with its licence), for the formulas on tool pages. |
 | `assets/media/tools/` | Each tool's card artwork as WebP, 720 × 420 and 1440 × 840 (`@2x`). Generated. |
 | `assets/media/social/` | 1200 × 630 link previews: one per tool, and `store.jpg` for the gallery. Generated. |
-| `assets/media/*.webp` | The Tools tab at its real size and Fig. 2a's result (gallery), and Fig. 2a (Build & publish). Generated once. |
+| `assets/media/*.webp` | Fig. 2a and its two halves (Build & publish). Generated once. `tools-tab*.webp` is the Tools tab picture: no page shows it now, and it is kept for the docs' Tool Store tutorial. |
 | `_build/` | The two scripts that generate the pages from the registry, the fonts of the link previews (DM Sans and JetBrains Mono, SIL OFL 1.1, with their licences) and the locked environment they run in (`pixi.toml`, `pixi.lock`). |
 | `.github/workflows/rebuild.yml` | Rebuilds the store from the registry every hour, and commits what changed. |
 | `CNAME` | The custom domain. GitHub Pages reads it, so leave it in place. |
@@ -70,11 +72,13 @@ newest first, by release date, then by name.
 
 `build_store_pages.py` writes one page per tool and one Coming soon page per announced tool,
 removes the pages of tools that are no longer listed, fills the marked regions of `index.html` (the
-cards, newest first, then the Coming soon cards; the filters and the count) and of `404.html` (its
-logos), and writes `sitemap.xml` and `robots.txt`. The filters are
-the tags that two or more tools share (a tag on every tool filters nothing, and a tag on one tool
-is found by search), then what the tools draw. For the same reason a tool's page leaves out a tag
-that every tool carries. Readers without JavaScript see the pre-rendered
+cards, newest first, then the Coming soon cards; the options of the filters panel) and of `404.html`
+(its logos), and writes `sitemap.xml` and `robots.txt`. The filters are
+the tags that two or more tools share (a tag on one tool is found by search), then what the tools
+draw. On a tool page it takes the README apart without rewriting it: the opening "Answers the
+question" sentence becomes the reading view's heading, and sections that repeat the parameters, the
+outputs or the references move next to them (folded, or merged into the references). A README that
+does not follow this shape is shown as it is. Readers without JavaScript see the pre-rendered
 cards; with JavaScript, `assets/store.js` loads `data/tools-index.json` and filters, sorts and
 searches in the browser, and keeps the choice in the address (`?q=`, `?tag=`, `?out=`, `?sort=`).
 Search also finds the Coming soon cards; a tag or output filter leaves them out.

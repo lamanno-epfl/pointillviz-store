@@ -1035,13 +1035,16 @@ def social_gallery(arts: list[Image.Image], count: int) -> Image.Image:
     W, H = 1200, 630
     im = dot_grid((W, H), bg=INK)
     d = ImageDraw.Draw(im)
-    f_mark = font("JetBrainsMono-Medium.ttf", 46)
+    f_mark = font("DMSans.ttf", 56, 600)
     f_lab = font("JetBrainsMono-Medium.ttf", 15)
     lx = (W - 4 * round(((H - 146 - 30 - 28) // 3) * 12 / 7) - 3 * 14) // 2
     logo = wordmark(20)
     im.alpha_composite(logo, (lx, 33))
     draw_tracked(d, (lx + logo.width + 12, 36), "· COMMUNITY TOOLS", f_lab, (185, 177, 160), 3.0)
-    draw_tracked(d, (lx - 2, 64), "THE TOOL STORE", f_mark, (239, 230, 210), 9.0)
+    # The gallery's title: the face of the homepage and the docs, set tight, kerning kept.
+    title = "The Tool Store"
+    for k, ch in enumerate(title):
+        d.text((lx - 3 + d.textlength(title[:k], font=f_mark) - 1.4 * k, 60), ch, font=f_mark, fill=(239, 230, 210))
     cols, rows, gap, top, bottom = 4, 3, 14, 146, 30
     ch = (H - top - bottom - (rows - 1) * gap) // rows
     cw = round(ch * 12 / 7)

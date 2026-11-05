@@ -22,12 +22,13 @@
 <link rel="icon" href="../../assets/pv/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&amp;family=Fraunces:opsz,wght@9..144,600&amp;family=JetBrains+Mono:wght@400..600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&amp;family=JetBrains+Mono:wght@400..600&amp;display=swap">
 <link rel="stylesheet" href="../../assets/pv/pv.css">
 <link rel="stylesheet" href="../../assets/store.css">
 <script src="../../assets/pv/pv.js" defer></script>
-<script src="../../assets/store.js" defer></script>
-<script>document.documentElement.classList.add('st-js')</script>
+<script src="../../assets/field.js" defer></script>
+<script src="../../assets/store.js" defer onerror="document.documentElement.classList.remove('st-js')"></script>
+<script>document.documentElement.classList.add('st-js');(function(d,m){d.setAttribute('data-view',m?m[1]:'readme')})(document.documentElement,/^#(readme|parameters|outputs)$/.exec(location.hash))</script>
 <noscript><style>.pv-topbar__menu { display: none !important; }</style></noscript>
 </head>
 <body class="st-page st-page--tool">
@@ -80,50 +81,43 @@
   </div>
 </dialog>
 <main id="main" class="st-tool">
-  <div class="pv-container">
-    <nav class="st-back" aria-label="Back">
-      <a class="st-back__link" href="../../"><svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-arrow-left"/></svg>All tools</a>
-    </nav>
-    <div class="st-tool__layout">
-      <header class="st-hero">
-        <h1 class="pv-title st-hero__title">Neighborhood Composition &amp; Mixing</h1>
-        <p class="st-hero__by">by PointillViz reference tools</p>
-        <p class="pv-lede st-hero__desc">How mixed each cell’s neighbourhood is, and who sits next to whom.</p>
-        <div class="st-hero__badges"><span class="pv-tag st-badge" title="Written in Python">Python</span><span class="pv-tag pv-tag--ver">v2.0.0</span></div>
-        <div class="st-hero__chips"><ul class="pv-tags" aria-label="Tags"><li class="pv-tag">spatial</li><li class="pv-tag">cell types</li><li class="pv-tag">neighbourhood</li><li class="pv-tag">entropy</li><li class="pv-tag">enrichment</li></ul><div class="st-hero__outs"><span class="st-tags__sep" aria-hidden="true">Outputs</span><ul class="pv-tags" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="writes a summary">summary</li><li class="pv-tag pv-tag--out" title="paints the spatial view">cells</li><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul></div></div>
-      </header>
-      <figure class="pv-figure st-hero__art">
-        <div class="pv-figure__stage st-artstage"><img src="../../assets/media/tools/neighborhood-composition.webp?v=67815d7148" srcset="../../assets/media/tools/neighborhood-composition.webp?v=67815d7148 720w, ../../assets/media/tools/neighborhood-composition@2x.webp?v=9499fed52b 1440w" sizes="(min-width: 1320px) 820px, (min-width: 1100px) 62vw, 94vw" width="720" height="420" alt="Neighbourhood mixing" fetchpriority="high" decoding="async"></div>
-        <figcaption class="pv-figure__caption"><span>Neighbourhood mixing</span><span class="pv-figure__meta">Artwork from the tool’s bundle</span></figcaption>
-      </figure>
-      <div class="st-side">
-        <aside class="st-get" aria-labelledby="get-h">
-          <h2 class="st-get__title" id="get-h">Get this tool</h2>
+  <header class="st-top">
+    <div class="st-wrap st-top__in">
+      <div class="st-top__words">
+        <a class="st-back" href="../../"><svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-arrow-left"/></svg>All tools</a>
+        <h1 class="st-title st-top__name">Neighborhood Composition &amp; Mixing</h1>
+        <p class="st-top__desc">How mixed each cell’s neighbourhood is, and who sits next to whom.</p>
+        <div class="st-get">
           <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/neighborhood-composition-v2.0.0/neighborhood-composition-2.0.0.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 28.8 kB</span></span></a>
-          <div class="st-get__how">
-            <p>Install in PointillViz: <b>Tools → Store → Install</b>, or use <b>Install from file</b> with the download.</p>
-            <p class="st-get__docs"><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How tools work · Docs</a></p>
-          </div>
-          <p class="st-get__src"><a class="pv-link" href="https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/neighborhood-composition">Source in the public registry<svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-external"/></svg></a></p>
-          <p class="st-get__note"><b>This runs as you.</b> A tool is arbitrary code, run with the privileges of whoever started PointillViz. <a class="pv-link" href="../../#safety">Read the safety note</a></p>
-          <h3 class="pv-label st-get__facts-h">Facts</h3>
-          <dl class="st-facts"><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__ver">2.0.0</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-10-28">28 Oct 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Needs</dt><dd><span class="st-nowrap">a categorical column</span> · <span class="st-nowrap">200+ cells</span></dd></div></dl>
-        </aside>
-        <nav class="st-onpage" aria-labelledby="onpage-h">
-          <p class="pv-label st-onpage__h" id="onpage-h">On this page</p>
-          <ul>
-            <li><a href="#readme">Readme</a></li>
-            <li><a href="#parameters">Parameters</a></li>
-            <li><a href="#outputs">Outputs</a></li>
-            <li><a href="#tool-check">Tool check</a></li>
-          </ul>
-        </nav>
+          <p class="st-get__how"><span class="st-get__steps">In PointillViz: <b>Tools → Store → Install</b>, or <b>Install from file</b> with the download. </span><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How to install and run a tool</a></p>
+          
+          <p class="st-get__note">This runs as you: a tool is arbitrary code, with your privileges. <a class="pv-link" href="../../#safety">Safety note</a></p>
+        </div>
       </div>
-      <div class="st-tool__main">
-        <section class="st-sec" id="readme" aria-labelledby="readme-h">
-          <h2 class="st-sec__h" id="readme-h">Readme</h2>
+      <figure class="st-top__art">
+        <div class="st-artplate" title="Neighbourhood mixing"><img src="../../assets/media/tools/neighborhood-composition.webp?v=67815d7148" srcset="../../assets/media/tools/neighborhood-composition.webp?v=67815d7148 720w, ../../assets/media/tools/neighborhood-composition@2x.webp?v=9499fed52b 1440w" sizes="(max-width: 1023.98px) 92vw, 58vw" width="720" height="420" alt="Neighbourhood mixing" fetchpriority="high" decoding="async"></div>
+      </figure>
+    </div>
+  </header>
+  <div class="st-views">
+    <div class="st-bar" id="view-bar">
+      <div class="st-wrap st-bar__in">
+        <p class="st-bar__name" aria-hidden="true"><img class="st-bar__thumb" src="../../assets/media/tools/neighborhood-composition.webp?v=67815d7148" width="720" height="420" alt="" loading="lazy" decoding="async"><span>Neighborhood Composition &amp; Mixing</span></p>
+        <nav class="st-tabs" aria-label="About this tool" id="view-tabs">
+          <a class="st-tab" href="#readme" data-view-link="readme">Readme</a>
+          <a class="st-tab" href="#parameters" data-view-link="parameters">Parameters</a>
+          <a class="st-tab" href="#outputs" data-view-link="outputs">Outputs</a>
+        </nav>
+        <button class="st-testbtn" id="test-summary-open" type="button" aria-haspopup="dialog" aria-controls="test-summary" data-state="pass">Tool test summary</button>
+        <a class="pv-btn pv-btn--primary st-bar__dl" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/neighborhood-composition-v2.0.0/neighborhood-composition-2.0.0.pvtool" download tabindex="-1"><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span>Download</span></a>
+      </div>
+    </div>
+    <div class="st-wrap st-views__grid">
+      <div class="st-panels">
+        <section class="st-panel" id="readme" aria-labelledby="readme-h">
+          <h2 class="st-panel__h" id="readme-h">Readme</h2>
+          <p class="st-question">How mixed is each cell’s neighbourhood, and which groups occur next to one another more or less often than expected?</p>
           <div class="st-md">
-<p>Answers the question: <strong>How mixed is each cell’s neighbourhood, and which groups occur next to one another more or less often than expected?</strong></p>
 <p>For each cell <math translate="no"><mi>i</mi></math>, the tool finds its <math translate="no"><mi>k</mi></math> nearest neighbours and records how many belong to each group.</p>
 <p><strong>Map.</strong> Each cell is colored by the normalized Shannon entropy of its neighbourhood:</p>
 <div class="st-formula" role="img" aria-label="Mᵢ = (−sum over j of pᵢⱼlog(pᵢⱼ)) / (log(T))"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><msub><mi>M</mi><mi>i</mi></msub></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mfrac><mrow><mo>−</mo><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>p</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mi>log</mi><mrow><mo stretchy="false">(</mo><msub><mi>p</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>log</mi><mrow><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></math></span></span></div></div>
@@ -134,144 +128,132 @@
 <p>The expected number is calculated by multiplying the total number of valid neighbour positions around all <math translate="no"><mi>A</mi></math>-cells (usually about <math translate="no"><mi>n</mi><mrow><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo></mrow></math> × <math translate="no"><mi>k</mi></math>) by the proportion of valid neighbour positions across all groups occupied by <math translate="no"><mi>B</mi></math>-cells. Because the calculation counts neighbour positions rather than unique cells, the same cell may be counted multiple times, depending on its position and how many other cells include it among their <math translate="no"><mi>k</mi></math> nearest neighbours.</p>
 <p><strong>Table.</strong> Each row summarizes one group. <code translate="no">Cells scored</code> is the number of its cells with a valid mixing score, while <code translate="no">Mean mixing</code> is their average <math translate="no"><msub><mi>M</mi><mi>i</mi></msub></math>. <code translate="no">Self log2 O/E</code> is the group’s diagonal matrix value and indicates whether its cells cluster together or are more dispersed. <code translate="no">Most enriched neighbour</code> is the other group with the highest matrix score, and the accompanying <code translate="no">log2 O/E</code> column gives that score.</p>
           </div>
-          <div class="st-refs"><h3 class="st-refs__h">References</h3><p>Shannon (1948) Bell Syst. Tech. J. 27:379-423; Pielou (1966) J. Theor. Biol. 13:131-144.</p></div>
+          <div class="st-refs"><h3 class="st-refs__h">References</h3><div class="st-md"><p>Shannon (1948) Bell Syst. Tech. J. 27:379-423; Pielou (1966) J. Theor. Biol. 13:131-144.</p></div></div>
         </section>
-        <section class="st-sec" id="parameters" aria-labelledby="parameters-h">
-          <h2 class="st-sec__h" id="parameters-h">Parameters</h2>
-          <div class="pv-table-wrap st-params">
-<table class="pv-table" role="table" aria-labelledby="parameters-h">
-<thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Parameter</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Default</th><th scope="col" role="columnheader">What it does</th></tr></thead>
+        <section class="st-panel" id="parameters" aria-labelledby="parameters-h">
+          <h2 class="st-panel__h" id="parameters-h">Parameters</h2>
+          <table class="st-ptable" role="table" aria-labelledby="parameters-h">
+<thead role="rowgroup"><tr role="row" class="st-p st-p--names"><th scope="col" role="columnheader" class="st-p__head">Parameter</th><th scope="col" role="columnheader" class="st-p__val">Default</th><th scope="col" role="columnheader" class="pv-sr-only">What it does</th></tr></thead>
 <tbody role="rowgroup">
-<tr role="row">
-  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Neighbours (k)</span><code class="st-param__name" translate="no">k</code></th>
-  <td role="cell" data-label="Type"><span class="st-param__type">int, 3–100</span></td>
-  <td role="cell" data-label="Default"><span class="st-param__default">15</span></td>
-  <td role="cell" data-label="What it does">Sets how many nearest cells define each neighbourhood.
-Larger values measure mixing over a broader area and produce a smoother result.</td>
+<tr role="row" class="st-p">
+  <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Neighbours (k)</span> <code class="st-p__name" translate="no">k</code></th>
+  <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>15</span><span class="st-range" aria-hidden="true"><span class="st-range__end">3</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.1237"></i></span><span class="st-range__end">100</span></span><span class="pv-sr-only">Range 3 to 100. </span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Sets how many nearest cells define each neighbourhood.
+Larger values measure mixing over a broader area and produce a smoother result.</span></td>
 </tr>
-<tr role="row">
-  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Grouping column</span><code class="st-param__name" translate="no">field</code></th>
-  <td role="cell" data-label="Type"><span class="st-param__type">categorical_field</span></td>
-  <td role="cell" data-label="Default"><span class="st-param__default">optional</span></td>
-  <td role="cell" data-label="What it does">Selects the annotation used to define the groups.
-Defaults to the dataset’s cell-type column.</td>
+<tr role="row" class="st-p">
+  <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Grouping column</span> <code class="st-p__name" translate="no">field</code></th>
+  <td role="cell" class="st-p__val"><span class="st-p__default">optional</span><span class="st-p__kind">a categorical column</span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Selects the annotation used to define the groups.
+Defaults to the dataset’s cell-type column.</span></td>
 </tr>
-<tr role="row">
-  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Minimum cells per category</span><code class="st-param__name" translate="no">min_type_cells</code></th>
-  <td role="cell" data-label="Type"><span class="st-param__type">int, 0–5,000</span></td>
-  <td role="cell" data-label="Default"><span class="st-param__default">25</span></td>
-  <td role="cell" data-label="What it does">Categories with fewer cells are not shown in the matrix or table, but are still included in each cell’s mixing score.</td>
+<tr role="row" class="st-p">
+  <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Minimum cells per category</span> <code class="st-p__name" translate="no">min_type_cells</code></th>
+  <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>25</span><span class="st-range" aria-hidden="true"><span class="st-range__end">0</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.0050"></i></span><span class="st-range__end">5,000</span></span><span class="pv-sr-only">Range 0 to 5,000. </span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Categories with fewer cells are not shown in the matrix or table, but are still included in each cell’s mixing score.</span></td>
 </tr>
 </tbody>
 </table>
-</div>
+          
         </section>
-        <section class="st-sec" id="outputs" aria-labelledby="outputs-h">
-          <h2 class="st-sec__h" id="outputs-h">Outputs</h2>
-          <ul class="st-outputs"><li><span class="pv-tag pv-tag--out">summary</span><span class="st-outputs__what">writes a summary</span></li><li><span class="pv-tag pv-tag--out">cells</span><span class="st-outputs__what">paints the spatial view</span></li><li><span class="pv-tag pv-tag--out">matrix</span><span class="st-outputs__what">returns a heatmap</span></li><li><span class="pv-tag pv-tag--out">table</span><span class="st-outputs__what">returns a table</span></li></ul>
-        </section>
-        <section class="st-sec" id="tool-check" aria-labelledby="check-h">
-          <h2 class="st-sec__h" id="check-h">Tool check</h2>
-          <p class="st-sec__intro">The gates this version passed when it was released, in the order they ran.</p>
-          <div class="st-check">
-  <ol class="pv-gates st-check__strip" aria-label="The gates, in the order they ran"><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">bundle</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">manifest</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">environment</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">entry</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass" data-adv><span class="pv-gate__name" translate="no">imports</span><span class="pv-sr-only"> pass, advisory</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">fixture</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">result</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">edge</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">no_mutation</span><span class="pv-sr-only"> pass</span></li></ol>
-  <ol class="st-gatelog" aria-label="What each gate saw">
-<li class="st-gatelog__row" data-state="pass">
-  <span class="st-gatelog__name"><code translate="no">bundle</code></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">6 files, 28.8 kB packed and 117.6 kB unpacked, plugin.json at the root.</p>
-</li>
-<li class="st-gatelog__row" data-state="pass">
-  <span class="st-gatelog__name"><code translate="no">manifest</code></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">neighborhood-composition 2.0.0 by PointillViz reference tools; Python entry tool.py, outputs summary, cells, matrix, table.</p>
-</li>
-<li class="st-gatelog__row" data-state="pass">
-  <span class="st-gatelog__name"><code translate="no">environment</code></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default.</p>
-</li>
-<li class="st-gatelog__row" data-state="pass">
-  <span class="st-gatelog__name"><code translate="no">entry</code></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">tool.py imported in 0.00 s and defines run(ds, params).</p>
-</li>
-<li class="st-gatelog__row" data-state="pass" data-adv>
-  <span class="st-gatelog__name"><code translate="no">imports</code> <span class="st-adv">advisory</span></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">1 source file, using __future__, math, numpy, pointillviz_tool; no network, subprocess, filesystem-write, dynamic-exec or environment use found.</p>
-</li>
-<li class="st-gatelog__row" data-state="pass">
-  <span class="st-gatelog__name"><code translate="no">fixture</code></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">ran on the 600-cell fixture in 0.26 s, returning summary, cells, table, matrix and 1 log line.</p>
-</li>
-<li class="st-gatelog__row" data-state="pass">
-  <span class="st-gatelog__name"><code translate="no">result</code></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">returned the declared outputs: summary, cells, table, matrix.</p>
-</li>
-<li class="st-gatelog__row" data-state="pass">
-  <span class="st-gatelog__name"><code translate="no">edge</code></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">ran at the minimum corner (k=3, min_type_cells=0) in 0.18 s; at the maximum corner (k=100, min_type_cells=5000) it refused in words rather than crashing: No two categories have at least 5000 cells with coordinates, so there is no composition matrix to build. Lower &#x27;Minimum cells per category&#x27;. (code: no_types_pass_floor).</p>
-</li>
-<li class="st-gatelog__row" data-state="pass">
-  <span class="st-gatelog__name"><code translate="no">no_mutation</code></span>
-  <span class="st-gatelog__status">pass</span>
-  <p class="st-gatelog__msg">the fixture dataset&#x27;s 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design).</p>
-</li>
-  </ol>
-</div>
-          <p class="st-sec__note">Passing the gates is a statement about the gates, not about whether the code is safe to run.</p>
+        <section class="st-panel" id="outputs" aria-labelledby="outputs-h">
+          <h2 class="st-panel__h" id="outputs-h">Outputs</h2>
+          <ul class="st-outs"><li class="st-out"><svg class="st-glyph" aria-hidden="true"><use href="../../assets/outputs.svg#o-summary"/></svg><code class="st-out__name" translate="no">summary</code><span class="st-out__what">Writes a summary</span></li><li class="st-out"><svg class="st-glyph" aria-hidden="true"><use href="../../assets/outputs.svg#o-cells"/></svg><code class="st-out__name" translate="no">cells</code><span class="st-out__what">Paints the spatial view</span></li><li class="st-out"><svg class="st-glyph" aria-hidden="true"><use href="../../assets/outputs.svg#o-matrix"/></svg><code class="st-out__name" translate="no">matrix</code><span class="st-out__what">Returns a heatmap</span></li><li class="st-out"><svg class="st-glyph" aria-hidden="true"><use href="../../assets/outputs.svg#o-table"/></svg><code class="st-out__name" translate="no">table</code><span class="st-out__what">Returns a table</span></li></ul>
+          
         </section>
       </div>
+      <aside class="st-facts" aria-labelledby="facts-h">
+        <h2 class="pv-sr-only" id="facts-h">Details</h2>
+        <dl class="st-facts__list"><div class="st-facts__row"><dt>Author</dt><dd>PointillViz reference tools</dd></div><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__num" translate="no">2.0.0</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-10-28">28 Oct 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Language</dt><dd>Python</dd></div><div class="st-facts__row"><dt>GPU</dt><dd>Not used</dd></div><div class="st-facts__row"><dt>Needs</dt><dd>a categorical column<br>200+ cells</dd></div></dl>
+        <p class="st-facts__src"><a class="pv-link" href="https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/neighborhood-composition">Source in the public registry<svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-external"/></svg></a></p>
+      </aside>
     </div>
-    <section class="st-more" aria-labelledby="more-h">
+  </div>
+  <dialog class="st-tests" id="test-summary" aria-labelledby="test-summary-h">
+    <div class="st-tests__head" id="tool-check">
+      <h2 class="st-tests__title" id="test-summary-h">Tool test summary</h2>
+      <button class="st-tests__close" type="button" data-close-tests aria-label="Close the test summary"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15"/></svg></button>
+    </div>
+    <div class="st-tests__body">
+      <ol class="st-strip" aria-hidden="true"><li class="st-strip__dot" data-state="pass" title="bundle: pass"></li><li class="st-strip__dot" data-state="pass" title="manifest: pass"></li><li class="st-strip__dot" data-state="pass" title="environment: pass"></li><li class="st-strip__dot" data-state="pass" title="entry: pass"></li><li class="st-strip__dot" data-state="pass" data-adv title="imports: pass"></li><li class="st-strip__dot" data-state="pass" title="fixture: pass"></li><li class="st-strip__dot" data-state="pass" title="result: pass"></li><li class="st-strip__dot" data-state="pass" title="edge: pass"></li><li class="st-strip__dot" data-state="pass" title="no_mutation: pass"></li></ol>
+<p class="st-tests__lead">9 of 9 gates passed when this version was released. They ran in this order:</p>
+<ol class="st-gates">
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">bundle</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">6 files, 28.8 kB packed and 117.6 kB unpacked, plugin.json at the root.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">manifest</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">neighborhood-composition 2.0.0 by PointillViz reference tools; Python entry tool.py, outputs summary, cells, matrix, table.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">environment</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">entry</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">tool.py imported in 0.00 s and defines run(ds, params).</p>
+</li>
+<li class="st-gate" data-state="pass" data-adv>
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">imports</code> <span class="st-gate__adv">advisory</span><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">1 source file, using __future__, math, numpy, pointillviz_tool; no network, subprocess, filesystem-write, dynamic-exec or environment use found.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">fixture</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">ran on the 600-cell fixture in 0.26 s, returning summary, cells, table, matrix and 1 log line.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">result</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">returned the declared outputs: summary, cells, table, matrix.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">edge</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">ran at the minimum corner (k=3, min_type_cells=0) in 0.18 s; at the maximum corner (k=100, min_type_cells=5000) it refused in words rather than crashing: No two categories have at least 5000 cells with coordinates, so there is no composition matrix to build. Lower &#x27;Minimum cells per category&#x27;. (code: no_types_pass_floor).</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">no_mutation</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">the fixture dataset&#x27;s 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design).</p>
+</li>
+</ol>
+<p class="st-tests__note">Passing the gates is a statement about the gates, not about whether the code is safe to run.</p>
+      <p class="st-tests__more"><a class="pv-link" href="../../publish/#gates-h">What each gate checks</a></p>
+    </div>
+  </dialog>
+  <section class="st-more" aria-labelledby="more-h">
+    <div class="st-wrap">
       <h2 class="st-more__h" id="more-h">More tools</h2>
-      <ul class="st-grid st-grid--more">
-<li class="st-cell" data-id="celltype-cooccurrence" data-name="Cell-Type Co-occurrence" data-tags="spatial|cell types|enrichment" data-outputs="matrix|table|summary" data-published="2026-10-28" data-version="2.0.0">
-<article class="pv-card pv-card--link st-card">
-  <div class="st-card__art"><img src="../../assets/media/tools/celltype-cooccurrence.webp?v=e671ff38b9" srcset="../../assets/media/tools/celltype-cooccurrence.webp?v=e671ff38b9 720w, ../../assets/media/tools/celltype-cooccurrence@2x.webp?v=3dd6b848eb 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
-  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/celltype-cooccurrence/">Cell-Type Co-occurrence</a></h3>
-  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-28">28 Oct 2026</time></p>
-  <p class="pv-card__body st-card__desc">Which cell types are found near each other more often than expected by chance.</p>
-  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
-  <div class="pv-card__foot st-card__foot">
-    <span class="pv-tag st-badge" title="Written in Python">Python</span>
-    <span class="st-card__ver" title="Version">v2.0.0</span>
-  </div>
-</article>
+      <ul class="st-grid">
+<li class="st-cell" data-id="celltype-cooccurrence" data-name="Cell-Type Co-occurrence" data-author="PointillViz reference tools" data-tags="spatial|cell types|enrichment" data-outputs="matrix|table|summary" data-published="2026-10-28" data-version="2.0.0">
+<a class="st-card" href="../../tools/celltype-cooccurrence/">
+  <div class="st-card__art"><img src="../../assets/media/tools/celltype-cooccurrence.webp?v=e671ff38b9" srcset="../../assets/media/tools/celltype-cooccurrence.webp?v=e671ff38b9 720w, ../../assets/media/tools/celltype-cooccurrence@2x.webp?v=3dd6b848eb 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="st-card__name">Cell-Type Co-occurrence</h3>
+  <p class="st-card__desc">Which cell types are found near each other more often than expected by chance.</p>
+</a>
 </li>
-<li class="st-cell" data-id="celltype-contact-network" data-name="Cell-type contact network" data-tags="spatial|cell types|contacts|neighbours|network|enrichment|figure" data-outputs="summary|images|table|files" data-published="2026-11-05" data-version="1.0.1">
-<article class="pv-card pv-card--link st-card">
-  <div class="st-card__art"><img src="../../assets/media/tools/celltype-contact-network.webp?v=db7af568c4" srcset="../../assets/media/tools/celltype-contact-network.webp?v=db7af568c4 720w, ../../assets/media/tools/celltype-contact-network@2x.webp?v=d954fa7ca0 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
-  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/celltype-contact-network/">Cell-type contact network</a></h3>
-  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz authors</span> <time class="st-card__date" datetime="2026-11-05">5 Nov 2026</time></p>
-  <p class="pv-card__body st-card__desc">Which cell types touch which, from a Delaunay triangulation of the cells, as a network and a matrix corrected for abundance.</p>
-  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="returns figures">images</li><li class="pv-tag pv-tag--out" title="returns a table">table</li><li class="pv-tag pv-tag--out" title="returns files to download">files</li></ul>
-  <div class="pv-card__foot st-card__foot">
-    <span class="pv-tag st-badge" title="Written in Python">Python</span><span class="st-risk" title="Disclosed by the advisory imports gate: this tool writes to the filesystem. A tool can pass every gate and still do this.">writes files</span>
-    <span class="st-card__ver" title="Version">v1.0.1</span>
-  </div>
-</article>
+<li class="st-cell" data-id="celltype-contact-network" data-name="Cell-type contact network" data-author="PointillViz authors" data-tags="spatial|cell types|contacts|neighbours|network|enrichment|figure" data-outputs="summary|images|table|files" data-published="2026-11-05" data-version="1.0.1">
+<a class="st-card" href="../../tools/celltype-contact-network/">
+  <div class="st-card__art"><img src="../../assets/media/tools/celltype-contact-network.webp?v=db7af568c4" srcset="../../assets/media/tools/celltype-contact-network.webp?v=db7af568c4 720w, ../../assets/media/tools/celltype-contact-network@2x.webp?v=d954fa7ca0 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="st-card__name">Cell-type contact network</h3>
+  <p class="st-card__desc">Which cell types touch which, from a Delaunay triangulation of the cells, as a network and a matrix corrected for abundance.</p>
+</a>
 </li>
-<li class="st-cell" data-id="mclust-niches" data-name="Mclust niches" data-tags="spatial|niches|cell types|neighbourhood|clustering|R" data-outputs="summary|labels|table" data-published="2026-10-28" data-version="1.0.0">
-<article class="pv-card pv-card--link st-card">
-  <div class="st-card__art"><img src="../../assets/media/tools/mclust-niches.webp?v=08f74c3e0d" srcset="../../assets/media/tools/mclust-niches.webp?v=08f74c3e0d 720w, ../../assets/media/tools/mclust-niches@2x.webp?v=2b711e3ff3 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
-  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/mclust-niches/">Mclust niches</a></h3>
-  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-28">28 Oct 2026</time></p>
-  <p class="pv-card__body st-card__desc">Niches from the mix of cell types around each cell, fitted by a Gaussian mixture with mclust in R.</p>
-  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints categories on the spatial view">labels</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
-  <div class="pv-card__foot st-card__foot">
-    <span class="pv-tag st-badge" title="Written in R">R</span>
-    <span class="st-card__ver" title="Version">v1.0.0</span>
-  </div>
-</article>
+<li class="st-cell" data-id="mclust-niches" data-name="Mclust niches" data-author="PointillViz reference tools" data-tags="spatial|niches|cell types|neighbourhood|clustering|R" data-outputs="summary|labels|table" data-published="2026-10-28" data-version="1.0.0">
+<a class="st-card" href="../../tools/mclust-niches/">
+  <div class="st-card__art"><img src="../../assets/media/tools/mclust-niches.webp?v=08f74c3e0d" srcset="../../assets/media/tools/mclust-niches.webp?v=08f74c3e0d 720w, ../../assets/media/tools/mclust-niches@2x.webp?v=2b711e3ff3 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="st-card__name">Mclust niches</h3>
+  <p class="st-card__desc">Niches from the mix of cell types around each cell, fitted by a Gaussian mixture with mclust in R.</p>
+</a>
+</li>
+<li class="st-cell" data-id="categorical-chords" data-name="Categorical Chords" data-author="PointillViz reference tools" data-tags="spatial|cell types|categorical|chord" data-outputs="chord|matrix|table|summary" data-published="2026-10-28" data-version="2.0.0">
+<a class="st-card" href="../../tools/categorical-chords/">
+  <div class="st-card__art"><img src="../../assets/media/tools/categorical-chords.webp?v=1e6c2812c0" srcset="../../assets/media/tools/categorical-chords.webp?v=1e6c2812c0 720w, ../../assets/media/tools/categorical-chords@2x.webp?v=6a86392478 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="st-card__name">Categorical Chords</h3>
+  <p class="st-card__desc">Explore spatial contacts or shared membership between categorical annotations with count-weighted ribbons and enrichment colors.</p>
+</a>
 </li>
       </ul>
-    </section>
-  </div>
+    </div>
+  </section>
 </main>
 <footer class="pv-footer">
   <div class="pv-footer__inner">

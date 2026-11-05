@@ -22,11 +22,11 @@
 <link rel="icon" href="../assets/pv/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&amp;family=Fraunces:opsz,wght@9..144,600&amp;family=JetBrains+Mono:wght@400..600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&amp;family=JetBrains+Mono:wght@400..600&amp;display=swap">
 <link rel="stylesheet" href="../assets/pv/pv.css">
 <link rel="stylesheet" href="../assets/store.css">
 <script src="../assets/pv/pv.js" defer></script>
-<script src="../assets/store.js" defer></script>
+<script src="../assets/store.js" defer onerror="document.documentElement.classList.remove('st-js')"></script>
 <script>document.documentElement.classList.add('st-js')</script>
 <noscript><style>.pv-topbar__menu { display: none !important; }</style></noscript>
 </head>
@@ -82,11 +82,9 @@
 
 <main id="main" class="st-pub">
   <div class="pv-container st-pub-hero">
-    <nav class="st-back" aria-label="Back">
-      <a class="st-back__link" href="../"><svg class="pv-icon" aria-hidden="true"><use href="../assets/pv/icons.svg#i-arrow-left"/></svg>All tools</a>
-    </nav>
+    <a class="st-back" href="../"><svg class="pv-icon" aria-hidden="true"><use href="../assets/pv/icons.svg#i-arrow-left"/></svg>All tools</a>
     <div class="st-pub-hero__inner">
-      <h1 class="pv-title">Build &amp; publish a tool</h1>
+      <h1 class="st-title st-pub-hero__title">Build &amp; publish a tool</h1>
       <p class="pv-lede">A tool is a folder: a manifest, a Python or R file and the pixi environment it runs in. Write it with the SDK, check it with the gates and publish it by pull request to the public registry.</p>
       <div class="st-pub-hero__meta">
         <a class="pv-btn pv-btn--secondary" href="https://github.com/lamanno-epfl/pointillviz-registry/blob/main/CONTRIBUTING.md"><svg aria-hidden="true"><use href="../assets/pv/icons.svg#i-doc"/></svg>Read the author guide</a>
