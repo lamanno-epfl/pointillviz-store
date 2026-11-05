@@ -557,7 +557,7 @@
   {
    "id": "celltype-contact-network",
    "name": "Cell-type contact network",
-   "version": "1.0.1",
+   "version": "1.0.2",
    "author": "PointillViz authors",
    "description": "Which cell types touch which, from a Delaunay triangulation of the cells, as a network and a matrix corrected for abundance.",
    "readme_html": "<p>Answers the question: <strong>Which cell types touch which, and which of those contacts are more common, or rarer, than the types’ abundance predicts?</strong></p>\n<p>The tool runs a Delaunay triangulation on each section’s cells, in 2D or 3D, and counts every edge as one contact between two neighbouring cells. Tallying each cell’s neighbours by type gives a count matrix <math translate=\"no\"><mi>C</mi></math>, whose rows are then normalised:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"W_(ij) = (C_(ij)) / (sum over k of C_(ik))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><msub><mi>W</mi><mi>ij</mi></msub></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><msub><mi>C</mi><mi>ij</mi></msub><mrow><munder><mo>∑</mo><mi>k</mi></munder><msub><mi>C</mi><mi>ik</mi></msub></mrow></mfrac></math></span></span></div></div>\n<p><math translate=\"no\"><msub><mi>W</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math> is the fraction of type <math translate=\"no\"><mi>i</mi></math>‘s contacts that are with type <math translate=\"no\"><mi>j</mi></math>. It is not symmetric, because <em>i → j</em> and <em>j → i</em> are divided by different totals. The enrichment corrects for abundance, where <math translate=\"no\"><msub><mi>p</mi><mi>j</mi></msub></math> is the fraction of all cells that are type <math translate=\"no\"><mi>j</mi></math>:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"E_(ij) = log_2 (W_(ij) + 10^(-4)) / (p_j + 10^(-4))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><msub><mi>E</mi><mi>ij</mi></msub></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mfrac><mrow><msub><mi>W</mi><mi>ij</mi></msub><mo>+</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup></mrow><mrow><msub><mi>p</mi><mi>j</mi></msub><mo>+</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup></mrow></mfrac></math></span></span></div></div>\n<p><math translate=\"no\"><mi>E</mi></math> &gt; 0 means <math translate=\"no\"><mi>i</mi></math> touches <math translate=\"no\"><mi>j</mi></math> more than <math translate=\"no\"><mi>j</mi></math>‘s abundance predicts, and <math translate=\"no\"><mi>E</mi></math> &lt; 0 less. With several sections, <math translate=\"no\"><mi>W</mi></math> is computed per section and each row is averaged across them, weighted by how many cells of type <math translate=\"no\"><mi>i</mi></math> each has.</p>\n<p><strong>Network.</strong> One node per cell type, its area growing with its number of cells. Its place comes from a layout of the whole dataset, so nodes stay put between sections. An arrow <em>i → j</em> appears where <math translate=\"no\"><msub><mi>W</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math> reaches the cutoff, with its width growing as √<math translate=\"no\"><mi>W</mi></math> and its colour showing <math translate=\"no\"><mi>E</mi></math>, from blue (depleted) to red (enriched). The ring around a node is its self-contact: the further the ring stands from the node, the larger <math translate=\"no\"><msub><mi>W</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></math>.</p>\n<p><strong>Matrix.</strong> The same <math translate=\"no\"><mi>W</mi></math> and <math translate=\"no\"><mi>E</mi></math> with no cutoff. Colour shows <math translate=\"no\"><mi>E</mi></math>, the numbers are <math translate=\"no\"><mi>W</mi></math> in percent, and grey means no contact. Types with similar contacts sit together.</p>\n<p><strong>Table and downloads.</strong> Every contact between the types shown, the two figures as SVG, and the numbers for all types as CSV.</p>\n<p>Delaunay edges are geometric neighbours, not measured contact, and <math translate=\"no\"><mi>E</mi></math> has no p-value, so read it together with the contact count <math translate=\"no\"><mi>C</mi></math> in the table. Cells across a gap are joined unless <strong>Longest contact</strong> is set.</p>",
@@ -653,8 +653,8 @@
     "20+ cells"
    ],
    "license": "MIT",
-   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/celltype-contact-network-v1.0.1/celltype-contact-network-1.0.1.pvtool",
-   "bundle_size": "35.4 kB",
+   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/celltype-contact-network-v1.0.2/celltype-contact-network-1.0.2.pvtool",
+   "bundle_size": "35.6 kB",
    "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/celltype-contact-network",
    "published": "2026-11-05",
    "published_date": "5 Nov 2026",
@@ -663,13 +663,13 @@
      "id": "bundle",
      "required": true,
      "status": "pass",
-     "message": "6 files, 35.4 kB packed and 126.3 kB unpacked, plugin.json at the root."
+     "message": "6 files, 35.6 kB packed and 126.9 kB unpacked, plugin.json at the root."
     },
     {
      "id": "manifest",
      "required": true,
      "status": "pass",
-     "message": "celltype-contact-network 1.0.1 by PointillViz authors; Python entry tool.py, outputs summary, images, table, files."
+     "message": "celltype-contact-network 1.0.2 by PointillViz authors; Python entry tool.py, outputs summary, images, table, files."
     },
     {
      "id": "environment",
@@ -687,13 +687,13 @@
      "id": "imports",
      "required": false,
      "status": "warn",
-     "message": "this tool uses filesystem_write — os.makedirs() at tool.py:462; numpy.savez() at tool.py:463; os.replace() at tool.py:464 (+1 more). None of it is blocked: a tool is arbitrary code run with the privileges of whoever started PointillViz, so this is disclosure for a human to weigh, not a sandbox."
+     "message": "this tool uses filesystem_write — os.makedirs() at tool.py:474; numpy.savez() at tool.py:475; os.replace() at tool.py:476 (+1 more). None of it is blocked: a tool is arbitrary code run with the privileges of whoever started PointillViz, so this is disclosure for a human to weigh, not a sandbox."
     },
     {
      "id": "fixture",
      "required": true,
      "status": "pass",
-     "message": "ran on the 600-cell fixture in 0.28 s, returning summary, table, files, images."
+     "message": "ran on the 600-cell fixture in 0.29 s, returning summary, table, files, images."
     },
     {
      "id": "result",
@@ -733,175 +733,12 @@
    "url": "tools/celltype-contact-network/"
   },
   {
-   "id": "smoothie",
-   "name": "Smoothie",
-   "version": "1.0.0",
-   "author": "PointillViz authors",
-   "description": "Gene modules that share a spatial pattern, found by the published Smoothie package.",
-   "readme_html": "<p>Answers the question: <strong>Which genes share a spatial pattern in this tissue, and where does each group sit?</strong></p>\n<p>The tool runs <a class=\"pv-link\" href=\"https://caholdener01.github.io/Smoothie/\" rel=\"noopener noreferrer nofollow\">Smoothie</a> (Holdener &amp; De Vlaminck, <em>Communications Biology</em> 2026) as its authors ship it. It installs the published package, <code translate=\"no\">smoothie-st</code>, and calls its functions in the order of the authors’ pipeline; it holds no copy of their method. The package:</p>\n<ol><li><strong>smooths</strong> each gene over the tissue with a Gaussian of the chosen width, which fills in the gaps between sparse counts;</li><li><strong>correlates</strong> every pair of smoothed genes across the tissue;</li><li><strong>links</strong> two genes when their correlation <math translate=\"no\"><mi>r</mi></math> passes the cutoff <math translate=\"no\"><mi>c</mi></math>, with a weight that the power <math translate=\"no\"><mi>p</mi></math> pushes down for weak links:</li></ol>\n<div class=\"st-formula\" role=\"img\" aria-label=\"w = ((r - c) / (1 - c))^p\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>w</mi></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mrow><mi>r</mi><mo>−</mo><mi>c</mi></mrow><mrow><mn>1</mn><mo>−</mo><mi>c</mi></mrow></mfrac><mo>)</mo></mrow><mi>p</mi></msup></math></span></span></div></div>\n<ol start=\"4\"><li><strong>clusters</strong> that network into modules with Infomap. A gene with no link joins no module, and modules are numbered from the largest.</li></ol>\n<p>On a Xenium 5K section of the mouse maternal–fetal interface (235,803 cells, 5,106 genes), the defaults give 47 modules holding 2,428 genes. Among them are smooth muscle (Actg2, Myh11), yolk-sac endoderm (Apob, Afp), NK cells (Prf1, Gzmb), lymphatics (Ccl21a, Prox1), proliferation (Mki67, Top2a), the interferon response (Isg15, Ifit1), B cells (Cd79a, Cd19) and plasma cells (Igkc, Jchain).</p>\n<h3>What you get</h3>\n<ul><li><strong>Table.</strong> One row per module of two genes or more: its number, its number of genes, its mean margin and its most connected genes, first the strongest. A table cell holds 200 characters, so a large module ends with how many genes are left: they are all in the download. A gene’s margin compares its average link weight inside its module, <math translate=\"no\"><mi>A</mi></math>, with that to the closest other module, <math translate=\"no\"><mi>B</mi></math>, as (<math translate=\"no\"><mi>A</mi></math> − <math translate=\"no\"><mi>B</mi></math>) / max(<math translate=\"no\"><mi>A</mi></math>, <math translate=\"no\"><mi>B</mi></math>): 1 for a gene linked only inside its module, 0 for one split evenly between two. A low mean margin marks a module that is not sharply set apart.</li><li><strong>Figure.</strong> One panel per module, drawn by the package and numbered as in the table. Each location’s score is the sum of the module’s smoothed genes, each scaled from 0 to 1 by its own highest value. Grey is low, red high and black highest, within each panel, so compare patterns between panels, not their strengths. A small module can look pale beside its few darkest spots.</li><li><strong>Download.</strong> <code translate=\"no\">smoothie-modules.csv</code>: every gene in a module, with the package’s measures of it in the network (degree, weighted degree, rescaled weighted degree, clustering coefficient and margin).</li><li><strong>Summary.</strong> The numbers of this run, the three largest modules and the authors’ lower bound for the cutoff.</li></ul>\n<p><strong>The lower bound.</strong> The package repeats the smoothing and the correlations with the positions shuffled, and gives the 99.9th percentile of the correlations it finds. The authors use it as the lowest sensible cutoff. The summary gives it for this run, and says so in bold when the cutoff is below it.</p>\n<h3>Parameters</h3>\n<ul><li><strong>Smoothing width (microns).</strong> The standard deviation of the Gaussian. The authors find 20 to 40 µm works best. Wider finds broader patterns and needs fewer cells. If more than 15% of the tissue has fewer than 10 cells within three widths, the package refuses, and the tool says which width would pass.</li><li><strong>Correlation cutoff.</strong> The correlation above which two genes are linked. Higher keeps fewer genes, in tighter modules; lower takes longer. With no pair above it, the tool refuses and names the highest correlation found.</li><li><strong>Clustering power.</strong> How strongly weak links are discounted when the network is clustered. Higher gives more, smaller modules. The authors find 1 to 6 reasonable and examine values up to 9.</li></ul>\n<h3>What is fixed</h3>\n<p>Everything else is what the authors’ pipeline notebooks give for cell-sized data, and the package’s own defaults:</p>\n<ul><li><strong>Quality control and normalisation.</strong> Cells with at least 50 transcripts, genes with at least 100 counts in at least 10 cells; counts per thousand, then log1p.</li><li><strong>Where it smooths.</strong> The authors smooth subcellular to cell-sized data on a hexagonal grid, one width apart, and binned data at each spot. Their table starts binned data at 20 µm, so the tool smooths on the grid when cells or spots sit closer than that, and at each spot otherwise. On the section above, smoothing at each cell gives nearly the same modules (adjusted Rand index 0.95) for 2.5 times the memory.</li><li><strong>Minimum cells under the Gaussian.</strong> 10 within three widths, the low end of the authors’ 10 to 100. Below it the package sets a location to zero, and zeros raise every correlation, so a low value keeps them few: 0.15% of the locations on the section above. The summary warns when they reach 1%.</li><li><strong>Infomap.</strong> 20 trials, seed 0.</li></ul>\n<p><strong>Coordinates.</strong> The width is in µm. A dataset in µm or mm is used as it stands, and one in pixels through the pixel size of an image layer that covers its cells. Otherwise the size of the coordinates is unknown: the median spacing between cells is then taken as 9 µm, the median over the cell-segmented datasets this was measured on (7.3 to 12.9 µm), and the summary says so.</p>\n<p><strong>Sections and selections.</strong> Each section is smoothed on its own, as the datasets of the authors’ multi-dataset pipeline are, so no section lends counts to another; the correlations are then taken over all of them. The figure shows the sections as the map lays them out, or side by side when they share coordinates, and the summary then gives their order. A section that is too sparse for the width is left out, and the summary names it. Isolate a section, or select cells, to run on those alone.</p>\n<p><strong>Sections of different gene panels.</strong> A section is smoothed on the genes it measured, as a dataset is in the authors’ multi-dataset pipeline. The package then counts the others as zero in that section, in the correlations, the lower bound and the map, so genes missing from the same section correlate for that alone, and a module can be made of nothing else. The summary says when this happens and how many modules are mostly such genes. Isolate a section to see its own modules.</p>\n<h3>Limitations</h3>\n<p><strong>A module is a community in a correlation network, not a test.</strong> No gene or module carries a p-value, and the numbers of modules and genes follow from the three parameters, which have no single right setting. The package’s <code translate=\"no\">select_clustering_params</code> helps choose them, but this tool does not run it.</p>\n<p><strong>Sharing a place is not sharing a cell, and the reverse.</strong> Genes of two cell types that live side by side correlate, and so do genes of one cell type wherever its cells lie. On the section above, shuffling the positions in 20 µm bins, as the lower bound does, removes 95% of the links (107,191 to 5,704), yet 790 genes still form 40 modules, against 2,428 in 47. Four in five of those genes are in the most connected third of their module, and in 11 of the 47 modules, B and plasma cells among them, they are at least half the genes. Such a module says that these genes share cells, which is not yet a pattern of the tissue.</p>\n<p><strong>Cost.</strong> The section above takes about 5 minutes and 7 GB on a server of 124 cores, with up to 10 processes smoothing, twice: once for the modules and once for the lower bound. Each panel of the figure takes about 2.5 s of that. A panel draws at most 50,000 locations, which changes no module. Past 100 modules the panels are drawn smaller, so the figure takes no longer, and past 900 it maps the 900 largest. While it runs, the package writes its panels to a temporary folder, removed at the end of the run.</p>\n<p>Smoothie’s 2D smoothing means a 3D dataset is not offered the tool.</p>\n<h3>Citation</h3>\n<p>Holdener C, De Vlaminck I. Smoothie: efficient inference and integration of spatial co-expression networks from denoised spatial transcriptomics data. <em>Communications Biology</em> 9, 459 (2026). <a class=\"pv-link\" href=\"https://doi.org/10.1038/s42003-026-09898-z\" rel=\"noopener noreferrer nofollow\">doi:10.1038/s42003-026-09898-z</a></p>\n<p>The <code translate=\"no\">smoothie-st</code> package is by Chase Holdener, under the MIT licence.</p>",
-   "citation": "Holdener C, De Vlaminck I. Smoothie: efficient inference and integration of spatial co-expression networks from denoised spatial transcriptomics data. Commun Biol 9, 459 (2026). https://doi.org/10.1038/s42003-026-09898-z",
-   "tags": [
-    "spatial",
-    "genes",
-    "modules",
-    "co-expression",
-    "network",
-    "smoothing",
-    "figure"
-   ],
-   "icon": "hub",
-   "language": "python",
-   "language_label": "Python",
-   "gpu": null,
-   "gpu_label": "",
-   "parameters": [
-    {
-     "name": "smoothing_width",
-     "label": "Smoothing width (microns)",
-     "type": "float",
-     "default": 20,
-     "optional": false,
-     "help": "Sets the width of the Gaussian that smooths each gene over the tissue, its standard deviation.\nThe authors find 20 to 40 µm works best. Wider finds broader patterns; sparse tissue needs it wider.",
-     "min": 5.0,
-     "max": 200.0,
-     "step": 1.0,
-     "type_text": "float, 5–200",
-     "default_text": "20"
-    },
-    {
-     "name": "correlation_cutoff",
-     "label": "Correlation cutoff",
-     "type": "float",
-     "default": 0.4,
-     "optional": false,
-     "help": "Links two genes when their smoothed maps correlate above this.\nHigher keeps fewer genes, in tighter modules. Lower takes longer. The summary gives the authors’ lower bound for this run.",
-     "min": 0.1,
-     "max": 0.95,
-     "step": 0.01,
-     "type_text": "float, 0.1–0.95",
-     "default_text": "0.4"
-    },
-    {
-     "name": "clustering_power",
-     "label": "Clustering power",
-     "type": "float",
-     "default": 4,
-     "optional": false,
-     "help": "Sets how strongly weak links are discounted when the network is clustered.\nHigher gives more, smaller modules. The authors find 1 to 6 reasonable.",
-     "min": 1.0,
-     "max": 9.0,
-     "step": 0.5,
-     "type_text": "float, 1–9",
-     "default_text": "4"
-    }
-   ],
-   "sweep": null,
-   "outputs": [
-    "summary",
-    "table",
-    "images",
-    "files"
-   ],
-   "optional_outputs": [],
-   "output_help": {
-    "summary": "writes a summary",
-    "table": "returns a table",
-    "images": "returns figures",
-    "files": "returns files to download"
-   },
-   "requires": {
-    "genes": true,
-    "cell_types": false,
-    "categoricals": false,
-    "spatial": "2d",
-    "min_cells": 200
-   },
-   "needs": [
-    "gene expression",
-    "2D coordinates",
-    "200+ cells"
-   ],
-   "license": "MIT",
-   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/smoothie-v1.0.0/smoothie-1.0.0.pvtool",
-   "bundle_size": "59.4 kB",
-   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/smoothie",
-   "published": "2026-11-05",
-   "published_date": "5 Nov 2026",
-   "gates": [
-    {
-     "id": "bundle",
-     "required": true,
-     "status": "pass",
-     "message": "6 files, 59.4 kB packed and 276.1 kB unpacked, plugin.json at the root."
-    },
-    {
-     "id": "manifest",
-     "required": true,
-     "status": "pass",
-     "message": "smoothie 1.0.0 by PointillViz authors; Python entry tool.py, outputs summary, table, images, files."
-    },
-    {
-     "id": "environment",
-     "required": true,
-     "status": "pass",
-     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
-    },
-    {
-     "id": "entry",
-     "required": true,
-     "status": "pass",
-     "message": "tool.py imported in 4.60 s and defines run(ds, params)."
-    },
-    {
-     "id": "imports",
-     "required": false,
-     "status": "pass",
-     "message": "1 source file, using anndata, csv, io, itertools, math, matplotlib, numpy, os, pointillviz_tool, scanpy, scipy, smoothie, tempfile, warnings; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
-    },
-    {
-     "id": "fixture",
-     "required": true,
-     "status": "pass",
-     "message": "ran on the 600-cell fixture in 11.44 s, returning summary, table, files, images and 57 log lines."
-    },
-    {
-     "id": "result",
-     "required": true,
-     "status": "pass",
-     "message": "returned the declared outputs: summary, table, files, images."
-    },
-    {
-     "id": "edge",
-     "required": true,
-     "status": "pass",
-     "message": "at the minimum corner (clustering_power=1.0, correlation_cutoff=0.1, smoothing_width=5.0) it refused in words rather than crashing: At a smoothing width of 5 µm, more than 15% of the tissue has fewer than 10 cells within 15 µm, the reach of the smoothing. Widen it to at least 7 µm. (code: too_sparse); ran at the maximum corner (clustering_power=9.0, correlation_cutoff=0.95, smoothing_width=200.0) in 10.24 s."
-    },
-    {
-     "id": "no_mutation",
-     "required": true,
-     "status": "pass",
-     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
-    }
-   ],
-   "risks": [],
-   "art": {
-    "src": "assets/media/tools/smoothie.webp?v=7fe65d9fac",
-    "src2x": "assets/media/tools/smoothie@2x.webp?v=b0e9657d1a",
-    "width": 720,
-    "height": 420,
-    "alt": "Smoothie: six small maps of cells, each glowing in a different pattern, one for each gene module. An illustration, not a real tissue.",
-    "generated": false
-   },
-   "social": "assets/media/social/smoothie.jpg",
-   "url": "tools/smoothie/"
-  },
-  {
    "id": "ridge-map",
    "name": "Ridge Map",
-   "version": "1.0.0",
+   "version": "1.0.1",
    "author": "PointillViz authors",
    "description": "A tissue section as a relief of ridges, their height a gene or the cell density, their colour the most common cell type.",
-   "readme_html": "<p>Answers the question: <strong>How does a gene’s expression, or the density of cells, rise and fall across the section, and over which cell types?</strong></p>\n<p>The tool cuts the section into horizontal strips and draws each one as a ridge, a joy plot laid over the tissue. Ridges are drawn from the back of the figure to its front, and each hides what stands behind it, so the tissue’s architecture reads as a relief.</p>\n<p>Every height and colour is measured around its place on the strip with a Gaussian of width <math translate=\"no\"><mi>σ</mi></math>, so the strips are cross-sections of one smooth surface and a peak carries on from one strip to the next. A cell <math translate=\"no\"><mi>j</mi></math> at distance <math translate=\"no\"><msub><mi>d</mi><mi>j</mi></msub></math> from that place weighs <math translate=\"no\"><msub><mi>w</mi><mi>j</mi></msub><mo>=</mo><mi>exp</mi><mrow><mo stretchy=\"false\">(</mo><mo>−</mo><msubsup><mi>d</mi><mi>j</mi><mn>2</mn></msubsup><mo lspace=\"0\" rspace=\"0\">/</mo><mn>2</mn><msup><mi>σ</mi><mn>2</mn></msup><mo stretchy=\"false\">)</mo></mrow></math>, by its true position, so a regular lattice of pixels draws flat. With <math translate=\"no\"><msub><mi>a</mi><mi>j</mi></msub></math> its expression in log1p(CP10K), the height is the gene’s local mean:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"h(x, y) = (sum over j of w_j a_j) / (sum over j of w_j)\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>h</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><msub><mi>a</mi><mi>j</mi></msub></mrow><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub></mrow></mfrac></math></span></span></div></div>\n<p>With no gene chosen, it is the local cell density:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"h(x, y) = (sum over j of w_j) / (2πσ^2)\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>h</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub></mrow><mrow><mn>2</mn><mi>π</mi><msup><mi>σ</mi><mn>2</mn></msup></mrow></mfrac></math></span></span></div></div>\n<p><strong>Figure.</strong> The section keeps its proportions and the orientation of the map.</p>\n<ul><li><strong>Height.</strong> The tallest ridge stands <em>Relief</em> strip heights tall. The bar in the key shows a round value at its true height, and it applies to every ridge. A gene’s height is on a log scale: a ridge twice as tall is far more than twice the expression. The figures of one run share one scale, but two runs do not: compare them by their bars.</li><li><strong>Place.</strong> A peak stands behind its baseline: it rises up the figure from its own strip and overlaps the strips further back. A place on the tissue is where its ridge starts, not the top of the peak.</li><li><strong>Colour.</strong> Each stretch of a ridge takes the map’s colour of the cell type with the most cells around it, counted with the same weights. It says which cell type is most common at that place, not which cells express the gene. A colour with less than 3:1 contrast on black is lightened just enough, keeping its hue, and the summary says so. A stretch shorter than 5 px takes the colour of its longer neighbour, at any number of strips. The soft glow under a ridge is the same colour, brighter the higher the ridge stands within its stretch of tissue, and adds no measurement.</li><li><strong>Edges.</strong> A ridge is drawn where the Gaussian holds at least 10% of what it holds around the section’s typical cell. Along the strip, it comes down to its baseline over 3<math translate=\"no\"><mi>σ</mi></math> at each end, where the tissue stops, so gaps and tears stay black, and the heights in that margin are lower than measured. Patches holding fewer than 0.05% of the section’s cells are taken for strays and not drawn. So are cells far outside the section, past an empty gap as wide as the middle 90% of the section, and they do not change the figure’s scale. A distant piece holding more than 5% of the cells counts as tissue.</li></ul>\n<p><strong>Cells that say nothing.</strong> A cell with no coordinates cannot be drawn. A cell whose section did not measure the gene is left out as well: it does not count as zero, and a section that did not measure the gene draws no figure. Cells with no cell type count toward the height but not the colours; a stretch with no labelled cell around it is grey, named Unlabelled in the key. The summary gives their number when a grey stretch is drawn, or when they reach 1% of the cells drawn.</p>\n<p><strong>Sections and selections.</strong> Each section draws its own figure, up to the 8 largest, at one scale of length, strip height and ridge height, and names itself in its key. Isolate a section to draw only that one. With cells selected, only they are drawn, and the figure closes in on them.</p>\n<p><strong>Outputs.</strong> The figure, the same figure as an SVG download, and a summary: the cells and strips drawn, the scale of this run, and the cell types over which the ridges stand tallest on average. It counts the cells not drawn, by reason: no coordinates, gene not measured, far outside the section, in a section left out, sparse or stray. It also counts the cell types present but not drawn, because none is the most common over a long enough stretch, and names them when there are at most five.</p>\n<h3>Parameters</h3>\n<ul><li><strong>Gene.</strong> Sets the height of the ridges. With no gene chosen, the height is the cell density.</li><li><strong>Strips.</strong> How many strips the section is cut into. Fewer are cut when each would hold fewer than 15 cells on average, when they would lie closer than 2.5 px, or when the figures would still not fit the 8 MiB output limit with fewer points on each ridge and longer stretches of one colour. The limit is measured on the figures themselves, and the summary says when this happens. A strip with no tissue in it draws no ridge.</li><li><strong>Relief.</strong> How tall the tallest ridge stands, in strip heights, up to half the figure’s height.</li><li><strong>Smoothing.</strong> The width <math translate=\"no\"><mi>σ</mi></math> of the Gaussian, in strip heights. It widens by itself when it would hold fewer than 5 cells on average, or when it would be narrower than the figure can draw, and the summary says so.</li></ul>\n<h3>Limitations</h3>\n<p>The figure is for reading the shape of a tissue, not for testing it: no height carries a significance. Tall ridges hide what stands behind them, so a low signal next to a high one can be out of sight; lower the relief, or read the place on the map.</p>\n<p>Colour shows only the most common cell type, so a rare type can be present and never be drawn.</p>\n<p>The tool needs 2D coordinates and a cell-type annotation. A 3D dataset is not offered it.</p>",
+   "readme_html": "<p>Answers the question: <strong>How does a gene’s expression, or the density of cells, rise and fall across the section, and over which cell types?</strong></p>\n<p>The tool cuts the section into horizontal strips and draws each one as a ridge, a joy plot laid over the tissue. Ridges are drawn from the back of the figure to its front, and each hides what stands behind it, so the tissue’s architecture reads as a relief.</p>\n<p>Every height and colour is measured around its place on the strip with a Gaussian of width <math translate=\"no\"><mi>σ</mi></math>, so the strips are cross-sections of one smooth surface. A cell <math translate=\"no\"><mi>j</mi></math> at distance <math translate=\"no\"><msub><mi>d</mi><mi>j</mi></msub></math> weighs <math translate=\"no\"><msub><mi>w</mi><mi>j</mi></msub><mo>=</mo><mi>exp</mi><mrow><mo stretchy=\"false\">(</mo><mo>−</mo><msubsup><mi>d</mi><mi>j</mi><mn>2</mn></msubsup><mo lspace=\"0\" rspace=\"0\">/</mo><mn>2</mn><msup><mi>σ</mi><mn>2</mn></msup><mo stretchy=\"false\">)</mo></mrow></math>. With <math translate=\"no\"><msub><mi>a</mi><mi>j</mi></msub></math> its expression in log1p(CP10K), the height is the gene’s local mean:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"h(x, y) = (sum over j of w_j a_j) / (sum over j of w_j)\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>h</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><msub><mi>a</mi><mi>j</mi></msub></mrow><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub></mrow></mfrac></math></span></span></div></div>\n<p>With no gene chosen, it is the local cell density:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"h(x, y) = (sum over j of w_j) / (2πσ^2)\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>h</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub></mrow><mrow><mn>2</mn><mi>π</mi><msup><mi>σ</mi><mn>2</mn></msup></mrow></mfrac></math></span></span></div></div>\n<p><strong>Height.</strong> The bar in the key shows a round value at its true height. A gene’s height is on a log scale, and two runs do not share a scale, so compare them by their bars.</p>\n<p><strong>Place.</strong> A peak rises up the figure from its own strip, so a place on the tissue is where its ridge starts, not the top of the peak.</p>\n<p><strong>Colour.</strong> Each stretch of a ridge takes the map’s colour of the cell type with the most cells around it. It says which cell type is most common at that place, not which cells express the gene, so a rare type can be present and never be drawn.</p>\n<p><strong>Edges.</strong> A ridge comes down to its baseline where the tissue stops, so gaps and tears stay black. Cells far outside the section and small stray patches are not drawn, and the summary counts them.</p>\n<p><strong>Sections and selections.</strong> Each section draws its own figure, up to the 8 largest, at one scale. Isolate a section to draw only that one. With cells selected, only they are drawn. A cell whose section did not measure the gene is left out, not counted as zero.</p>\n<p><strong>Outputs.</strong> The figure, the same figure as an SVG download, and a summary of what was drawn and what was not.</p>\n<p>The figure is for reading the shape of a tissue, not for testing it: no height carries a significance, and tall ridges can hide a low signal behind them. The tool needs 2D coordinates and a cell-type annotation.</p>",
    "citation": "",
    "tags": [
     "spatial",
@@ -992,23 +829,23 @@
     "200+ cells"
    ],
    "license": "MIT",
-   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/ridge-map-v1.0.0/ridge-map-1.0.0.pvtool",
-   "bundle_size": "36.2 kB",
+   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/ridge-map-v1.0.1/ridge-map-1.0.1.pvtool",
+   "bundle_size": "35.1 kB",
    "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/ridge-map",
-   "published": "2026-11-04",
-   "published_date": "4 Nov 2026",
+   "published": "2026-11-05",
+   "published_date": "5 Nov 2026",
    "gates": [
     {
      "id": "bundle",
      "required": true,
      "status": "pass",
-     "message": "6 files, 36.2 kB packed and 166.4 kB unpacked, plugin.json at the root."
+     "message": "6 files, 35.1 kB packed and 163.3 kB unpacked, plugin.json at the root."
     },
     {
      "id": "manifest",
      "required": true,
      "status": "pass",
-     "message": "ridge-map 1.0.0 by PointillViz authors; Python entry tool.py, outputs summary, images, files."
+     "message": "ridge-map 1.0.1 by PointillViz authors; Python entry tool.py, outputs summary, images, files."
     },
     {
      "id": "environment",
@@ -1020,7 +857,7 @@
      "id": "entry",
      "required": true,
      "status": "pass",
-     "message": "tool.py imported in 0.17 s and defines run(ds, params)."
+     "message": "tool.py imported in 0.20 s and defines run(ds, params)."
     },
     {
      "id": "imports",
@@ -1032,7 +869,7 @@
      "id": "fixture",
      "required": true,
      "status": "pass",
-     "message": "ran on the 600-cell fixture in 0.14 s, returning summary, files, images."
+     "message": "ran on the 600-cell fixture in 0.18 s, returning summary, files, images."
     },
     {
      "id": "result",
@@ -1044,7 +881,7 @@
      "id": "edge",
      "required": true,
      "status": "pass",
-     "message": "ran at the minimum corner (relief=1.0, smoothing=0.25, strips=20) in 0.14 s; ran at the maximum corner (relief=30.0, smoothing=3.0, strips=300) in 0.21 s."
+     "message": "ran at the minimum corner (relief=1.0, smoothing=0.25, strips=20) in 0.17 s; ran at the maximum corner (relief=30.0, smoothing=3.0, strips=300) in 0.25 s."
     },
     {
      "id": "no_mutation",
@@ -1064,6 +901,169 @@
    },
    "social": "assets/media/social/ridge-map.jpg",
    "url": "tools/ridge-map/"
+  },
+  {
+   "id": "smoothie",
+   "name": "Smoothie",
+   "version": "1.0.1",
+   "author": "PointillViz authors",
+   "description": "Gene modules that share a spatial pattern, found by the published Smoothie package.",
+   "readme_html": "<p>Answers the question: <strong>Which genes share a spatial pattern in this tissue, and where does each group sit?</strong></p>\n<p>The tool runs <a class=\"pv-link\" href=\"https://caholdener01.github.io/Smoothie/\" rel=\"noopener noreferrer nofollow\">Smoothie</a> (Holdener &amp; De Vlaminck, <em>Communications Biology</em> 2026) as its authors ship it. It installs the published package, <code translate=\"no\">smoothie-st</code>, and calls its functions in the order of the authors’ pipeline; it holds no copy of their method. The package:</p>\n<ol><li><strong>smooths</strong> each gene over the tissue with a Gaussian of the chosen width, which fills in the gaps between sparse counts;</li><li><strong>correlates</strong> every pair of smoothed genes across the tissue;</li><li><strong>links</strong> two genes when their correlation <math translate=\"no\"><mi>r</mi></math> passes the cutoff <math translate=\"no\"><mi>c</mi></math>, with a weight that the power <math translate=\"no\"><mi>p</mi></math> pushes down for weak links:</li></ol>\n<div class=\"st-formula\" role=\"img\" aria-label=\"w = ((r - c) / (1 - c))^p\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>w</mi></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mrow><mi>r</mi><mo>−</mo><mi>c</mi></mrow><mrow><mn>1</mn><mo>−</mo><mi>c</mi></mrow></mfrac><mo>)</mo></mrow><mi>p</mi></msup></math></span></span></div></div>\n<ol start=\"4\"><li><strong>clusters</strong> that network into modules with Infomap. A gene with no link joins no module, and modules are numbered from the largest.</li></ol>\n<p>On a Xenium 5K section of the mouse maternal–fetal interface (235,803 cells, 5,106 genes), the defaults give 47 modules holding 2,428 genes, among them smooth muscle (Actg2, Myh11), NK cells (Prf1, Gzmb) and the interferon response (Isg15, Ifit1).</p>\n<p><strong>Table.</strong> One row per module: its size, its mean margin and its most connected genes. A gene’s margin runs from 1, linked only inside its module, to 0, split evenly between two, so a low mean marks a module that is not sharply set apart.</p>\n<p><strong>Figure.</strong> One panel per module, drawn by the package. Each location’s score sums the module’s smoothed genes, each scaled by its own highest value, so compare patterns between panels, not their strengths.</p>\n<p><strong>Download.</strong> Every gene in a module, with the package’s network measures of it.</p>\n<p><strong>The lower bound.</strong> The package repeats the smoothing and the correlations with the positions shuffled, and the authors use the result as the lowest sensible cutoff. The summary gives it, and says in bold when the cutoff is below it.</p>\n<p><strong>Several sections.</strong> Each section is smoothed on its own, and the correlations are taken over all of them. Genes missing from the same section correlate for that alone, and the summary says when this happens.</p>\n<p>Everything not on the form is what the authors’ pipeline notebooks give for cell-sized data. A module is a community in a correlation network, not a test: no gene or module carries a p-value. It can also mean that its genes share cells rather than a pattern of the tissue, because genes of one cell type correlate wherever its cells lie.</p>\n<p><strong>Cost.</strong> The section above takes about 5 minutes and 7 GB. The tool needs 2D coordinates.</p>\n<p>The <code translate=\"no\">smoothie-st</code> package is by Chase Holdener, under the MIT licence.</p>",
+   "citation": "Holdener C, De Vlaminck I. Smoothie: efficient inference and integration of spatial co-expression networks from denoised spatial transcriptomics data. Commun Biol 9, 459 (2026). https://doi.org/10.1038/s42003-026-09898-z",
+   "tags": [
+    "spatial",
+    "genes",
+    "modules",
+    "co-expression",
+    "network",
+    "smoothing",
+    "figure"
+   ],
+   "icon": "hub",
+   "language": "python",
+   "language_label": "Python",
+   "gpu": null,
+   "gpu_label": "",
+   "parameters": [
+    {
+     "name": "smoothing_width",
+     "label": "Smoothing width (microns)",
+     "type": "float",
+     "default": 20,
+     "optional": false,
+     "help": "Sets the width of the Gaussian that smooths each gene over the tissue, its standard deviation.\nThe authors find 20 to 40 µm works best. Wider finds broader patterns; sparse tissue needs it wider.",
+     "min": 5.0,
+     "max": 200.0,
+     "step": 1.0,
+     "type_text": "float, 5–200",
+     "default_text": "20"
+    },
+    {
+     "name": "correlation_cutoff",
+     "label": "Correlation cutoff",
+     "type": "float",
+     "default": 0.4,
+     "optional": false,
+     "help": "Links two genes when their smoothed maps correlate above this.\nHigher keeps fewer genes, in tighter modules. Lower takes longer. The summary gives the authors’ lower bound for this run.",
+     "min": 0.1,
+     "max": 0.95,
+     "step": 0.01,
+     "type_text": "float, 0.1–0.95",
+     "default_text": "0.4"
+    },
+    {
+     "name": "clustering_power",
+     "label": "Clustering power",
+     "type": "float",
+     "default": 4,
+     "optional": false,
+     "help": "Sets how strongly weak links are discounted when the network is clustered.\nHigher gives more, smaller modules. The authors find 1 to 6 reasonable.",
+     "min": 1.0,
+     "max": 9.0,
+     "step": 0.5,
+     "type_text": "float, 1–9",
+     "default_text": "4"
+    }
+   ],
+   "sweep": null,
+   "outputs": [
+    "summary",
+    "table",
+    "images",
+    "files"
+   ],
+   "optional_outputs": [],
+   "output_help": {
+    "summary": "writes a summary",
+    "table": "returns a table",
+    "images": "returns figures",
+    "files": "returns files to download"
+   },
+   "requires": {
+    "genes": true,
+    "cell_types": false,
+    "categoricals": false,
+    "spatial": "2d",
+    "min_cells": 200
+   },
+   "needs": [
+    "gene expression",
+    "2D coordinates",
+    "200+ cells"
+   ],
+   "license": "MIT",
+   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/smoothie-v1.0.1/smoothie-1.0.1.pvtool",
+   "bundle_size": "57.3 kB",
+   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/smoothie",
+   "published": "2026-11-05",
+   "published_date": "5 Nov 2026",
+   "gates": [
+    {
+     "id": "bundle",
+     "required": true,
+     "status": "pass",
+     "message": "6 files, 57.3 kB packed and 271.0 kB unpacked, plugin.json at the root."
+    },
+    {
+     "id": "manifest",
+     "required": true,
+     "status": "pass",
+     "message": "smoothie 1.0.1 by PointillViz authors; Python entry tool.py, outputs summary, table, images, files."
+    },
+    {
+     "id": "environment",
+     "required": true,
+     "status": "pass",
+     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
+    },
+    {
+     "id": "entry",
+     "required": true,
+     "status": "pass",
+     "message": "tool.py imported in 5.23 s and defines run(ds, params)."
+    },
+    {
+     "id": "imports",
+     "required": false,
+     "status": "pass",
+     "message": "1 source file, using anndata, csv, io, itertools, math, matplotlib, numpy, os, pointillviz_tool, scanpy, scipy, smoothie, tempfile, warnings; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
+    },
+    {
+     "id": "fixture",
+     "required": true,
+     "status": "pass",
+     "message": "ran on the 600-cell fixture in 10.32 s, returning summary, table, files, images and 57 log lines."
+    },
+    {
+     "id": "result",
+     "required": true,
+     "status": "pass",
+     "message": "returned the declared outputs: summary, table, files, images."
+    },
+    {
+     "id": "edge",
+     "required": true,
+     "status": "pass",
+     "message": "at the minimum corner (clustering_power=1.0, correlation_cutoff=0.1, smoothing_width=5.0) it refused in words rather than crashing: At a smoothing width of 5 µm, more than 15% of the tissue has fewer than 10 cells within 15 µm, the reach of the smoothing. Widen it to at least 7 µm. (code: too_sparse); ran at the maximum corner (clustering_power=9.0, correlation_cutoff=0.95, smoothing_width=200.0) in 10.17 s."
+    },
+    {
+     "id": "no_mutation",
+     "required": true,
+     "status": "pass",
+     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
+    }
+   ],
+   "risks": [],
+   "art": {
+    "src": "assets/media/tools/smoothie.webp?v=7fe65d9fac",
+    "src2x": "assets/media/tools/smoothie@2x.webp?v=b0e9657d1a",
+    "width": 720,
+    "height": 420,
+    "alt": "Smoothie: six small maps of cells, each glowing in a different pattern, one for each gene module. An illustration, not a real tissue.",
+    "generated": false
+   },
+   "social": "assets/media/social/smoothie.jpg",
+   "url": "tools/smoothie/"
   },
   {
    "id": "tissue-permeability",

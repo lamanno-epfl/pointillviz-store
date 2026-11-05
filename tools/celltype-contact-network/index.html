@@ -6,7 +6,7 @@
 <script>(function(d){try{var w=d.clientWidth||innerWidth;d.style.setProperty('--k',Math.min(Math.max(Math.min(w/1440,innerHeight/900),1),1.6).toFixed(4))}catch(e){}})(document.documentElement)</script>
 <meta name="theme-color" content="#06070D">
 <title>Cell-type contact network · The Tool Store · PointillViz</title>
-<meta name="description" content="Which cell types touch which, from a Delaunay triangulation of the cells, as a network and a matrix corrected for abundance. A PointillViz community tool, version 1.0.1.">
+<meta name="description" content="Which cell types touch which, from a Delaunay triangulation of the cells, as a network and a matrix corrected for abundance. A PointillViz community tool, version 1.0.2.">
 <meta name="robots" content="noindex">
 <link rel="canonical" href="https://store.pointillviz.com/tools/celltype-contact-network/">
 <meta property="og:site_name" content="PointillViz">
@@ -88,7 +88,7 @@
         <h1 class="st-title st-top__name"><span class="st-keep">Cell-type</span> contact network</h1>
         <p class="st-top__desc">Which cell types touch which, from a Delaunay triangulation of the cells, as a network and a matrix corrected for abundance.</p>
         <div class="st-get">
-          <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/celltype-contact-network-v1.0.1/celltype-contact-network-1.0.1.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 35.4 kB</span></span></a>
+          <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/celltype-contact-network-v1.0.2/celltype-contact-network-1.0.2.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 35.6 kB</span></span></a>
           <p class="st-get__how"><span class="st-get__steps">In PointillViz: <b>Tools → Store → Install</b>, or <b>Install from file</b> with the download. </span><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How to install and run a tool</a></p>
           <ul class="st-risks" aria-label="Disclosed by the advisory imports gate"><li>This tool writes to the filesystem.</li></ul>
           <p class="st-get__note">This runs as you: a tool is arbitrary code, with your privileges. <a class="pv-link" href="../../#safety">Safety note</a></p>
@@ -109,7 +109,7 @@
           <a class="st-tab" href="#outputs" data-view-link="outputs">Outputs</a>
         </nav>
         <button class="st-testbtn" id="test-summary-open" type="button" aria-haspopup="dialog" aria-controls="test-summary" data-state="advisory">Tool test summary</button>
-        <a class="pv-btn pv-btn--primary st-bar__dl" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/celltype-contact-network-v1.0.1/celltype-contact-network-1.0.1.pvtool" download tabindex="-1"><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span>Download</span></a>
+        <a class="pv-btn pv-btn--primary st-bar__dl" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/celltype-contact-network-v1.0.2/celltype-contact-network-1.0.2.pvtool" download tabindex="-1"><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span>Download</span></a>
       </div>
     </div>
     <div class="st-wrap st-views__grid">
@@ -171,7 +171,7 @@ The others still count in every share, and the download holds them all.</span></
       </div>
       <aside class="st-facts" aria-labelledby="facts-h">
         <h2 class="pv-sr-only" id="facts-h">Details</h2>
-        <dl class="st-facts__list"><div class="st-facts__row"><dt>Author</dt><dd>PointillViz authors</dd></div><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__num" translate="no">1.0.1</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-11-05">5 Nov 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Language</dt><dd>Python</dd></div><div class="st-facts__row"><dt>GPU</dt><dd>Not used</dd></div><div class="st-facts__row"><dt>Needs</dt><dd>a categorical column<br>20+ cells</dd></div></dl>
+        <dl class="st-facts__list"><div class="st-facts__row"><dt>Author</dt><dd>PointillViz authors</dd></div><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__num" translate="no">1.0.2</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-11-05">5 Nov 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Language</dt><dd>Python</dd></div><div class="st-facts__row"><dt>GPU</dt><dd>Not used</dd></div><div class="st-facts__row"><dt>Needs</dt><dd>a categorical column<br>20+ cells</dd></div></dl>
         <p class="st-facts__src"><a class="pv-link" href="https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/celltype-contact-network">Source in the public registry<svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-external"/></svg></a></p>
       </aside>
     </div>
@@ -187,11 +187,11 @@ The others still count in every share, and the download holds them all.</span></
 <ol class="st-gates">
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">bundle</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">6 files, 35.4 kB packed and 126.3 kB unpacked, plugin.json at the root.</p>
+  <p class="st-gate__msg">6 files, 35.6 kB packed and 126.9 kB unpacked, plugin.json at the root.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">manifest</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">celltype-contact-network 1.0.1 by PointillViz authors; Python entry tool.py, outputs summary, images, table, files.</p>
+  <p class="st-gate__msg">celltype-contact-network 1.0.2 by PointillViz authors; Python entry tool.py, outputs summary, images, table, files.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">environment</code><span class="st-gate__word">pass</span></p>
@@ -203,11 +203,11 @@ The others still count in every share, and the download holds them all.</span></
 </li>
 <li class="st-gate" data-state="advisory" data-adv>
   <p class="st-gate__head"><code class="st-gate__name" translate="no">imports</code> <span class="st-gate__adv">advisory</span><span class="st-gate__word">flagged</span></p>
-  <p class="st-gate__msg">this tool uses filesystem_write — os.makedirs() at tool.py:462; numpy.savez() at tool.py:463; os.replace() at tool.py:464 (+1 more). None of it is blocked: a tool is arbitrary code run with the privileges of whoever started PointillViz, so this is disclosure for a human to weigh, not a sandbox.</p>
+  <p class="st-gate__msg">this tool uses filesystem_write — os.makedirs() at tool.py:474; numpy.savez() at tool.py:475; os.replace() at tool.py:476 (+1 more). None of it is blocked: a tool is arbitrary code run with the privileges of whoever started PointillViz, so this is disclosure for a human to weigh, not a sandbox.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">fixture</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">ran on the 600-cell fixture in 0.28 s, returning summary, table, files, images.</p>
+  <p class="st-gate__msg">ran on the 600-cell fixture in 0.29 s, returning summary, table, files, images.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">result</code><span class="st-gate__word">pass</span></p>
@@ -244,14 +244,14 @@ The others still count in every share, and the download holds them all.</span></
   <p class="st-card__desc">How mixed each cell’s neighbourhood is, and who sits next to whom.</p>
 </a>
 </li>
-<li class="st-cell" data-id="ridge-map" data-name="Ridge Map" data-author="PointillViz authors" data-tags="spatial|expression|density|cell types|relief|figure" data-outputs="summary|images|files" data-published="2026-11-04" data-version="1.0.0">
+<li class="st-cell" data-id="ridge-map" data-name="Ridge Map" data-author="PointillViz authors" data-tags="spatial|expression|density|cell types|relief|figure" data-outputs="summary|images|files" data-published="2026-11-05" data-version="1.0.1">
 <a class="st-card" href="../../tools/ridge-map/">
   <div class="st-card__art"><img src="../../assets/media/tools/ridge-map.webp?v=504cfe2fb6" srcset="../../assets/media/tools/ridge-map.webp?v=504cfe2fb6 720w, ../../assets/media/tools/ridge-map@2x.webp?v=cfdf200628 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
   <h3 class="st-card__name">Ridge Map</h3>
   <p class="st-card__desc">A tissue section as a relief of ridges, their height a gene or the cell density, their colour the most common cell type.</p>
 </a>
 </li>
-<li class="st-cell" data-id="smoothie" data-name="Smoothie" data-author="PointillViz authors" data-tags="spatial|genes|modules|co-expression|network|smoothing|figure" data-outputs="summary|table|images|files" data-published="2026-11-05" data-version="1.0.0">
+<li class="st-cell" data-id="smoothie" data-name="Smoothie" data-author="PointillViz authors" data-tags="spatial|genes|modules|co-expression|network|smoothing|figure" data-outputs="summary|table|images|files" data-published="2026-11-05" data-version="1.0.1">
 <a class="st-card" href="../../tools/smoothie/">
   <div class="st-card__art"><img src="../../assets/media/tools/smoothie.webp?v=7fe65d9fac" srcset="../../assets/media/tools/smoothie.webp?v=7fe65d9fac 720w, ../../assets/media/tools/smoothie@2x.webp?v=b0e9657d1a 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
   <h3 class="st-card__name">Smoothie</h3>

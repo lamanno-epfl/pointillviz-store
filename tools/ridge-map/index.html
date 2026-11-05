@@ -6,7 +6,7 @@
 <script>(function(d){try{var w=d.clientWidth||innerWidth;d.style.setProperty('--k',Math.min(Math.max(Math.min(w/1440,innerHeight/900),1),1.6).toFixed(4))}catch(e){}})(document.documentElement)</script>
 <meta name="theme-color" content="#06070D">
 <title>Ridge Map · The Tool Store · PointillViz</title>
-<meta name="description" content="A tissue section as a relief of ridges, their height a gene or the cell density, their colour the most common cell type. A PointillViz community tool, version 1.0.0.">
+<meta name="description" content="A tissue section as a relief of ridges, their height a gene or the cell density, their colour the most common cell type. A PointillViz community tool, version 1.0.1.">
 <meta name="robots" content="noindex">
 <link rel="canonical" href="https://store.pointillviz.com/tools/ridge-map/">
 <meta property="og:site_name" content="PointillViz">
@@ -88,7 +88,7 @@
         <h1 class="st-title st-top__name">Ridge Map</h1>
         <p class="st-top__desc">A tissue section as a relief of ridges, their height a gene or the cell density, their colour the most common cell type.</p>
         <div class="st-get">
-          <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/ridge-map-v1.0.0/ridge-map-1.0.0.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 36.2 kB</span></span></a>
+          <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/ridge-map-v1.0.1/ridge-map-1.0.1.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 35.1 kB</span></span></a>
           <p class="st-get__how"><span class="st-get__steps">In PointillViz: <b>Tools → Store → Install</b>, or <b>Install from file</b> with the download. </span><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How to install and run a tool</a></p>
           
           <p class="st-get__note">This runs as you: a tool is arbitrary code, with your privileges. <a class="pv-link" href="../../#safety">Safety note</a></p>
@@ -109,7 +109,7 @@
           <a class="st-tab" href="#outputs" data-view-link="outputs">Outputs</a>
         </nav>
         <button class="st-testbtn" id="test-summary-open" type="button" aria-haspopup="dialog" aria-controls="test-summary" data-state="pass">Tool test summary</button>
-        <a class="pv-btn pv-btn--primary st-bar__dl" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/ridge-map-v1.0.0/ridge-map-1.0.0.pvtool" download tabindex="-1"><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span>Download</span></a>
+        <a class="pv-btn pv-btn--primary st-bar__dl" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/ridge-map-v1.0.1/ridge-map-1.0.1.pvtool" download tabindex="-1"><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span>Download</span></a>
       </div>
     </div>
     <div class="st-wrap st-views__grid">
@@ -119,19 +119,17 @@
           <p class="st-question">How does a gene’s expression, or the density of cells, rise and fall across the section, and over which cell types?</p>
           <div class="st-md">
 <p>The tool cuts the section into horizontal strips and draws each one as a ridge, a joy plot laid over the tissue. Ridges are drawn from the back of the figure to its front, and each hides what stands behind it, so the tissue’s architecture reads as a relief.</p>
-<p>Every height and colour is measured around its place on the strip with a Gaussian of width <math translate="no"><mi>σ</mi></math>, so the strips are cross-sections of one smooth surface and a peak carries on from one strip to the next. A cell <math translate="no"><mi>j</mi></math> at distance <math translate="no"><msub><mi>d</mi><mi>j</mi></msub></math> from that place weighs <math translate="no"><msub><mi>w</mi><mi>j</mi></msub><mo>=</mo><mi>exp</mi><mrow><mo stretchy="false">(</mo><mo>−</mo><msubsup><mi>d</mi><mi>j</mi><mn>2</mn></msubsup><mo lspace="0" rspace="0">/</mo><mn>2</mn><msup><mi>σ</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow></math>, by its true position, so a regular lattice of pixels draws flat. With <math translate="no"><msub><mi>a</mi><mi>j</mi></msub></math> its expression in log1p(CP10K), the height is the gene’s local mean:</p>
+<p>Every height and colour is measured around its place on the strip with a Gaussian of width <math translate="no"><mi>σ</mi></math>, so the strips are cross-sections of one smooth surface. A cell <math translate="no"><mi>j</mi></math> at distance <math translate="no"><msub><mi>d</mi><mi>j</mi></msub></math> weighs <math translate="no"><msub><mi>w</mi><mi>j</mi></msub><mo>=</mo><mi>exp</mi><mrow><mo stretchy="false">(</mo><mo>−</mo><msubsup><mi>d</mi><mi>j</mi><mn>2</mn></msubsup><mo lspace="0" rspace="0">/</mo><mn>2</mn><msup><mi>σ</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow></math>. With <math translate="no"><msub><mi>a</mi><mi>j</mi></msub></math> its expression in log1p(CP10K), the height is the gene’s local mean:</p>
 <div class="st-formula" role="img" aria-label="h(x, y) = (sum over j of w_j a_j) / (sum over j of w_j)"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>h</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><msub><mi>a</mi><mi>j</mi></msub></mrow><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub></mrow></mfrac></math></span></span></div></div>
 <p>With no gene chosen, it is the local cell density:</p>
 <div class="st-formula" role="img" aria-label="h(x, y) = (sum over j of w_j) / (2πσ^2)"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>h</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub></mrow><mrow><mn>2</mn><mi>π</mi><msup><mi>σ</mi><mn>2</mn></msup></mrow></mfrac></math></span></span></div></div>
-<p><strong>Figure.</strong> The section keeps its proportions and the orientation of the map.</p>
-<ul><li><strong>Height.</strong> The tallest ridge stands <em>Relief</em> strip heights tall. The bar in the key shows a round value at its true height, and it applies to every ridge. A gene’s height is on a log scale: a ridge twice as tall is far more than twice the expression. The figures of one run share one scale, but two runs do not: compare them by their bars.</li><li><strong>Place.</strong> A peak stands behind its baseline: it rises up the figure from its own strip and overlaps the strips further back. A place on the tissue is where its ridge starts, not the top of the peak.</li><li><strong>Colour.</strong> Each stretch of a ridge takes the map’s colour of the cell type with the most cells around it, counted with the same weights. It says which cell type is most common at that place, not which cells express the gene. A colour with less than 3:1 contrast on black is lightened just enough, keeping its hue, and the summary says so. A stretch shorter than 5 px takes the colour of its longer neighbour, at any number of strips. The soft glow under a ridge is the same colour, brighter the higher the ridge stands within its stretch of tissue, and adds no measurement.</li><li><strong>Edges.</strong> A ridge is drawn where the Gaussian holds at least 10% of what it holds around the section’s typical cell. Along the strip, it comes down to its baseline over 3<math translate="no"><mi>σ</mi></math> at each end, where the tissue stops, so gaps and tears stay black, and the heights in that margin are lower than measured. Patches holding fewer than 0.05% of the section’s cells are taken for strays and not drawn. So are cells far outside the section, past an empty gap as wide as the middle 90% of the section, and they do not change the figure’s scale. A distant piece holding more than 5% of the cells counts as tissue.</li></ul>
-<p><strong>Cells that say nothing.</strong> A cell with no coordinates cannot be drawn. A cell whose section did not measure the gene is left out as well: it does not count as zero, and a section that did not measure the gene draws no figure. Cells with no cell type count toward the height but not the colours; a stretch with no labelled cell around it is grey, named Unlabelled in the key. The summary gives their number when a grey stretch is drawn, or when they reach 1% of the cells drawn.</p>
-<p><strong>Sections and selections.</strong> Each section draws its own figure, up to the 8 largest, at one scale of length, strip height and ridge height, and names itself in its key. Isolate a section to draw only that one. With cells selected, only they are drawn, and the figure closes in on them.</p>
-<p><strong>Outputs.</strong> The figure, the same figure as an SVG download, and a summary: the cells and strips drawn, the scale of this run, and the cell types over which the ridges stand tallest on average. It counts the cells not drawn, by reason: no coordinates, gene not measured, far outside the section, in a section left out, sparse or stray. It also counts the cell types present but not drawn, because none is the most common over a long enough stretch, and names them when there are at most five.</p>
-<h3>Limitations</h3>
-<p>The figure is for reading the shape of a tissue, not for testing it: no height carries a significance. Tall ridges hide what stands behind them, so a low signal next to a high one can be out of sight; lower the relief, or read the place on the map.</p>
-<p>Colour shows only the most common cell type, so a rare type can be present and never be drawn.</p>
-<p>The tool needs 2D coordinates and a cell-type annotation. A 3D dataset is not offered it.</p>
+<p><strong>Height.</strong> The bar in the key shows a round value at its true height. A gene’s height is on a log scale, and two runs do not share a scale, so compare them by their bars.</p>
+<p><strong>Place.</strong> A peak rises up the figure from its own strip, so a place on the tissue is where its ridge starts, not the top of the peak.</p>
+<p><strong>Colour.</strong> Each stretch of a ridge takes the map’s colour of the cell type with the most cells around it. It says which cell type is most common at that place, not which cells express the gene, so a rare type can be present and never be drawn.</p>
+<p><strong>Edges.</strong> A ridge comes down to its baseline where the tissue stops, so gaps and tears stay black. Cells far outside the section and small stray patches are not drawn, and the summary counts them.</p>
+<p><strong>Sections and selections.</strong> Each section draws its own figure, up to the 8 largest, at one scale. Isolate a section to draw only that one. With cells selected, only they are drawn. A cell whose section did not measure the gene is left out, not counted as zero.</p>
+<p><strong>Outputs.</strong> The figure, the same figure as an SVG download, and a summary of what was drawn and what was not.</p>
+<p>The figure is for reading the shape of a tissue, not for testing it: no height carries a significance, and tall ridges can hide a low signal behind them. The tool needs 2D coordinates and a cell-type annotation.</p>
           </div>
           
         </section>
@@ -166,7 +164,7 @@ Larger values draw calmer ridges and longer stretches of one colour.</span></td>
 </tr>
 </tbody>
 </table>
-          <details class="st-fold"><summary class="st-fold__sum">More on these parameters, from the readme<svg class="st-fold__chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg></summary><div class="st-md st-fold__body"><ul><li><strong>Gene.</strong> Sets the height of the ridges. With no gene chosen, the height is the cell density.</li><li><strong>Strips.</strong> How many strips the section is cut into. Fewer are cut when each would hold fewer than 15 cells on average, when they would lie closer than 2.5 px, or when the figures would still not fit the 8 MiB output limit with fewer points on each ridge and longer stretches of one colour. The limit is measured on the figures themselves, and the summary says when this happens. A strip with no tissue in it draws no ridge.</li><li><strong>Relief.</strong> How tall the tallest ridge stands, in strip heights, up to half the figure’s height.</li><li><strong>Smoothing.</strong> The width <math translate="no"><mi>σ</mi></math> of the Gaussian, in strip heights. It widens by itself when it would hold fewer than 5 cells on average, or when it would be narrower than the figure can draw, and the summary says so.</li></ul></div></details>
+          
         </section>
         <section class="st-panel" id="outputs" aria-labelledby="outputs-h">
           <h2 class="st-panel__h" id="outputs-h">Outputs</h2>
@@ -176,7 +174,7 @@ Larger values draw calmer ridges and longer stretches of one colour.</span></td>
       </div>
       <aside class="st-facts" aria-labelledby="facts-h">
         <h2 class="pv-sr-only" id="facts-h">Details</h2>
-        <dl class="st-facts__list"><div class="st-facts__row"><dt>Author</dt><dd>PointillViz authors</dd></div><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__num" translate="no">1.0.0</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-11-04">4 Nov 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Language</dt><dd>Python</dd></div><div class="st-facts__row"><dt>GPU</dt><dd>Not used</dd></div><div class="st-facts__row"><dt>Needs</dt><dd>cell types<br>2D coordinates<br>200+ cells</dd></div></dl>
+        <dl class="st-facts__list"><div class="st-facts__row"><dt>Author</dt><dd>PointillViz authors</dd></div><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__num" translate="no">1.0.1</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-11-05">5 Nov 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Language</dt><dd>Python</dd></div><div class="st-facts__row"><dt>GPU</dt><dd>Not used</dd></div><div class="st-facts__row"><dt>Needs</dt><dd>cell types<br>2D coordinates<br>200+ cells</dd></div></dl>
         <p class="st-facts__src"><a class="pv-link" href="https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/ridge-map">Source in the public registry<svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-external"/></svg></a></p>
       </aside>
     </div>
@@ -192,11 +190,11 @@ Larger values draw calmer ridges and longer stretches of one colour.</span></td>
 <ol class="st-gates">
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">bundle</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">6 files, 36.2 kB packed and 166.4 kB unpacked, plugin.json at the root.</p>
+  <p class="st-gate__msg">6 files, 35.1 kB packed and 163.3 kB unpacked, plugin.json at the root.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">manifest</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">ridge-map 1.0.0 by PointillViz authors; Python entry tool.py, outputs summary, images, files.</p>
+  <p class="st-gate__msg">ridge-map 1.0.1 by PointillViz authors; Python entry tool.py, outputs summary, images, files.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">environment</code><span class="st-gate__word">pass</span></p>
@@ -204,7 +202,7 @@ Larger values draw calmer ridges and longer stretches of one colour.</span></td>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">entry</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">tool.py imported in 0.17 s and defines run(ds, params).</p>
+  <p class="st-gate__msg">tool.py imported in 0.20 s and defines run(ds, params).</p>
 </li>
 <li class="st-gate" data-state="pass" data-adv>
   <p class="st-gate__head"><code class="st-gate__name" translate="no">imports</code> <span class="st-gate__adv">advisory</span><span class="st-gate__word">pass</span></p>
@@ -212,7 +210,7 @@ Larger values draw calmer ridges and longer stretches of one colour.</span></td>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">fixture</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">ran on the 600-cell fixture in 0.14 s, returning summary, files, images.</p>
+  <p class="st-gate__msg">ran on the 600-cell fixture in 0.18 s, returning summary, files, images.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">result</code><span class="st-gate__word">pass</span></p>
@@ -220,7 +218,7 @@ Larger values draw calmer ridges and longer stretches of one colour.</span></td>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">edge</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">ran at the minimum corner (relief=1.0, smoothing=0.25, strips=20) in 0.14 s; ran at the maximum corner (relief=30.0, smoothing=3.0, strips=300) in 0.21 s.</p>
+  <p class="st-gate__msg">ran at the minimum corner (relief=1.0, smoothing=0.25, strips=20) in 0.17 s; ran at the maximum corner (relief=30.0, smoothing=3.0, strips=300) in 0.25 s.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">no_mutation</code><span class="st-gate__word">pass</span></p>
@@ -235,7 +233,7 @@ Larger values draw calmer ridges and longer stretches of one colour.</span></td>
     <div class="st-wrap">
       <h2 class="st-more__h" id="more-h">More tools</h2>
       <ul class="st-grid">
-<li class="st-cell" data-id="celltype-contact-network" data-name="Cell-type contact network" data-author="PointillViz authors" data-tags="spatial|cell types|contacts|neighbours|network|enrichment|figure" data-outputs="summary|images|table|files" data-published="2026-11-05" data-version="1.0.1">
+<li class="st-cell" data-id="celltype-contact-network" data-name="Cell-type contact network" data-author="PointillViz authors" data-tags="spatial|cell types|contacts|neighbours|network|enrichment|figure" data-outputs="summary|images|table|files" data-published="2026-11-05" data-version="1.0.2">
 <a class="st-card" href="../../tools/celltype-contact-network/">
   <div class="st-card__art"><img src="../../assets/media/tools/celltype-contact-network.webp?v=db7af568c4" srcset="../../assets/media/tools/celltype-contact-network.webp?v=db7af568c4 720w, ../../assets/media/tools/celltype-contact-network@2x.webp?v=d954fa7ca0 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
   <h3 class="st-card__name">Cell-type contact network</h3>
