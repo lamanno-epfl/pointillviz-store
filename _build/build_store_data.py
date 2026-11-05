@@ -632,10 +632,16 @@ def is_mathy(s: str) -> bool:
 
 # \left and \right only size a bracket in LaTeX. Here a bracket always fits what it holds, so the bracket stays and they go.
 SIZING = re.compile(r"\\(?:left|right)(?=[(\[|.)\]])")
+# \log and its kin are plain words here, which the parser already sets upright.
+NAMED = re.compile(r"\\(log|ln|exp|min|max|sin|cos|tan)(?![A-Za-z])")
+
+
+def _plain_tex(src: str) -> str:
+    return NAMED.sub(r"\1", SIZING.sub("", src))
 
 
 def math_inline(src: str) -> str:
-    return f"<math>{_mml_list(_parse(SIZING.sub('', src)), False)}</math>"
+    return f"<math>{_mml_list(_parse(_plain_tex(src)), False)}</math>"
 
 
 def _pieces(nodes: list) -> list:
@@ -692,7 +698,7 @@ def formula_block(src: str) -> str:
     """A display formula. READMEs separate the equations of a formula line with
     runs of spaces; each equation is split again at its top-level relations, and
     the parts wrap on a narrow screen. Screen readers get the formula as text."""
-    eqs = [t.strip() for t in re.split(r"\s{3,}", SIZING.sub("", src).strip()) if t.strip()]
+    eqs = [t.strip() for t in re.split(r"\s{3,}", _plain_tex(src).strip()) if t.strip()]
     arrows = ("⟶", "→")
     lins = []
     for k, e in enumerate(eqs):

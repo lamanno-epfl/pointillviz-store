@@ -1,7 +1,7 @@
 {
  "schema": 2,
  "source": "the PointillViz tool registry's index.json, latest version of each tool",
- "count": 16,
+ "count": 17,
  "gate_order": [
   "bundle",
   "manifest",
@@ -16,15 +16,23 @@
  "tags": [
   {
    "tag": "spatial",
-   "count": 15
+   "count": 16
   },
   {
    "tag": "cell types",
-   "count": 10
+   "count": 11
   },
   {
    "tag": "expression",
    "count": 4
+  },
+  {
+   "tag": "enrichment",
+   "count": 3
+  },
+  {
+   "tag": "figure",
+   "count": 3
   },
   {
    "tag": "clustering",
@@ -39,14 +47,6 @@
    "count": 2
   },
   {
-   "tag": "enrichment",
-   "count": 2
-  },
-  {
-   "tag": "figure",
-   "count": 2
-  },
-  {
    "tag": "genes",
    "count": 2
   },
@@ -56,6 +56,10 @@
   },
   {
    "tag": "neighbourhood",
+   "count": 2
+  },
+  {
+   "tag": "network",
    "count": 2
   },
   {
@@ -87,6 +91,10 @@
    "count": 1
   },
   {
+   "tag": "contacts",
+   "count": 1
+  },
+  {
    "tag": "domains",
    "count": 1
   },
@@ -115,7 +123,7 @@
    "count": 1
   },
   {
-   "tag": "network",
+   "tag": "neighbours",
    "count": 1
   },
   {
@@ -159,15 +167,23 @@
   "tags": [
    {
     "tag": "spatial",
-    "count": 15
+    "count": 16
    },
    {
     "tag": "cell types",
-    "count": 10
+    "count": 11
    },
    {
     "tag": "expression",
     "count": 4
+   },
+   {
+    "tag": "enrichment",
+    "count": 3
+   },
+   {
+    "tag": "figure",
+    "count": 3
    },
    {
     "tag": "clustering",
@@ -182,14 +198,6 @@
     "count": 2
    },
    {
-    "tag": "enrichment",
-    "count": 2
-   },
-   {
-    "tag": "figure",
-    "count": 2
-   },
-   {
     "tag": "genes",
     "count": 2
    },
@@ -199,6 +207,10 @@
    },
    {
     "tag": "neighbourhood",
+    "count": 2
+   },
+   {
+    "tag": "network",
     "count": 2
    },
    {
@@ -239,12 +251,12 @@
    },
    {
     "out": "images",
-    "count": 3,
+    "count": 4,
     "help": "returns figures"
    },
    {
     "out": "files",
-    "count": 4,
+    "count": 5,
     "help": "returns files to download"
    }
   ]
@@ -253,6 +265,184 @@
   "summary"
  ],
  "tools": [
+  {
+   "id": "celltype-contact-network",
+   "name": "Cell-type contact network",
+   "version": "1.0.0",
+   "author": "PointillViz authors",
+   "description": "Which cell types touch which, from a Delaunay triangulation of the cells, as a network and a matrix corrected for abundance.",
+   "readme_html": "<p>Answers the question: <strong>Which cell types touch which, and which of those contacts are more common, or rarer, than the types’ abundance predicts?</strong></p>\n<p>The tool triangulates each section’s cells with a Delaunay triangulation, from triangles in 2D and tetrahedra in 3D, and counts every edge as one contact between two neighbouring cells. No contact crosses sections.</p>\n<p><strong>The contact matrix.</strong> For each cell, the tool tallies the types of its neighbours, and adds the tallies up by type into a count matrix <math translate=\"no\"><mi>C</mi></math>. <math translate=\"no\"><mi>C</mi></math> is symmetric, and a contact between two cells of one type counts twice on the diagonal, once from each cell. Each row is then normalised:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"W_(ij) = (C_(ij)) / (sum over k of C_(ik))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><msub><mi>W</mi><mi>ij</mi></msub></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><msub><mi>C</mi><mi>ij</mi></msub><mrow><munder><mo>∑</mo><mi>k</mi></munder><msub><mi>C</mi><mi>ik</mi></msub></mrow></mfrac></math></span></span></div></div>\n<p><math translate=\"no\"><msub><mi>W</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math> is the fraction of type <math translate=\"no\"><mi>i</mi></math>‘s contacts that are with type <math translate=\"no\"><mi>j</mi></math>. Each row sums to 1, and <math translate=\"no\"><mi>W</mi></math> is not symmetric, because <em>i → j</em> and <em>j → i</em> are divided by different totals. A common type touches everything simply because it is everywhere, so the enrichment corrects for abundance:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"E_(ij) = log_2 (W_(ij) + 10^(-4)) / (p_j + 10^(-4))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><msub><mi>E</mi><mi>ij</mi></msub></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mfrac><mrow><msub><mi>W</mi><mi>ij</mi></msub><mo>+</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup></mrow><mrow><msub><mi>p</mi><mi>j</mi></msub><mo>+</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup></mrow></mfrac></math></span></span></div></div>\n<p><math translate=\"no\"><msub><mi>p</mi><mi>j</mi></msub></math> is the fraction of all cells that are type <math translate=\"no\"><mi>j</mi></math>. <math translate=\"no\"><mi>E</mi></math> &gt; 0 means <math translate=\"no\"><mi>i</mi></math> touches <math translate=\"no\"><mi>j</mi></math> more than <math translate=\"no\"><mi>j</mi></math>‘s abundance predicts, and <math translate=\"no\"><mi>E</mi></math> &lt; 0 less.</p>\n<p><strong>Several sections.</strong> <math translate=\"no\"><mi>W</mi></math> is computed for each section. To pool them, each row is averaged across the sections, weighted by how many cells of type <math translate=\"no\"><mi>i</mi></math> each section has, and a section where type <math translate=\"no\"><mi>i</mi></math> is absent or has no contact is skipped. <math translate=\"no\"><mi>E</mi></math> then uses the pooled <math translate=\"no\"><mi>W</mi></math> and the fraction of all the run’s cells that are type <math translate=\"no\"><mi>j</mi></math>.</p>\n<p>On a Xenium section of the mouse maternal–fetal interface (235,803 cells, 19 types), pairs of types in one layer of the tissue average <math translate=\"no\"><mi>E</mi></math> = +0.63, and pairs in different layers −3.12. The myometrium gives the labyrinth’s first syncytiotrophoblast layer 0.06% of its contacts (<math translate=\"no\"><mi>E</mi></math> = −6.9).</p>\n<h3>What you get</h3>\n<p><strong>The network.</strong></p>\n<ul><li><strong>Nodes.</strong> One per cell type, at most the number the form asks for, the most abundant first. A node’s radius grows as the square root of its cells, so its area grows with them, down to a smallest size for the rarest types. The largest node takes the size the figure has room for in this run, so compare nodes with the scale in the key. A node keeps the type’s colour on the map, and its name stands beside it.</li><li><strong>Places.</strong> A node’s place comes from a force-directed layout of the whole dataset’s pooled contacts, with no distance limit, whatever is isolated, selected or set in the form. So a type stands in the same place in every run on one annotation, and a type that is absent from a run simply has no node there.</li><li><strong>Arrows.</strong> An arrow <em>i → j</em> is drawn where <math translate=\"no\"><msub><mi>W</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math> reaches the cutoff. Its width grows as √<math translate=\"no\"><mi>W</mi></math>, and its colour is <math translate=\"no\"><mi>E</mi></math>, from blue (depleted) to red (enriched), the same for ±3 and beyond. The two directions of a pair are separate curved lines, each bending to its own right of travel, and they usually differ: read each arrow from the type whose share it is.</li><li><strong>Rings.</strong> The ring around a node is its self-contact: the further the ring stands from the node, the larger <math translate=\"no\"><msub><mi>W</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></math>. Its colour is <math translate=\"no\"><msub><mi>E</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></math>. No ring means no contact within the type.</li></ul>\n<p><strong>The matrix.</strong> The same <math translate=\"no\"><mi>W</mi></math> and <math translate=\"no\"><mi>E</mi></math>, with no cutoff, for the same types. Each square’s colour is <math translate=\"no\"><mi>E</mi></math>, on the same scale, and its number is <math translate=\"no\"><mi>W</mi></math> in percent, from 1% up, for as long as the squares are large enough to hold numbers. Grey means no contact (<math translate=\"no\"><mi>W</mi></math> = 0), and the outlined diagonal holds the self-contacts. A row shows what that type touches, and a column what touches it. Each row of <math translate=\"no\"><mi>W</mi></math> sums to 100% over all the types, shown or not, so the numbers in a row can fall short of it.</p>\n<p>Rows and columns share one order, which seats types with similar contacts together: hierarchical clustering (average linkage) of (<math translate=\"no\"><mi>W</mi></math> + <math translate=\"no\"><mi>W</mi></math>ᵀ) / 2, its leaves ordered. Rows are compared by whom they touch, whatever their scale: each is scaled to length 1, and its diagonal counts no more than its largest other share. The order follows this run’s <math translate=\"no\"><mi>W</mi></math>, so it can differ from one section to another.</p>\n<p><strong>Table.</strong> Every contact between the types shown, largest <math translate=\"no\"><mi>E</mi></math> first: <math translate=\"no\"><mi>W</mi></math> in percent, <math translate=\"no\"><mi>E</mi></math> and <math translate=\"no\"><mi>C</mi></math>.</p>\n<p><strong>Downloads.</strong></p>\n<ul><li><code translate=\"no\">contact-network.svg</code> and <code translate=\"no\">contact-matrix.svg</code>: the two figures.</li><li><code translate=\"no\">contact-matrices.csv</code>: one row per ordered pair of types in contact, for every type, shown or not, with <code translate=\"no\">section</code>, <code translate=\"no\">from</code>, <code translate=\"no\">to</code>, <code translate=\"no\">C</code>, <code translate=\"no\">W</code> and <code translate=\"no\">E</code>. A pair that is not listed has no contact. With several sections, the rows of <code translate=\"no\">pooled</code> come first, where <code translate=\"no\">C</code> is the sum over the sections, and then those of each section, unless they would not fit the output limit; the summary says so, and isolating a section gives its own.</li><li><code translate=\"no\">contact-types.csv</code>: one row per type present, with its <code translate=\"no\">cells</code>, its <code translate=\"no\">fraction</code> <math translate=\"no\"><mi>p</mi></math>, its <code translate=\"no\">contacts</code> (the row’s sum of <math translate=\"no\"><mi>C</mi></math>), and <code translate=\"no\">network_x</code> and <code translate=\"no\">network_y</code>, its place in the figure in px.</li></ul>\n<p>A CSV of more than 1 MB is gzipped (<code translate=\"no\">.csv.gz</code>), which <code translate=\"no\">pandas</code> and R read as they are.</p>\n<p><strong>Summary.</strong> The cells, contacts and arrows of this run, the lengths of the contacts, the most enriched and depleted arrows, and what was left out and why.</p>\n<h3>Parameters</h3>\n<ul><li><strong>Cell-type column.</strong> The annotation whose groups are the nodes: cell types, unless the dataset has none or you choose another column.</li><li><strong>Longest contact (microns).</strong> Drops contacts longer than this, so that cells across a gap do not count as touching. 0, the default, keeps every contact. A dataset in µm or mm is used as it stands, and one in pixels through the pixel size of an image layer that covers its cells. A dataset that records no physical size reads this value in its own coordinates, and the figures and the summary say so. The summary gives the median contact, as a guide. On a cell-segmented section it is about 8 to 14 µm, and about 1 to 3% of the contacts are longer than three times that.</li><li><strong>Arrow cutoff (%).</strong> The smallest <math translate=\"no\"><mi>W</mi></math> that gets an arrow, 4% by default. Only the arrows follow it, not the matrix, the table or the downloads. Above every share, the figure says what the largest share is.</li><li><strong>Cell types shown.</strong> How many of the most abundant types are shown, 30 by default, in the network, the matrix and the table. The others still count in every share, and the downloads hold them.</li></ul>\n<p>Nothing else is a choice: the layout has no seed, and the same contacts give the same places.</p>\n<h3>Sections and selections</h3>\n<p><strong>Sections.</strong> Each section is triangulated on its own, so two sections that share coordinates, or sit side by side on the canvas, never touch. With nothing isolated, the figures pool every section. Isolate a section for its own figures, in the same places. A section with too few cells for a triangulation, or with all its cells stacked or on one line or plane, is left out, and the summary names it; with no other section, the tool refuses and says why.</p>\n<p><strong>Selections.</strong> With cells selected, the run counts only the contacts between two selected cells, over the triangulation of the whole section, so the outline of a selection invents no contact and hides none between the cells it holds. The cell counts and <math translate=\"no\"><mi>p</mi></math> are then those of the selected cells.</p>\n<p><strong>Cells with no type, or no place.</strong> A cell with no coordinates is left out. A cell with no level of the column stays in the triangulation, so that its neighbours do not touch across it, and its contacts are not counted. <math translate=\"no\"><mi>p</mi></math> counts only the cells with a type.</p>\n<p><strong>Stacked cells.</strong> Qhull sets aside a cell that sits exactly on another. It touches that one cell, and no other.</p>\n<p><strong>The layout.</strong> It is computed once per dataset and annotation, from every section, and is kept in the dataset’s <code translate=\"no\">plugin_cache/</code> folder, the one place a tool may write in a dataset, in a small file named after a hash of the positions and the types. If it cannot be written, each run computes the layout again, and it comes out the same.</p>\n<h3>Limitations</h3>\n<p><strong>Delaunay edges are geometric neighbours, not measured contact.</strong> Two cells joined by an edge have no other cell between them, as far as their centres say. They need not touch: the triangulation knows no membranes, and each cell has about 6 neighbours in 2D and about 15 in 3D, whatever its real surroundings. A section’s cells are centres in a thin slice, and a section cannot show the cells above and below it.</p>\n<p><strong>Long edges cross gaps.</strong> The triangulation fills the whole convex hull of a section, so cells on either side of a hole, a tear or a bay of empty slide are joined, unless a limit is set. These edges are few, but on small sections and rare types they can matter.</p>\n<p><strong>E is a descriptive ratio.</strong> It has no p-value and no confidence interval. A type of a few cells can reach any <math translate=\"no\"><mi>E</mi></math> by chance, so read it with its number of contacts, <math translate=\"no\"><mi>C</mi></math>, in the table. The pseudocount of 10⁻⁴ keeps <math translate=\"no\"><mi>E</mi></math> finite and limits it for types rarer than about 0.01%. Sections pool by the abundance in the whole run, so a type confined to one section looks enriched against the pool wherever its neighbours are confined to the same section.</p>\n<p><strong>The figures show the most abundant types.</strong> A rare type’s contacts are in the downloads, and it can be shown by raising the number of types or isolating a section.</p>\n<p><strong>The annotation decides what can be seen.</strong> A column with a single group in each section, such as a tissue label on a tissue microarray, has no contacts between groups, and the tool says so rather than draw an empty network. A column of more than 1,000 groups is refused.</p>\n<p><strong>Cost.</strong> On a shared server, a section of 235,803 cells takes about 2 s and 0.25 GB, and one of 465,534 cells about 4 s and 0.4 GB. 708,889 cells in 9 sections take about 5 s and 0.4 GB, and one of those sections under 2 s. A 3D section of 108,486 cells takes about 6 s and 0.4 GB. The first run on a dataset and annotation adds the layout: about 1 s at 20 types, and about 7 s at 300.</p>",
+   "citation": "",
+   "tags": [
+    "spatial",
+    "cell types",
+    "contacts",
+    "neighbours",
+    "network",
+    "enrichment",
+    "figure"
+   ],
+   "icon": "hub",
+   "language": "python",
+   "language_label": "Python",
+   "gpu": null,
+   "gpu_label": "",
+   "parameters": [
+    {
+     "name": "field",
+     "label": "Cell-type column",
+     "type": "categorical_field",
+     "default": null,
+     "optional": true,
+     "help": "Selects the annotation whose groups are the network’s nodes.\nCell types, unless the dataset has none or you choose another column.",
+     "type_text": "categorical_field",
+     "default_text": "optional"
+    },
+    {
+     "name": "max_distance",
+     "label": "Longest contact (microns)",
+     "type": "float",
+     "default": 0,
+     "optional": false,
+     "help": "Drops contacts longer than this, so that cells across a gap do not count as touching.\n0 keeps every contact. In the dataset’s own coordinates when it records no physical size.",
+     "min": 0.0,
+     "max": 500.0,
+     "step": 0.5,
+     "type_text": "float, 0–500",
+     "default_text": "0"
+    },
+    {
+     "name": "cutoff",
+     "label": "Arrow cutoff (%)",
+     "type": "float",
+     "default": 4,
+     "optional": false,
+     "help": "Draws an arrow from one type to another only when at least this share of the first type’s contacts are with the second.\nThe matrix has no cutoff.",
+     "min": 0.5,
+     "max": 50.0,
+     "step": 0.5,
+     "type_text": "float, 0.5–50",
+     "default_text": "4"
+    },
+    {
+     "name": "max_types",
+     "label": "Cell types shown",
+     "type": "int",
+     "default": 30,
+     "optional": false,
+     "help": "Shows only this many of the most abundant types, in the network and in the matrix.\nThe others still count in every share, and the download holds them all.",
+     "min": 5.0,
+     "max": 60.0,
+     "step": 1.0,
+     "type_text": "int, 5–60",
+     "default_text": "30"
+    }
+   ],
+   "sweep": null,
+   "outputs": [
+    "summary",
+    "images",
+    "table",
+    "files"
+   ],
+   "optional_outputs": [],
+   "output_help": {
+    "summary": "writes a summary",
+    "images": "returns figures",
+    "table": "returns a table",
+    "files": "returns files to download"
+   },
+   "requires": {
+    "genes": false,
+    "cell_types": false,
+    "categoricals": true,
+    "spatial": "any",
+    "min_cells": 20
+   },
+   "needs": [
+    "a categorical column",
+    "20+ cells"
+   ],
+   "license": "MIT",
+   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/celltype-contact-network-v1.0.0/celltype-contact-network-1.0.0.pvtool",
+   "bundle_size": "38.5 kB",
+   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/celltype-contact-network",
+   "published": "2026-11-05",
+   "published_date": "5 Nov 2026",
+   "gates": [
+    {
+     "id": "bundle",
+     "required": true,
+     "status": "pass",
+     "message": "6 files, 38.5 kB packed and 134.1 kB unpacked, plugin.json at the root."
+    },
+    {
+     "id": "manifest",
+     "required": true,
+     "status": "pass",
+     "message": "celltype-contact-network 1.0.0 by PointillViz authors; Python entry tool.py, outputs summary, images, table, files."
+    },
+    {
+     "id": "environment",
+     "required": true,
+     "status": "pass",
+     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
+    },
+    {
+     "id": "entry",
+     "required": true,
+     "status": "pass",
+     "message": "tool.py imported in 0.24 s and defines run(ds, params)."
+    },
+    {
+     "id": "imports",
+     "required": false,
+     "status": "warn",
+     "message": "this tool uses filesystem_write — os.makedirs() at tool.py:462; numpy.savez() at tool.py:463; os.replace() at tool.py:464 (+1 more). None of it is blocked: a tool is arbitrary code run with the privileges of whoever started PointillViz, so this is disclosure for a human to weigh, not a sandbox."
+    },
+    {
+     "id": "fixture",
+     "required": true,
+     "status": "pass",
+     "message": "ran on the 600-cell fixture in 0.21 s, returning summary, table, files, images."
+    },
+    {
+     "id": "result",
+     "required": true,
+     "status": "pass",
+     "message": "returned the declared outputs: summary, table, files, images."
+    },
+    {
+     "id": "edge",
+     "required": true,
+     "status": "pass",
+     "message": "ran at the minimum corner (cutoff=0.5, max_types=5) in 0.18 s; ran at the maximum corner (cutoff=50.0, max_distance=500.0, max_types=60) in 0.16 s."
+    },
+    {
+     "id": "no_mutation",
+     "required": true,
+     "status": "pass",
+     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
+    }
+   ],
+   "risks": [
+    {
+     "kind": "filesystem_write",
+     "label": "writes files",
+     "text": "writes to the filesystem"
+    }
+   ],
+   "art": {
+    "src": "assets/media/tools/celltype-contact-network.webp?v=db7af568c4",
+    "src2x": "assets/media/tools/celltype-contact-network@2x.webp?v=d954fa7ca0",
+    "width": 720,
+    "height": 420,
+    "alt": "A network of coloured nodes, each inside a ring, joined by pairs of curved arrows from blue to red. An illustration, not a real tissue.",
+    "generated": false
+   },
+   "social": "assets/media/social/celltype-contact-network.jpg",
+   "url": "tools/celltype-contact-network/"
+  },
   {
    "id": "smoothie",
    "name": "Smoothie",
