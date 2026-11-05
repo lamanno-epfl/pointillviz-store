@@ -1,7 +1,7 @@
 {
  "schema": 2,
  "source": "the PointillViz tool registry's index.json, latest version of each tool",
- "count": 16,
+ "count": 17,
  "gate_order": [
   "bundle",
   "manifest",
@@ -16,11 +16,11 @@
  "tags": [
   {
    "tag": "spatial",
-   "count": 15
+   "count": 16
   },
   {
    "tag": "cell types",
-   "count": 10
+   "count": 11
   },
   {
    "tag": "expression",
@@ -52,6 +52,10 @@
   },
   {
    "tag": "network",
+   "count": 2
+  },
+  {
+   "tag": "niches",
    "count": 2
   },
   {
@@ -119,11 +123,11 @@
    "count": 1
   },
   {
-   "tag": "neighbours",
+   "tag": "neighbourhoods",
    "count": 1
   },
   {
-   "tag": "niches",
+   "tag": "neighbours",
    "count": 1
   },
   {
@@ -136,6 +140,10 @@
   },
   {
    "tag": "qc",
+   "count": 1
+  },
+  {
+   "tag": "R",
    "count": 1
   },
   {
@@ -163,11 +171,11 @@
   "tags": [
    {
     "tag": "spatial",
-    "count": 15
+    "count": 16
    },
    {
     "tag": "cell types",
-    "count": 10
+    "count": 11
    },
    {
     "tag": "expression",
@@ -200,6 +208,10 @@
    {
     "tag": "network",
     "count": 2
+   },
+   {
+    "tag": "niches",
+    "count": 2
    }
   ],
   "outputs": [
@@ -210,7 +222,7 @@
    },
    {
     "out": "labels",
-    "count": 1,
+    "count": 2,
     "help": "paints categories on the spatial view"
    },
    {
@@ -220,7 +232,7 @@
    },
    {
     "out": "matrix",
-    "count": 6,
+    "count": 7,
     "help": "returns a heatmap"
    },
    {
@@ -240,7 +252,7 @@
    },
    {
     "out": "files",
-    "count": 5,
+    "count": 6,
     "help": "returns files to download"
    }
   ]
@@ -885,6 +897,180 @@
    },
    "social": "assets/media/social/ridge-map.jpg",
    "url": "tools/ridge-map/"
+  },
+  {
+   "id": "seurat-niches",
+   "name": "Seurat niches",
+   "version": "1.0.0",
+   "author": "PointillViz reference tools",
+   "description": "Tissue niches from the cell types around each cell, imported from the authors’ own Seurat package.",
+   "readme_html": "<p>Answers the question: <strong>Which neighbourhoods of cell types does the tissue divide into?</strong></p>\n<p>The tool runs the niche analysis of <a class=\"pv-link\" href=\"https://satijalab.org/seurat/\" rel=\"noopener noreferrer nofollow\">Seurat</a> (Hao et al., <em>Nature Biotechnology</em> 2024) with the authors’ own R package, <strong>imported from conda-forge as they ship it</strong> (<code translate=\"no\">r-seurat</code> 5.5.1). It calls <code translate=\"no\">BuildNicheAssay</code> as their <a class=\"pv-link\" href=\"https://satijalab.org/seurat/articles/seurat5_spatial_vignette_2\" rel=\"noopener noreferrer nofollow\">Xenium vignette</a> does, with their values, and holds no copy of their method. The function:</p>\n<ol><li>finds each cell’s nearest cells;</li><li>counts the cell types among them and scales those counts;</li><li>groups cells with similar surroundings into niches with k-means, keeping the best of 30 random starts.</li></ol>\n<p>The authors credit Goltsev et al. (<em>Cell</em> 2018) and He et al. (<em>Nature Biotechnology</em> 2022) as its inspiration. Only cell types and positions enter, not expression.</p>\n<p>Called directly with the real counts in the object, with no code of this tool, the function gives the same niches, cell for cell, on a Xenium 5K mouse colon section of 135,231 cells. Asked for 8 niches there, it separates smooth muscle, the layers of enterocytes and goblet cells, and a small niche of lymphoid aggregates (0.7% of cells: dendritic cells and ILC3s).</p>\n<p><strong>Map.</strong> Every cell painted by its niche, numbered N1, N2, … from the largest.</p>\n<p><strong>Matrix.</strong> Each niche’s composition: the share of its cells in each cell type.</p>\n<p><strong>Table.</strong> Each niche’s size and main cell types, with a download of every cell’s niche.</p>\n<p><strong>Several sections.</strong> The function takes one set of coordinates, so the sections are set apart in space before it is called. A cell’s neighbours then come from its own section, and all sections share one set of niches. A section with no more cells than a neighbourhood holds is left out, and the summary says so. Isolate a section, or select cells, to run on those alone.</p>\n<p><strong>Cells left out.</strong> Those with no cell type, as in the vignette, and those with no coordinates. The summary counts them.</p>\n<p><strong>What the package does as shipped.</strong> The tool leaves these as they are:</p>\n<ul><li>The number of niches is a choice, not a finding: k-means makes as many as asked, and no niche carries a p-value.</li><li>Neighbours come from an approximate search (Annoy), the default of <code translate=\"no\">FindNeighbors</code>.</li><li>Each k-means start stops at R’s default of 10 iterations, and the summary says when that cut one short. On the section above, 100 iterations changed no cell’s niche.</li></ul>\n<p><strong>Cost.</strong> Memory and time grow with cells × cell types: 135,231 cells with 73 cell types take about 2 minutes and 2 GB, and 708,889 cells with 327 about 24 GB. If the memory is not there, the tool says so before it starts. It needs 2D coordinates.</p>\n<p><code translate=\"no\">Seurat</code> is under the MIT licence, and so is this tool.</p>",
+   "citation": "Hao Y, Stuart T, Kowalski MH, et al. Dictionary learning for integrative, multimodal and scalable single-cell analysis. Nat Biotechnol 42, 293-304 (2024).",
+   "tags": [
+    "spatial",
+    "niches",
+    "cell types",
+    "neighbourhoods",
+    "R"
+   ],
+   "icon": "scatter_plot",
+   "language": "r",
+   "language_label": "R",
+   "gpu": null,
+   "gpu_label": "",
+   "parameters": [
+    {
+     "name": "field",
+     "label": "Cell-type column (group.by)",
+     "type": "categorical_field",
+     "default": null,
+     "optional": false,
+     "help": "The annotation counted around each cell: cell types, unless the dataset has none or you choose another column.",
+     "type_text": "categorical_field",
+     "default_text": "—"
+    },
+    {
+     "name": "niches_k",
+     "label": "Number of niches (niches.k)",
+     "type": "int",
+     "default": 5,
+     "optional": false,
+     "help": "How many niches k-means makes. The authors’ Xenium analysis uses 5; the function’s own default is 4.",
+     "min": 2.0,
+     "max": 30.0,
+     "step": 1.0,
+     "type_text": "int, 2–30",
+     "default_text": "5"
+    },
+    {
+     "name": "neighbors_k",
+     "label": "Spatial neighbours (neighbors.k)",
+     "type": "int",
+     "default": 30,
+     "optional": false,
+     "help": "How many nearest cells make up a cell’s surroundings. More neighbours give broader niches.\nThe authors’ Xenium analysis uses 30; the function’s own default is 20.",
+     "min": 5.0,
+     "max": 100.0,
+     "step": 1.0,
+     "type_text": "int, 5–100",
+     "default_text": "30"
+    },
+    {
+     "name": "iter_max",
+     "label": "K-means iterations (iter.max)",
+     "type": "int",
+     "default": 10,
+     "optional": false,
+     "help": "The most iterations for each of k-means’ 30 starts. 10 is what the authors’ function uses.\nRaise it when the summary says that starts stopped at this limit.",
+     "min": 10.0,
+     "max": 500.0,
+     "step": 10.0,
+     "type_text": "int, 10–500",
+     "default_text": "10"
+    }
+   ],
+   "sweep": null,
+   "outputs": [
+    "summary",
+    "labels",
+    "matrix",
+    "table"
+   ],
+   "optional_outputs": [
+    "files"
+   ],
+   "output_help": {
+    "summary": "writes a summary",
+    "labels": "paints categories on the spatial view",
+    "matrix": "returns a heatmap",
+    "table": "returns a table",
+    "files": "returns files to download"
+   },
+   "requires": {
+    "genes": false,
+    "cell_types": false,
+    "categoricals": true,
+    "spatial": "2d",
+    "min_cells": 100
+   },
+   "needs": [
+    "a categorical column",
+    "2D coordinates",
+    "100+ cells"
+   ],
+   "license": "MIT",
+   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/seurat-niches-v1.0.0/seurat-niches-1.0.0.pvtool",
+   "bundle_size": "151.9 kB",
+   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/seurat-niches",
+   "published": "2026-11-05",
+   "published_date": "5 Nov 2026",
+   "gates": [
+    {
+     "id": "bundle",
+     "required": true,
+     "status": "pass",
+     "message": "6 files, 151.9 kB packed and 528.1 kB unpacked, plugin.json at the root."
+    },
+    {
+     "id": "manifest",
+     "required": true,
+     "status": "pass",
+     "message": "seurat-niches 1.0.0 by PointillViz reference tools; R entry tool.R, outputs summary, labels, matrix, table."
+    },
+    {
+     "id": "environment",
+     "required": true,
+     "status": "pass",
+     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy, r-base, r-jsonlite for linux-64, osx-64, osx-arm64, win-64; environments: default."
+    },
+    {
+     "id": "entry",
+     "required": true,
+     "status": "pass",
+     "message": "tool.R sourced in 3.63 s and defines run <- function(ds, params)."
+    },
+    {
+     "id": "imports",
+     "required": false,
+     "status": "pass",
+     "message": "1 source file, using Matrix, Seurat, jsonlite, ps, stats, utils; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
+    },
+    {
+     "id": "fixture",
+     "required": true,
+     "status": "pass",
+     "message": "ran on the 600-cell fixture in 4.39 s, returning summary, table, matrix, files, labels and 1 log line."
+    },
+    {
+     "id": "result",
+     "required": true,
+     "status": "pass",
+     "message": "returned the declared outputs: summary, table, matrix, files, labels."
+    },
+    {
+     "id": "edge",
+     "required": true,
+     "status": "pass",
+     "message": "ran at the minimum corner (neighbors_k=5, niches_k=2) in 4.38 s; ran at the maximum corner (iter_max=500, neighbors_k=100, niches_k=30) in 4.65 s."
+    },
+    {
+     "id": "no_mutation",
+     "required": true,
+     "status": "pass",
+     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
+    }
+   ],
+   "risks": [],
+   "art": {
+    "src": "assets/media/tools/seurat-niches.webp?v=934c93386b",
+    "src2x": "assets/media/tools/seurat-niches@2x.webp?v=3400b57d40",
+    "width": 720,
+    "height": 420,
+    "alt": "Seurat v5",
+    "generated": false
+   },
+   "social": "assets/media/social/seurat-niches.jpg",
+   "url": "tools/seurat-niches/"
   },
   {
    "id": "smoothie",

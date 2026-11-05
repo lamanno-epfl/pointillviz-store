@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(d){try{var w=d.clientWidth||innerWidth;d.style.setProperty('--k',Math.min(Math.max(Math.min(w/1440,innerHeight/900),1),1.6).toFixed(4))}catch(e){}})(document.documentElement)</script>
+<meta name="theme-color" content="#06070D">
+<title>Seurat niches · The Tool Store · PointillViz</title>
+<meta name="description" content="Tissue niches from the cell types around each cell, imported from the authors’ own Seurat package. A PointillViz community tool, version 1.0.0.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://store.pointillviz.com/tools/seurat-niches/">
+<meta property="og:site_name" content="PointillViz">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Seurat niches · The Tool Store · PointillViz">
+<meta property="og:description" content="Tissue niches from the cell types around each cell, imported from the authors’ own Seurat package.">
+<meta property="og:url" content="https://store.pointillviz.com/tools/seurat-niches/">
+<meta property="og:image" content="https://store.pointillviz.com/assets/media/social/seurat-niches.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Seurat v5">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../assets/pv/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&amp;family=JetBrains+Mono:wght@400..600&amp;display=swap">
+<link rel="stylesheet" href="../../assets/pv/pv.css">
+<link rel="stylesheet" href="../../assets/store.css">
+<script src="../../assets/pv/pv.js" defer></script>
+<script src="../../assets/field.js" defer></script>
+<script src="../../assets/store.js" defer onerror="document.documentElement.classList.remove('st-js')"></script>
+<script>document.documentElement.classList.add('st-js');(function(d,m){d.setAttribute('data-view',m?m[1]:'readme')})(document.documentElement,/^#(readme|parameters|outputs)$/.exec(location.hash))</script>
+<noscript><style>.pv-topbar__menu { display: none !important; }</style></noscript>
+</head>
+<body class="st-page st-page--tool">
+<a class="pv-skip" href="#main">Skip to content</a>
+<header class="pv-topbar">
+  <div class="pv-topbar__inner">
+    <a class="pv-topbar__brand" href="https://pointillviz.com/" translate="no">
+      <img src="../../assets/pv/logo.svg" width="169" height="20" alt="PointillViz">
+    </a>
+    <nav class="pv-topbar__nav" aria-label="Main">
+      <ul>
+        <li><a href="https://pointillviz.com/">Overview</a></li>
+        <li><a href="https://docs.pointillviz.com/">Docs</a></li>
+        <li><a href="../../" aria-current="true">Tool Store</a></li>
+        <li><a href="#" data-placeholder="paper">Paper</a></li>
+      </ul>
+    </nav>
+    <div class="pv-topbar__end">
+      <button class="pv-topbar__menu" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="pv-drawer" data-pv-drawer-open="pv-drawer">
+        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="1.6"/><circle cx="10" cy="4" r="1.6"/><circle cx="16" cy="4" r="1.6"/><circle cx="4" cy="10" r="1.6"/><circle cx="10" cy="10" r="1.6"/><circle cx="16" cy="10" r="1.6"/><circle cx="4" cy="16" r="1.6"/><circle cx="10" cy="16" r="1.6"/><circle cx="16" cy="16" r="1.6"/></svg>
+        <span class="pv-sr-only">Menu</span>
+      </button>
+    </div>
+  </div>
+  <noscript>
+    <nav class="pv-nojs-nav" aria-label="Main">
+      <a href="https://pointillviz.com/">Overview</a><a href="https://docs.pointillviz.com/">Docs</a><a href="../../" aria-current="true">Tool Store</a>
+    </nav>
+  </noscript>
+</header>
+<dialog class="pv-drawer" id="pv-drawer" aria-label="Menu">
+  <div class="pv-drawer__panel">
+    <div class="pv-drawer__head">
+      <img src="../../assets/pv/logo.svg" width="152" height="18" alt="PointillViz" translate="no">
+      <button class="pv-btn pv-btn--ghost pv-btn--icon" type="button" data-pv-drawer-close aria-label="Close menu" autofocus>
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15"/></svg>
+      </button>
+    </div>
+    <nav aria-label="Main">
+      <ul class="pv-drawer__nav">
+        <li><a href="https://pointillviz.com/"><span class="pv-drawer__name">Overview</span><span class="pv-drawer__host">pointillviz.com</span></a></li>
+        <li><a href="https://docs.pointillviz.com/"><span class="pv-drawer__name">Docs</span><span class="pv-drawer__host">docs.pointillviz.com</span></a></li>
+        <li><a href="../../" aria-current="true"><span class="pv-drawer__name">Tool Store</span><span class="pv-drawer__host">store.pointillviz.com</span></a></li>
+        <li><a href="#" data-placeholder="paper"><span class="pv-drawer__name">Paper</span><span class="pv-drawer__host">bioRxiv</span></a></li>
+      </ul>
+    </nav>
+    <div class="pv-drawer__foot">
+      <p>© 2026 PointillViz</p>
+    </div>
+  </div>
+</dialog>
+<main id="main" class="st-tool">
+  <header class="st-top">
+    <div class="st-wrap st-top__in">
+      <div class="st-top__words">
+        <a class="st-back" href="../../"><svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-arrow-left"/></svg>All tools</a>
+        <h1 class="st-title st-top__name">Seurat niches</h1>
+        <p class="st-top__desc">Tissue niches from the cell types around each cell, imported from the authors’ own Seurat package.</p>
+        <div class="st-get">
+          <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/seurat-niches-v1.0.0/seurat-niches-1.0.0.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 151.9 kB</span></span></a>
+          <p class="st-get__how"><span class="st-get__steps">In PointillViz: <b>Tools → Store → Install</b>, or <b>Install from file</b> with the download. </span><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How to install and run a tool</a></p>
+          
+          <p class="st-get__note">This runs as you: a tool is arbitrary code, with your privileges. <a class="pv-link" href="../../#safety">Safety note</a></p>
+        </div>
+      </div>
+      <figure class="st-top__art">
+        <div class="st-artplate" title="Seurat v5"><img src="../../assets/media/tools/seurat-niches.webp?v=934c93386b" srcset="../../assets/media/tools/seurat-niches.webp?v=934c93386b 720w, ../../assets/media/tools/seurat-niches@2x.webp?v=3400b57d40 1440w" sizes="(max-width: 1023.98px) 92vw, 58vw" width="720" height="420" alt="Seurat v5" fetchpriority="high" decoding="async"></div>
+      </figure>
+    </div>
+  </header>
+  <div class="st-views">
+    <div class="st-bar" id="view-bar">
+      <div class="st-wrap st-bar__in">
+        <p class="st-bar__name" aria-hidden="true"><img class="st-bar__thumb" src="../../assets/media/tools/seurat-niches.webp?v=934c93386b" width="720" height="420" alt="" loading="lazy" decoding="async"><span>Seurat niches</span></p>
+        <nav class="st-tabs" aria-label="About this tool" id="view-tabs">
+          <a class="st-tab" href="#readme" data-view-link="readme">Readme</a>
+          <a class="st-tab" href="#parameters" data-view-link="parameters">Parameters</a>
+          <a class="st-tab" href="#outputs" data-view-link="outputs">Outputs</a>
+        </nav>
+        <button class="st-testbtn" id="test-summary-open" type="button" aria-haspopup="dialog" aria-controls="test-summary" data-state="pass">Tool test summary</button>
+        <a class="pv-btn pv-btn--primary st-bar__dl" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/seurat-niches-v1.0.0/seurat-niches-1.0.0.pvtool" download tabindex="-1"><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span>Download</span></a>
+      </div>
+    </div>
+    <div class="st-wrap st-views__grid">
+      <div class="st-panels">
+        <section class="st-panel" id="readme" aria-labelledby="readme-h">
+          <h2 class="st-panel__h" id="readme-h">Readme</h2>
+          <p class="st-question">Which neighbourhoods of cell types does the tissue divide into?</p>
+          <div class="st-md">
+<p>The tool runs the niche analysis of <a class="pv-link" href="https://satijalab.org/seurat/" rel="noopener noreferrer nofollow">Seurat</a> (Hao et al., <em>Nature Biotechnology</em> 2024) with the authors’ own R package, <strong>imported from conda-forge as they ship it</strong> (<code translate="no">r-seurat</code> 5.5.1). It calls <code translate="no">BuildNicheAssay</code> as their <a class="pv-link" href="https://satijalab.org/seurat/articles/seurat5_spatial_vignette_2" rel="noopener noreferrer nofollow">Xenium vignette</a> does, with their values, and holds no copy of their method. The function:</p>
+<ol><li>finds each cell’s nearest cells;</li><li>counts the cell types among them and scales those counts;</li><li>groups cells with similar surroundings into niches with k-means, keeping the best of 30 random starts.</li></ol>
+<p>The authors credit Goltsev et al. (<em>Cell</em> 2018) and He et al. (<em>Nature Biotechnology</em> 2022) as its inspiration. Only cell types and positions enter, not expression.</p>
+<p>Called directly with the real counts in the object, with no code of this tool, the function gives the same niches, cell for cell, on a Xenium 5K mouse colon section of 135,231 cells. Asked for 8 niches there, it separates smooth muscle, the layers of enterocytes and goblet cells, and a small niche of lymphoid aggregates (0.7% of cells: dendritic cells and ILC3s).</p>
+<p><strong>Map.</strong> Every cell painted by its niche, numbered N1, N2, … from the largest.</p>
+<p><strong>Matrix.</strong> Each niche’s composition: the share of its cells in each cell type.</p>
+<p><strong>Table.</strong> Each niche’s size and main cell types, with a download of every cell’s niche.</p>
+<p><strong>Several sections.</strong> The function takes one set of coordinates, so the sections are set apart in space before it is called. A cell’s neighbours then come from its own section, and all sections share one set of niches. A section with no more cells than a neighbourhood holds is left out, and the summary says so. Isolate a section, or select cells, to run on those alone.</p>
+<p><strong>Cells left out.</strong> Those with no cell type, as in the vignette, and those with no coordinates. The summary counts them.</p>
+<p><strong>What the package does as shipped.</strong> The tool leaves these as they are:</p>
+<ul><li>The number of niches is a choice, not a finding: k-means makes as many as asked, and no niche carries a p-value.</li><li>Neighbours come from an approximate search (Annoy), the default of <code translate="no">FindNeighbors</code>.</li><li>Each k-means start stops at R’s default of 10 iterations, and the summary says when that cut one short. On the section above, 100 iterations changed no cell’s niche.</li></ul>
+<p><strong>Cost.</strong> Memory and time grow with cells × cell types: 135,231 cells with 73 cell types take about 2 minutes and 2 GB, and 708,889 cells with 327 about 24 GB. If the memory is not there, the tool says so before it starts. It needs 2D coordinates.</p>
+<p><code translate="no">Seurat</code> is under the MIT licence, and so is this tool.</p>
+          </div>
+          <div class="st-refs"><h3 class="st-refs__h">References</h3><div class="st-md"><p>Hao Y, Stuart T, Kowalski MH, et al. Dictionary learning for integrative, multimodal and scalable single-cell analysis. Nat Biotechnol 42, 293-304 (2024).</p></div></div>
+        </section>
+        <section class="st-panel" id="parameters" aria-labelledby="parameters-h">
+          <h2 class="st-panel__h" id="parameters-h">Parameters</h2>
+          <table class="st-ptable" role="table" aria-labelledby="parameters-h">
+<thead role="rowgroup"><tr role="row" class="st-p st-p--names"><th scope="col" role="columnheader" class="st-p__head">Parameter</th><th scope="col" role="columnheader" class="st-p__val">Default</th><th scope="col" role="columnheader" class="pv-sr-only">What it does</th></tr></thead>
+<tbody role="rowgroup">
+<tr role="row" class="st-p">
+  <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Cell-type column (group.by)</span> <code class="st-p__name" translate="no">field</code></th>
+  <td role="cell" class="st-p__val"><span class="st-p__default">required</span><span class="st-p__kind">a categorical column</span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">The annotation counted around each cell: cell types, unless the dataset has none or you choose another column.</span></td>
+</tr>
+<tr role="row" class="st-p">
+  <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Number of niches (niches.k)</span> <code class="st-p__name" translate="no">niches_k</code></th>
+  <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>5</span><span class="st-range" aria-hidden="true"><span class="st-range__end">2</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.1071"></i></span><span class="st-range__end">30</span></span><span class="pv-sr-only">Range 2 to 30. </span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">How many niches k-means makes. The authors’ Xenium analysis uses 5; the function’s own default is 4.</span></td>
+</tr>
+<tr role="row" class="st-p">
+  <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Spatial neighbours (neighbors.k)</span> <code class="st-p__name" translate="no">neighbors_k</code></th>
+  <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>30</span><span class="st-range" aria-hidden="true"><span class="st-range__end">5</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.2632"></i></span><span class="st-range__end">100</span></span><span class="pv-sr-only">Range 5 to 100. </span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">How many nearest cells make up a cell’s surroundings. More neighbours give broader niches.
+The authors’ Xenium analysis uses 30; the function’s own default is 20.</span></td>
+</tr>
+<tr role="row" class="st-p">
+  <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">K-means iterations (iter.max)</span> <code class="st-p__name" translate="no">iter_max</code></th>
+  <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>10</span><span class="st-range" aria-hidden="true"><span class="st-range__end">10</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.0000"></i></span><span class="st-range__end">500</span></span><span class="pv-sr-only">Range 10 to 500. </span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">The most iterations for each of k-means’ 30 starts. 10 is what the authors’ function uses.
+Raise it when the summary says that starts stopped at this limit.</span></td>
+</tr>
+</tbody>
+</table>
+          
+        </section>
+        <section class="st-panel" id="outputs" aria-labelledby="outputs-h">
+          <h2 class="st-panel__h" id="outputs-h">Outputs</h2>
+          <ul class="st-outs"><li class="st-out"><svg class="st-glyph" aria-hidden="true"><use href="../../assets/outputs.svg#o-summary"/></svg><code class="st-out__name" translate="no">summary</code><span class="st-out__what">Writes a summary</span></li><li class="st-out"><svg class="st-glyph" aria-hidden="true"><use href="../../assets/outputs.svg#o-labels"/></svg><code class="st-out__name" translate="no">labels</code><span class="st-out__what">Paints categories on the spatial view</span></li><li class="st-out"><svg class="st-glyph" aria-hidden="true"><use href="../../assets/outputs.svg#o-matrix"/></svg><code class="st-out__name" translate="no">matrix</code><span class="st-out__what">Returns a heatmap</span></li><li class="st-out"><svg class="st-glyph" aria-hidden="true"><use href="../../assets/outputs.svg#o-table"/></svg><code class="st-out__name" translate="no">table</code><span class="st-out__what">Returns a table</span></li><li class="st-out"><svg class="st-glyph" aria-hidden="true"><use href="../../assets/outputs.svg#o-files"/></svg><code class="st-out__name" translate="no">files</code><span class="st-out__what">Returns files to download<span class="st-out__opt">optional</span></span></li></ul>
+          
+        </section>
+      </div>
+      <aside class="st-facts" aria-labelledby="facts-h">
+        <h2 class="pv-sr-only" id="facts-h">Details</h2>
+        <dl class="st-facts__list"><div class="st-facts__row"><dt>Author</dt><dd>PointillViz reference tools</dd></div><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__num" translate="no">1.0.0</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-11-05">5 Nov 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Language</dt><dd>R</dd></div><div class="st-facts__row"><dt>GPU</dt><dd>Not used</dd></div><div class="st-facts__row"><dt>Needs</dt><dd>a categorical column<br>2D coordinates<br>100+ cells</dd></div></dl>
+        <p class="st-facts__src"><a class="pv-link" href="https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/seurat-niches">Source in the public registry<svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-external"/></svg></a></p>
+      </aside>
+    </div>
+  </div>
+  <dialog class="st-tests" id="test-summary" aria-labelledby="test-summary-h">
+    <div class="st-tests__head" id="tool-check">
+      <h2 class="st-tests__title" id="test-summary-h">Tool test summary</h2>
+      <button class="st-tests__close" type="button" data-close-tests aria-label="Close the test summary"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15"/></svg></button>
+    </div>
+    <div class="st-tests__body">
+      <ol class="st-strip" aria-hidden="true"><li class="st-strip__dot" data-state="pass" title="bundle: pass"></li><li class="st-strip__dot" data-state="pass" title="manifest: pass"></li><li class="st-strip__dot" data-state="pass" title="environment: pass"></li><li class="st-strip__dot" data-state="pass" title="entry: pass"></li><li class="st-strip__dot" data-state="pass" data-adv title="imports: pass"></li><li class="st-strip__dot" data-state="pass" title="fixture: pass"></li><li class="st-strip__dot" data-state="pass" title="result: pass"></li><li class="st-strip__dot" data-state="pass" title="edge: pass"></li><li class="st-strip__dot" data-state="pass" title="no_mutation: pass"></li></ol>
+<p class="st-tests__lead">9 of 9 gates passed when this version was released. They ran in this order:</p>
+<ol class="st-gates">
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">bundle</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">6 files, 151.9 kB packed and 528.1 kB unpacked, plugin.json at the root.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">manifest</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">seurat-niches 1.0.0 by PointillViz reference tools; R entry tool.R, outputs summary, labels, matrix, table.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">environment</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">pixi.lock matches pixi.toml, which declares python, numpy, scipy, r-base, r-jsonlite for linux-64, osx-64, osx-arm64, win-64; environments: default.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">entry</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">tool.R sourced in 3.63 s and defines run &lt;- function(ds, params).</p>
+</li>
+<li class="st-gate" data-state="pass" data-adv>
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">imports</code> <span class="st-gate__adv">advisory</span><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">1 source file, using Matrix, Seurat, jsonlite, ps, stats, utils; no network, subprocess, filesystem-write, dynamic-exec or environment use found.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">fixture</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">ran on the 600-cell fixture in 4.39 s, returning summary, table, matrix, files, labels and 1 log line.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">result</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">returned the declared outputs: summary, table, matrix, files, labels.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">edge</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">ran at the minimum corner (neighbors_k=5, niches_k=2) in 4.38 s; ran at the maximum corner (iter_max=500, neighbors_k=100, niches_k=30) in 4.65 s.</p>
+</li>
+<li class="st-gate" data-state="pass">
+  <p class="st-gate__head"><code class="st-gate__name" translate="no">no_mutation</code><span class="st-gate__word">pass</span></p>
+  <p class="st-gate__msg">the fixture dataset&#x27;s 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design).</p>
+</li>
+</ol>
+<p class="st-tests__note">Passing the gates is a statement about the gates, not about whether the code is safe to run.</p>
+      <p class="st-tests__more"><a class="pv-link" href="../../publish/#gates-h">What each gate checks</a></p>
+    </div>
+  </dialog>
+  <section class="st-more" aria-labelledby="more-h">
+    <div class="st-wrap">
+      <h2 class="st-more__h" id="more-h">More tools</h2>
+      <ul class="st-grid">
+<li class="st-cell" data-id="banksy-niches" data-name="BANKSY niches" data-author="PointillViz reference tools" data-tags="spatial|niches|domains|clustering|genes" data-outputs="summary|labels|matrix|table|files" data-published="2026-11-05" data-version="2.0.0">
+<a class="st-card" href="../../tools/banksy-niches/">
+  <div class="st-card__art"><img src="../../assets/media/tools/banksy-niches.webp?v=71e43568a0" srcset="../../assets/media/tools/banksy-niches.webp?v=71e43568a0 720w, ../../assets/media/tools/banksy-niches@2x.webp?v=b3a2346569 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="st-card__name">BANKSY niches</h3>
+  <p class="st-card__desc">Tissue niches from each cell’s expression and its neighbourhood’s, imported from the authors’ own BANKSY package.</p>
+</a>
+</li>
+<li class="st-cell" data-id="categorical-chords" data-name="Categorical Chords" data-author="PointillViz reference tools" data-tags="spatial|cell types|categorical|chord" data-outputs="chord|matrix|table|summary" data-published="2026-10-28" data-version="2.0.0">
+<a class="st-card" href="../../tools/categorical-chords/">
+  <div class="st-card__art"><img src="../../assets/media/tools/categorical-chords.webp?v=1e6c2812c0" srcset="../../assets/media/tools/categorical-chords.webp?v=1e6c2812c0 720w, ../../assets/media/tools/categorical-chords@2x.webp?v=6a86392478 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="st-card__name">Categorical Chords</h3>
+  <p class="st-card__desc">Explore spatial contacts or shared membership between categorical annotations with count-weighted ribbons and enrichment colors.</p>
+</a>
+</li>
+<li class="st-cell" data-id="celltype-cooccurrence" data-name="Cell-Type Co-occurrence" data-author="PointillViz reference tools" data-tags="spatial|cell types|enrichment" data-outputs="matrix|table|summary" data-published="2026-10-28" data-version="2.0.0">
+<a class="st-card" href="../../tools/celltype-cooccurrence/">
+  <div class="st-card__art"><img src="../../assets/media/tools/celltype-cooccurrence.webp?v=e671ff38b9" srcset="../../assets/media/tools/celltype-cooccurrence.webp?v=e671ff38b9 720w, ../../assets/media/tools/celltype-cooccurrence@2x.webp?v=3dd6b848eb 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="st-card__name">Cell-Type Co-occurrence</h3>
+  <p class="st-card__desc">Which cell types are found near each other more often than expected by chance.</p>
+</a>
+</li>
+<li class="st-cell" data-id="celltype-contact-network" data-name="Cell-type contact network" data-author="PointillViz authors" data-tags="spatial|cell types|contacts|neighbours|network|enrichment|figure" data-outputs="summary|images|table|files" data-published="2026-11-05" data-version="1.0.2">
+<a class="st-card" href="../../tools/celltype-contact-network/">
+  <div class="st-card__art"><img src="../../assets/media/tools/celltype-contact-network.webp?v=db7af568c4" srcset="../../assets/media/tools/celltype-contact-network.webp?v=db7af568c4 720w, ../../assets/media/tools/celltype-contact-network@2x.webp?v=d954fa7ca0 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="st-card__name">Cell-type contact network</h3>
+  <p class="st-card__desc">Which cell types touch which, from a Delaunay triangulation of the cells, as a network and a matrix corrected for abundance.</p>
+</a>
+</li>
+      </ul>
+    </div>
+  </section>
+</main>
+<footer class="pv-footer">
+  <div class="pv-footer__inner">
+    <a class="pv-footer__brand" href="https://pointillviz.com/" translate="no"><img src="../../assets/pv/logo-mark.svg" width="28" height="28" alt="">PointillViz</a>
+    <nav class="pv-footer__sites" aria-label="PointillViz sites">
+      <ul>
+        <li><a href="https://pointillviz.com/"><span class="pv-footer__site">Overview</span><span class="pv-footer__host">pointillviz.com</span></a></li>
+        <li><a href="https://docs.pointillviz.com/"><span class="pv-footer__site">Docs</span><span class="pv-footer__host">docs.pointillviz.com</span></a></li>
+        <li><a href="../../" aria-current="true"><span class="pv-footer__site">Tool Store</span><span class="pv-footer__host">store.pointillviz.com</span></a></li>
+      </ul>
+    </nav>
+    <p class="pv-footer__pub">Preprint: Gargoori Motlagh&nbsp;A. <em>et&nbsp;al.</em>, bioRxiv · <a href="#" data-placeholder="paper">Coming soon</a></p>
+    <p class="pv-footer__copy">© 2026 PointillViz</p>
+  </div>
+</footer>
+</body>
+</html>
