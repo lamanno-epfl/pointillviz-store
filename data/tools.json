@@ -1,7 +1,7 @@
 {
  "schema": 2,
  "source": "the PointillViz tool registry's index.json, latest version of each tool",
- "count": 17,
+ "count": 16,
  "gate_order": [
   "bundle",
   "manifest",
@@ -16,11 +16,11 @@
  "tags": [
   {
    "tag": "spatial",
-   "count": 16
+   "count": 15
   },
   {
    "tag": "cell types",
-   "count": 11
+   "count": 10
   },
   {
    "tag": "expression",
@@ -33,10 +33,6 @@
   {
    "tag": "figure",
    "count": 3
-  },
-  {
-   "tag": "clustering",
-   "count": 2
   },
   {
    "tag": "connectivity",
@@ -55,15 +51,7 @@
    "count": 2
   },
   {
-   "tag": "neighbourhood",
-   "count": 2
-  },
-  {
    "tag": "network",
-   "count": 2
-  },
-  {
-   "tag": "niches",
    "count": 2
   },
   {
@@ -80,6 +68,10 @@
   },
   {
    "tag": "chord",
+   "count": 1
+  },
+  {
+   "tag": "clustering",
    "count": 1
   },
   {
@@ -123,7 +115,15 @@
    "count": 1
   },
   {
+   "tag": "neighbourhood",
+   "count": 1
+  },
+  {
    "tag": "neighbours",
+   "count": 1
+  },
+  {
+   "tag": "niches",
    "count": 1
   },
   {
@@ -136,10 +136,6 @@
   },
   {
    "tag": "qc",
-   "count": 1
-  },
-  {
-   "tag": "R",
    "count": 1
   },
   {
@@ -167,11 +163,11 @@
   "tags": [
    {
     "tag": "spatial",
-    "count": 16
+    "count": 15
    },
    {
     "tag": "cell types",
-    "count": 11
+    "count": 10
    },
    {
     "tag": "expression",
@@ -184,10 +180,6 @@
    {
     "tag": "figure",
     "count": 3
-   },
-   {
-    "tag": "clustering",
-    "count": 2
    },
    {
     "tag": "connectivity",
@@ -206,15 +198,7 @@
     "count": 2
    },
    {
-    "tag": "neighbourhood",
-    "count": 2
-   },
-   {
     "tag": "network",
-    "count": 2
-   },
-   {
-    "tag": "niches",
     "count": 2
    }
   ],
@@ -226,7 +210,7 @@
    },
    {
     "out": "labels",
-    "count": 2,
+    "count": 1,
     "help": "paints categories on the spatial view"
    },
    {
@@ -3006,165 +2990,6 @@
    },
    "social": "assets/media/social/local-density.jpg",
    "url": "tools/local-density/"
-  },
-  {
-   "id": "mclust-niches",
-   "name": "Mclust niches",
-   "version": "1.0.0",
-   "author": "PointillViz reference tools",
-   "description": "Niches from the mix of cell types around each cell, fitted by a Gaussian mixture with mclust in R.",
-   "readme_html": "<p>Answers the question: <strong>Which kinds of surroundings do the cells sit in, judged by the cell types around them?</strong></p>\n<p>Describes every cell by the mix of cell types among its nearest cells, and groups cells with similar mixes into niches with a Gaussian mixture model (mclust). It is a native R tool: the analysis is plain R, and PointillViz hands it the cell types and the neighbours.</p>\n<h3>What you get</h3>\n<ul><li><strong>Map.</strong> Every cell painted by its niche, one colour per niche. Niches are numbered N1, N2, … from the largest, and the numbers carry no other order. Cells with no labelled neighbour, or outside a selection, are left unpainted.</li><li><strong>Table.</strong> Each niche’s size and its three main cell types, as shares of the niche’s own labelled cells.</li></ul>\n<h3>Parameters</h3>\n<ul><li><strong>Neighbours (k).</strong> How many nearest cells make up the mix around a cell. Neighbours are found within each cell’s own section.</li><li><strong>Niches.</strong> How many niches the mixture model makes. If two niches hold the same cell types, ask for fewer.</li><li><strong>Random seed.</strong> Chooses the 2,000 cells the mixture is fitted to. Change it to see how stable the niches are.</li></ul>\n<h3>Method</h3>\n<ol><li>For every cell, the share of each cell type among its <math translate=\"no\"><mi>k</mi></math> nearest cells. Unlabelled neighbours are not counted.</li><li><code translate=\"no\">prcomp</code> reduces the shares to at most 10 principal components. Directions with almost no spread are dropped: the shares sum to one, so the last direction carries nothing.</li><li><code translate=\"no\">mclust::Mclust</code> fits a Gaussian mixture with one covariance shared by all niches (model “EEE”) to 2,000 cells drawn with the seed. Fitting on a sample keeps the run short, because mclust starts from a hierarchical clustering whose cost grows with the square of the number of cells.</li><li>The fitted mixture gives every cell its most likely niche (<code translate=\"no\">predict</code>).</li></ol>\n<p>On a Xenium 5K mouse colon section of 135,000 cells, the default niches follow the layers of the gut wall: stem and transit-amplifying cells at the crypt base, mature enterocytes at the surface, and smooth muscle with interstitial cells of Cajal and glia in the muscle layers.</p>\n<h3>Citation</h3>\n<p>Scrucca L, Fop M, Murphy TB, Raftery AE. mclust 5: clustering, classification and density estimation using Gaussian finite mixture models. <em>The R Journal</em> 8(1), 289–317 (2016).</p>",
-   "citation": "Scrucca L, Fop M, Murphy TB, Raftery AE. mclust 5: clustering, classification and density estimation using Gaussian finite mixture models. The R Journal 8(1), 289-317 (2016).",
-   "tags": [
-    "spatial",
-    "niches",
-    "cell types",
-    "neighbourhood",
-    "clustering",
-    "R"
-   ],
-   "icon": "bubble_chart",
-   "language": "r",
-   "language_label": "R",
-   "gpu": null,
-   "gpu_label": "",
-   "parameters": [
-    {
-     "name": "k",
-     "label": "Neighbours (k)",
-     "type": "int",
-     "default": 20,
-     "optional": false,
-     "help": "How many nearest cells make up the mix of cell types around each cell.\nLarger values describe broader surroundings.",
-     "min": 5.0,
-     "max": 100.0,
-     "step": 1.0,
-     "type_text": "int, 5–100",
-     "default_text": "20"
-    },
-    {
-     "name": "n_niches",
-     "label": "Niches",
-     "type": "int",
-     "default": 8,
-     "optional": false,
-     "help": "How many niches the mixture model divides the cells into.\nIf two niches hold the same cell types, try fewer.",
-     "min": 2.0,
-     "max": 30.0,
-     "step": 1.0,
-     "type_text": "int, 2–30",
-     "default_text": "8"
-    },
-    {
-     "name": "seed",
-     "label": "Random seed",
-     "type": "int",
-     "default": 1,
-     "optional": false,
-     "help": "Chooses the 2,000 cells the mixture is fitted to. Change it to see how stable the niches are.",
-     "min": 0.0,
-     "max": 1000000.0,
-     "step": 1.0,
-     "type_text": "int, 0–1,000,000",
-     "default_text": "1"
-    }
-   ],
-   "sweep": null,
-   "outputs": [
-    "summary",
-    "labels",
-    "table"
-   ],
-   "optional_outputs": [],
-   "output_help": {
-    "summary": "writes a summary",
-    "labels": "paints categories on the spatial view",
-    "table": "returns a table"
-   },
-   "requires": {
-    "genes": false,
-    "cell_types": true,
-    "categoricals": false,
-    "spatial": "any",
-    "min_cells": 200
-   },
-   "needs": [
-    "cell types",
-    "200+ cells"
-   ],
-   "license": "MIT",
-   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/mclust-niches-v1.0.0/mclust-niches-1.0.0.pvtool",
-   "bundle_size": "58.0 kB",
-   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/mclust-niches",
-   "published": "2026-10-28",
-   "published_date": "28 Oct 2026",
-   "gates": [
-    {
-     "id": "bundle",
-     "required": true,
-     "status": "pass",
-     "message": "6 files, 58.0 kB packed and 260.4 kB unpacked, plugin.json at the root."
-    },
-    {
-     "id": "manifest",
-     "required": true,
-     "status": "pass",
-     "message": "mclust-niches 1.0.0 by PointillViz reference tools; R entry tool.R, outputs summary, labels, table."
-    },
-    {
-     "id": "environment",
-     "required": true,
-     "status": "pass",
-     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy, r-base, r-jsonlite for linux-64, osx-64, osx-arm64, win-64; environments: default."
-    },
-    {
-     "id": "entry",
-     "required": true,
-     "status": "pass",
-     "message": "tool.R sourced in 0.01 s and defines run <- function(ds, params)."
-    },
-    {
-     "id": "imports",
-     "required": false,
-     "status": "pass",
-     "message": "1 source file, using mclust, stats; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
-    },
-    {
-     "id": "fixture",
-     "required": true,
-     "status": "pass",
-     "message": "ran on the 600-cell fixture in 0.81 s, returning summary, table, labels and 1 log line."
-    },
-    {
-     "id": "result",
-     "required": true,
-     "status": "pass",
-     "message": "returned the declared outputs: summary, table, labels."
-    },
-    {
-     "id": "edge",
-     "required": true,
-     "status": "pass",
-     "message": "ran at the minimum corner (k=5, n_niches=2, seed=0) in 0.67 s; ran at the maximum corner (k=100, n_niches=30, seed=1000000) in 1.53 s."
-    },
-    {
-     "id": "no_mutation",
-     "required": true,
-     "status": "pass",
-     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
-    }
-   ],
-   "risks": [],
-   "art": {
-    "src": "assets/media/tools/mclust-niches.webp?v=08f74c3e0d",
-    "src2x": "assets/media/tools/mclust-niches@2x.webp?v=2b711e3ff3",
-    "width": 720,
-    "height": 420,
-    "alt": "Niches from the cell types around each cell",
-    "generated": false
-   },
-   "social": "assets/media/social/mclust-niches.jpg",
-   "url": "tools/mclust-niches/"
   },
   {
    "id": "neighborhood-composition",
