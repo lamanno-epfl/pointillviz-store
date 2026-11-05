@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(d){try{var w=d.clientWidth||innerWidth;d.style.setProperty('--k',Math.min(Math.max(Math.min(w/1440,innerHeight/900),1),1.6).toFixed(4))}catch(e){}})(document.documentElement)</script>
+<meta name="theme-color" content="#06070D">
+<title>Smoothie · The Tool Store · PointillViz</title>
+<meta name="description" content="Gene modules that share a spatial pattern, found by the published Smoothie package. A PointillViz community tool, version 1.0.0.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://store.pointillviz.com/tools/smoothie/">
+<meta property="og:site_name" content="PointillViz">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Smoothie · The Tool Store · PointillViz">
+<meta property="og:description" content="Gene modules that share a spatial pattern, found by the published Smoothie package.">
+<meta property="og:url" content="https://store.pointillviz.com/tools/smoothie/">
+<meta property="og:image" content="https://store.pointillviz.com/assets/media/social/smoothie.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Smoothie: six small maps of cells, each glowing in a different pattern, one for each gene module. An illustration, not a real tissue.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../assets/pv/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&amp;family=Fraunces:opsz,wght@9..144,600&amp;family=JetBrains+Mono:wght@400..600&amp;display=swap">
+<link rel="stylesheet" href="../../assets/pv/pv.css">
+<link rel="stylesheet" href="../../assets/store.css">
+<script src="../../assets/pv/pv.js" defer></script>
+<script src="../../assets/store.js" defer></script>
+<script>document.documentElement.classList.add('st-js')</script>
+<noscript><style>.pv-topbar__menu { display: none !important; }</style></noscript>
+</head>
+<body class="st-page st-page--tool">
+<a class="pv-skip" href="#main">Skip to content</a>
+<header class="pv-topbar">
+  <div class="pv-topbar__inner">
+    <a class="pv-topbar__brand" href="https://pointillviz.com/" translate="no">
+      <img src="../../assets/pv/logo.svg" width="169" height="20" alt="PointillViz">
+    </a>
+    <nav class="pv-topbar__nav" aria-label="Main">
+      <ul>
+        <li><a href="https://pointillviz.com/">Overview</a></li>
+        <li><a href="https://docs.pointillviz.com/">Docs</a></li>
+        <li><a href="../../" aria-current="true">Tool Store</a></li>
+        <li><a href="#" data-placeholder="paper">Paper</a></li>
+      </ul>
+    </nav>
+    <div class="pv-topbar__end">
+      <button class="pv-topbar__menu" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="pv-drawer" data-pv-drawer-open="pv-drawer">
+        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="1.6"/><circle cx="10" cy="4" r="1.6"/><circle cx="16" cy="4" r="1.6"/><circle cx="4" cy="10" r="1.6"/><circle cx="10" cy="10" r="1.6"/><circle cx="16" cy="10" r="1.6"/><circle cx="4" cy="16" r="1.6"/><circle cx="10" cy="16" r="1.6"/><circle cx="16" cy="16" r="1.6"/></svg>
+        <span class="pv-sr-only">Menu</span>
+      </button>
+    </div>
+  </div>
+  <noscript>
+    <nav class="pv-nojs-nav" aria-label="Main">
+      <a href="https://pointillviz.com/">Overview</a><a href="https://docs.pointillviz.com/">Docs</a><a href="../../" aria-current="true">Tool Store</a>
+    </nav>
+  </noscript>
+</header>
+<dialog class="pv-drawer" id="pv-drawer" aria-label="Menu">
+  <div class="pv-drawer__panel">
+    <div class="pv-drawer__head">
+      <img src="../../assets/pv/logo.svg" width="152" height="18" alt="PointillViz" translate="no">
+      <button class="pv-btn pv-btn--ghost pv-btn--icon" type="button" data-pv-drawer-close aria-label="Close menu" autofocus>
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15"/></svg>
+      </button>
+    </div>
+    <nav aria-label="Main">
+      <ul class="pv-drawer__nav">
+        <li><a href="https://pointillviz.com/"><span class="pv-drawer__name">Overview</span><span class="pv-drawer__host">pointillviz.com</span></a></li>
+        <li><a href="https://docs.pointillviz.com/"><span class="pv-drawer__name">Docs</span><span class="pv-drawer__host">docs.pointillviz.com</span></a></li>
+        <li><a href="../../" aria-current="true"><span class="pv-drawer__name">Tool Store</span><span class="pv-drawer__host">store.pointillviz.com</span></a></li>
+        <li><a href="#" data-placeholder="paper"><span class="pv-drawer__name">Paper</span><span class="pv-drawer__host">bioRxiv</span></a></li>
+      </ul>
+    </nav>
+    <div class="pv-drawer__foot">
+      <p>© 2026 PointillViz</p>
+    </div>
+  </div>
+</dialog>
+<main id="main" class="st-tool">
+  <div class="pv-container">
+    <nav class="st-back" aria-label="Back">
+      <a class="st-back__link" href="../../"><svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-arrow-left"/></svg>All tools</a>
+    </nav>
+    <div class="st-tool__layout">
+      <header class="st-hero">
+        <h1 class="pv-title st-hero__title">Smoothie</h1>
+        <p class="st-hero__by">by PointillViz authors</p>
+        <p class="pv-lede st-hero__desc">Gene modules that share a spatial pattern, found by the published Smoothie package.</p>
+        <div class="st-hero__badges"><span class="pv-tag st-badge" title="Written in Python">Python</span><span class="pv-tag pv-tag--ver">v1.0.0</span></div>
+        <div class="st-hero__chips"><ul class="pv-tags" aria-label="Tags"><li class="pv-tag">spatial</li><li class="pv-tag">genes</li><li class="pv-tag">modules</li><li class="pv-tag">co-expression</li><li class="pv-tag">network</li><li class="pv-tag">smoothing</li><li class="pv-tag">figure</li></ul><div class="st-hero__outs"><span class="st-tags__sep" aria-hidden="true">Outputs</span><ul class="pv-tags" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="writes a summary">summary</li><li class="pv-tag pv-tag--out" title="returns a table">table</li><li class="pv-tag pv-tag--out" title="returns figures">images</li><li class="pv-tag pv-tag--out" title="returns files to download">files</li></ul></div></div>
+      </header>
+      <figure class="pv-figure st-hero__art">
+        <div class="pv-figure__stage st-artstage"><img src="../../assets/media/tools/smoothie.webp?v=7fe65d9fac" srcset="../../assets/media/tools/smoothie.webp?v=7fe65d9fac 720w, ../../assets/media/tools/smoothie@2x.webp?v=b0e9657d1a 1440w" sizes="(min-width: 1320px) 820px, (min-width: 1100px) 62vw, 94vw" width="720" height="420" alt="Smoothie: six small maps of cells, each glowing in a different pattern, one for each gene module. An illustration, not a real tissue." fetchpriority="high" decoding="async"></div>
+        <figcaption class="pv-figure__caption"><span>Smoothie: six small maps of cells, each glowing in a different pattern, one for each gene module. An illustration, not a real tissue.</span><span class="pv-figure__meta">Artwork from the tool’s bundle</span></figcaption>
+      </figure>
+      <div class="st-side">
+        <aside class="st-get" aria-labelledby="get-h">
+          <h2 class="st-get__title" id="get-h">Get this tool</h2>
+          <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/smoothie-v1.0.0/smoothie-1.0.0.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 59.4 kB</span></span></a>
+          <div class="st-get__how">
+            <p>Install in PointillViz: <b>Tools → Store → Install</b>, or use <b>Install from file</b> with the download.</p>
+            <p class="st-get__docs"><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How tools work · Docs</a></p>
+          </div>
+          <p class="st-get__src"><a class="pv-link" href="https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/smoothie">Source in the public registry<svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-external"/></svg></a></p>
+          <p class="st-get__note"><b>This runs as you.</b> A tool is arbitrary code, run with the privileges of whoever started PointillViz. <a class="pv-link" href="../../#safety">Read the safety note</a></p>
+          <h3 class="pv-label st-get__facts-h">Facts</h3>
+          <dl class="st-facts"><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__ver">1.0.0</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-11-05">5 Nov 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Needs</dt><dd><span class="st-nowrap">gene expression</span> · <span class="st-nowrap">2D coordinates</span> · <span class="st-nowrap">200+ cells</span></dd></div></dl>
+        </aside>
+        <nav class="st-onpage" aria-labelledby="onpage-h">
+          <p class="pv-label st-onpage__h" id="onpage-h">On this page</p>
+          <ul>
+            <li><a href="#readme">Readme</a></li>
+            <li><a href="#parameters">Parameters</a></li>
+            <li><a href="#outputs">Outputs</a></li>
+            <li><a href="#tool-check">Tool check</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="st-tool__main">
+        <section class="st-sec" id="readme" aria-labelledby="readme-h">
+          <h2 class="st-sec__h" id="readme-h">Readme</h2>
+          <div class="st-md">
+<p>Answers the question: <strong>Which genes share a spatial pattern in this tissue, and where does each group sit?</strong></p>
+<p>The tool runs <a class="pv-link" href="https://caholdener01.github.io/Smoothie/" rel="noopener noreferrer nofollow">Smoothie</a> (Holdener &amp; De Vlaminck, <em>Communications Biology</em> 2026) as its authors ship it. It installs the published package, <code translate="no">smoothie-st</code>, and calls its functions in the order of the authors’ pipeline; it holds no copy of their method. The package:</p>
+<ol><li><strong>smooths</strong> each gene over the tissue with a Gaussian of the chosen width, which fills in the gaps between sparse counts;</li><li><strong>correlates</strong> every pair of smoothed genes across the tissue;</li><li><strong>links</strong> two genes when their correlation <math translate="no"><mi>r</mi></math> passes the cutoff <math translate="no"><mi>c</mi></math>, with a weight that the power <math translate="no"><mi>p</mi></math> pushes down for weak links:</li></ol>
+<div class="st-formula" role="img" aria-label="w = ((r - c) / (1 - c))^p"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>w</mi></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mrow><mi>r</mi><mo>−</mo><mi>c</mi></mrow><mrow><mn>1</mn><mo>−</mo><mi>c</mi></mrow></mfrac><mo>)</mo></mrow><mi>p</mi></msup></math></span></span></div></div>
+<ol start="4"><li><strong>clusters</strong> that network into modules with Infomap. A gene with no link joins no module, and modules are numbered from the largest.</li></ol>
+<p>On a Xenium 5K section of the mouse maternal–fetal interface (235,803 cells, 5,106 genes), the defaults give 47 modules holding 2,428 genes. Among them are smooth muscle (Actg2, Myh11), yolk-sac endoderm (Apob, Afp), NK cells (Prf1, Gzmb), lymphatics (Ccl21a, Prox1), proliferation (Mki67, Top2a), the interferon response (Isg15, Ifit1), B cells (Cd79a, Cd19) and plasma cells (Igkc, Jchain).</p>
+<h3>What you get</h3>
+<ul><li><strong>Table.</strong> One row per module of two genes or more: its number, its number of genes, its mean margin and its most connected genes, first the strongest. A table cell holds 200 characters, so a large module ends with how many genes are left: they are all in the download. A gene’s margin compares its average link weight inside its module, <math translate="no"><mi>A</mi></math>, with that to the closest other module, <math translate="no"><mi>B</mi></math>, as (<math translate="no"><mi>A</mi></math> − <math translate="no"><mi>B</mi></math>) / max(<math translate="no"><mi>A</mi></math>, <math translate="no"><mi>B</mi></math>): 1 for a gene linked only inside its module, 0 for one split evenly between two. A low mean margin marks a module that is not sharply set apart.</li><li><strong>Figure.</strong> One panel per module, drawn by the package and numbered as in the table. Each location’s score is the sum of the module’s smoothed genes, each scaled from 0 to 1 by its own highest value. Grey is low, red high and black highest, within each panel, so compare patterns between panels, not their strengths. A small module can look pale beside its few darkest spots.</li><li><strong>Download.</strong> <code translate="no">smoothie-modules.csv</code>: every gene in a module, with the package’s measures of it in the network (degree, weighted degree, rescaled weighted degree, clustering coefficient and margin).</li><li><strong>Summary.</strong> The numbers of this run, the three largest modules and the authors’ lower bound for the cutoff.</li></ul>
+<p><strong>The lower bound.</strong> The package repeats the smoothing and the correlations with the positions shuffled, and gives the 99.9th percentile of the correlations it finds. The authors use it as the lowest sensible cutoff. The summary gives it for this run, and says so in bold when the cutoff is below it.</p>
+<h3>Parameters</h3>
+<ul><li><strong>Smoothing width (microns).</strong> The standard deviation of the Gaussian. The authors find 20 to 40 µm works best. Wider finds broader patterns and needs fewer cells. If more than 15% of the tissue has fewer than 10 cells within three widths, the package refuses, and the tool says which width would pass.</li><li><strong>Correlation cutoff.</strong> The correlation above which two genes are linked. Higher keeps fewer genes, in tighter modules; lower takes longer. With no pair above it, the tool refuses and names the highest correlation found.</li><li><strong>Clustering power.</strong> How strongly weak links are discounted when the network is clustered. Higher gives more, smaller modules. The authors find 1 to 6 reasonable and examine values up to 9.</li></ul>
+<h3>What is fixed</h3>
+<p>Everything else is what the authors’ pipeline notebooks give for cell-sized data, and the package’s own defaults:</p>
+<ul><li><strong>Quality control and normalisation.</strong> Cells with at least 50 transcripts, genes with at least 100 counts in at least 10 cells; counts per thousand, then log1p.</li><li><strong>Where it smooths.</strong> The authors smooth subcellular to cell-sized data on a hexagonal grid, one width apart, and binned data at each spot. Their table starts binned data at 20 µm, so the tool smooths on the grid when cells or spots sit closer than that, and at each spot otherwise. On the section above, smoothing at each cell gives nearly the same modules (adjusted Rand index 0.95) for 2.5 times the memory.</li><li><strong>Minimum cells under the Gaussian.</strong> 10 within three widths, the low end of the authors’ 10 to 100. Below it the package sets a location to zero, and zeros raise every correlation, so a low value keeps them few: 0.15% of the locations on the section above. The summary warns when they reach 1%.</li><li><strong>Infomap.</strong> 20 trials, seed 0.</li></ul>
+<p><strong>Coordinates.</strong> The width is in µm. A dataset in µm or mm is used as it stands, and one in pixels through the pixel size of an image layer that covers its cells. Otherwise the size of the coordinates is unknown: the median spacing between cells is then taken as 9 µm, the median over the cell-segmented datasets this was measured on (7.3 to 12.9 µm), and the summary says so.</p>
+<p><strong>Sections and selections.</strong> Each section is smoothed on its own, as the datasets of the authors’ multi-dataset pipeline are, so no section lends counts to another; the correlations are then taken over all of them. The figure shows the sections as the map lays them out, or side by side when they share coordinates, and the summary then gives their order. A section that is too sparse for the width is left out, and the summary names it. Isolate a section, or select cells, to run on those alone.</p>
+<p><strong>Sections of different gene panels.</strong> A section is smoothed on the genes it measured, as a dataset is in the authors’ multi-dataset pipeline. The package then counts the others as zero in that section, in the correlations, the lower bound and the map, so genes missing from the same section correlate for that alone, and a module can be made of nothing else. The summary says when this happens and how many modules are mostly such genes. Isolate a section to see its own modules.</p>
+<h3>Limitations</h3>
+<p><strong>A module is a community in a correlation network, not a test.</strong> No gene or module carries a p-value, and the numbers of modules and genes follow from the three parameters, which have no single right setting. The package’s <code translate="no">select_clustering_params</code> helps choose them, but this tool does not run it.</p>
+<p><strong>Sharing a place is not sharing a cell, and the reverse.</strong> Genes of two cell types that live side by side correlate, and so do genes of one cell type wherever its cells lie. On the section above, shuffling the positions in 20 µm bins, as the lower bound does, removes 95% of the links (107,191 to 5,704), yet 790 genes still form 40 modules, against 2,428 in 47. Four in five of those genes are in the most connected third of their module, and in 11 of the 47 modules, B and plasma cells among them, they are at least half the genes. Such a module says that these genes share cells, which is not yet a pattern of the tissue.</p>
+<p><strong>Cost.</strong> The section above takes about 5 minutes and 7 GB on a server of 124 cores, with up to 10 processes smoothing, twice: once for the modules and once for the lower bound. Each panel of the figure takes about 2.5 s of that. A panel draws at most 50,000 locations, which changes no module. Past 100 modules the panels are drawn smaller, so the figure takes no longer, and past 900 it maps the 900 largest. While it runs, the package writes its panels to a temporary folder, removed at the end of the run.</p>
+<p>Smoothie’s 2D smoothing means a 3D dataset is not offered the tool.</p>
+<h3>Citation</h3>
+<p>Holdener C, De Vlaminck I. Smoothie: efficient inference and integration of spatial co-expression networks from denoised spatial transcriptomics data. <em>Communications Biology</em> 9, 459 (2026). <a class="pv-link" href="https://doi.org/10.1038/s42003-026-09898-z" rel="noopener noreferrer nofollow">doi:10.1038/s42003-026-09898-z</a></p>
+<p>The <code translate="no">smoothie-st</code> package is by Chase Holdener, under the MIT licence.</p>
+          </div>
+          <div class="st-refs"><h3 class="st-refs__h">References</h3><p>Holdener C, De Vlaminck I. Smoothie: efficient inference and integration of spatial co-expression networks from denoised spatial transcriptomics data. Commun Biol 9, 459 (2026). https://doi.org/10.1038/s42003-026-09898-z</p></div>
+        </section>
+        <section class="st-sec" id="parameters" aria-labelledby="parameters-h">
+          <h2 class="st-sec__h" id="parameters-h">Parameters</h2>
+          <div class="pv-table-wrap st-params">
+<table class="pv-table" role="table" aria-labelledby="parameters-h">
+<thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Parameter</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Default</th><th scope="col" role="columnheader">What it does</th></tr></thead>
+<tbody role="rowgroup">
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Smoothing width (microns)</span><code class="st-param__name" translate="no">smoothing_width</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">float, 5–200</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">20</span></td>
+  <td role="cell" data-label="What it does">Sets the width of the Gaussian that smooths each gene over the tissue, its standard deviation.
+The authors find 20 to 40 µm works best. Wider finds broader patterns; sparse tissue needs it wider.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Correlation cutoff</span><code class="st-param__name" translate="no">correlation_cutoff</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">float, 0.1–0.95</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">0.4</span></td>
+  <td role="cell" data-label="What it does">Links two genes when their smoothed maps correlate above this.
+Higher keeps fewer genes, in tighter modules. Lower takes longer. The summary gives the authors’ lower bound for this run.</td>
+</tr>
+<tr role="row">
+  <th scope="row" role="rowheader" data-label="Parameter"><span class="st-param__label">Clustering power</span><code class="st-param__name" translate="no">clustering_power</code></th>
+  <td role="cell" data-label="Type"><span class="st-param__type">float, 1–9</span></td>
+  <td role="cell" data-label="Default"><span class="st-param__default">4</span></td>
+  <td role="cell" data-label="What it does">Sets how strongly weak links are discounted when the network is clustered.
+Higher gives more, smaller modules. The authors find 1 to 6 reasonable.</td>
+</tr>
+</tbody>
+</table>
+</div>
+        </section>
+        <section class="st-sec" id="outputs" aria-labelledby="outputs-h">
+          <h2 class="st-sec__h" id="outputs-h">Outputs</h2>
+          <ul class="st-outputs"><li><span class="pv-tag pv-tag--out">summary</span><span class="st-outputs__what">writes a summary</span></li><li><span class="pv-tag pv-tag--out">table</span><span class="st-outputs__what">returns a table</span></li><li><span class="pv-tag pv-tag--out">images</span><span class="st-outputs__what">returns figures</span></li><li><span class="pv-tag pv-tag--out">files</span><span class="st-outputs__what">returns files to download</span></li></ul>
+        </section>
+        <section class="st-sec" id="tool-check" aria-labelledby="check-h">
+          <h2 class="st-sec__h" id="check-h">Tool check</h2>
+          <p class="st-sec__intro">The gates this version passed when it was released, in the order they ran.</p>
+          <div class="st-check">
+  <ol class="pv-gates st-check__strip" aria-label="The gates, in the order they ran"><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">bundle</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">manifest</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">environment</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">entry</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass" data-adv><span class="pv-gate__name" translate="no">imports</span><span class="pv-sr-only"> pass, advisory</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">fixture</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">result</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">edge</span><span class="pv-sr-only"> pass</span></li><li class="pv-gate" data-state="pass"><span class="pv-gate__name" translate="no">no_mutation</span><span class="pv-sr-only"> pass</span></li></ol>
+  <ol class="st-gatelog" aria-label="What each gate saw">
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">bundle</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">6 files, 59.4 kB packed and 276.1 kB unpacked, plugin.json at the root.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">manifest</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">smoothie 1.0.0 by PointillViz authors; Python entry tool.py, outputs summary, table, images, files.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">environment</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">entry</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">tool.py imported in 4.60 s and defines run(ds, params).</p>
+</li>
+<li class="st-gatelog__row" data-state="pass" data-adv>
+  <span class="st-gatelog__name"><code translate="no">imports</code> <span class="st-adv">advisory</span></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">1 source file, using anndata, csv, io, itertools, math, matplotlib, numpy, os, pointillviz_tool, scanpy, scipy, smoothie, tempfile, warnings; no network, subprocess, filesystem-write, dynamic-exec or environment use found.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">fixture</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">ran on the 600-cell fixture in 11.44 s, returning summary, table, files, images and 57 log lines.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">result</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">returned the declared outputs: summary, table, files, images.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">edge</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">at the minimum corner (clustering_power=1.0, correlation_cutoff=0.1, smoothing_width=5.0) it refused in words rather than crashing: At a smoothing width of 5 µm, more than 15% of the tissue has fewer than 10 cells within 15 µm, the reach of the smoothing. Widen it to at least 7 µm. (code: too_sparse); ran at the maximum corner (clustering_power=9.0, correlation_cutoff=0.95, smoothing_width=200.0) in 10.24 s.</p>
+</li>
+<li class="st-gatelog__row" data-state="pass">
+  <span class="st-gatelog__name"><code translate="no">no_mutation</code></span>
+  <span class="st-gatelog__status">pass</span>
+  <p class="st-gatelog__msg">the fixture dataset&#x27;s 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design).</p>
+</li>
+  </ol>
+</div>
+          <p class="st-sec__note">Passing the gates is a statement about the gates, not about whether the code is safe to run.</p>
+        </section>
+      </div>
+    </div>
+    <section class="st-more" aria-labelledby="more-h">
+      <h2 class="st-more__h" id="more-h">More tools</h2>
+      <ul class="st-grid st-grid--more">
+<li class="st-cell" data-id="banksy-niches" data-name="BANKSY niches" data-tags="spatial|niches|domains|clustering|genes" data-outputs="summary|labels|matrix|table|files" data-published="2026-10-28" data-version="1.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="../../assets/media/tools/banksy-niches.webp?v=71e43568a0" srcset="../../assets/media/tools/banksy-niches.webp?v=71e43568a0 720w, ../../assets/media/tools/banksy-niches@2x.webp?v=b3a2346569 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/banksy-niches/">BANKSY niches</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-28">28 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Tissue niches from each cell’s expression and its neighbourhood’s, by the BANKSY method.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="paints categories on the spatial view">labels</li><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a table">table</li><li class="pv-tag pv-tag--out" title="returns files to download">files</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="pv-tag st-badge" title="Written in Python">Python</span>
+    <span class="st-card__ver" title="Version">v1.0.0</span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="ridge-map" data-name="Ridge Map" data-tags="spatial|expression|density|cell types|relief|figure" data-outputs="summary|images|files" data-published="2026-11-04" data-version="1.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="../../assets/media/tools/ridge-map.webp?v=504cfe2fb6" srcset="../../assets/media/tools/ridge-map.webp?v=504cfe2fb6 720w, ../../assets/media/tools/ridge-map@2x.webp?v=cfdf200628 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/ridge-map/">Ridge Map</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz authors</span> <time class="st-card__date" datetime="2026-11-04">4 Nov 2026</time></p>
+  <p class="pv-card__body st-card__desc">A tissue section as a relief of ridges, their height a gene or the cell density, their colour the most common cell type.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="returns figures">images</li><li class="pv-tag pv-tag--out" title="returns files to download">files</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="pv-tag st-badge" title="Written in Python">Python</span>
+    <span class="st-card__ver" title="Version">v1.0.0</span>
+  </div>
+</article>
+</li>
+<li class="st-cell" data-id="categorical-chords" data-name="Categorical Chords" data-tags="spatial|cell types|categorical|chord" data-outputs="chord|matrix|table|summary" data-published="2026-10-28" data-version="2.0.0">
+<article class="pv-card pv-card--link st-card">
+  <div class="st-card__art"><img src="../../assets/media/tools/categorical-chords.webp?v=1e6c2812c0" srcset="../../assets/media/tools/categorical-chords.webp?v=1e6c2812c0 720w, ../../assets/media/tools/categorical-chords@2x.webp?v=6a86392478 1440w" sizes="(max-width: 519.98px) 112px, (min-width: 1280px) 340px, (min-width: 900px) 31vw, (min-width: 600px) 46vw, 92vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
+  <h3 class="pv-card__title st-card__title"><a class="pv-card__link" href="../../tools/categorical-chords/">Categorical Chords</a></h3>
+  <p class="pv-card__meta st-card__by"><span class="st-card__author">PointillViz reference tools</span> <time class="st-card__date" datetime="2026-10-28">28 Oct 2026</time></p>
+  <p class="pv-card__body st-card__desc">Explore spatial contacts or shared membership between categorical annotations with count-weighted ribbons and enrichment colors.</p>
+  <ul class="pv-tags st-card__outs" aria-label="Outputs"><li class="pv-tag pv-tag--out" title="returns a chord diagram">chord</li><li class="pv-tag pv-tag--out" title="returns a heatmap">matrix</li><li class="pv-tag pv-tag--out" title="returns a table">table</li></ul>
+  <div class="pv-card__foot st-card__foot">
+    <span class="pv-tag st-badge" title="Written in Python">Python</span>
+    <span class="st-card__ver" title="Version">v2.0.0</span>
+  </div>
+</article>
+</li>
+      </ul>
+    </section>
+  </div>
+</main>
+<footer class="pv-footer">
+  <div class="pv-footer__inner">
+    <a class="pv-footer__brand" href="https://pointillviz.com/" translate="no"><img src="../../assets/pv/logo-mark.svg" width="28" height="28" alt="">PointillViz</a>
+    <nav class="pv-footer__sites" aria-label="PointillViz sites">
+      <ul>
+        <li><a href="https://pointillviz.com/"><span class="pv-footer__site">Overview</span><span class="pv-footer__host">pointillviz.com</span></a></li>
+        <li><a href="https://docs.pointillviz.com/"><span class="pv-footer__site">Docs</span><span class="pv-footer__host">docs.pointillviz.com</span></a></li>
+        <li><a href="../../" aria-current="true"><span class="pv-footer__site">Tool Store</span><span class="pv-footer__host">store.pointillviz.com</span></a></li>
+      </ul>
+    </nav>
+    <p class="pv-footer__pub">Preprint: Gargoori Motlagh&nbsp;A. <em>et&nbsp;al.</em>, bioRxiv · <a href="#" data-placeholder="paper">Coming soon</a></p>
+    <p class="pv-footer__copy">© 2026 PointillViz</p>
+  </div>
+</footer>
+</body>
+</html>

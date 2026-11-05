@@ -630,8 +630,12 @@ def is_mathy(s: str) -> bool:
                or "\N{GREEK CAPITAL LETTER ALPHA}" <= c <= "\N{GREEK SMALL LETTER OMEGA}" for c in s)
 
 
+# \left and \right only size a bracket in LaTeX. Here a bracket always fits what it holds, so the bracket stays and they go.
+SIZING = re.compile(r"\\(?:left|right)(?=[(\[|.)\]])")
+
+
 def math_inline(src: str) -> str:
-    return f"<math>{_mml_list(_parse(src), False)}</math>"
+    return f"<math>{_mml_list(_parse(SIZING.sub('', src)), False)}</math>"
 
 
 def _pieces(nodes: list) -> list:
@@ -688,7 +692,7 @@ def formula_block(src: str) -> str:
     """A display formula. READMEs separate the equations of a formula line with
     runs of spaces; each equation is split again at its top-level relations, and
     the parts wrap on a narrow screen. Screen readers get the formula as text."""
-    eqs = [t.strip() for t in re.split(r"\s{3,}", src.strip()) if t.strip()]
+    eqs = [t.strip() for t in re.split(r"\s{3,}", SIZING.sub("", src).strip()) if t.strip()]
     arrows = ("⟶", "→")
     lins = []
     for k, e in enumerate(eqs):
@@ -784,6 +788,8 @@ def markdown_html(text: str, tool_name: str = "") -> str:
         if bullet.match(line) or numbered.match(line):
             ordered = bool(numbered.match(line))
             rx = numbered if ordered else bullet
+            # A list interrupted by a formula goes on from its number, which <ol> would otherwise restart at 1.
+            first = int(re.match(r"^\s*(\d+)", line).group(1)) if ordered else 1
             items = []
             while i < len(lines) and rx.match(lines[i]):
                 item = [rx.sub("", lines[i], count=1)]
@@ -796,7 +802,8 @@ def markdown_html(text: str, tool_name: str = "") -> str:
                 if i + 1 < len(lines) and not lines[i].strip() and rx.match(lines[i + 1]):
                     i += 1
             tag = "ol" if ordered else "ul"
-            out.append(f"<{tag}>{''.join(items)}</{tag}>")
+            start = f' start="{first}"' if first != 1 else ""
+            out.append(f"<{tag}{start}>{''.join(items)}</{tag}>")
             continue
         if re.match(r"^\s*>\s?", line):
             buf = []
