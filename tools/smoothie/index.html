@@ -6,13 +6,13 @@
 <script>(function(d){try{var w=d.clientWidth||innerWidth;d.style.setProperty('--k',Math.min(Math.max(Math.min(w/1440,innerHeight/900),1),1.6).toFixed(4))}catch(e){}})(document.documentElement)</script>
 <meta name="theme-color" content="#06070D">
 <title>Smoothie · The Tool Store · PointillViz</title>
-<meta name="description" content="Gene modules that share a spatial pattern, found by the published Smoothie package. A PointillViz community tool, version 1.0.1.">
+<meta name="description" content="Which genes share a spatial pattern across the tissue, grouped into modules. A PointillViz community tool, version 1.0.2.">
 <meta name="robots" content="noindex">
 <link rel="canonical" href="https://store.pointillviz.com/tools/smoothie/">
 <meta property="og:site_name" content="PointillViz">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Smoothie · The Tool Store · PointillViz">
-<meta property="og:description" content="Gene modules that share a spatial pattern, found by the published Smoothie package.">
+<meta property="og:description" content="Which genes share a spatial pattern across the tissue, grouped into modules.">
 <meta property="og:url" content="https://store.pointillviz.com/tools/smoothie/">
 <meta property="og:image" content="https://store.pointillviz.com/assets/media/social/smoothie.jpg">
 <meta property="og:image:width" content="1200">
@@ -86,9 +86,9 @@
       <div class="st-top__words">
         <a class="st-back" href="../../"><svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-arrow-left"/></svg>All tools</a>
         <h1 class="st-title st-top__name">Smoothie</h1>
-        <p class="st-top__desc">Gene modules that share a spatial pattern, found by the published Smoothie package.</p>
+        <p class="st-top__desc">Which genes share a spatial pattern across the tissue, grouped into modules.</p>
         <div class="st-get">
-          <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/smoothie-v1.0.1/smoothie-1.0.1.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 57.3 kB</span></span></a>
+          <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/smoothie-v1.0.2/smoothie-1.0.2.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 57.1 kB</span></span></a>
           <p class="st-get__how"><span class="st-get__steps">In PointillViz: <b>Tools → Store → Install</b>, or <b>Install from file</b> with the download. </span><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How to install and run a tool</a></p>
           
           <p class="st-get__note">This runs as you: a tool is arbitrary code, with your privileges. <a class="pv-link" href="../../#safety">Safety note</a></p>
@@ -109,28 +109,27 @@
           <a class="st-tab" href="#outputs" data-view-link="outputs">Outputs</a>
         </nav>
         <button class="st-testbtn" id="test-summary-open" type="button" aria-haspopup="dialog" aria-controls="test-summary" data-state="pass">Tool test summary</button>
-        <a class="pv-btn pv-btn--primary st-bar__dl" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/smoothie-v1.0.1/smoothie-1.0.1.pvtool" download tabindex="-1"><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span>Download</span></a>
+        <a class="pv-btn pv-btn--primary st-bar__dl" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/smoothie-v1.0.2/smoothie-1.0.2.pvtool" download tabindex="-1"><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span>Download</span></a>
       </div>
     </div>
     <div class="st-wrap st-views__grid">
       <div class="st-panels">
         <section class="st-panel" id="readme" aria-labelledby="readme-h">
           <h2 class="st-panel__h" id="readme-h">Readme</h2>
-          <p class="st-question">Which genes share a spatial pattern in this tissue, and where does each group sit?</p>
+          <p class="st-question">Which genes share a spatial pattern in this tissue, and where does each group of genes lie?</p>
           <div class="st-md">
-<p>The tool runs <a class="pv-link" href="https://caholdener01.github.io/Smoothie/" rel="noopener noreferrer nofollow">Smoothie</a> (Holdener &amp; De Vlaminck, <em>Communications Biology</em> 2026) as its authors ship it. It installs the published package, <code translate="no">smoothie-st</code>, and calls its functions in the order of the authors’ pipeline; it holds no copy of their method. The package:</p>
-<ol><li><strong>smooths</strong> each gene over the tissue with a Gaussian of the chosen width, which fills in the gaps between sparse counts;</li><li><strong>correlates</strong> every pair of smoothed genes across the tissue;</li><li><strong>links</strong> two genes when their correlation <math translate="no"><mi>r</mi></math> passes the cutoff <math translate="no"><mi>c</mi></math>, with a weight that the power <math translate="no"><mi>p</mi></math> pushes down for weak links:</li></ol>
-<div class="st-formula" role="img" aria-label="w = ((r - c) / (1 - c))^p"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>w</mi></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mrow><mi>r</mi><mo>−</mo><mi>c</mi></mrow><mrow><mn>1</mn><mo>−</mo><mi>c</mi></mrow></mfrac><mo>)</mo></mrow><mi>p</mi></msup></math></span></span></div></div>
-<ol start="4"><li><strong>clusters</strong> that network into modules with Infomap. A gene with no link joins no module, and modules are numbered from the largest.</li></ol>
-<p>On a Xenium 5K section of the mouse maternal–fetal interface (235,803 cells, 5,106 genes), the defaults give 47 modules holding 2,428 genes, among them smooth muscle (Actg2, Myh11), NK cells (Prf1, Gzmb) and the interferon response (Isg15, Ifit1).</p>
-<p><strong>Table.</strong> One row per module: its size, its mean margin and its most connected genes. A gene’s margin runs from 1, linked only inside its module, to 0, split evenly between two, so a low mean marks a module that is not sharply set apart.</p>
-<p><strong>Figure.</strong> One panel per module, drawn by the package. Each location’s score sums the module’s smoothed genes, each scaled by its own highest value, so compare patterns between panels, not their strengths.</p>
-<p><strong>Download.</strong> Every gene in a module, with the package’s network measures of it.</p>
-<p><strong>The lower bound.</strong> The package repeats the smoothing and the correlations with the positions shuffled, and the authors use the result as the lowest sensible cutoff. The summary gives it, and says in bold when the cutoff is below it.</p>
-<p><strong>Several sections.</strong> Each section is smoothed on its own, and the correlations are taken over all of them. Genes missing from the same section correlate for that alone, and the summary says when this happens.</p>
-<p>Everything not on the form is what the authors’ pipeline notebooks give for cell-sized data. A module is a community in a correlation network, not a test: no gene or module carries a p-value. It can also mean that its genes share cells rather than a pattern of the tissue, because genes of one cell type correlate wherever its cells lie.</p>
-<p><strong>Cost.</strong> The section above takes about 5 minutes and 7 GB. The tool needs 2D coordinates.</p>
-<p>The <code translate="no">smoothie-st</code> package is by Chase Holdener, under the MIT licence.</p>
+<p>The tool runs <a class="pv-link" href="https://caholdener01.github.io/Smoothie/" rel="noopener noreferrer nofollow">Smoothie</a> with the authors’ own Python package, <code translate="no">smoothie-st</code>, and the settings of their pipeline for single-cell data.</p>
+<p>First, each gene’s normalized expression is smoothed over the tissue. At each location <math translate="no"><mi>u</mi></math>, nearby cells <math translate="no"><mi>j</mi></math> contribute with the Gaussian weights <math translate="no"><mi>w</mi><mrow><mo stretchy="false">(</mo><mi>u</mi><mo>,</mo><mi>j</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>exp</mi><mrow><mo stretchy="false">(</mo><mo>−</mo><mi>d</mi><msup><mrow><mo stretchy="false">(</mo><mi>u</mi><mo>,</mo><mi>j</mi><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mo lspace="0" rspace="0">/</mo><mn>2</mn><msup><mi>σ</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow></math>, where <math translate="no"><mi>d</mi><mrow><mo stretchy="false">(</mo><mi>u</mi><mo>,</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></math> is their distance and <math translate="no"><mi>σ</mi></math> the smoothing width:</p>
+<div class="st-formula" role="img" aria-label="s(u) = (sum over j of w(u,j) x(j)) / (sum over j of w(u,j))"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>s</mi><mrow><mo stretchy="false">(</mo><mi>u</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><mi>w</mi><mrow><mo stretchy="false">(</mo><mi>u</mi><mo>,</mo><mi>j</mi><mo stretchy="false">)</mo></mrow><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></mrow><mrow><munder><mo>∑</mo><mi>j</mi></munder><mi>w</mi><mrow><mo stretchy="false">(</mo><mi>u</mi><mo>,</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></math></span></span></div></div>
+<p>The smoothed maps of every pair of genes <math translate="no"><mi>g</mi></math> and <math translate="no"><mi>h</mi></math> are then compared using the Pearson correlation <math translate="no"><mi>r</mi><mrow><mo stretchy="false">(</mo><mi>g</mi><mo>,</mo><mi>h</mi><mo stretchy="false">)</mo></mrow></math>. Two genes are linked when <math translate="no"><mi>r</mi><mrow><mo stretchy="false">(</mo><mi>g</mi><mo>,</mo><mi>h</mi><mo stretchy="false">)</mo></mrow></math> exceeds the cutoff <math translate="no"><mi>c</mi></math>, and the clustering power <math translate="no"><mi>p</mi></math> discounts weak links:</p>
+<div class="st-formula" role="img" aria-label="a(g,h) = ((r(g,h) − c) / (1 − c))^p"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>a</mi><mrow><mo stretchy="false">(</mo><mi>g</mi><mo>,</mo><mi>h</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mrow><mi>r</mi><mrow><mo stretchy="false">(</mo><mi>g</mi><mo>,</mo><mi>h</mi><mo stretchy="false">)</mo></mrow><mo>−</mo><mi>c</mi></mrow><mrow><mn>1</mn><mo>−</mo><mi>c</mi></mrow></mfrac><mo>)</mo></mrow><mi>p</mi></msup></math></span></span></div></div>
+<p>The Infomap algorithm clusters this network into modules, numbered from the largest. Genes without a link join no module.</p>
+<p><strong>Figure.</strong> One panel per module. Each location’s module score is the sum of the module’s smoothed genes, each scaled from 0 to its own highest value. Grey indicates low scores, red high scores and black the highest within each panel, so compare the patterns of different panels rather than their strengths.</p>
+<p><strong>Table.</strong> Each row represents one module. <code translate="no">Genes</code> gives its size, and <code translate="no">Members</code> lists its genes, the most connected first. <code translate="no">Mean margin</code> averages the margins of its genes, which compare a gene’s mean link weight <math translate="no"><mi>A</mi></math> within its module with its highest mean link weight <math translate="no"><mi>B</mi></math> to another module:</p>
+<div class="st-formula" role="img" aria-label="margin = (A − B) / (max(A, B))"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>margin</mi></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mfrac><mrow><mi>A</mi><mo>−</mo><mi>B</mi></mrow><mrow><mi>max</mi><mrow><mo stretchy="false">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></math></span></span></div></div>
+<p>A margin of <strong>1</strong> means that the gene is linked only within its module, <strong>0</strong> that it is equally close to another module, and negative values that it is closer to another module. A download lists every gene in a module with its network measures.</p>
+<p><strong>Summary.</strong> The package repeats the smoothing and correlations with the cell positions shuffled. The 99.9th percentile of these shuffled correlations is the authors’ lowest sensible cutoff, because weaker correlations also arise without any spatial pattern. The summary reports this bound and warns when the cutoff lies below it.</p>
+<p>A module groups correlated genes and carries no p-value. Genes of one cell type correlate wherever its cells lie, so a module can reflect shared cells rather than a pattern of the tissue.</p>
           </div>
           <div class="st-refs"><h3 class="st-refs__h">References</h3><div class="st-md"><p>Holdener C, De Vlaminck I. Smoothie: efficient inference and integration of spatial co-expression networks from denoised spatial transcriptomics data. Commun Biol 9, 459 (2026). <a class="pv-link" href="https://doi.org/10.1038/s42003-026-09898-z" rel="noopener noreferrer nofollow">https://doi.org/10.1038/s42003-026-09898-z</a></p></div></div>
         </section>
@@ -169,7 +168,7 @@ Higher gives more, smaller modules. The authors find 1 to 6 reasonable.</span></
       </div>
       <aside class="st-facts" aria-labelledby="facts-h">
         <h2 class="pv-sr-only" id="facts-h">Details</h2>
-        <dl class="st-facts__list"><div class="st-facts__row"><dt>Author</dt><dd>PointillViz authors</dd></div><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__num" translate="no">1.0.1</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-11-05">5 Nov 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Language</dt><dd>Python</dd></div><div class="st-facts__row"><dt>GPU</dt><dd>Not used</dd></div><div class="st-facts__row"><dt>Needs</dt><dd>gene expression<br>2D coordinates<br>200+ cells</dd></div></dl>
+        <dl class="st-facts__list"><div class="st-facts__row"><dt>Author</dt><dd>PointillViz authors</dd></div><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__num" translate="no">1.0.2</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-11-08">8 Nov 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Language</dt><dd>Python</dd></div><div class="st-facts__row"><dt>GPU</dt><dd>Not used</dd></div><div class="st-facts__row"><dt>Needs</dt><dd>gene expression<br>2D coordinates<br>200+ cells</dd></div></dl>
         <p class="st-facts__src"><a class="pv-link" href="https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/smoothie">Source in the public registry<svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-external"/></svg></a></p>
       </aside>
     </div>
@@ -185,11 +184,11 @@ Higher gives more, smaller modules. The authors find 1 to 6 reasonable.</span></
 <ol class="st-gates">
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">bundle</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">6 files, 57.3 kB packed and 271.0 kB unpacked, plugin.json at the root.</p>
+  <p class="st-gate__msg">6 files, 57.1 kB packed and 270.6 kB unpacked, plugin.json at the root.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">manifest</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">smoothie 1.0.1 by PointillViz authors; Python entry tool.py, outputs summary, table, images, files.</p>
+  <p class="st-gate__msg">smoothie 1.0.2 by PointillViz authors; Python entry tool.py, outputs summary, table, images, files.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">environment</code><span class="st-gate__word">pass</span></p>
@@ -197,7 +196,7 @@ Higher gives more, smaller modules. The authors find 1 to 6 reasonable.</span></
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">entry</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">tool.py imported in 5.23 s and defines run(ds, params).</p>
+  <p class="st-gate__msg">tool.py imported in 4.69 s and defines run(ds, params).</p>
 </li>
 <li class="st-gate" data-state="pass" data-adv>
   <p class="st-gate__head"><code class="st-gate__name" translate="no">imports</code> <span class="st-gate__adv">advisory</span><span class="st-gate__word">pass</span></p>
@@ -205,7 +204,7 @@ Higher gives more, smaller modules. The authors find 1 to 6 reasonable.</span></
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">fixture</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">ran on the 600-cell fixture in 10.32 s, returning summary, table, files, images and 57 log lines.</p>
+  <p class="st-gate__msg">ran on the 600-cell fixture in 10.80 s, returning summary, table, files, images and 57 log lines.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">result</code><span class="st-gate__word">pass</span></p>
@@ -213,7 +212,7 @@ Higher gives more, smaller modules. The authors find 1 to 6 reasonable.</span></
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">edge</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">at the minimum corner (clustering_power=1.0, correlation_cutoff=0.1, smoothing_width=5.0) it refused in words rather than crashing: At a smoothing width of 5 µm, more than 15% of the tissue has fewer than 10 cells within 15 µm, the reach of the smoothing. Widen it to at least 7 µm. (code: too_sparse); ran at the maximum corner (clustering_power=9.0, correlation_cutoff=0.95, smoothing_width=200.0) in 10.17 s.</p>
+  <p class="st-gate__msg">at the minimum corner (clustering_power=1.0, correlation_cutoff=0.1, smoothing_width=5.0) it refused in words rather than crashing: At a smoothing width of 5 µm, more than 15% of the tissue has fewer than 10 cells within 15 µm, the reach of the smoothing. Widen it to at least 7 µm. (code: too_sparse); ran at the maximum corner (clustering_power=9.0, correlation_cutoff=0.95, smoothing_width=200.0) in 10.60 s.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">no_mutation</code><span class="st-gate__word">pass</span></p>
@@ -235,18 +234,18 @@ Higher gives more, smaller modules. The authors find 1 to 6 reasonable.</span></
   <p class="st-card__desc">Which cell types touch which, from a Delaunay triangulation of the cells, as a network and a matrix corrected for abundance.</p>
 </a>
 </li>
-<li class="st-cell" data-id="banksy-niches" data-name="BANKSY niches" data-author="PointillViz reference tools" data-tags="spatial|niches|domains|clustering|genes" data-outputs="summary|labels|matrix|table|files" data-published="2026-11-05" data-version="2.0.0">
+<li class="st-cell" data-id="banksy-niches" data-name="BANKSY niches" data-author="PointillViz reference tools" data-tags="spatial|niches|domains|clustering|genes" data-outputs="summary|labels|matrix|table|files" data-published="2026-11-08" data-version="2.0.1">
 <a class="st-card" href="../../tools/banksy-niches/">
   <div class="st-card__art"><img src="../../assets/media/tools/banksy-niches.webp?v=71e43568a0" srcset="../../assets/media/tools/banksy-niches.webp?v=71e43568a0 720w, ../../assets/media/tools/banksy-niches@2x.webp?v=b3a2346569 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
   <h3 class="st-card__name">BANKSY niches</h3>
-  <p class="st-card__desc">Tissue niches from each cell’s expression and its neighbourhood’s, imported from the authors’ own BANKSY package.</p>
+  <p class="st-card__desc">Which niches the tissue divides into, judged by what each cell and its neighbours express.</p>
 </a>
 </li>
-<li class="st-cell" data-id="ridge-map" data-name="Ridge Map" data-author="PointillViz authors" data-tags="spatial|expression|density|cell types|relief|figure" data-outputs="summary|images|files" data-published="2026-11-05" data-version="1.0.1">
+<li class="st-cell" data-id="ridge-map" data-name="Ridge Map" data-author="PointillViz authors" data-tags="spatial|expression|density|cell types|relief|figure" data-outputs="summary|images|files" data-published="2026-11-08" data-version="1.0.2">
 <a class="st-card" href="../../tools/ridge-map/">
   <div class="st-card__art"><img src="../../assets/media/tools/ridge-map.webp?v=504cfe2fb6" srcset="../../assets/media/tools/ridge-map.webp?v=504cfe2fb6 720w, ../../assets/media/tools/ridge-map@2x.webp?v=cfdf200628 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
   <h3 class="st-card__name">Ridge Map</h3>
-  <p class="st-card__desc">A tissue section as a relief of ridges, their height a gene or the cell density, their colour the most common cell type.</p>
+  <p class="st-card__desc">How a gene, or the density of cells, rises and falls across a section, drawn as a relief of ridges.</p>
 </a>
 </li>
 <li class="st-cell" data-id="categorical-chords" data-name="Categorical Chords" data-author="PointillViz reference tools" data-tags="spatial|cell types|categorical|chord" data-outputs="chord|matrix|table|summary" data-published="2026-11-08" data-version="2.1.0">

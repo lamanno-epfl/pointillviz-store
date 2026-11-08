@@ -6,13 +6,13 @@
 <script>(function(d){try{var w=d.clientWidth||innerWidth;d.style.setProperty('--k',Math.min(Math.max(Math.min(w/1440,innerHeight/900),1),1.6).toFixed(4))}catch(e){}})(document.documentElement)</script>
 <meta name="theme-color" content="#06070D">
 <title>Seurat niches · The Tool Store · PointillViz</title>
-<meta name="description" content="Tissue niches from the cell types around each cell, imported from the authors’ own Seurat package. A PointillViz community tool, version 1.0.1.">
+<meta name="description" content="Which niches the tissue divides into, judged by the cell types around each cell. A PointillViz community tool, version 1.0.2.">
 <meta name="robots" content="noindex">
 <link rel="canonical" href="https://store.pointillviz.com/tools/seurat-niches/">
 <meta property="og:site_name" content="PointillViz">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Seurat niches · The Tool Store · PointillViz">
-<meta property="og:description" content="Tissue niches from the cell types around each cell, imported from the authors’ own Seurat package.">
+<meta property="og:description" content="Which niches the tissue divides into, judged by the cell types around each cell.">
 <meta property="og:url" content="https://store.pointillviz.com/tools/seurat-niches/">
 <meta property="og:image" content="https://store.pointillviz.com/assets/media/social/seurat-niches.jpg">
 <meta property="og:image:width" content="1200">
@@ -86,9 +86,9 @@
       <div class="st-top__words">
         <a class="st-back" href="../../"><svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-arrow-left"/></svg>All tools</a>
         <h1 class="st-title st-top__name">Seurat niches</h1>
-        <p class="st-top__desc">Tissue niches from the cell types around each cell, imported from the authors’ own Seurat package.</p>
+        <p class="st-top__desc">Which niches the tissue divides into, judged by the cell types around each cell.</p>
         <div class="st-get">
-          <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/seurat-niches-v1.0.1/seurat-niches-1.0.1.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 151.9 kB</span></span></a>
+          <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/seurat-niches-v1.0.2/seurat-niches-1.0.2.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 151.4 kB</span></span></a>
           <p class="st-get__how"><span class="st-get__steps">In PointillViz: <b>Tools → Store → Install</b>, or <b>Install from file</b> with the download. </span><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How to install and run a tool</a></p>
           
           <p class="st-get__note">This runs as you: a tool is arbitrary code, with your privileges. <a class="pv-link" href="../../#safety">Safety note</a></p>
@@ -109,7 +109,7 @@
           <a class="st-tab" href="#outputs" data-view-link="outputs">Outputs</a>
         </nav>
         <button class="st-testbtn" id="test-summary-open" type="button" aria-haspopup="dialog" aria-controls="test-summary" data-state="pass">Tool test summary</button>
-        <a class="pv-btn pv-btn--primary st-bar__dl" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/seurat-niches-v1.0.1/seurat-niches-1.0.1.pvtool" download tabindex="-1"><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span>Download</span></a>
+        <a class="pv-btn pv-btn--primary st-bar__dl" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/seurat-niches-v1.0.2/seurat-niches-1.0.2.pvtool" download tabindex="-1"><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span>Download</span></a>
       </div>
     </div>
     <div class="st-wrap st-views__grid">
@@ -118,19 +118,14 @@
           <h2 class="st-panel__h" id="readme-h">Readme</h2>
           <p class="st-question">Which neighbourhoods of cell types does the tissue divide into?</p>
           <div class="st-md">
-<p>The tool runs the niche analysis of <a class="pv-link" href="https://satijalab.org/seurat/" rel="noopener noreferrer nofollow">Seurat</a> (Hao et al., <em>Nature Biotechnology</em> 2024) with the authors’ own R package, <strong>imported from conda-forge as they ship it</strong> (<code translate="no">r-seurat</code> 5.5.1). It calls <code translate="no">BuildNicheAssay</code> as their <a class="pv-link" href="https://satijalab.org/seurat/articles/seurat5_spatial_vignette_2" rel="noopener noreferrer nofollow">Xenium vignette</a> does, with their values, and holds no copy of their method. The function:</p>
-<ol><li>finds each cell’s nearest cells;</li><li>counts the cell types among them and scales those counts;</li><li>groups cells with similar surroundings into niches with k-means, keeping the best of 30 random starts.</li></ol>
-<p>The authors credit Goltsev et al. (<em>Cell</em> 2018) and He et al. (<em>Nature Biotechnology</em> 2022) as its inspiration. Only cell types and positions enter, not expression.</p>
-<p>Called directly with the real counts in the object, with no code of this tool, the function gives the same niches, cell for cell, on a Xenium 5K mouse colon section of 135,231 cells. Asked for 8 niches there, it separates smooth muscle, the layers of enterocytes and goblet cells, and a small niche of lymphoid aggregates (0.7% of cells: dendritic cells and ILC3s).</p>
-<p><strong>Map.</strong> Every cell painted by its niche, numbered N1, N2, … from the largest.</p>
-<p><strong>Matrix.</strong> Each niche’s composition: the share of its cells in each cell type.</p>
-<p><strong>Table.</strong> Each niche’s size and main cell types, with a download of every cell’s niche.</p>
-<p><strong>Several sections.</strong> The function takes one set of coordinates, so the sections are set apart in space before it is called. A cell’s neighbours then come from its own section, and all sections share one set of niches. A section with no more cells than a neighbourhood holds is left out, and the summary says so. Isolate a section, or select cells, to run on those alone.</p>
-<p><strong>Cells left out.</strong> Those with no cell type, as in the vignette, and those with no coordinates. The summary counts them.</p>
-<p><strong>What the package does as shipped.</strong> The tool leaves these as they are:</p>
-<ul><li>The number of niches is a choice, not a finding: k-means makes as many as asked, and no niche carries a p-value.</li><li>Neighbours come from an approximate search (Annoy), the default of <code translate="no">FindNeighbors</code>.</li><li>Each k-means start stops at R’s default of 10 iterations, and the summary says when that cut one short. On the section above, 100 iterations changed no cell’s niche.</li></ul>
-<p><strong>Cost.</strong> Memory and time grow with cells × cell types: 135,231 cells with 73 cell types take about 2 minutes and 2 GB, and 708,889 cells with 327 about 26 minutes and 29 GB. If the memory is not there, the tool says so before it starts. It needs 2D coordinates.</p>
-<p><code translate="no">Seurat</code> is under the MIT licence, and so is this tool.</p>
+<p>The tool runs <code translate="no">BuildNicheAssay</code>, the niche analysis of <a class="pv-link" href="https://satijalab.org/seurat/" rel="noopener noreferrer nofollow">Seurat</a>, with the authors’ own R package and the settings of their <a class="pv-link" href="https://satijalab.org/seurat/articles/seurat5_spatial_vignette_2" rel="noopener noreferrer nofollow">Xenium vignette</a>. Only cell types and positions enter the analysis, not gene expression.</p>
+<p>For each cell <math translate="no"><mi>i</mi></math>, the tool finds its <math translate="no"><mi>k</mi></math> nearest cells and counts how many of them belong to each cell type <math translate="no"><mi>t</mi></math>, giving <math translate="no"><mi>n</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo>,</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></math>. These counts are then scaled for each cell type across all cells:</p>
+<div class="st-formula" role="img" aria-label="z(i,t) = (n(i,t) − n̄(t)) / (s(t))"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>z</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo>,</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mfrac><mrow><mi>n</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo>,</mo><mi>t</mi><mo stretchy="false">)</mo></mrow><mo>−</mo><mover accent="true"><mi>n</mi><mo>¯</mo></mover><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mrow><mi>s</mi><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow></mfrac></math></span></span></div></div>
+<p>Here, <math translate="no"><mover accent="true"><mi>n</mi><mo>¯</mo></mover><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></math> and <math translate="no"><mi>s</mi><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></math> are the mean and standard deviation of <math translate="no"><mi>n</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo>,</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></math> over all cells. A positive <math translate="no"><mi>z</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo>,</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></math> therefore means that cell <math translate="no"><mi>i</mi></math> has more type-<math translate="no"><mi>t</mi></math> neighbours than the average cell. Finally, k-means groups the cells into the chosen number of niches, so that cells within one niche have similar neighbourhood compositions; the best of 30 random starts is kept.</p>
+<p><strong>Map.</strong> Each cell is colored by its niche. Niches are numbered N1, N2, … from the largest to the smallest; the numbers carry no other meaning.</p>
+<p><strong>Matrix.</strong> Rows are niches and columns are cell types, ordered by abundance. Each square shows the percentage of the niche’s cells that belong to that cell type.</p>
+<p><strong>Table.</strong> Each row represents one niche. <code translate="no">Cells</code> and <code translate="no">% of cells</code> give its size, and <code translate="no">Main cell types</code> lists its three most common cell types with their shares. A download lists the niche of every cell.</p>
+<p>The number of niches is a choice, not a finding: k-means returns as many as requested. With several sections, each cell’s neighbours come from its own section, and all sections share one set of niches.</p>
           </div>
           <div class="st-refs"><h3 class="st-refs__h">References</h3><div class="st-md"><p>Hao Y, Stuart T, Kowalski MH, et al. Dictionary learning for integrative, multimodal and scalable single-cell analysis. Nat Biotechnol 42, 293-304 (2024).</p></div></div>
         </section>
@@ -142,23 +137,25 @@
 <tr role="row" class="st-p">
   <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Cell-type column (group.by)</span> <code class="st-p__name" translate="no">field</code></th>
   <td role="cell" class="st-p__val"><span class="st-p__default">required</span><span class="st-p__kind">a categorical column</span></td>
-  <td role="cell" class="st-p__help"><span class="st-p__text">The annotation counted around each cell: cell types, unless the dataset has none or you choose another column.</span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Selects the annotation whose groups are counted around each cell.
+Defaults to the dataset’s cell-type column.</span></td>
 </tr>
 <tr role="row" class="st-p">
   <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Number of niches (niches.k)</span> <code class="st-p__name" translate="no">niches_k</code></th>
   <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>5</span><span class="st-range" aria-hidden="true"><span class="st-range__end">2</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.1071"></i></span><span class="st-range__end">30</span></span><span class="pv-sr-only">Range 2 to 30. </span></td>
-  <td role="cell" class="st-p__help"><span class="st-p__text">How many niches k-means makes. The authors’ Xenium analysis uses 5; the function’s own default is 4.</span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Sets how many niches k-means makes.
+The authors use 5 in their Xenium vignette.</span></td>
 </tr>
 <tr role="row" class="st-p">
   <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Spatial neighbours (neighbors.k)</span> <code class="st-p__name" translate="no">neighbors_k</code></th>
   <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>30</span><span class="st-range" aria-hidden="true"><span class="st-range__end">5</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.2632"></i></span><span class="st-range__end">100</span></span><span class="pv-sr-only">Range 5 to 100. </span></td>
-  <td role="cell" class="st-p__help"><span class="st-p__text">How many nearest cells make up a cell’s surroundings. More neighbours give broader niches.
-The authors’ Xenium analysis uses 30; the function’s own default is 20.</span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Sets how many nearest cells form each cell’s neighbourhood.
+More neighbours give broader niches; the authors use 30.</span></td>
 </tr>
 <tr role="row" class="st-p">
   <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">K-means iterations (iter.max)</span> <code class="st-p__name" translate="no">iter_max</code></th>
   <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>10</span><span class="st-range" aria-hidden="true"><span class="st-range__end">10</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.0000"></i></span><span class="st-range__end">500</span></span><span class="pv-sr-only">Range 10 to 500. </span></td>
-  <td role="cell" class="st-p__help"><span class="st-p__text">The most iterations for each of k-means’ 30 starts. 10 is what the authors’ function uses.
+  <td role="cell" class="st-p__help"><span class="st-p__text">Sets the maximum number of iterations in each of k-means’ 30 starts.
 Raise it when the summary says that starts stopped at this limit.</span></td>
 </tr>
 </tbody>
@@ -173,7 +170,7 @@ Raise it when the summary says that starts stopped at this limit.</span></td>
       </div>
       <aside class="st-facts" aria-labelledby="facts-h">
         <h2 class="pv-sr-only" id="facts-h">Details</h2>
-        <dl class="st-facts__list"><div class="st-facts__row"><dt>Author</dt><dd>PointillViz reference tools</dd></div><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__num" translate="no">1.0.1</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-11-05">5 Nov 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Language</dt><dd>R</dd></div><div class="st-facts__row"><dt>GPU</dt><dd>Not used</dd></div><div class="st-facts__row"><dt>Needs</dt><dd>a categorical column<br>2D coordinates<br>100+ cells</dd></div></dl>
+        <dl class="st-facts__list"><div class="st-facts__row"><dt>Author</dt><dd>PointillViz reference tools</dd></div><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__num" translate="no">1.0.2</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-11-08">8 Nov 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Language</dt><dd>R</dd></div><div class="st-facts__row"><dt>GPU</dt><dd>Not used</dd></div><div class="st-facts__row"><dt>Needs</dt><dd>a categorical column<br>2D coordinates<br>100+ cells</dd></div></dl>
         <p class="st-facts__src"><a class="pv-link" href="https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/seurat-niches">Source in the public registry<svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-external"/></svg></a></p>
       </aside>
     </div>
@@ -189,11 +186,11 @@ Raise it when the summary says that starts stopped at this limit.</span></td>
 <ol class="st-gates">
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">bundle</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">6 files, 151.9 kB packed and 528.1 kB unpacked, plugin.json at the root.</p>
+  <p class="st-gate__msg">6 files, 151.4 kB packed and 526.8 kB unpacked, plugin.json at the root.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">manifest</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">seurat-niches 1.0.1 by PointillViz reference tools; R entry tool.R, outputs summary, labels, matrix, table.</p>
+  <p class="st-gate__msg">seurat-niches 1.0.2 by PointillViz reference tools; R entry tool.R, outputs summary, labels, matrix, table.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">environment</code><span class="st-gate__word">pass</span></p>
@@ -201,7 +198,7 @@ Raise it when the summary says that starts stopped at this limit.</span></td>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">entry</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">tool.R sourced in 3.07 s and defines run &lt;- function(ds, params).</p>
+  <p class="st-gate__msg">tool.R sourced in 3.91 s and defines run &lt;- function(ds, params).</p>
 </li>
 <li class="st-gate" data-state="pass" data-adv>
   <p class="st-gate__head"><code class="st-gate__name" translate="no">imports</code> <span class="st-gate__adv">advisory</span><span class="st-gate__word">pass</span></p>
@@ -209,7 +206,7 @@ Raise it when the summary says that starts stopped at this limit.</span></td>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">fixture</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">ran on the 600-cell fixture in 3.85 s, returning summary, table, matrix, files, labels and 1 log line.</p>
+  <p class="st-gate__msg">ran on the 600-cell fixture in 4.86 s, returning summary, table, matrix, files, labels and 1 log line.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">result</code><span class="st-gate__word">pass</span></p>
@@ -217,7 +214,7 @@ Raise it when the summary says that starts stopped at this limit.</span></td>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">edge</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">ran at the minimum corner (neighbors_k=5, niches_k=2) in 3.69 s; ran at the maximum corner (iter_max=500, neighbors_k=100, niches_k=30) in 3.95 s.</p>
+  <p class="st-gate__msg">ran at the minimum corner (neighbors_k=5, niches_k=2) in 4.41 s; ran at the maximum corner (iter_max=500, neighbors_k=100, niches_k=30) in 4.57 s.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">no_mutation</code><span class="st-gate__word">pass</span></p>
@@ -232,11 +229,11 @@ Raise it when the summary says that starts stopped at this limit.</span></td>
     <div class="st-wrap">
       <h2 class="st-more__h" id="more-h">More tools</h2>
       <ul class="st-grid">
-<li class="st-cell" data-id="banksy-niches" data-name="BANKSY niches" data-author="PointillViz reference tools" data-tags="spatial|niches|domains|clustering|genes" data-outputs="summary|labels|matrix|table|files" data-published="2026-11-05" data-version="2.0.0">
+<li class="st-cell" data-id="banksy-niches" data-name="BANKSY niches" data-author="PointillViz reference tools" data-tags="spatial|niches|domains|clustering|genes" data-outputs="summary|labels|matrix|table|files" data-published="2026-11-08" data-version="2.0.1">
 <a class="st-card" href="../../tools/banksy-niches/">
   <div class="st-card__art"><img src="../../assets/media/tools/banksy-niches.webp?v=71e43568a0" srcset="../../assets/media/tools/banksy-niches.webp?v=71e43568a0 720w, ../../assets/media/tools/banksy-niches@2x.webp?v=b3a2346569 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
   <h3 class="st-card__name">BANKSY niches</h3>
-  <p class="st-card__desc">Tissue niches from each cell’s expression and its neighbourhood’s, imported from the authors’ own BANKSY package.</p>
+  <p class="st-card__desc">Which niches the tissue divides into, judged by what each cell and its neighbours express.</p>
 </a>
 </li>
 <li class="st-cell" data-id="categorical-chords" data-name="Categorical Chords" data-author="PointillViz reference tools" data-tags="spatial|cell types|categorical|chord" data-outputs="chord|matrix|table|summary" data-published="2026-11-08" data-version="2.1.0">

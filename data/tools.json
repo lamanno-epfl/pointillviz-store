@@ -262,6 +262,491 @@
  ],
  "tools": [
   {
+   "id": "banksy-niches",
+   "name": "BANKSY niches",
+   "version": "2.0.1",
+   "author": "PointillViz reference tools",
+   "description": "Which niches the tissue divides into, judged by what each cell and its neighbours express.",
+   "readme_html": "<p>Answers the question: <strong>Which tissue domains, or niches, does the tissue divide into, based on what each cell and its neighbours express?</strong></p>\n<p>The tool runs <a class=\"pv-link\" href=\"https://github.com/prabhakarlab/Banksy_py\" rel=\"noopener noreferrer nofollow\">BANKSY</a> with the authors’ own Python package, <code translate=\"no\">pybanksy</code>, and their default settings. BANKSY describes each cell by its own expression together with that of its spatial neighbours, and groups cells with similar descriptions into niches.</p>\n<p>The counts are first normalized and reduced to the most variable genes, which gives each cell <math translate=\"no\"><mi>i</mi></math> its own expression <math translate=\"no\"><mi>x</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math>. The tool then averages the expression of the cell’s <math translate=\"no\"><mi>k</mi></math> nearest neighbours <math translate=\"no\"><mi>N</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math>, using weights <math translate=\"no\"><mi>w</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow></math> that sum to 1 and, by default, decrease with distance:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"m(i) = sum over j∈N(i) of w(i,j) x(j)\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>m</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><munder><mo>∑</mo><mrow><mi>j</mi><mo>∈</mo><mi>N</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></mrow></munder><mi>w</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow><mi>x</mi><mrow><mo stretchy=\"false\">(</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow></math></span></span></div></div>\n<p>By default, a third block is added: the azimuthal Gabor filter (AGF) <math translate=\"no\"><mi>g</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math>, which weights neighbouring cells by their direction around cell <math translate=\"no\"><mi>i</mi></math>. It therefore responds where expression changes from one side of the neighbourhood to the other, as at a tissue border. Each block is z-scored gene by gene, and the blocks are joined using the neighbourhood weight <math translate=\"no\"><mi>λ</mi></math>:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"b(i) = (√(1−λ) x(i), √(2λ/3) m(i), √(λ/3) g(i))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>b</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mrow><mo stretchy=\"false\">(</mo><msqrt><mn>1</mn><mo>−</mo><mi>λ</mi></msqrt><mi>x</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow><mo>,</mo><msqrt><mn>2</mn><mi>λ</mi><mo lspace=\"0\" rspace=\"0\">/</mo><mn>3</mn></msqrt><mi>m</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow><mo>,</mo><msqrt><mi>λ</mi><mo lspace=\"0\" rspace=\"0\">/</mo><mn>3</mn></msqrt><mi>g</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow><mo stretchy=\"false\">)</mo></mrow></math></span></span></div></div>\n<p>Without the AGF, <math translate=\"no\"><mi>m</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math> receives the full weight <math translate=\"no\"><msqrt><mi>λ</mi></msqrt></math>. With <math translate=\"no\"><mi>λ</mi></math> = <strong>0.8</strong>, the neighbourhood dominates and the niches follow tissue domains; with <math translate=\"no\"><mi>λ</mi></math> = <strong>0.2</strong>, they resemble spatially informed cell types. The joined profiles are reduced to their principal components and clustered with the Leiden algorithm, and each cluster forms one niche.</p>\n<p><strong>Map.</strong> Each cell is colored by its niche. Niches are numbered N1, N2, … from the largest to the smallest; the numbers carry no other meaning.</p>\n<p><strong>Matrix.</strong> Rows are niches and columns are cell types, ordered by abundance. Each square shows the percentage of the niche’s labelled cells that belong to that cell type. Without a cell-type annotation, the columns show the niches’ top marker genes instead, colored by their marker z-scores.</p>\n<p><strong>Table.</strong> Each row represents one niche. <code translate=\"no\">Cells</code> and <code translate=\"no\">% of cells</code> give its size. <code translate=\"no\">Marker genes</code> lists the five genes whose mean expression in the niche has the highest z-score relative to all cells, while <code translate=\"no\">Main cell types</code> gives its three most common cell types with their shares. A download lists the niche of every cell.</p>\n<p>With several sections, each cell’s neighbours come from its own section, and all sections share one set of niches.</p>",
+   "citation": "Singhal V, Chou N, Lee J, et al. BANKSY unifies cell typing and tissue domain segmentation for scalable spatial omics data analysis. Nat Genet 56, 431-441 (2024).",
+   "tags": [
+    "spatial",
+    "niches",
+    "domains",
+    "clustering",
+    "genes"
+   ],
+   "icon": "hub",
+   "language": "python",
+   "language_label": "Python",
+   "gpu": null,
+   "gpu_label": "",
+   "parameters": [
+    {
+     "name": "lambda_param",
+     "label": "Neighbourhood weight (lambda)",
+     "type": "float",
+     "default": 0.8,
+     "optional": false,
+     "help": "Sets how much a cell’s neighbourhood counts against its own expression.\nThe authors use 0.8 for tissue domains and 0.2 for spatially informed cell types; 0 ignores space.",
+     "min": 0.0,
+     "max": 1.0,
+     "step": 0.05,
+     "type_text": "float, 0–1",
+     "default_text": "0.8"
+    },
+    {
+     "name": "k_geom",
+     "label": "Spatial neighbours (k_geom)",
+     "type": "int",
+     "default": 15,
+     "optional": false,
+     "help": "Sets how many nearest cells form each cell’s neighbourhood.\nThe authors use 15 for single-cell data.",
+     "min": 5.0,
+     "max": 30.0,
+     "step": 1.0,
+     "type_text": "int, 5–30",
+     "default_text": "15"
+    },
+    {
+     "name": "max_m",
+     "label": "AGF order (max_m)",
+     "type": "int",
+     "default": 1,
+     "optional": false,
+     "help": "Sets whether the azimuthal Gabor filter (AGF) is added: 1 adds it, 0 uses the neighbourhood’s mean alone.\nThe AGF responds where expression changes across a neighbourhood, as at a border; the authors recommend it.",
+     "min": 0.0,
+     "max": 1.0,
+     "step": 1.0,
+     "type_text": "int, 0–1",
+     "default_text": "1"
+    },
+    {
+     "name": "nbr_weight_decay",
+     "label": "Neighbour weights",
+     "type": "select",
+     "default": "scaled_gaussian",
+     "optional": false,
+     "help": "Sets how a neighbour’s weight falls with its distance.",
+     "options": [
+      {
+       "label": "Scaled Gaussian (the authors' default)",
+       "value": "scaled_gaussian"
+      },
+      {
+       "label": "Reciprocal",
+       "value": "reciprocal"
+      },
+      {
+       "label": "Ranked (AGF order 0 only)",
+       "value": "ranked"
+      },
+      {
+       "label": "Uniform",
+       "value": "uniform"
+      }
+     ],
+     "type_text": "select, 4 options",
+     "default_text": "Scaled Gaussian (the authors’ default)"
+    },
+    {
+     "name": "zscore_by",
+     "label": "Z-score",
+     "type": "select",
+     "default": "section",
+     "optional": false,
+     "help": "Sets over which cells each gene is z-scored when a run holds several sections. It changes nothing on one section.\nPer section evens out differences in a gene’s overall level between sections, which suits replicates of one tissue. Across all sections keeps them, which suits sections of different tissues.",
+     "options": [
+      {
+       "label": "Per section (the authors' multi-sample way)",
+       "value": "section"
+      },
+      {
+       "label": "Across all sections",
+       "value": "all"
+      }
+     ],
+     "type_text": "select, 2 options",
+     "default_text": "Per section (the authors’ multi-sample way)"
+    },
+    {
+     "name": "pca_dims",
+     "label": "Principal components (pca_dims)",
+     "type": "int",
+     "default": 20,
+     "optional": false,
+     "help": "Sets how many principal components of the BANKSY matrix the clustering uses.\nThe authors use 20.",
+     "min": 5.0,
+     "max": 50.0,
+     "step": 1.0,
+     "type_text": "int, 5–50",
+     "default_text": "20"
+    },
+    {
+     "name": "resolution",
+     "label": "Leiden resolution",
+     "type": "float",
+     "default": 0.7,
+     "optional": false,
+     "help": "Sets the resolution of the Leiden clustering: higher values give more, smaller niches, and lower values fewer, larger ones.\n0.7 is the authors’ default. Not used when Number of niches is set.",
+     "min": 0.05,
+     "max": 3.0,
+     "step": 0.05,
+     "type_text": "float, 0.05–3",
+     "default_text": "0.7"
+    },
+    {
+     "name": "max_labels",
+     "label": "Number of niches (max_labels)",
+     "type": "int",
+     "default": 0,
+     "optional": false,
+     "help": "Sets a number of niches for the package to aim for, by searching for a resolution that gives it; 0 uses the resolution as set.\nThe search can stop short of that number, and the summary then says so.",
+     "min": 0.0,
+     "max": 30.0,
+     "step": 1.0,
+     "type_text": "int, 0–30",
+     "default_text": "0"
+    },
+    {
+     "name": "num_nn",
+     "label": "Expression neighbours (num_nn)",
+     "type": "int",
+     "default": 50,
+     "optional": false,
+     "help": "Sets how many neighbours each cell has in the graph that Leiden partitions, in the space of the principal components.\nThe authors use 50.",
+     "min": 10.0,
+     "max": 100.0,
+     "step": 1.0,
+     "type_text": "int, 10–100",
+     "default_text": "50"
+    },
+    {
+     "name": "n_top_genes",
+     "label": "Variable genes (n_top_genes)",
+     "type": "int",
+     "default": 2000,
+     "optional": false,
+     "help": "Sets how many of the most variable genes are used.\nThe authors use 2000.",
+     "min": 50.0,
+     "max": 5000.0,
+     "step": 50.0,
+     "type_text": "int, 50–5,000",
+     "default_text": "2,000"
+    },
+    {
+     "name": "refine_iterations",
+     "label": "Label refinement (iterations)",
+     "type": "int",
+     "default": 0,
+     "optional": false,
+     "help": "Sets how many times each cell takes the niche of most of its 6 nearest cells; 0 is off.\nThe authors offer it for domain segmentation and warn that too much of it erodes fine domains.",
+     "min": 0.0,
+     "max": 5.0,
+     "step": 1.0,
+     "type_text": "int, 0–5",
+     "default_text": "0"
+    }
+   ],
+   "sweep": null,
+   "outputs": [
+    "summary",
+    "labels",
+    "matrix",
+    "table"
+   ],
+   "optional_outputs": [
+    "files"
+   ],
+   "output_help": {
+    "summary": "writes a summary",
+    "labels": "paints categories on the spatial view",
+    "matrix": "returns a heatmap",
+    "table": "returns a table",
+    "files": "returns files to download"
+   },
+   "requires": {
+    "genes": true,
+    "cell_types": false,
+    "categoricals": false,
+    "spatial": "any",
+    "min_cells": 200
+   },
+   "needs": [
+    "gene expression",
+    "200+ cells"
+   ],
+   "license": "GPL-3.0",
+   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/banksy-niches-v2.0.1/banksy-niches-2.0.1.pvtool",
+   "bundle_size": "61.2 kB",
+   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/banksy-niches",
+   "published": "2026-11-08",
+   "published_date": "8 Nov 2026",
+   "gates": [
+    {
+     "id": "bundle",
+     "required": true,
+     "status": "pass",
+     "message": "6 files, 61.2 kB packed and 288.4 kB unpacked, plugin.json at the root."
+    },
+    {
+     "id": "manifest",
+     "required": true,
+     "status": "pass",
+     "message": "banksy-niches 2.0.1 by PointillViz reference tools; Python entry tool.py, outputs summary, labels, matrix, table."
+    },
+    {
+     "id": "environment",
+     "required": true,
+     "status": "pass",
+     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
+    },
+    {
+     "id": "entry",
+     "required": true,
+     "status": "pass",
+     "message": "tool.py imported in 11.60 s and defines run(ds, params)."
+    },
+    {
+     "id": "imports",
+     "required": false,
+     "status": "pass",
+     "message": "1 source file, using anndata, banksy, banksy_utils, gc, gzip, matplotlib, numpy, pandas, pointillviz_tool, psutil, random, scanpy, scipy, threadpoolctl, warnings; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
+    },
+    {
+     "id": "fixture",
+     "required": true,
+     "status": "pass",
+     "message": "ran on the 600-cell fixture in 5.87 s, returning summary, table, matrix, files, labels and 113 log lines."
+    },
+    {
+     "id": "result",
+     "required": true,
+     "status": "pass",
+     "message": "returned the declared outputs: summary, table, matrix, files, labels."
+    },
+    {
+     "id": "edge",
+     "required": true,
+     "status": "pass",
+     "message": "ran at the minimum corner (k_geom=5, lambda_param=0.0, max_m=0, n_top_genes=50, num_nn=10, pca_dims=5, resolution=0.05) in 5.50 s; ran at the maximum corner (k_geom=30, lambda_param=1.0, max_labels=30, n_top_genes=5000, nbr_weight_decay='uniform', num_nn=100, pca_dims=50, refine_iterations=5, resolution=3.0, zscore_by='all') in 6.86 s."
+    },
+    {
+     "id": "no_mutation",
+     "required": true,
+     "status": "pass",
+     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
+    }
+   ],
+   "risks": [],
+   "art": {
+    "src": "assets/media/tools/banksy-niches.webp?v=71e43568a0",
+    "src2x": "assets/media/tools/banksy-niches@2x.webp?v=b3a2346569",
+    "width": 720,
+    "height": 420,
+    "alt": "Niches from each cell and its neighbourhood",
+    "generated": false
+   },
+   "social": "assets/media/social/banksy-niches.jpg",
+   "url": "tools/banksy-niches/"
+  },
+  {
+   "id": "beeswarm-plot",
+   "name": "Beeswarm Plot",
+   "version": "1.0.1",
+   "author": "PointillViz reference tools",
+   "description": "How marker genes are expressed across cell types or niches, one swarm of cells per group.",
+   "readme_html": "<p>Answers the question: <strong>Which genes set each cell type or niche apart, and how is their expression spread across its cells?</strong></p>\n<p>The plot has one row per group of an annotation, such as cell types or niches, and one column per gene. Each glyph is the swarm of the group’s cells along the gene’s expression, log1p(CP10K), drawn as a smooth outline.</p>\n<p><strong>Plot.</strong> Within a glyph, expression increases from left to right, from the threshold to the 99.5th percentile of the cells above it, on a separate scale for each gene. The glyph’s height at each level follows how many of the group’s cells have that expression. Its size follows the square root of the share of the group’s cells above the threshold, as in the Marker Dot Plot, so a gene that few cells of a group detect draws a small glyph. Its color shows the group’s mean expression as a z-score across the groups, from −2.5 to 2.5:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"z(g,j) = (x̄(g,j) − mean_(g′) x̄(g′,j)) / (sd_(g′) x̄(g′,j))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>z</mi><mrow><mo stretchy=\"false\">(</mo><mi>g</mi><mo>,</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><mover accent=\"true\"><mi>x</mi><mo>¯</mo></mover><mrow><mo stretchy=\"false\">(</mo><mi>g</mi><mo>,</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow><mo>−</mo><msub><mi>mean</mi><mrow><mi>g</mi><mo>′</mo></mrow></msub><mover accent=\"true\"><mi>x</mi><mo>¯</mo></mover><mrow><mo stretchy=\"false\">(</mo><mrow><mi>g</mi><mo>′</mo></mrow><mo>,</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow></mrow><mrow><msub><mi>sd</mi><mrow><mi>g</mi><mo>′</mo></mrow></msub><mover accent=\"true\"><mi>x</mi><mo>¯</mo></mover><mrow><mo stretchy=\"false\">(</mo><mrow><mi>g</mi><mo>′</mo></mrow><mo>,</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow></mrow></mfrac></math></span></span></div></div>\n<p>Here, <math translate=\"no\"><mover accent=\"true\"><mi>x</mi><mo>¯</mo></mover><mrow><mo stretchy=\"false\">(</mo><mi>g</mi><mo>,</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow></math> is the mean expression of gene <math translate=\"no\"><mi>j</mi></math> over all cells of group <math translate=\"no\"><mi>g</mi></math>, and the mean and standard deviation (sd) are taken across the groups. Cells at or below the threshold are left out of the glyphs, but the colors always count every cell, so the threshold changes what is drawn, never what a color means. A second, coarse annotation adds an outer color strip and orders the rows: each group is placed with the coarse group that most of its cells belong to.</p>\n<p><strong>Table.</strong> Each row represents one group and one gene. <code translate=\"no\">Cells</code> gives the group’s size, <code translate=\"no\">Mean log1p(CP10K)</code> its mean expression, <code translate=\"no\">z-score</code> the value that sets the color, and <code translate=\"no\">% above</code> the share of its cells above the threshold.</p>",
+   "citation": "",
+   "tags": [
+    "expression",
+    "markers",
+    "groups",
+    "plot"
+   ],
+   "icon": "bubble_chart",
+   "language": "python",
+   "language_label": "Python",
+   "gpu": null,
+   "gpu_label": "",
+   "parameters": [
+    {
+     "name": "field",
+     "label": "Groups",
+     "type": "categorical_field",
+     "default": null,
+     "optional": true,
+     "help": "Selects the annotation whose groups form the rows: cell types, niches or any other categorical column.\nDefaults to the dataset’s cell-type column.",
+     "type_text": "categorical_field",
+     "default_text": "optional"
+    },
+    {
+     "name": "genes",
+     "label": "Genes",
+     "type": "genes",
+     "default": null,
+     "optional": true,
+     "help": "Selects the genes that form the columns.\nOpens on the 20 genes detected in the most cells, the Marker Dot Plot’s Top markers. Search to add genes, or remove them; left empty, the plot uses those 20.",
+     "type_text": "genes",
+     "default_text": "optional"
+    },
+    {
+     "name": "coarse",
+     "label": "Coarse groups",
+     "type": "categorical_field",
+     "default": null,
+     "optional": true,
+     "help": "Adds a second, broader annotation as an outer colour strip and orders the rows by it; each group takes the coarse group most of its cells belong to.\nThe same column as Groups draws no outer strip.",
+     "type_text": "categorical_field",
+     "default_text": "optional"
+    },
+    {
+     "name": "threshold",
+     "label": "Expression threshold",
+     "type": "float",
+     "default": 0,
+     "optional": false,
+     "help": "Leaves cells at or below this log1p(CP10K) out of the swarms; 0 keeps every cell that detects the gene.\nThe colours always count every cell of a group.",
+     "min": 0.0,
+     "max": 5.0,
+     "step": 0.05,
+     "type_text": "float, 0–5",
+     "default_text": "0"
+    },
+    {
+     "name": "cmap",
+     "label": "Colormap",
+     "type": "select",
+     "default": "magma",
+     "optional": false,
+     "help": "Colours the mean expression z-score with the colormaps the viewer offers for gene expression.",
+     "options": [
+      {
+       "label": "Viridis",
+       "value": "viridis"
+      },
+      {
+       "label": "Plasma",
+       "value": "plasma"
+      },
+      {
+       "label": "Inferno",
+       "value": "inferno"
+      },
+      {
+       "label": "Magma",
+       "value": "magma"
+      },
+      {
+       "label": "Cividis",
+       "value": "cividis"
+      }
+     ],
+     "type_text": "select, 5 options",
+     "default_text": "Magma"
+    }
+   ],
+   "sweep": null,
+   "outputs": [
+    "images",
+    "table",
+    "summary",
+    "files"
+   ],
+   "optional_outputs": [],
+   "output_help": {
+    "images": "returns figures",
+    "table": "returns a table",
+    "summary": "writes a summary",
+    "files": "returns files to download"
+   },
+   "requires": {
+    "genes": true,
+    "cell_types": false,
+    "categoricals": true,
+    "spatial": "any",
+    "min_cells": 20
+   },
+   "needs": [
+    "gene expression",
+    "a categorical column",
+    "20+ cells"
+   ],
+   "license": "MIT",
+   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/beeswarm-plot-v1.0.1/beeswarm-plot-1.0.1.pvtool",
+   "bundle_size": "29.0 kB",
+   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/beeswarm-plot",
+   "published": "2026-11-08",
+   "published_date": "8 Nov 2026",
+   "gates": [
+    {
+     "id": "bundle",
+     "required": true,
+     "status": "pass",
+     "message": "6 files, 29.0 kB packed and 103.1 kB unpacked, plugin.json at the root."
+    },
+    {
+     "id": "manifest",
+     "required": true,
+     "status": "pass",
+     "message": "beeswarm-plot 1.0.1 by PointillViz reference tools; Python entry tool.py, outputs images, table, summary, files."
+    },
+    {
+     "id": "environment",
+     "required": true,
+     "status": "pass",
+     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
+    },
+    {
+     "id": "entry",
+     "required": true,
+     "status": "pass",
+     "message": "tool.py imported in 0.02 s and defines run(ds, params)."
+    },
+    {
+     "id": "imports",
+     "required": false,
+     "status": "pass",
+     "message": "1 source file, using html, numpy, pointillviz_tool; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
+    },
+    {
+     "id": "fixture",
+     "required": true,
+     "status": "pass",
+     "message": "ran on the 600-cell fixture in 0.02 s, returning summary, table, files, images."
+    },
+    {
+     "id": "result",
+     "required": true,
+     "status": "pass",
+     "message": "returned the declared outputs: summary, table, files, images."
+    },
+    {
+     "id": "edge",
+     "required": true,
+     "status": "pass",
+     "message": "ran at the minimum corner (cmap='viridis') in 0.02 s; ran at the maximum corner (cmap='cividis', threshold=5.0) in 0.02 s."
+    },
+    {
+     "id": "no_mutation",
+     "required": true,
+     "status": "pass",
+     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
+    }
+   ],
+   "risks": [],
+   "art": {
+    "src": "assets/media/tools/beeswarm-plot.webp?v=22a6de230b",
+    "src2x": "assets/media/tools/beeswarm-plot@2x.webp?v=7c6108523f",
+    "width": 720,
+    "height": 420,
+    "alt": "Beeswarm plot: eight cell types against a marker gene of each, the swarms brightest along the diagonal",
+    "generated": false
+   },
+   "social": "assets/media/social/beeswarm-plot.jpg",
+   "url": "tools/beeswarm-plot/"
+  },
+  {
    "id": "categorical-chords",
    "name": "Categorical Chords",
    "version": "2.1.0",
@@ -482,6 +967,513 @@
    },
    "social": "assets/media/social/categorical-chords.jpg",
    "url": "tools/categorical-chords/"
+  },
+  {
+   "id": "ridge-map",
+   "name": "Ridge Map",
+   "version": "1.0.2",
+   "author": "PointillViz authors",
+   "description": "How a gene, or the density of cells, rises and falls across a section, drawn as a relief of ridges.",
+   "readme_html": "<p>Answers the question: <strong>How does a gene’s expression, or the density of cells, rise and fall across the section, and over which cell types?</strong></p>\n<p>The tool cuts the section into horizontal strips and draws each one as a ridge, like a joy plot laid over the tissue. Ridges are drawn from the back of the figure to the front, and each hides what stands behind it, so the tissue’s architecture reads as a relief.</p>\n<p>Heights and colors are measured with a Gaussian of width <math translate=\"no\"><mi>σ</mi></math> around each point of a strip, so the strips are cross-sections of one smooth surface. A cell <math translate=\"no\"><mi>j</mi></math> at distance <math translate=\"no\"><msub><mi>d</mi><mi>j</mi></msub></math> has the weight <math translate=\"no\"><msub><mi>w</mi><mi>j</mi></msub><mo>=</mo><mi>exp</mi><mrow><mo stretchy=\"false\">(</mo><mo>−</mo><msubsup><mi>d</mi><mi>j</mi><mn>2</mn></msubsup><mo lspace=\"0\" rspace=\"0\">/</mo><mn>2</mn><msup><mi>σ</mi><mn>2</mn></msup><mo stretchy=\"false\">)</mo></mrow></math>. With a gene selected, the height is its local mean expression, where <math translate=\"no\"><msub><mi>a</mi><mi>j</mi></msub></math> is the cell’s expression in log1p(CP10K):</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"h(x, y) = (sum over j of w_j a_j) / (sum over j of w_j)\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>h</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><msub><mi>a</mi><mi>j</mi></msub></mrow><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub></mrow></mfrac></math></span></span></div></div>\n<p>Without a gene, the height is the local cell density:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"h(x, y) = (sum over j of w_j) / (2πσ^2)\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>h</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub></mrow><mrow><mn>2</mn><mi>π</mi><msup><mi>σ</mi><mn>2</mn></msup></mrow></mfrac></math></span></span></div></div>\n<p><strong>Figure.</strong> A ridge rises up the figure from its own strip, so a peak belongs to the place where its ridge starts, not to the place where its top appears. The bar in the key shows a round value at its true height; each run has its own scale, so compare runs by these bars. Each stretch of a ridge takes the map’s color of the cell type with the most cells around it. The color therefore shows which cell type is most common at that place, not which cells express the gene, and a rare cell type may never be drawn. Ridges drop to their baseline where the tissue ends, so gaps and tears stay black. With several sections, each gets its own figure, all at one scale.</p>\n<p><strong>Summary.</strong> It reports what was drawn, the scale of the heights and the cell types under the tallest ridges, and counts the cells that were not drawn.</p>\n<p>The figure is meant for reading the shape of a tissue, not for testing it: heights carry no significance, and tall ridges can hide lower ones behind them.</p>",
+   "citation": "",
+   "tags": [
+    "spatial",
+    "expression",
+    "density",
+    "cell types",
+    "relief",
+    "figure"
+   ],
+   "icon": "landscape",
+   "language": "python",
+   "language_label": "Python",
+   "gpu": null,
+   "gpu_label": "",
+   "parameters": [
+    {
+     "name": "gene",
+     "label": "Gene",
+     "type": "gene",
+     "default": null,
+     "optional": true,
+     "help": "Selects the gene whose local expression sets the height of the ridges.\nWith no gene chosen, the height is the local cell density.",
+     "type_text": "gene",
+     "default_text": "optional"
+    },
+    {
+     "name": "strips",
+     "label": "Strips",
+     "type": "int",
+     "default": 120,
+     "optional": false,
+     "help": "Sets how many horizontal strips the section is cut into, one ridge each.\nMore strips draw finer detail; fewer draw a bolder figure.",
+     "min": 20.0,
+     "max": 300.0,
+     "step": 5.0,
+     "type_text": "int, 20–300",
+     "default_text": "120"
+    },
+    {
+     "name": "relief",
+     "label": "Relief",
+     "type": "float",
+     "default": 8,
+     "optional": false,
+     "help": "Sets how tall the tallest ridge stands, in strip heights.\nTaller ridges make a more dramatic landscape and hide more of what stands behind them.",
+     "min": 1.0,
+     "max": 30.0,
+     "step": 0.5,
+     "type_text": "float, 1–30",
+     "default_text": "8"
+    },
+    {
+     "name": "smoothing",
+     "label": "Smoothing",
+     "type": "float",
+     "default": 0.75,
+     "optional": false,
+     "help": "Sets the width of the neighbourhood each height and colour is measured in, the σ of a Gaussian, in strip heights.\nLarger values draw calmer ridges and longer stretches of one colour.",
+     "min": 0.25,
+     "max": 3.0,
+     "step": 0.05,
+     "type_text": "float, 0.25–3",
+     "default_text": "0.75"
+    }
+   ],
+   "sweep": null,
+   "outputs": [
+    "summary",
+    "images",
+    "files"
+   ],
+   "optional_outputs": [],
+   "output_help": {
+    "summary": "writes a summary",
+    "images": "returns figures",
+    "files": "returns files to download"
+   },
+   "requires": {
+    "genes": false,
+    "cell_types": true,
+    "categoricals": false,
+    "spatial": "2d",
+    "min_cells": 200
+   },
+   "needs": [
+    "cell types",
+    "2D coordinates",
+    "200+ cells"
+   ],
+   "license": "MIT",
+   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/ridge-map-v1.0.2/ridge-map-1.0.2.pvtool",
+   "bundle_size": "34.9 kB",
+   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/ridge-map",
+   "published": "2026-11-08",
+   "published_date": "8 Nov 2026",
+   "gates": [
+    {
+     "id": "bundle",
+     "required": true,
+     "status": "pass",
+     "message": "6 files, 34.9 kB packed and 163.0 kB unpacked, plugin.json at the root."
+    },
+    {
+     "id": "manifest",
+     "required": true,
+     "status": "pass",
+     "message": "ridge-map 1.0.2 by PointillViz authors; Python entry tool.py, outputs summary, images, files."
+    },
+    {
+     "id": "environment",
+     "required": true,
+     "status": "pass",
+     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
+    },
+    {
+     "id": "entry",
+     "required": true,
+     "status": "pass",
+     "message": "tool.py imported in 0.32 s and defines run(ds, params)."
+    },
+    {
+     "id": "imports",
+     "required": false,
+     "status": "pass",
+     "message": "1 source file, using colorsys, html, math, numpy, pointillviz_tool, re, scipy; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
+    },
+    {
+     "id": "fixture",
+     "required": true,
+     "status": "pass",
+     "message": "ran on the 600-cell fixture in 0.25 s, returning summary, files, images."
+    },
+    {
+     "id": "result",
+     "required": true,
+     "status": "pass",
+     "message": "returned the declared outputs: summary, files, images."
+    },
+    {
+     "id": "edge",
+     "required": true,
+     "status": "pass",
+     "message": "ran at the minimum corner (relief=1.0, smoothing=0.25, strips=20) in 0.24 s; ran at the maximum corner (relief=30.0, smoothing=3.0, strips=300) in 0.37 s."
+    },
+    {
+     "id": "no_mutation",
+     "required": true,
+     "status": "pass",
+     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
+    }
+   ],
+   "risks": [],
+   "art": {
+    "src": "assets/media/tools/ridge-map.webp?v=504cfe2fb6",
+    "src2x": "assets/media/tools/ridge-map@2x.webp?v=cfdf200628",
+    "width": 720,
+    "height": 420,
+    "alt": "Ridge map: rows of coloured ridges, each hiding the one behind it, rising into a relief over a rounded shape. An illustration, not a real tissue.",
+    "generated": false
+   },
+   "social": "assets/media/social/ridge-map.jpg",
+   "url": "tools/ridge-map/"
+  },
+  {
+   "id": "seurat-niches",
+   "name": "Seurat niches",
+   "version": "1.0.2",
+   "author": "PointillViz reference tools",
+   "description": "Which niches the tissue divides into, judged by the cell types around each cell.",
+   "readme_html": "<p>Answers the question: <strong>Which neighbourhoods of cell types does the tissue divide into?</strong></p>\n<p>The tool runs <code translate=\"no\">BuildNicheAssay</code>, the niche analysis of <a class=\"pv-link\" href=\"https://satijalab.org/seurat/\" rel=\"noopener noreferrer nofollow\">Seurat</a>, with the authors’ own R package and the settings of their <a class=\"pv-link\" href=\"https://satijalab.org/seurat/articles/seurat5_spatial_vignette_2\" rel=\"noopener noreferrer nofollow\">Xenium vignette</a>. Only cell types and positions enter the analysis, not gene expression.</p>\n<p>For each cell <math translate=\"no\"><mi>i</mi></math>, the tool finds its <math translate=\"no\"><mi>k</mi></math> nearest cells and counts how many of them belong to each cell type <math translate=\"no\"><mi>t</mi></math>, giving <math translate=\"no\"><mi>n</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo>,</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow></math>. These counts are then scaled for each cell type across all cells:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"z(i,t) = (n(i,t) − n̄(t)) / (s(t))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>z</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo>,</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><mi>n</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo>,</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow><mo>−</mo><mover accent=\"true\"><mi>n</mi><mo>¯</mo></mover><mrow><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow></mrow><mrow><mi>s</mi><mrow><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow></mrow></mfrac></math></span></span></div></div>\n<p>Here, <math translate=\"no\"><mover accent=\"true\"><mi>n</mi><mo>¯</mo></mover><mrow><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow></math> and <math translate=\"no\"><mi>s</mi><mrow><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow></math> are the mean and standard deviation of <math translate=\"no\"><mi>n</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo>,</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow></math> over all cells. A positive <math translate=\"no\"><mi>z</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo>,</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow></math> therefore means that cell <math translate=\"no\"><mi>i</mi></math> has more type-<math translate=\"no\"><mi>t</mi></math> neighbours than the average cell. Finally, k-means groups the cells into the chosen number of niches, so that cells within one niche have similar neighbourhood compositions; the best of 30 random starts is kept.</p>\n<p><strong>Map.</strong> Each cell is colored by its niche. Niches are numbered N1, N2, … from the largest to the smallest; the numbers carry no other meaning.</p>\n<p><strong>Matrix.</strong> Rows are niches and columns are cell types, ordered by abundance. Each square shows the percentage of the niche’s cells that belong to that cell type.</p>\n<p><strong>Table.</strong> Each row represents one niche. <code translate=\"no\">Cells</code> and <code translate=\"no\">% of cells</code> give its size, and <code translate=\"no\">Main cell types</code> lists its three most common cell types with their shares. A download lists the niche of every cell.</p>\n<p>The number of niches is a choice, not a finding: k-means returns as many as requested. With several sections, each cell’s neighbours come from its own section, and all sections share one set of niches.</p>",
+   "citation": "Hao Y, Stuart T, Kowalski MH, et al. Dictionary learning for integrative, multimodal and scalable single-cell analysis. Nat Biotechnol 42, 293-304 (2024).",
+   "tags": [
+    "spatial",
+    "niches",
+    "cell types",
+    "neighbourhoods",
+    "R"
+   ],
+   "icon": "scatter_plot",
+   "language": "r",
+   "language_label": "R",
+   "gpu": null,
+   "gpu_label": "",
+   "parameters": [
+    {
+     "name": "field",
+     "label": "Cell-type column (group.by)",
+     "type": "categorical_field",
+     "default": null,
+     "optional": false,
+     "help": "Selects the annotation whose groups are counted around each cell.\nDefaults to the dataset’s cell-type column.",
+     "type_text": "categorical_field",
+     "default_text": "—"
+    },
+    {
+     "name": "niches_k",
+     "label": "Number of niches (niches.k)",
+     "type": "int",
+     "default": 5,
+     "optional": false,
+     "help": "Sets how many niches k-means makes.\nThe authors use 5 in their Xenium vignette.",
+     "min": 2.0,
+     "max": 30.0,
+     "step": 1.0,
+     "type_text": "int, 2–30",
+     "default_text": "5"
+    },
+    {
+     "name": "neighbors_k",
+     "label": "Spatial neighbours (neighbors.k)",
+     "type": "int",
+     "default": 30,
+     "optional": false,
+     "help": "Sets how many nearest cells form each cell’s neighbourhood.\nMore neighbours give broader niches; the authors use 30.",
+     "min": 5.0,
+     "max": 100.0,
+     "step": 1.0,
+     "type_text": "int, 5–100",
+     "default_text": "30"
+    },
+    {
+     "name": "iter_max",
+     "label": "K-means iterations (iter.max)",
+     "type": "int",
+     "default": 10,
+     "optional": false,
+     "help": "Sets the maximum number of iterations in each of k-means’ 30 starts.\nRaise it when the summary says that starts stopped at this limit.",
+     "min": 10.0,
+     "max": 500.0,
+     "step": 10.0,
+     "type_text": "int, 10–500",
+     "default_text": "10"
+    }
+   ],
+   "sweep": null,
+   "outputs": [
+    "summary",
+    "labels",
+    "matrix",
+    "table"
+   ],
+   "optional_outputs": [
+    "files"
+   ],
+   "output_help": {
+    "summary": "writes a summary",
+    "labels": "paints categories on the spatial view",
+    "matrix": "returns a heatmap",
+    "table": "returns a table",
+    "files": "returns files to download"
+   },
+   "requires": {
+    "genes": false,
+    "cell_types": false,
+    "categoricals": true,
+    "spatial": "2d",
+    "min_cells": 100
+   },
+   "needs": [
+    "a categorical column",
+    "2D coordinates",
+    "100+ cells"
+   ],
+   "license": "MIT",
+   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/seurat-niches-v1.0.2/seurat-niches-1.0.2.pvtool",
+   "bundle_size": "151.4 kB",
+   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/seurat-niches",
+   "published": "2026-11-08",
+   "published_date": "8 Nov 2026",
+   "gates": [
+    {
+     "id": "bundle",
+     "required": true,
+     "status": "pass",
+     "message": "6 files, 151.4 kB packed and 526.8 kB unpacked, plugin.json at the root."
+    },
+    {
+     "id": "manifest",
+     "required": true,
+     "status": "pass",
+     "message": "seurat-niches 1.0.2 by PointillViz reference tools; R entry tool.R, outputs summary, labels, matrix, table."
+    },
+    {
+     "id": "environment",
+     "required": true,
+     "status": "pass",
+     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy, r-base, r-jsonlite for linux-64, osx-64, osx-arm64, win-64; environments: default."
+    },
+    {
+     "id": "entry",
+     "required": true,
+     "status": "pass",
+     "message": "tool.R sourced in 3.91 s and defines run <- function(ds, params)."
+    },
+    {
+     "id": "imports",
+     "required": false,
+     "status": "pass",
+     "message": "1 source file, using Matrix, Seurat, jsonlite, ps, stats, utils; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
+    },
+    {
+     "id": "fixture",
+     "required": true,
+     "status": "pass",
+     "message": "ran on the 600-cell fixture in 4.86 s, returning summary, table, matrix, files, labels and 1 log line."
+    },
+    {
+     "id": "result",
+     "required": true,
+     "status": "pass",
+     "message": "returned the declared outputs: summary, table, matrix, files, labels."
+    },
+    {
+     "id": "edge",
+     "required": true,
+     "status": "pass",
+     "message": "ran at the minimum corner (neighbors_k=5, niches_k=2) in 4.41 s; ran at the maximum corner (iter_max=500, neighbors_k=100, niches_k=30) in 4.57 s."
+    },
+    {
+     "id": "no_mutation",
+     "required": true,
+     "status": "pass",
+     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
+    }
+   ],
+   "risks": [],
+   "art": {
+    "src": "assets/media/tools/seurat-niches.webp?v=934c93386b",
+    "src2x": "assets/media/tools/seurat-niches@2x.webp?v=3400b57d40",
+    "width": 720,
+    "height": 420,
+    "alt": "Seurat v5",
+    "generated": false
+   },
+   "social": "assets/media/social/seurat-niches.jpg",
+   "url": "tools/seurat-niches/"
+  },
+  {
+   "id": "smoothie",
+   "name": "Smoothie",
+   "version": "1.0.2",
+   "author": "PointillViz authors",
+   "description": "Which genes share a spatial pattern across the tissue, grouped into modules.",
+   "readme_html": "<p>Answers the question: <strong>Which genes share a spatial pattern in this tissue, and where does each group of genes lie?</strong></p>\n<p>The tool runs <a class=\"pv-link\" href=\"https://caholdener01.github.io/Smoothie/\" rel=\"noopener noreferrer nofollow\">Smoothie</a> with the authors’ own Python package, <code translate=\"no\">smoothie-st</code>, and the settings of their pipeline for single-cell data.</p>\n<p>First, each gene’s normalized expression is smoothed over the tissue. At each location <math translate=\"no\"><mi>u</mi></math>, nearby cells <math translate=\"no\"><mi>j</mi></math> contribute with the Gaussian weights <math translate=\"no\"><mi>w</mi><mrow><mo stretchy=\"false\">(</mo><mi>u</mi><mo>,</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow><mo>=</mo><mi>exp</mi><mrow><mo stretchy=\"false\">(</mo><mo>−</mo><mi>d</mi><msup><mrow><mo stretchy=\"false\">(</mo><mi>u</mi><mo>,</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow><mn>2</mn></msup><mo lspace=\"0\" rspace=\"0\">/</mo><mn>2</mn><msup><mi>σ</mi><mn>2</mn></msup><mo stretchy=\"false\">)</mo></mrow></math>, where <math translate=\"no\"><mi>d</mi><mrow><mo stretchy=\"false\">(</mo><mi>u</mi><mo>,</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow></math> is their distance and <math translate=\"no\"><mi>σ</mi></math> the smoothing width:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"s(u) = (sum over j of w(u,j) x(j)) / (sum over j of w(u,j))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>s</mi><mrow><mo stretchy=\"false\">(</mo><mi>u</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><mi>w</mi><mrow><mo stretchy=\"false\">(</mo><mi>u</mi><mo>,</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow><mi>x</mi><mrow><mo stretchy=\"false\">(</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow></mrow><mrow><munder><mo>∑</mo><mi>j</mi></munder><mi>w</mi><mrow><mo stretchy=\"false\">(</mo><mi>u</mi><mo>,</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow></mrow></mfrac></math></span></span></div></div>\n<p>The smoothed maps of every pair of genes <math translate=\"no\"><mi>g</mi></math> and <math translate=\"no\"><mi>h</mi></math> are then compared using the Pearson correlation <math translate=\"no\"><mi>r</mi><mrow><mo stretchy=\"false\">(</mo><mi>g</mi><mo>,</mo><mi>h</mi><mo stretchy=\"false\">)</mo></mrow></math>. Two genes are linked when <math translate=\"no\"><mi>r</mi><mrow><mo stretchy=\"false\">(</mo><mi>g</mi><mo>,</mo><mi>h</mi><mo stretchy=\"false\">)</mo></mrow></math> exceeds the cutoff <math translate=\"no\"><mi>c</mi></math>, and the clustering power <math translate=\"no\"><mi>p</mi></math> discounts weak links:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"a(g,h) = ((r(g,h) − c) / (1 − c))^p\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>a</mi><mrow><mo stretchy=\"false\">(</mo><mi>g</mi><mo>,</mo><mi>h</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mrow><mi>r</mi><mrow><mo stretchy=\"false\">(</mo><mi>g</mi><mo>,</mo><mi>h</mi><mo stretchy=\"false\">)</mo></mrow><mo>−</mo><mi>c</mi></mrow><mrow><mn>1</mn><mo>−</mo><mi>c</mi></mrow></mfrac><mo>)</mo></mrow><mi>p</mi></msup></math></span></span></div></div>\n<p>The Infomap algorithm clusters this network into modules, numbered from the largest. Genes without a link join no module.</p>\n<p><strong>Figure.</strong> One panel per module. Each location’s module score is the sum of the module’s smoothed genes, each scaled from 0 to its own highest value. Grey indicates low scores, red high scores and black the highest within each panel, so compare the patterns of different panels rather than their strengths.</p>\n<p><strong>Table.</strong> Each row represents one module. <code translate=\"no\">Genes</code> gives its size, and <code translate=\"no\">Members</code> lists its genes, the most connected first. <code translate=\"no\">Mean margin</code> averages the margins of its genes, which compare a gene’s mean link weight <math translate=\"no\"><mi>A</mi></math> within its module with its highest mean link weight <math translate=\"no\"><mi>B</mi></math> to another module:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"margin = (A − B) / (max(A, B))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>margin</mi></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><mi>A</mi><mo>−</mo><mi>B</mi></mrow><mrow><mi>max</mi><mrow><mo stretchy=\"false\">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy=\"false\">)</mo></mrow></mrow></mfrac></math></span></span></div></div>\n<p>A margin of <strong>1</strong> means that the gene is linked only within its module, <strong>0</strong> that it is equally close to another module, and negative values that it is closer to another module. A download lists every gene in a module with its network measures.</p>\n<p><strong>Summary.</strong> The package repeats the smoothing and correlations with the cell positions shuffled. The 99.9th percentile of these shuffled correlations is the authors’ lowest sensible cutoff, because weaker correlations also arise without any spatial pattern. The summary reports this bound and warns when the cutoff lies below it.</p>\n<p>A module groups correlated genes and carries no p-value. Genes of one cell type correlate wherever its cells lie, so a module can reflect shared cells rather than a pattern of the tissue.</p>",
+   "citation": "Holdener C, De Vlaminck I. Smoothie: efficient inference and integration of spatial co-expression networks from denoised spatial transcriptomics data. Commun Biol 9, 459 (2026). https://doi.org/10.1038/s42003-026-09898-z",
+   "tags": [
+    "spatial",
+    "genes",
+    "modules",
+    "co-expression",
+    "network",
+    "smoothing",
+    "figure"
+   ],
+   "icon": "hub",
+   "language": "python",
+   "language_label": "Python",
+   "gpu": null,
+   "gpu_label": "",
+   "parameters": [
+    {
+     "name": "smoothing_width",
+     "label": "Smoothing width (microns)",
+     "type": "float",
+     "default": 20,
+     "optional": false,
+     "help": "Sets the width of the Gaussian that smooths each gene over the tissue, its standard deviation.\nThe authors find 20 to 40 µm works best. Wider finds broader patterns; sparse tissue needs it wider.",
+     "min": 5.0,
+     "max": 200.0,
+     "step": 1.0,
+     "type_text": "float, 5–200",
+     "default_text": "20"
+    },
+    {
+     "name": "correlation_cutoff",
+     "label": "Correlation cutoff",
+     "type": "float",
+     "default": 0.4,
+     "optional": false,
+     "help": "Links two genes when their smoothed maps correlate above this.\nHigher keeps fewer genes, in tighter modules. Lower takes longer. The summary gives the authors’ lower bound for this run.",
+     "min": 0.1,
+     "max": 0.95,
+     "step": 0.01,
+     "type_text": "float, 0.1–0.95",
+     "default_text": "0.4"
+    },
+    {
+     "name": "clustering_power",
+     "label": "Clustering power",
+     "type": "float",
+     "default": 4,
+     "optional": false,
+     "help": "Sets how strongly weak links are discounted when the network is clustered.\nHigher gives more, smaller modules. The authors find 1 to 6 reasonable.",
+     "min": 1.0,
+     "max": 9.0,
+     "step": 0.5,
+     "type_text": "float, 1–9",
+     "default_text": "4"
+    }
+   ],
+   "sweep": null,
+   "outputs": [
+    "summary",
+    "table",
+    "images",
+    "files"
+   ],
+   "optional_outputs": [],
+   "output_help": {
+    "summary": "writes a summary",
+    "table": "returns a table",
+    "images": "returns figures",
+    "files": "returns files to download"
+   },
+   "requires": {
+    "genes": true,
+    "cell_types": false,
+    "categoricals": false,
+    "spatial": "2d",
+    "min_cells": 200
+   },
+   "needs": [
+    "gene expression",
+    "2D coordinates",
+    "200+ cells"
+   ],
+   "license": "MIT",
+   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/smoothie-v1.0.2/smoothie-1.0.2.pvtool",
+   "bundle_size": "57.1 kB",
+   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/smoothie",
+   "published": "2026-11-08",
+   "published_date": "8 Nov 2026",
+   "gates": [
+    {
+     "id": "bundle",
+     "required": true,
+     "status": "pass",
+     "message": "6 files, 57.1 kB packed and 270.6 kB unpacked, plugin.json at the root."
+    },
+    {
+     "id": "manifest",
+     "required": true,
+     "status": "pass",
+     "message": "smoothie 1.0.2 by PointillViz authors; Python entry tool.py, outputs summary, table, images, files."
+    },
+    {
+     "id": "environment",
+     "required": true,
+     "status": "pass",
+     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
+    },
+    {
+     "id": "entry",
+     "required": true,
+     "status": "pass",
+     "message": "tool.py imported in 4.69 s and defines run(ds, params)."
+    },
+    {
+     "id": "imports",
+     "required": false,
+     "status": "pass",
+     "message": "1 source file, using anndata, csv, io, itertools, math, matplotlib, numpy, os, pointillviz_tool, scanpy, scipy, smoothie, tempfile, warnings; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
+    },
+    {
+     "id": "fixture",
+     "required": true,
+     "status": "pass",
+     "message": "ran on the 600-cell fixture in 10.80 s, returning summary, table, files, images and 57 log lines."
+    },
+    {
+     "id": "result",
+     "required": true,
+     "status": "pass",
+     "message": "returned the declared outputs: summary, table, files, images."
+    },
+    {
+     "id": "edge",
+     "required": true,
+     "status": "pass",
+     "message": "at the minimum corner (clustering_power=1.0, correlation_cutoff=0.1, smoothing_width=5.0) it refused in words rather than crashing: At a smoothing width of 5 µm, more than 15% of the tissue has fewer than 10 cells within 15 µm, the reach of the smoothing. Widen it to at least 7 µm. (code: too_sparse); ran at the maximum corner (clustering_power=9.0, correlation_cutoff=0.95, smoothing_width=200.0) in 10.60 s."
+    },
+    {
+     "id": "no_mutation",
+     "required": true,
+     "status": "pass",
+     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
+    }
+   ],
+   "risks": [],
+   "art": {
+    "src": "assets/media/tools/smoothie.webp?v=7fe65d9fac",
+    "src2x": "assets/media/tools/smoothie@2x.webp?v=b0e9657d1a",
+    "width": 720,
+    "height": 420,
+    "alt": "Smoothie: six small maps of cells, each glowing in a different pattern, one for each gene module. An illustration, not a real tissue.",
+    "generated": false
+   },
+   "social": "assets/media/social/smoothie.jpg",
+   "url": "tools/smoothie/"
   },
   {
    "id": "tissue-permeability",
@@ -950,295 +1942,6 @@
    "url": "tools/vector-field/"
   },
   {
-   "id": "banksy-niches",
-   "name": "BANKSY niches",
-   "version": "2.0.0",
-   "author": "PointillViz reference tools",
-   "description": "Tissue niches from each cell’s expression and its neighbourhood’s, imported from the authors’ own BANKSY package.",
-   "readme_html": "<p>Answers the question: <strong>Which tissue domains, or niches, does a section divide into, judged by what each cell and its neighbours express?</strong></p>\n<p>The tool runs <a class=\"pv-link\" href=\"https://github.com/prabhakarlab/Banksy_py\" rel=\"noopener noreferrer nofollow\">BANKSY</a> (Singhal, Chou, Lee et al., <em>Nature Genetics</em> 2024) with the authors’ own Python package, <strong>imported from PyPI as they ship it</strong> (<code translate=\"no\">pybanksy</code> 1.3.5). It calls the package’s functions in the order of the authors’ notebooks, with their values, and holds no copy of their method:</p>\n<ol><li>normalises the counts and keeps the most variable genes (<code translate=\"no\">normalize_total</code>, <code translate=\"no\">filter_hvg</code>);</li><li>builds a spatial graph of each cell’s nearest neighbours (<code translate=\"no\">initialize_banksy</code>);</li><li>builds the BANKSY matrix: each cell’s expression, its neighbours’ weighted mean and, by default, the azimuthal Gabor filter (AGF), which responds where expression changes across a neighbourhood (<code translate=\"no\">generate_banksy_matrix</code>);</li><li>reduces it with PCA (<code translate=\"no\">pca_umap</code>) and clusters the components with Leiden (<code translate=\"no\">run_Leiden_partition</code>).</li></ol>\n<p>Called directly on the same counts, with no code of this tool, the authors’ functions give the same niches, cell for cell, on Xenium 5K sections of 135,231 and 235,803 cells.</p>\n<p><strong>Map.</strong> Every cell painted by its niche, numbered N1, N2, … from the largest.</p>\n<p><strong>Matrix.</strong> Each niche’s cell-type composition, or its marker genes if the dataset has no cell types.</p>\n<p><strong>Table.</strong> Each niche’s size, marker genes and main cell types, with a download of every cell’s niche.</p>\n<p><strong>Several sections.</strong> A cell’s neighbours always come from its own section. <strong>Z-score</strong> sets the rest. Per section, the default, each section gets its own z-scores and the matrices are joined before the PCA, as in the authors’ multi-sample notebook. Across all sections, the package runs once over every cell, with the sections set apart in space so that no neighbourhood crosses between them.</p>\n<p><strong>What the package does as shipped.</strong> The tool leaves these as they are:</p>\n<ul><li>The AGF is not centred: <code translate=\"no\">generate_banksy_matrix</code> passes its <code translate=\"no\">variance_balance</code> argument (False) into the <code translate=\"no\">center</code> slot of <code translate=\"no\">create_nbr_matrix</code>. Results can therefore differ from the authors’ R package.</li><li>Ranked weights fail with the AGF, so the tool refuses that combination with a sentence.</li><li>With scaled Gaussian or reciprocal weights, cells on the same spot make the package lose the whole neighbourhood block without a word. The tool refuses, and names the uniform weights.</li><li>The package’s other clustering, <code translate=\"no\">mclust</code>, needs R and <code translate=\"no\">rpy2</code>, and is not offered.</li></ul>\n<p><strong>Cost.</strong> 135,231 cells take about 6 minutes and 21 GB at 2,000 variable genes, and a selection of 20,000 cells about 30 s. If the memory is not there, the tool says so before it starts, and which control to lower.</p>\n<p><code translate=\"no\">pybanksy</code> is under the GPL-3.0 licence, and so is this tool.</p>",
-   "citation": "Singhal V, Chou N, Lee J, et al. BANKSY unifies cell typing and tissue domain segmentation for scalable spatial omics data analysis. Nat Genet 56, 431-441 (2024).",
-   "tags": [
-    "spatial",
-    "niches",
-    "domains",
-    "clustering",
-    "genes"
-   ],
-   "icon": "hub",
-   "language": "python",
-   "language_label": "Python",
-   "gpu": null,
-   "gpu_label": "",
-   "parameters": [
-    {
-     "name": "lambda_param",
-     "label": "Neighbourhood weight (lambda)",
-     "type": "float",
-     "default": 0.8,
-     "optional": false,
-     "help": "How much a cell’s neighbourhood counts against its own expression (pybanksy’s lambda).\nThe authors use 0.8 for tissue domains and 0.2 for spatially informed cell types; 0 ignores space.",
-     "min": 0.0,
-     "max": 1.0,
-     "step": 0.05,
-     "type_text": "float, 0–1",
-     "default_text": "0.8"
-    },
-    {
-     "name": "k_geom",
-     "label": "Spatial neighbours (k_geom)",
-     "type": "int",
-     "default": 15,
-     "optional": false,
-     "help": "How many nearest cells make a neighbourhood. The authors’ default is 15, for single cells.",
-     "min": 5.0,
-     "max": 30.0,
-     "step": 1.0,
-     "type_text": "int, 5–30",
-     "default_text": "15"
-    },
-    {
-     "name": "max_m",
-     "label": "AGF order (max_m)",
-     "type": "int",
-     "default": 1,
-     "optional": false,
-     "help": "1 adds BANKSY’s azimuthal Gabor filter, over twice the neighbours: it responds where expression changes across a neighbourhood, as at a border. It is the authors’ recommended default.\n0 uses the neighbourhood’s mean alone, and a third less memory.",
-     "min": 0.0,
-     "max": 1.0,
-     "step": 1.0,
-     "type_text": "int, 0–1",
-     "default_text": "1"
-    },
-    {
-     "name": "nbr_weight_decay",
-     "label": "Neighbour weights",
-     "type": "select",
-     "default": "scaled_gaussian",
-     "optional": false,
-     "help": "How a neighbour’s weight falls with its distance.",
-     "options": [
-      {
-       "label": "Scaled Gaussian (the authors' default)",
-       "value": "scaled_gaussian"
-      },
-      {
-       "label": "Reciprocal",
-       "value": "reciprocal"
-      },
-      {
-       "label": "Ranked (AGF order 0 only)",
-       "value": "ranked"
-      },
-      {
-       "label": "Uniform",
-       "value": "uniform"
-      }
-     ],
-     "type_text": "select, 4 options",
-     "default_text": "Scaled Gaussian (the authors’ default)"
-    },
-    {
-     "name": "zscore_by",
-     "label": "Z-score",
-     "type": "select",
-     "default": "section",
-     "optional": false,
-     "help": "Sets over which cells each gene is z-scored when a run holds several sections. It changes nothing on one section.\nPer section evens out differences in a gene’s overall level between sections, which suits replicates of one tissue. Across all sections keeps them, which suits sections of different tissues.",
-     "options": [
-      {
-       "label": "Per section (the authors' multi-sample way)",
-       "value": "section"
-      },
-      {
-       "label": "Across all sections",
-       "value": "all"
-      }
-     ],
-     "type_text": "select, 2 options",
-     "default_text": "Per section (the authors’ multi-sample way)"
-    },
-    {
-     "name": "pca_dims",
-     "label": "Principal components (pca_dims)",
-     "type": "int",
-     "default": 20,
-     "optional": false,
-     "help": "How many components of the BANKSY matrix the clustering sees. The authors’ default is 20.",
-     "min": 5.0,
-     "max": 50.0,
-     "step": 1.0,
-     "type_text": "int, 5–50",
-     "default_text": "20"
-    },
-    {
-     "name": "resolution",
-     "label": "Leiden resolution",
-     "type": "float",
-     "default": 0.7,
-     "optional": false,
-     "help": "Higher values give more, smaller niches; lower values give fewer, larger ones.\n0.7 is the authors’ default. Not used when Number of niches is set.",
-     "min": 0.05,
-     "max": 3.0,
-     "step": 0.05,
-     "type_text": "float, 0.05–3",
-     "default_text": "0.7"
-    },
-    {
-     "name": "max_labels",
-     "label": "Number of niches (max_labels)",
-     "type": "int",
-     "default": 0,
-     "optional": false,
-     "help": "0 goes by the resolution. Any other number has pybanksy search for a resolution that gives that many niches, up to 25 tries of Leiden, so it takes longer and may stop short.",
-     "min": 0.0,
-     "max": 30.0,
-     "step": 1.0,
-     "type_text": "int, 0–30",
-     "default_text": "0"
-    },
-    {
-     "name": "num_nn",
-     "label": "Expression neighbours (num_nn)",
-     "type": "int",
-     "default": 50,
-     "optional": false,
-     "help": "How many neighbours each cell has in the graph Leiden partitions, in the space of the principal components. The authors use 50.",
-     "min": 10.0,
-     "max": 100.0,
-     "step": 1.0,
-     "type_text": "int, 10–100",
-     "default_text": "50"
-    },
-    {
-     "name": "n_top_genes",
-     "label": "Variable genes (n_top_genes)",
-     "type": "int",
-     "default": 2000,
-     "optional": false,
-     "help": "How many of the most variable genes to use. The authors use 2000.\nTime and memory grow in proportion.",
-     "min": 50.0,
-     "max": 5000.0,
-     "step": 50.0,
-     "type_text": "int, 50–5,000",
-     "default_text": "2,000"
-    },
-    {
-     "name": "refine_iterations",
-     "label": "Label refinement (iterations)",
-     "type": "int",
-     "default": 0,
-     "optional": false,
-     "help": "How many times a cell takes the label of most of its 6 nearest cells. 0 is off.\nThe authors offer it for domain segmentation, and warn against excess: it wears out fine domains.",
-     "min": 0.0,
-     "max": 5.0,
-     "step": 1.0,
-     "type_text": "int, 0–5",
-     "default_text": "0"
-    }
-   ],
-   "sweep": null,
-   "outputs": [
-    "summary",
-    "labels",
-    "matrix",
-    "table"
-   ],
-   "optional_outputs": [
-    "files"
-   ],
-   "output_help": {
-    "summary": "writes a summary",
-    "labels": "paints categories on the spatial view",
-    "matrix": "returns a heatmap",
-    "table": "returns a table",
-    "files": "returns files to download"
-   },
-   "requires": {
-    "genes": true,
-    "cell_types": false,
-    "categoricals": false,
-    "spatial": "any",
-    "min_cells": 200
-   },
-   "needs": [
-    "gene expression",
-    "200+ cells"
-   ],
-   "license": "GPL-3.0",
-   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/banksy-niches-v2.0.0/banksy-niches-2.0.0.pvtool",
-   "bundle_size": "61.5 kB",
-   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/banksy-niches",
-   "published": "2026-11-05",
-   "published_date": "5 Nov 2026",
-   "gates": [
-    {
-     "id": "bundle",
-     "required": true,
-     "status": "pass",
-     "message": "6 files, 61.5 kB packed and 288.9 kB unpacked, plugin.json at the root."
-    },
-    {
-     "id": "manifest",
-     "required": true,
-     "status": "pass",
-     "message": "banksy-niches 2.0.0 by PointillViz reference tools; Python entry tool.py, outputs summary, labels, matrix, table."
-    },
-    {
-     "id": "environment",
-     "required": true,
-     "status": "pass",
-     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
-    },
-    {
-     "id": "entry",
-     "required": true,
-     "status": "pass",
-     "message": "tool.py imported in 11.57 s and defines run(ds, params)."
-    },
-    {
-     "id": "imports",
-     "required": false,
-     "status": "pass",
-     "message": "1 source file, using anndata, banksy, banksy_utils, gc, gzip, matplotlib, numpy, pandas, pointillviz_tool, psutil, random, scanpy, scipy, threadpoolctl, warnings; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
-    },
-    {
-     "id": "fixture",
-     "required": true,
-     "status": "pass",
-     "message": "ran on the 600-cell fixture in 6.59 s, returning summary, table, matrix, files, labels and 113 log lines."
-    },
-    {
-     "id": "result",
-     "required": true,
-     "status": "pass",
-     "message": "returned the declared outputs: summary, table, matrix, files, labels."
-    },
-    {
-     "id": "edge",
-     "required": true,
-     "status": "pass",
-     "message": "ran at the minimum corner (k_geom=5, lambda_param=0.0, max_m=0, n_top_genes=50, num_nn=10, pca_dims=5, resolution=0.05) in 6.02 s; ran at the maximum corner (k_geom=30, lambda_param=1.0, max_labels=30, n_top_genes=5000, nbr_weight_decay='uniform', num_nn=100, pca_dims=50, refine_iterations=5, resolution=3.0, zscore_by='all') in 6.76 s."
-    },
-    {
-     "id": "no_mutation",
-     "required": true,
-     "status": "pass",
-     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
-    }
-   ],
-   "risks": [],
-   "art": {
-    "src": "assets/media/tools/banksy-niches.webp?v=71e43568a0",
-    "src2x": "assets/media/tools/banksy-niches@2x.webp?v=b3a2346569",
-    "width": 720,
-    "height": 420,
-    "alt": "Niches from each cell and its neighbourhood",
-    "generated": false
-   },
-   "social": "assets/media/social/banksy-niches.jpg",
-   "url": "tools/banksy-niches/"
-  },
-  {
    "id": "celltype-contact-network",
    "name": "Cell-type contact network",
    "version": "1.0.2",
@@ -1415,709 +2118,6 @@
    },
    "social": "assets/media/social/celltype-contact-network.jpg",
    "url": "tools/celltype-contact-network/"
-  },
-  {
-   "id": "ridge-map",
-   "name": "Ridge Map",
-   "version": "1.0.1",
-   "author": "PointillViz authors",
-   "description": "A tissue section as a relief of ridges, their height a gene or the cell density, their colour the most common cell type.",
-   "readme_html": "<p>Answers the question: <strong>How does a gene’s expression, or the density of cells, rise and fall across the section, and over which cell types?</strong></p>\n<p>The tool cuts the section into horizontal strips and draws each one as a ridge, a joy plot laid over the tissue. Ridges are drawn from the back of the figure to its front, and each hides what stands behind it, so the tissue’s architecture reads as a relief.</p>\n<p>Every height and colour is measured around its place on the strip with a Gaussian of width <math translate=\"no\"><mi>σ</mi></math>, so the strips are cross-sections of one smooth surface. A cell <math translate=\"no\"><mi>j</mi></math> at distance <math translate=\"no\"><msub><mi>d</mi><mi>j</mi></msub></math> weighs <math translate=\"no\"><msub><mi>w</mi><mi>j</mi></msub><mo>=</mo><mi>exp</mi><mrow><mo stretchy=\"false\">(</mo><mo>−</mo><msubsup><mi>d</mi><mi>j</mi><mn>2</mn></msubsup><mo lspace=\"0\" rspace=\"0\">/</mo><mn>2</mn><msup><mi>σ</mi><mn>2</mn></msup><mo stretchy=\"false\">)</mo></mrow></math>. With <math translate=\"no\"><msub><mi>a</mi><mi>j</mi></msub></math> its expression in log1p(CP10K), the height is the gene’s local mean:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"h(x, y) = (sum over j of w_j a_j) / (sum over j of w_j)\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>h</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><msub><mi>a</mi><mi>j</mi></msub></mrow><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub></mrow></mfrac></math></span></span></div></div>\n<p>With no gene chosen, it is the local cell density:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"h(x, y) = (sum over j of w_j) / (2πσ^2)\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>h</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub></mrow><mrow><mn>2</mn><mi>π</mi><msup><mi>σ</mi><mn>2</mn></msup></mrow></mfrac></math></span></span></div></div>\n<p><strong>Height.</strong> The bar in the key shows a round value at its true height. A gene’s height is on a log scale, and two runs do not share a scale, so compare them by their bars.</p>\n<p><strong>Place.</strong> A peak rises up the figure from its own strip, so a place on the tissue is where its ridge starts, not the top of the peak.</p>\n<p><strong>Colour.</strong> Each stretch of a ridge takes the map’s colour of the cell type with the most cells around it. It says which cell type is most common at that place, not which cells express the gene, so a rare type can be present and never be drawn.</p>\n<p><strong>Edges.</strong> A ridge comes down to its baseline where the tissue stops, so gaps and tears stay black. Cells far outside the section and small stray patches are not drawn, and the summary counts them.</p>\n<p><strong>Sections and selections.</strong> Each section draws its own figure, up to the 8 largest, at one scale. Isolate a section to draw only that one. With cells selected, only they are drawn. A cell whose section did not measure the gene is left out, not counted as zero.</p>\n<p><strong>Outputs.</strong> The figure, the same figure as an SVG download, and a summary of what was drawn and what was not.</p>\n<p>The figure is for reading the shape of a tissue, not for testing it: no height carries a significance, and tall ridges can hide a low signal behind them. The tool needs 2D coordinates and a cell-type annotation.</p>",
-   "citation": "",
-   "tags": [
-    "spatial",
-    "expression",
-    "density",
-    "cell types",
-    "relief",
-    "figure"
-   ],
-   "icon": "landscape",
-   "language": "python",
-   "language_label": "Python",
-   "gpu": null,
-   "gpu_label": "",
-   "parameters": [
-    {
-     "name": "gene",
-     "label": "Gene",
-     "type": "gene",
-     "default": null,
-     "optional": true,
-     "help": "Selects the gene whose local expression sets the height of the ridges.\nWith no gene chosen, the height is the local cell density.",
-     "type_text": "gene",
-     "default_text": "optional"
-    },
-    {
-     "name": "strips",
-     "label": "Strips",
-     "type": "int",
-     "default": 120,
-     "optional": false,
-     "help": "Sets how many horizontal strips the section is cut into, one ridge each.\nMore strips draw finer detail; fewer draw a bolder figure.",
-     "min": 20.0,
-     "max": 300.0,
-     "step": 5.0,
-     "type_text": "int, 20–300",
-     "default_text": "120"
-    },
-    {
-     "name": "relief",
-     "label": "Relief",
-     "type": "float",
-     "default": 8,
-     "optional": false,
-     "help": "Sets how tall the tallest ridge stands, in strip heights.\nTaller ridges make a more dramatic landscape and hide more of what stands behind them.",
-     "min": 1.0,
-     "max": 30.0,
-     "step": 0.5,
-     "type_text": "float, 1–30",
-     "default_text": "8"
-    },
-    {
-     "name": "smoothing",
-     "label": "Smoothing",
-     "type": "float",
-     "default": 0.75,
-     "optional": false,
-     "help": "Sets the width of the neighbourhood each height and colour is measured in, the σ of a Gaussian, in strip heights.\nLarger values draw calmer ridges and longer stretches of one colour.",
-     "min": 0.25,
-     "max": 3.0,
-     "step": 0.05,
-     "type_text": "float, 0.25–3",
-     "default_text": "0.75"
-    }
-   ],
-   "sweep": null,
-   "outputs": [
-    "summary",
-    "images",
-    "files"
-   ],
-   "optional_outputs": [],
-   "output_help": {
-    "summary": "writes a summary",
-    "images": "returns figures",
-    "files": "returns files to download"
-   },
-   "requires": {
-    "genes": false,
-    "cell_types": true,
-    "categoricals": false,
-    "spatial": "2d",
-    "min_cells": 200
-   },
-   "needs": [
-    "cell types",
-    "2D coordinates",
-    "200+ cells"
-   ],
-   "license": "MIT",
-   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/ridge-map-v1.0.1/ridge-map-1.0.1.pvtool",
-   "bundle_size": "35.1 kB",
-   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/ridge-map",
-   "published": "2026-11-05",
-   "published_date": "5 Nov 2026",
-   "gates": [
-    {
-     "id": "bundle",
-     "required": true,
-     "status": "pass",
-     "message": "6 files, 35.1 kB packed and 163.3 kB unpacked, plugin.json at the root."
-    },
-    {
-     "id": "manifest",
-     "required": true,
-     "status": "pass",
-     "message": "ridge-map 1.0.1 by PointillViz authors; Python entry tool.py, outputs summary, images, files."
-    },
-    {
-     "id": "environment",
-     "required": true,
-     "status": "pass",
-     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
-    },
-    {
-     "id": "entry",
-     "required": true,
-     "status": "pass",
-     "message": "tool.py imported in 0.20 s and defines run(ds, params)."
-    },
-    {
-     "id": "imports",
-     "required": false,
-     "status": "pass",
-     "message": "1 source file, using colorsys, html, math, numpy, pointillviz_tool, re, scipy; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
-    },
-    {
-     "id": "fixture",
-     "required": true,
-     "status": "pass",
-     "message": "ran on the 600-cell fixture in 0.18 s, returning summary, files, images."
-    },
-    {
-     "id": "result",
-     "required": true,
-     "status": "pass",
-     "message": "returned the declared outputs: summary, files, images."
-    },
-    {
-     "id": "edge",
-     "required": true,
-     "status": "pass",
-     "message": "ran at the minimum corner (relief=1.0, smoothing=0.25, strips=20) in 0.17 s; ran at the maximum corner (relief=30.0, smoothing=3.0, strips=300) in 0.25 s."
-    },
-    {
-     "id": "no_mutation",
-     "required": true,
-     "status": "pass",
-     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
-    }
-   ],
-   "risks": [],
-   "art": {
-    "src": "assets/media/tools/ridge-map.webp?v=504cfe2fb6",
-    "src2x": "assets/media/tools/ridge-map@2x.webp?v=cfdf200628",
-    "width": 720,
-    "height": 420,
-    "alt": "Ridge map: rows of coloured ridges, each hiding the one behind it, rising into a relief over a rounded shape. An illustration, not a real tissue.",
-    "generated": false
-   },
-   "social": "assets/media/social/ridge-map.jpg",
-   "url": "tools/ridge-map/"
-  },
-  {
-   "id": "seurat-niches",
-   "name": "Seurat niches",
-   "version": "1.0.1",
-   "author": "PointillViz reference tools",
-   "description": "Tissue niches from the cell types around each cell, imported from the authors’ own Seurat package.",
-   "readme_html": "<p>Answers the question: <strong>Which neighbourhoods of cell types does the tissue divide into?</strong></p>\n<p>The tool runs the niche analysis of <a class=\"pv-link\" href=\"https://satijalab.org/seurat/\" rel=\"noopener noreferrer nofollow\">Seurat</a> (Hao et al., <em>Nature Biotechnology</em> 2024) with the authors’ own R package, <strong>imported from conda-forge as they ship it</strong> (<code translate=\"no\">r-seurat</code> 5.5.1). It calls <code translate=\"no\">BuildNicheAssay</code> as their <a class=\"pv-link\" href=\"https://satijalab.org/seurat/articles/seurat5_spatial_vignette_2\" rel=\"noopener noreferrer nofollow\">Xenium vignette</a> does, with their values, and holds no copy of their method. The function:</p>\n<ol><li>finds each cell’s nearest cells;</li><li>counts the cell types among them and scales those counts;</li><li>groups cells with similar surroundings into niches with k-means, keeping the best of 30 random starts.</li></ol>\n<p>The authors credit Goltsev et al. (<em>Cell</em> 2018) and He et al. (<em>Nature Biotechnology</em> 2022) as its inspiration. Only cell types and positions enter, not expression.</p>\n<p>Called directly with the real counts in the object, with no code of this tool, the function gives the same niches, cell for cell, on a Xenium 5K mouse colon section of 135,231 cells. Asked for 8 niches there, it separates smooth muscle, the layers of enterocytes and goblet cells, and a small niche of lymphoid aggregates (0.7% of cells: dendritic cells and ILC3s).</p>\n<p><strong>Map.</strong> Every cell painted by its niche, numbered N1, N2, … from the largest.</p>\n<p><strong>Matrix.</strong> Each niche’s composition: the share of its cells in each cell type.</p>\n<p><strong>Table.</strong> Each niche’s size and main cell types, with a download of every cell’s niche.</p>\n<p><strong>Several sections.</strong> The function takes one set of coordinates, so the sections are set apart in space before it is called. A cell’s neighbours then come from its own section, and all sections share one set of niches. A section with no more cells than a neighbourhood holds is left out, and the summary says so. Isolate a section, or select cells, to run on those alone.</p>\n<p><strong>Cells left out.</strong> Those with no cell type, as in the vignette, and those with no coordinates. The summary counts them.</p>\n<p><strong>What the package does as shipped.</strong> The tool leaves these as they are:</p>\n<ul><li>The number of niches is a choice, not a finding: k-means makes as many as asked, and no niche carries a p-value.</li><li>Neighbours come from an approximate search (Annoy), the default of <code translate=\"no\">FindNeighbors</code>.</li><li>Each k-means start stops at R’s default of 10 iterations, and the summary says when that cut one short. On the section above, 100 iterations changed no cell’s niche.</li></ul>\n<p><strong>Cost.</strong> Memory and time grow with cells × cell types: 135,231 cells with 73 cell types take about 2 minutes and 2 GB, and 708,889 cells with 327 about 26 minutes and 29 GB. If the memory is not there, the tool says so before it starts. It needs 2D coordinates.</p>\n<p><code translate=\"no\">Seurat</code> is under the MIT licence, and so is this tool.</p>",
-   "citation": "Hao Y, Stuart T, Kowalski MH, et al. Dictionary learning for integrative, multimodal and scalable single-cell analysis. Nat Biotechnol 42, 293-304 (2024).",
-   "tags": [
-    "spatial",
-    "niches",
-    "cell types",
-    "neighbourhoods",
-    "R"
-   ],
-   "icon": "scatter_plot",
-   "language": "r",
-   "language_label": "R",
-   "gpu": null,
-   "gpu_label": "",
-   "parameters": [
-    {
-     "name": "field",
-     "label": "Cell-type column (group.by)",
-     "type": "categorical_field",
-     "default": null,
-     "optional": false,
-     "help": "The annotation counted around each cell: cell types, unless the dataset has none or you choose another column.",
-     "type_text": "categorical_field",
-     "default_text": "—"
-    },
-    {
-     "name": "niches_k",
-     "label": "Number of niches (niches.k)",
-     "type": "int",
-     "default": 5,
-     "optional": false,
-     "help": "How many niches k-means makes. The authors’ Xenium analysis uses 5; the function’s own default is 4.",
-     "min": 2.0,
-     "max": 30.0,
-     "step": 1.0,
-     "type_text": "int, 2–30",
-     "default_text": "5"
-    },
-    {
-     "name": "neighbors_k",
-     "label": "Spatial neighbours (neighbors.k)",
-     "type": "int",
-     "default": 30,
-     "optional": false,
-     "help": "How many nearest cells make up a cell’s surroundings. More neighbours give broader niches.\nThe authors’ Xenium analysis uses 30; the function’s own default is 20.",
-     "min": 5.0,
-     "max": 100.0,
-     "step": 1.0,
-     "type_text": "int, 5–100",
-     "default_text": "30"
-    },
-    {
-     "name": "iter_max",
-     "label": "K-means iterations (iter.max)",
-     "type": "int",
-     "default": 10,
-     "optional": false,
-     "help": "The most iterations for each of k-means’ 30 starts. 10 is what the authors’ function uses.\nRaise it when the summary says that starts stopped at this limit.",
-     "min": 10.0,
-     "max": 500.0,
-     "step": 10.0,
-     "type_text": "int, 10–500",
-     "default_text": "10"
-    }
-   ],
-   "sweep": null,
-   "outputs": [
-    "summary",
-    "labels",
-    "matrix",
-    "table"
-   ],
-   "optional_outputs": [
-    "files"
-   ],
-   "output_help": {
-    "summary": "writes a summary",
-    "labels": "paints categories on the spatial view",
-    "matrix": "returns a heatmap",
-    "table": "returns a table",
-    "files": "returns files to download"
-   },
-   "requires": {
-    "genes": false,
-    "cell_types": false,
-    "categoricals": true,
-    "spatial": "2d",
-    "min_cells": 100
-   },
-   "needs": [
-    "a categorical column",
-    "2D coordinates",
-    "100+ cells"
-   ],
-   "license": "MIT",
-   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/seurat-niches-v1.0.1/seurat-niches-1.0.1.pvtool",
-   "bundle_size": "151.9 kB",
-   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/seurat-niches",
-   "published": "2026-11-05",
-   "published_date": "5 Nov 2026",
-   "gates": [
-    {
-     "id": "bundle",
-     "required": true,
-     "status": "pass",
-     "message": "6 files, 151.9 kB packed and 528.1 kB unpacked, plugin.json at the root."
-    },
-    {
-     "id": "manifest",
-     "required": true,
-     "status": "pass",
-     "message": "seurat-niches 1.0.1 by PointillViz reference tools; R entry tool.R, outputs summary, labels, matrix, table."
-    },
-    {
-     "id": "environment",
-     "required": true,
-     "status": "pass",
-     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy, r-base, r-jsonlite for linux-64, osx-64, osx-arm64, win-64; environments: default."
-    },
-    {
-     "id": "entry",
-     "required": true,
-     "status": "pass",
-     "message": "tool.R sourced in 3.07 s and defines run <- function(ds, params)."
-    },
-    {
-     "id": "imports",
-     "required": false,
-     "status": "pass",
-     "message": "1 source file, using Matrix, Seurat, jsonlite, ps, stats, utils; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
-    },
-    {
-     "id": "fixture",
-     "required": true,
-     "status": "pass",
-     "message": "ran on the 600-cell fixture in 3.85 s, returning summary, table, matrix, files, labels and 1 log line."
-    },
-    {
-     "id": "result",
-     "required": true,
-     "status": "pass",
-     "message": "returned the declared outputs: summary, table, matrix, files, labels."
-    },
-    {
-     "id": "edge",
-     "required": true,
-     "status": "pass",
-     "message": "ran at the minimum corner (neighbors_k=5, niches_k=2) in 3.69 s; ran at the maximum corner (iter_max=500, neighbors_k=100, niches_k=30) in 3.95 s."
-    },
-    {
-     "id": "no_mutation",
-     "required": true,
-     "status": "pass",
-     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
-    }
-   ],
-   "risks": [],
-   "art": {
-    "src": "assets/media/tools/seurat-niches.webp?v=934c93386b",
-    "src2x": "assets/media/tools/seurat-niches@2x.webp?v=3400b57d40",
-    "width": 720,
-    "height": 420,
-    "alt": "Seurat v5",
-    "generated": false
-   },
-   "social": "assets/media/social/seurat-niches.jpg",
-   "url": "tools/seurat-niches/"
-  },
-  {
-   "id": "smoothie",
-   "name": "Smoothie",
-   "version": "1.0.1",
-   "author": "PointillViz authors",
-   "description": "Gene modules that share a spatial pattern, found by the published Smoothie package.",
-   "readme_html": "<p>Answers the question: <strong>Which genes share a spatial pattern in this tissue, and where does each group sit?</strong></p>\n<p>The tool runs <a class=\"pv-link\" href=\"https://caholdener01.github.io/Smoothie/\" rel=\"noopener noreferrer nofollow\">Smoothie</a> (Holdener &amp; De Vlaminck, <em>Communications Biology</em> 2026) as its authors ship it. It installs the published package, <code translate=\"no\">smoothie-st</code>, and calls its functions in the order of the authors’ pipeline; it holds no copy of their method. The package:</p>\n<ol><li><strong>smooths</strong> each gene over the tissue with a Gaussian of the chosen width, which fills in the gaps between sparse counts;</li><li><strong>correlates</strong> every pair of smoothed genes across the tissue;</li><li><strong>links</strong> two genes when their correlation <math translate=\"no\"><mi>r</mi></math> passes the cutoff <math translate=\"no\"><mi>c</mi></math>, with a weight that the power <math translate=\"no\"><mi>p</mi></math> pushes down for weak links:</li></ol>\n<div class=\"st-formula\" role=\"img\" aria-label=\"w = ((r - c) / (1 - c))^p\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>w</mi></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mrow><mi>r</mi><mo>−</mo><mi>c</mi></mrow><mrow><mn>1</mn><mo>−</mo><mi>c</mi></mrow></mfrac><mo>)</mo></mrow><mi>p</mi></msup></math></span></span></div></div>\n<ol start=\"4\"><li><strong>clusters</strong> that network into modules with Infomap. A gene with no link joins no module, and modules are numbered from the largest.</li></ol>\n<p>On a Xenium 5K section of the mouse maternal–fetal interface (235,803 cells, 5,106 genes), the defaults give 47 modules holding 2,428 genes, among them smooth muscle (Actg2, Myh11), NK cells (Prf1, Gzmb) and the interferon response (Isg15, Ifit1).</p>\n<p><strong>Table.</strong> One row per module: its size, its mean margin and its most connected genes. A gene’s margin runs from 1, linked only inside its module, to 0, split evenly between two, so a low mean marks a module that is not sharply set apart.</p>\n<p><strong>Figure.</strong> One panel per module, drawn by the package. Each location’s score sums the module’s smoothed genes, each scaled by its own highest value, so compare patterns between panels, not their strengths.</p>\n<p><strong>Download.</strong> Every gene in a module, with the package’s network measures of it.</p>\n<p><strong>The lower bound.</strong> The package repeats the smoothing and the correlations with the positions shuffled, and the authors use the result as the lowest sensible cutoff. The summary gives it, and says in bold when the cutoff is below it.</p>\n<p><strong>Several sections.</strong> Each section is smoothed on its own, and the correlations are taken over all of them. Genes missing from the same section correlate for that alone, and the summary says when this happens.</p>\n<p>Everything not on the form is what the authors’ pipeline notebooks give for cell-sized data. A module is a community in a correlation network, not a test: no gene or module carries a p-value. It can also mean that its genes share cells rather than a pattern of the tissue, because genes of one cell type correlate wherever its cells lie.</p>\n<p><strong>Cost.</strong> The section above takes about 5 minutes and 7 GB. The tool needs 2D coordinates.</p>\n<p>The <code translate=\"no\">smoothie-st</code> package is by Chase Holdener, under the MIT licence.</p>",
-   "citation": "Holdener C, De Vlaminck I. Smoothie: efficient inference and integration of spatial co-expression networks from denoised spatial transcriptomics data. Commun Biol 9, 459 (2026). https://doi.org/10.1038/s42003-026-09898-z",
-   "tags": [
-    "spatial",
-    "genes",
-    "modules",
-    "co-expression",
-    "network",
-    "smoothing",
-    "figure"
-   ],
-   "icon": "hub",
-   "language": "python",
-   "language_label": "Python",
-   "gpu": null,
-   "gpu_label": "",
-   "parameters": [
-    {
-     "name": "smoothing_width",
-     "label": "Smoothing width (microns)",
-     "type": "float",
-     "default": 20,
-     "optional": false,
-     "help": "Sets the width of the Gaussian that smooths each gene over the tissue, its standard deviation.\nThe authors find 20 to 40 µm works best. Wider finds broader patterns; sparse tissue needs it wider.",
-     "min": 5.0,
-     "max": 200.0,
-     "step": 1.0,
-     "type_text": "float, 5–200",
-     "default_text": "20"
-    },
-    {
-     "name": "correlation_cutoff",
-     "label": "Correlation cutoff",
-     "type": "float",
-     "default": 0.4,
-     "optional": false,
-     "help": "Links two genes when their smoothed maps correlate above this.\nHigher keeps fewer genes, in tighter modules. Lower takes longer. The summary gives the authors’ lower bound for this run.",
-     "min": 0.1,
-     "max": 0.95,
-     "step": 0.01,
-     "type_text": "float, 0.1–0.95",
-     "default_text": "0.4"
-    },
-    {
-     "name": "clustering_power",
-     "label": "Clustering power",
-     "type": "float",
-     "default": 4,
-     "optional": false,
-     "help": "Sets how strongly weak links are discounted when the network is clustered.\nHigher gives more, smaller modules. The authors find 1 to 6 reasonable.",
-     "min": 1.0,
-     "max": 9.0,
-     "step": 0.5,
-     "type_text": "float, 1–9",
-     "default_text": "4"
-    }
-   ],
-   "sweep": null,
-   "outputs": [
-    "summary",
-    "table",
-    "images",
-    "files"
-   ],
-   "optional_outputs": [],
-   "output_help": {
-    "summary": "writes a summary",
-    "table": "returns a table",
-    "images": "returns figures",
-    "files": "returns files to download"
-   },
-   "requires": {
-    "genes": true,
-    "cell_types": false,
-    "categoricals": false,
-    "spatial": "2d",
-    "min_cells": 200
-   },
-   "needs": [
-    "gene expression",
-    "2D coordinates",
-    "200+ cells"
-   ],
-   "license": "MIT",
-   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/smoothie-v1.0.1/smoothie-1.0.1.pvtool",
-   "bundle_size": "57.3 kB",
-   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/smoothie",
-   "published": "2026-11-05",
-   "published_date": "5 Nov 2026",
-   "gates": [
-    {
-     "id": "bundle",
-     "required": true,
-     "status": "pass",
-     "message": "6 files, 57.3 kB packed and 271.0 kB unpacked, plugin.json at the root."
-    },
-    {
-     "id": "manifest",
-     "required": true,
-     "status": "pass",
-     "message": "smoothie 1.0.1 by PointillViz authors; Python entry tool.py, outputs summary, table, images, files."
-    },
-    {
-     "id": "environment",
-     "required": true,
-     "status": "pass",
-     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
-    },
-    {
-     "id": "entry",
-     "required": true,
-     "status": "pass",
-     "message": "tool.py imported in 5.23 s and defines run(ds, params)."
-    },
-    {
-     "id": "imports",
-     "required": false,
-     "status": "pass",
-     "message": "1 source file, using anndata, csv, io, itertools, math, matplotlib, numpy, os, pointillviz_tool, scanpy, scipy, smoothie, tempfile, warnings; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
-    },
-    {
-     "id": "fixture",
-     "required": true,
-     "status": "pass",
-     "message": "ran on the 600-cell fixture in 10.32 s, returning summary, table, files, images and 57 log lines."
-    },
-    {
-     "id": "result",
-     "required": true,
-     "status": "pass",
-     "message": "returned the declared outputs: summary, table, files, images."
-    },
-    {
-     "id": "edge",
-     "required": true,
-     "status": "pass",
-     "message": "at the minimum corner (clustering_power=1.0, correlation_cutoff=0.1, smoothing_width=5.0) it refused in words rather than crashing: At a smoothing width of 5 µm, more than 15% of the tissue has fewer than 10 cells within 15 µm, the reach of the smoothing. Widen it to at least 7 µm. (code: too_sparse); ran at the maximum corner (clustering_power=9.0, correlation_cutoff=0.95, smoothing_width=200.0) in 10.17 s."
-    },
-    {
-     "id": "no_mutation",
-     "required": true,
-     "status": "pass",
-     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
-    }
-   ],
-   "risks": [],
-   "art": {
-    "src": "assets/media/tools/smoothie.webp?v=7fe65d9fac",
-    "src2x": "assets/media/tools/smoothie@2x.webp?v=b0e9657d1a",
-    "width": 720,
-    "height": 420,
-    "alt": "Smoothie: six small maps of cells, each glowing in a different pattern, one for each gene module. An illustration, not a real tissue.",
-    "generated": false
-   },
-   "social": "assets/media/social/smoothie.jpg",
-   "url": "tools/smoothie/"
-  },
-  {
-   "id": "beeswarm-plot",
-   "name": "Beeswarm Plot",
-   "version": "1.0.0",
-   "author": "PointillViz reference tools",
-   "description": "How marker genes are expressed across cell types or niches, one swarm of cells per group.",
-   "readme_html": "<p>Answers the question: <strong>Which genes set each cell type or niche apart, and how are they spread across its cells?</strong></p>\n<p>The plot has one row per group of an annotation (cell types, niches or any other categorical column) and one column per gene. Each glyph is the swarm of the group’s cells along the gene’s expression, log1p(CP10K):</p>\n<ul><li><strong>Length.</strong> Low expression is at the glyph’s left end and high expression at its right. Each gene has its own scale, from the threshold to the 99.5th percentile of the cells above it.</li><li><strong>Height.</strong> At each level, the height follows how many of the group’s cells are there.</li><li><strong>Size.</strong> The glyph’s size follows the share of the group’s cells above the threshold (its square root, as the Marker Dot Plot sizes its dots). A gene that few cells of a group detect draws a small glyph.</li><li><strong>Colour.</strong> The group’s mean expression as a z-score across the groups, in one of the viewer’s gene colormaps, from −2.5 to 2.5:</li></ul>\n<div class=\"st-formula\" role=\"img\" aria-label=\"z_(g,j) = (\\bar{x}_(g,j) - \\operatorname{mean}_(g&#x27;)\\,\\bar{x}_(g&#x27;,j)) / (\\operatorname{sd}_(g&#x27;)\\,\\bar{x}_(g&#x27;,j))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><msub><mi>z</mi><mrow><mi>g</mi><mo>,</mo><mi>j</mi></mrow></msub></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><mo>\\</mo><mi>bar</mi><msub><mrow><mo stretchy=\"false\">{</mo><mi>x</mi><mo stretchy=\"false\">}</mo></mrow><mrow><mi>g</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>−</mo><mo>\\</mo><mi>operatorname</mi><msub><mrow><mo stretchy=\"false\">{</mo><mi>mean</mi><mo stretchy=\"false\">}</mo></mrow><mrow><mi>g</mi><mo>&#x27;</mo></mrow></msub><mo>\\</mo><mo>,</mo><mo>\\</mo><mi>bar</mi><msub><mrow><mo stretchy=\"false\">{</mo><mi>x</mi><mo stretchy=\"false\">}</mo></mrow><mrow><mi>g</mi><mo>&#x27;</mo><mo>,</mo><mi>j</mi></mrow></msub></mrow><mrow><mo>\\</mo><mi>operatorname</mi><msub><mrow><mo stretchy=\"false\">{</mo><mi>sd</mi><mo stretchy=\"false\">}</mo></mrow><mrow><mi>g</mi><mo>&#x27;</mo></mrow></msub><mo>\\</mo><mo>,</mo><mo>\\</mo><mi>bar</mi><msub><mrow><mo stretchy=\"false\">{</mo><mi>x</mi><mo stretchy=\"false\">}</mo></mrow><mrow><mi>g</mi><mo>&#x27;</mo><mo>,</mo><mi>j</mi></mrow></msub></mrow></mfrac></math></span></span></div></div>\n<p>where $\\bar{x}_{g,j}$ is the mean log1p(CP10K) of gene $j$ over every cell of group $g$.</p>\n<p><strong>Genes.</strong> The form opens on the 20 genes detected in the most cells, the Marker Dot Plot’s Top markers. Search to add genes (up to 40), or remove them.</p>\n<p><strong>Groups.</strong> A row needs at least 10 cells, and the plot draws at most the 120 largest groups. A second, coarse annotation adds an outer colour strip and orders the rows: each group takes the coarse group most of its cells belong to.</p>\n<p><strong>Threshold.</strong> Cells at or below the threshold are left out of the swarms; 0 keeps every cell that detects the gene. The colours always count every cell of a group, so the threshold changes what is drawn, never what a colour means.</p>\n<p><strong>Outputs.</strong> The plot as a figure and as an SVG download, and a table with each group’s cells, mean expression, z-score and share above the threshold for every gene.</p>",
-   "citation": "",
-   "tags": [
-    "expression",
-    "markers",
-    "groups",
-    "plot"
-   ],
-   "icon": "bubble_chart",
-   "language": "python",
-   "language_label": "Python",
-   "gpu": null,
-   "gpu_label": "",
-   "parameters": [
-    {
-     "name": "field",
-     "label": "Groups",
-     "type": "categorical_field",
-     "default": null,
-     "optional": true,
-     "help": "Selects the annotation whose groups form the rows: cell types, niches or any other categorical column.\nDefaults to the dataset’s cell-type column.",
-     "type_text": "categorical_field",
-     "default_text": "optional"
-    },
-    {
-     "name": "genes",
-     "label": "Genes",
-     "type": "genes",
-     "default": null,
-     "optional": true,
-     "help": "Selects the genes that form the columns.\nOpens on the 20 genes detected in the most cells, the Marker Dot Plot’s Top markers. Search to add genes, or remove them; left empty, the plot uses those 20.",
-     "type_text": "genes",
-     "default_text": "optional"
-    },
-    {
-     "name": "coarse",
-     "label": "Coarse groups",
-     "type": "categorical_field",
-     "default": null,
-     "optional": true,
-     "help": "Adds a second, broader annotation as an outer colour strip and orders the rows by it; each group takes the coarse group most of its cells belong to.\nThe same column as Groups draws no outer strip.",
-     "type_text": "categorical_field",
-     "default_text": "optional"
-    },
-    {
-     "name": "threshold",
-     "label": "Expression threshold",
-     "type": "float",
-     "default": 0,
-     "optional": false,
-     "help": "Leaves cells at or below this log1p(CP10K) out of the swarms; 0 keeps every cell that detects the gene.\nThe colours always count every cell of a group.",
-     "min": 0.0,
-     "max": 5.0,
-     "step": 0.05,
-     "type_text": "float, 0–5",
-     "default_text": "0"
-    },
-    {
-     "name": "cmap",
-     "label": "Colormap",
-     "type": "select",
-     "default": "magma",
-     "optional": false,
-     "help": "Colours the mean expression z-score with the colormaps the viewer offers for gene expression.",
-     "options": [
-      {
-       "label": "Viridis",
-       "value": "viridis"
-      },
-      {
-       "label": "Plasma",
-       "value": "plasma"
-      },
-      {
-       "label": "Inferno",
-       "value": "inferno"
-      },
-      {
-       "label": "Magma",
-       "value": "magma"
-      },
-      {
-       "label": "Cividis",
-       "value": "cividis"
-      }
-     ],
-     "type_text": "select, 5 options",
-     "default_text": "Magma"
-    }
-   ],
-   "sweep": null,
-   "outputs": [
-    "images",
-    "table",
-    "summary",
-    "files"
-   ],
-   "optional_outputs": [],
-   "output_help": {
-    "images": "returns figures",
-    "table": "returns a table",
-    "summary": "writes a summary",
-    "files": "returns files to download"
-   },
-   "requires": {
-    "genes": true,
-    "cell_types": false,
-    "categoricals": true,
-    "spatial": "any",
-    "min_cells": 20
-   },
-   "needs": [
-    "gene expression",
-    "a categorical column",
-    "20+ cells"
-   ],
-   "license": "MIT",
-   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/beeswarm-plot-v1.0.0/beeswarm-plot-1.0.0.pvtool",
-   "bundle_size": "29.1 kB",
-   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/beeswarm-plot",
-   "published": "2026-10-28",
-   "published_date": "28 Oct 2026",
-   "gates": [
-    {
-     "id": "bundle",
-     "required": true,
-     "status": "pass",
-     "message": "6 files, 29.1 kB packed and 103.4 kB unpacked, plugin.json at the root."
-    },
-    {
-     "id": "manifest",
-     "required": true,
-     "status": "pass",
-     "message": "beeswarm-plot 1.0.0 by PointillViz reference tools; Python entry tool.py, outputs images, table, summary, files."
-    },
-    {
-     "id": "environment",
-     "required": true,
-     "status": "pass",
-     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
-    },
-    {
-     "id": "entry",
-     "required": true,
-     "status": "pass",
-     "message": "tool.py imported in 0.02 s and defines run(ds, params)."
-    },
-    {
-     "id": "imports",
-     "required": false,
-     "status": "pass",
-     "message": "1 source file, using html, numpy, pointillviz_tool; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
-    },
-    {
-     "id": "fixture",
-     "required": true,
-     "status": "pass",
-     "message": "ran on the 600-cell fixture in 0.02 s, returning summary, table, files, images."
-    },
-    {
-     "id": "result",
-     "required": true,
-     "status": "pass",
-     "message": "returned the declared outputs: summary, table, files, images."
-    },
-    {
-     "id": "edge",
-     "required": true,
-     "status": "pass",
-     "message": "ran at the minimum corner (cmap='viridis') in 0.02 s; ran at the maximum corner (cmap='cividis', threshold=5.0) in 0.02 s."
-    },
-    {
-     "id": "no_mutation",
-     "required": true,
-     "status": "pass",
-     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
-    }
-   ],
-   "risks": [],
-   "art": {
-    "src": "assets/media/tools/beeswarm-plot.webp?v=22a6de230b",
-    "src2x": "assets/media/tools/beeswarm-plot@2x.webp?v=7c6108523f",
-    "width": 720,
-    "height": 420,
-    "alt": "Beeswarm plot: eight cell types against a marker gene of each, the swarms brightest along the diagonal",
-    "generated": false
-   },
-   "social": "assets/media/social/beeswarm-plot.jpg",
-   "url": "tools/beeswarm-plot/"
   },
   {
    "id": "celltype-cooccurrence",

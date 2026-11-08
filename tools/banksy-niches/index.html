@@ -6,13 +6,13 @@
 <script>(function(d){try{var w=d.clientWidth||innerWidth;d.style.setProperty('--k',Math.min(Math.max(Math.min(w/1440,innerHeight/900),1),1.6).toFixed(4))}catch(e){}})(document.documentElement)</script>
 <meta name="theme-color" content="#06070D">
 <title>BANKSY niches · The Tool Store · PointillViz</title>
-<meta name="description" content="Tissue niches from each cell’s expression and its neighbourhood’s, imported from the authors’ own BANKSY package. A PointillViz community tool, version 2.0.0.">
+<meta name="description" content="Which niches the tissue divides into, judged by what each cell and its neighbours express. A PointillViz community tool, version 2.0.1.">
 <meta name="robots" content="noindex">
 <link rel="canonical" href="https://store.pointillviz.com/tools/banksy-niches/">
 <meta property="og:site_name" content="PointillViz">
 <meta property="og:type" content="website">
 <meta property="og:title" content="BANKSY niches · The Tool Store · PointillViz">
-<meta property="og:description" content="Tissue niches from each cell’s expression and its neighbourhood’s, imported from the authors’ own BANKSY package.">
+<meta property="og:description" content="Which niches the tissue divides into, judged by what each cell and its neighbours express.">
 <meta property="og:url" content="https://store.pointillviz.com/tools/banksy-niches/">
 <meta property="og:image" content="https://store.pointillviz.com/assets/media/social/banksy-niches.jpg">
 <meta property="og:image:width" content="1200">
@@ -86,9 +86,9 @@
       <div class="st-top__words">
         <a class="st-back" href="../../"><svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-arrow-left"/></svg>All tools</a>
         <h1 class="st-title st-top__name">BANKSY niches</h1>
-        <p class="st-top__desc">Tissue niches from each cell’s expression and its neighbourhood’s, imported from the authors’ own BANKSY package.</p>
+        <p class="st-top__desc">Which niches the tissue divides into, judged by what each cell and its neighbours express.</p>
         <div class="st-get">
-          <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/banksy-niches-v2.0.0/banksy-niches-2.0.0.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 61.5 kB</span></span></a>
+          <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/banksy-niches-v2.0.1/banksy-niches-2.0.1.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 61.2 kB</span></span></a>
           <p class="st-get__how"><span class="st-get__steps">In PointillViz: <b>Tools → Store → Install</b>, or <b>Install from file</b> with the download. </span><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How to install and run a tool</a></p>
           
           <p class="st-get__note">This runs as you: a tool is arbitrary code, with your privileges. <a class="pv-link" href="../../#safety">Safety note</a></p>
@@ -109,26 +109,25 @@
           <a class="st-tab" href="#outputs" data-view-link="outputs">Outputs</a>
         </nav>
         <button class="st-testbtn" id="test-summary-open" type="button" aria-haspopup="dialog" aria-controls="test-summary" data-state="pass">Tool test summary</button>
-        <a class="pv-btn pv-btn--primary st-bar__dl" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/banksy-niches-v2.0.0/banksy-niches-2.0.0.pvtool" download tabindex="-1"><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span>Download</span></a>
+        <a class="pv-btn pv-btn--primary st-bar__dl" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/banksy-niches-v2.0.1/banksy-niches-2.0.1.pvtool" download tabindex="-1"><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span>Download</span></a>
       </div>
     </div>
     <div class="st-wrap st-views__grid">
       <div class="st-panels">
         <section class="st-panel" id="readme" aria-labelledby="readme-h">
           <h2 class="st-panel__h" id="readme-h">Readme</h2>
-          <p class="st-question">Which tissue domains, or niches, does a section divide into, judged by what each cell and its neighbours express?</p>
+          <p class="st-question">Which tissue domains, or niches, does the tissue divide into, based on what each cell and its neighbours express?</p>
           <div class="st-md">
-<p>The tool runs <a class="pv-link" href="https://github.com/prabhakarlab/Banksy_py" rel="noopener noreferrer nofollow">BANKSY</a> (Singhal, Chou, Lee et al., <em>Nature Genetics</em> 2024) with the authors’ own Python package, <strong>imported from PyPI as they ship it</strong> (<code translate="no">pybanksy</code> 1.3.5). It calls the package’s functions in the order of the authors’ notebooks, with their values, and holds no copy of their method:</p>
-<ol><li>normalises the counts and keeps the most variable genes (<code translate="no">normalize_total</code>, <code translate="no">filter_hvg</code>);</li><li>builds a spatial graph of each cell’s nearest neighbours (<code translate="no">initialize_banksy</code>);</li><li>builds the BANKSY matrix: each cell’s expression, its neighbours’ weighted mean and, by default, the azimuthal Gabor filter (AGF), which responds where expression changes across a neighbourhood (<code translate="no">generate_banksy_matrix</code>);</li><li>reduces it with PCA (<code translate="no">pca_umap</code>) and clusters the components with Leiden (<code translate="no">run_Leiden_partition</code>).</li></ol>
-<p>Called directly on the same counts, with no code of this tool, the authors’ functions give the same niches, cell for cell, on Xenium 5K sections of 135,231 and 235,803 cells.</p>
-<p><strong>Map.</strong> Every cell painted by its niche, numbered N1, N2, … from the largest.</p>
-<p><strong>Matrix.</strong> Each niche’s cell-type composition, or its marker genes if the dataset has no cell types.</p>
-<p><strong>Table.</strong> Each niche’s size, marker genes and main cell types, with a download of every cell’s niche.</p>
-<p><strong>Several sections.</strong> A cell’s neighbours always come from its own section. <strong>Z-score</strong> sets the rest. Per section, the default, each section gets its own z-scores and the matrices are joined before the PCA, as in the authors’ multi-sample notebook. Across all sections, the package runs once over every cell, with the sections set apart in space so that no neighbourhood crosses between them.</p>
-<p><strong>What the package does as shipped.</strong> The tool leaves these as they are:</p>
-<ul><li>The AGF is not centred: <code translate="no">generate_banksy_matrix</code> passes its <code translate="no">variance_balance</code> argument (False) into the <code translate="no">center</code> slot of <code translate="no">create_nbr_matrix</code>. Results can therefore differ from the authors’ R package.</li><li>Ranked weights fail with the AGF, so the tool refuses that combination with a sentence.</li><li>With scaled Gaussian or reciprocal weights, cells on the same spot make the package lose the whole neighbourhood block without a word. The tool refuses, and names the uniform weights.</li><li>The package’s other clustering, <code translate="no">mclust</code>, needs R and <code translate="no">rpy2</code>, and is not offered.</li></ul>
-<p><strong>Cost.</strong> 135,231 cells take about 6 minutes and 21 GB at 2,000 variable genes, and a selection of 20,000 cells about 30 s. If the memory is not there, the tool says so before it starts, and which control to lower.</p>
-<p><code translate="no">pybanksy</code> is under the GPL-3.0 licence, and so is this tool.</p>
+<p>The tool runs <a class="pv-link" href="https://github.com/prabhakarlab/Banksy_py" rel="noopener noreferrer nofollow">BANKSY</a> with the authors’ own Python package, <code translate="no">pybanksy</code>, and their default settings. BANKSY describes each cell by its own expression together with that of its spatial neighbours, and groups cells with similar descriptions into niches.</p>
+<p>The counts are first normalized and reduced to the most variable genes, which gives each cell <math translate="no"><mi>i</mi></math> its own expression <math translate="no"><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></math>. The tool then averages the expression of the cell’s <math translate="no"><mi>k</mi></math> nearest neighbours <math translate="no"><mi>N</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></math>, using weights <math translate="no"><mi>w</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></math> that sum to 1 and, by default, decrease with distance:</p>
+<div class="st-formula" role="img" aria-label="m(i) = sum over j∈N(i) of w(i,j) x(j)"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>m</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><munder><mo>∑</mo><mrow><mi>j</mi><mo>∈</mo><mi>N</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></mrow></munder><mi>w</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo stretchy="false">)</mo></mrow><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></math></span></span></div></div>
+<p>By default, a third block is added: the azimuthal Gabor filter (AGF) <math translate="no"><mi>g</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></math>, which weights neighbouring cells by their direction around cell <math translate="no"><mi>i</mi></math>. It therefore responds where expression changes from one side of the neighbourhood to the other, as at a tissue border. Each block is z-scored gene by gene, and the blocks are joined using the neighbourhood weight <math translate="no"><mi>λ</mi></math>:</p>
+<div class="st-formula" role="img" aria-label="b(i) = (√(1−λ) x(i), √(2λ/3) m(i), √(λ/3) g(i))"><div class="st-formula__row"><span class="st-formula__eq"><span class="st-formula__piece"><math translate="no" displaystyle="true"><mi>b</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></math></span><span class="st-formula__piece"><math translate="no" displaystyle="true"><mo>=</mo><mrow><mo stretchy="false">(</mo><msqrt><mn>1</mn><mo>−</mo><mi>λ</mi></msqrt><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow><mo>,</mo><msqrt><mn>2</mn><mi>λ</mi><mo lspace="0" rspace="0">/</mo><mn>3</mn></msqrt><mi>m</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow><mo>,</mo><msqrt><mi>λ</mi><mo lspace="0" rspace="0">/</mo><mn>3</mn></msqrt><mi>g</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow><mo stretchy="false">)</mo></mrow></math></span></span></div></div>
+<p>Without the AGF, <math translate="no"><mi>m</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></math> receives the full weight <math translate="no"><msqrt><mi>λ</mi></msqrt></math>. With <math translate="no"><mi>λ</mi></math> = <strong>0.8</strong>, the neighbourhood dominates and the niches follow tissue domains; with <math translate="no"><mi>λ</mi></math> = <strong>0.2</strong>, they resemble spatially informed cell types. The joined profiles are reduced to their principal components and clustered with the Leiden algorithm, and each cluster forms one niche.</p>
+<p><strong>Map.</strong> Each cell is colored by its niche. Niches are numbered N1, N2, … from the largest to the smallest; the numbers carry no other meaning.</p>
+<p><strong>Matrix.</strong> Rows are niches and columns are cell types, ordered by abundance. Each square shows the percentage of the niche’s labelled cells that belong to that cell type. Without a cell-type annotation, the columns show the niches’ top marker genes instead, colored by their marker z-scores.</p>
+<p><strong>Table.</strong> Each row represents one niche. <code translate="no">Cells</code> and <code translate="no">% of cells</code> give its size. <code translate="no">Marker genes</code> lists the five genes whose mean expression in the niche has the highest z-score relative to all cells, while <code translate="no">Main cell types</code> gives its three most common cell types with their shares. A download lists the niche of every cell.</p>
+<p>With several sections, each cell’s neighbours come from its own section, and all sections share one set of niches.</p>
           </div>
           <div class="st-refs"><h3 class="st-refs__h">References</h3><div class="st-md"><p>Singhal V, Chou N, Lee J, et al. BANKSY unifies cell typing and tissue domain segmentation for scalable spatial omics data analysis. Nat Genet 56, 431-441 (2024).</p></div></div>
         </section>
@@ -140,24 +139,25 @@
 <tr role="row" class="st-p">
   <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Neighbourhood weight (lambda)</span> <code class="st-p__name" translate="no">lambda_param</code></th>
   <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>0.8</span><span class="st-range" aria-hidden="true"><span class="st-range__end">0</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.8000"></i></span><span class="st-range__end">1</span></span><span class="pv-sr-only">Range 0 to 1. </span></td>
-  <td role="cell" class="st-p__help"><span class="st-p__text">How much a cell’s neighbourhood counts against its own expression (pybanksy’s lambda).
+  <td role="cell" class="st-p__help"><span class="st-p__text">Sets how much a cell’s neighbourhood counts against its own expression.
 The authors use 0.8 for tissue domains and 0.2 for spatially informed cell types; 0 ignores space.</span></td>
 </tr>
 <tr role="row" class="st-p">
   <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Spatial neighbours (k_geom)</span> <code class="st-p__name" translate="no">k_geom</code></th>
   <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>15</span><span class="st-range" aria-hidden="true"><span class="st-range__end">5</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.4000"></i></span><span class="st-range__end">30</span></span><span class="pv-sr-only">Range 5 to 30. </span></td>
-  <td role="cell" class="st-p__help"><span class="st-p__text">How many nearest cells make a neighbourhood. The authors’ default is 15, for single cells.</span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Sets how many nearest cells form each cell’s neighbourhood.
+The authors use 15 for single-cell data.</span></td>
 </tr>
 <tr role="row" class="st-p">
   <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">AGF order (max_m)</span> <code class="st-p__name" translate="no">max_m</code></th>
   <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>1</span><span class="st-range" aria-hidden="true"><span class="st-range__end">0</span><span class="st-range__track"><i class="st-range__pt" style="--x:1.0000"></i></span><span class="st-range__end">1</span></span><span class="pv-sr-only">Range 0 to 1. </span></td>
-  <td role="cell" class="st-p__help"><span class="st-p__text">1 adds BANKSY’s azimuthal Gabor filter, over twice the neighbours: it responds where expression changes across a neighbourhood, as at a border. It is the authors’ recommended default.
-0 uses the neighbourhood’s mean alone, and a third less memory.</span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Sets whether the azimuthal Gabor filter (AGF) is added: 1 adds it, 0 uses the neighbourhood’s mean alone.
+The AGF responds where expression changes across a neighbourhood, as at a border; the authors recommend it.</span></td>
 </tr>
 <tr role="row" class="st-p">
   <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Neighbour weights</span> <code class="st-p__name" translate="no">nbr_weight_decay</code></th>
   <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>Scaled Gaussian (the authors’ default)</span></td>
-  <td role="cell" class="st-p__help"><span class="st-p__text">How a neighbour’s weight falls with its distance.</span><p class="st-p__opts">Or: Reciprocal, Ranked (AGF order 0 only), Uniform</p></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Sets how a neighbour’s weight falls with its distance.</span><p class="st-p__opts">Or: Reciprocal, Ranked (AGF order 0 only), Uniform</p></td>
 </tr>
 <tr role="row" class="st-p">
   <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Z-score</span> <code class="st-p__name" translate="no">zscore_by</code></th>
@@ -168,35 +168,38 @@ Per section evens out differences in a gene’s overall level between sections, 
 <tr role="row" class="st-p">
   <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Principal components (pca_dims)</span> <code class="st-p__name" translate="no">pca_dims</code></th>
   <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>20</span><span class="st-range" aria-hidden="true"><span class="st-range__end">5</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.3333"></i></span><span class="st-range__end">50</span></span><span class="pv-sr-only">Range 5 to 50. </span></td>
-  <td role="cell" class="st-p__help"><span class="st-p__text">How many components of the BANKSY matrix the clustering sees. The authors’ default is 20.</span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Sets how many principal components of the BANKSY matrix the clustering uses.
+The authors use 20.</span></td>
 </tr>
 <tr role="row" class="st-p">
   <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Leiden resolution</span> <code class="st-p__name" translate="no">resolution</code></th>
   <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>0.7</span><span class="st-range" aria-hidden="true"><span class="st-range__end">0.05</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.2203"></i></span><span class="st-range__end">3</span></span><span class="pv-sr-only">Range 0.05 to 3. </span></td>
-  <td role="cell" class="st-p__help"><span class="st-p__text">Higher values give more, smaller niches; lower values give fewer, larger ones.
+  <td role="cell" class="st-p__help"><span class="st-p__text">Sets the resolution of the Leiden clustering: higher values give more, smaller niches, and lower values fewer, larger ones.
 0.7 is the authors’ default. Not used when Number of niches is set.</span></td>
 </tr>
 <tr role="row" class="st-p">
   <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Number of niches (max_labels)</span> <code class="st-p__name" translate="no">max_labels</code></th>
   <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>0</span><span class="st-range" aria-hidden="true"><span class="st-range__end">0</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.0000"></i></span><span class="st-range__end">30</span></span><span class="pv-sr-only">Range 0 to 30. </span></td>
-  <td role="cell" class="st-p__help"><span class="st-p__text">0 goes by the resolution. Any other number has pybanksy search for a resolution that gives that many niches, up to 25 tries of Leiden, so it takes longer and may stop short.</span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Sets a number of niches for the package to aim for, by searching for a resolution that gives it; 0 uses the resolution as set.
+The search can stop short of that number, and the summary then says so.</span></td>
 </tr>
 <tr role="row" class="st-p">
   <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Expression neighbours (num_nn)</span> <code class="st-p__name" translate="no">num_nn</code></th>
   <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>50</span><span class="st-range" aria-hidden="true"><span class="st-range__end">10</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.4444"></i></span><span class="st-range__end">100</span></span><span class="pv-sr-only">Range 10 to 100. </span></td>
-  <td role="cell" class="st-p__help"><span class="st-p__text">How many neighbours each cell has in the graph Leiden partitions, in the space of the principal components. The authors use 50.</span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Sets how many neighbours each cell has in the graph that Leiden partitions, in the space of the principal components.
+The authors use 50.</span></td>
 </tr>
 <tr role="row" class="st-p">
   <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Variable genes (n_top_genes)</span> <code class="st-p__name" translate="no">n_top_genes</code></th>
   <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>2,000</span><span class="st-range" aria-hidden="true"><span class="st-range__end">50</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.3939"></i></span><span class="st-range__end">5,000</span></span><span class="pv-sr-only">Range 50 to 5,000. </span></td>
-  <td role="cell" class="st-p__help"><span class="st-p__text">How many of the most variable genes to use. The authors use 2000.
-Time and memory grow in proportion.</span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Sets how many of the most variable genes are used.
+The authors use 2000.</span></td>
 </tr>
 <tr role="row" class="st-p">
   <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Label refinement (iterations)</span> <code class="st-p__name" translate="no">refine_iterations</code></th>
   <td role="cell" class="st-p__val"><span class="st-p__default"><span class="st-p__dl">Default: </span>0</span><span class="st-range" aria-hidden="true"><span class="st-range__end">0</span><span class="st-range__track"><i class="st-range__pt" style="--x:0.0000"></i></span><span class="st-range__end">5</span></span><span class="pv-sr-only">Range 0 to 5. </span></td>
-  <td role="cell" class="st-p__help"><span class="st-p__text">How many times a cell takes the label of most of its 6 nearest cells. 0 is off.
-The authors offer it for domain segmentation, and warn against excess: it wears out fine domains.</span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Sets how many times each cell takes the niche of most of its 6 nearest cells; 0 is off.
+The authors offer it for domain segmentation and warn that too much of it erodes fine domains.</span></td>
 </tr>
 </tbody>
 </table>
@@ -210,7 +213,7 @@ The authors offer it for domain segmentation, and warn against excess: it wears 
       </div>
       <aside class="st-facts" aria-labelledby="facts-h">
         <h2 class="pv-sr-only" id="facts-h">Details</h2>
-        <dl class="st-facts__list"><div class="st-facts__row"><dt>Author</dt><dd>PointillViz reference tools</dd></div><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__num" translate="no">2.0.0</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-11-05">5 Nov 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>GPL-3.0</dd></div><div class="st-facts__row"><dt>Language</dt><dd>Python</dd></div><div class="st-facts__row"><dt>GPU</dt><dd>Not used</dd></div><div class="st-facts__row"><dt>Needs</dt><dd>gene expression<br>200+ cells</dd></div></dl>
+        <dl class="st-facts__list"><div class="st-facts__row"><dt>Author</dt><dd>PointillViz reference tools</dd></div><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__num" translate="no">2.0.1</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-11-08">8 Nov 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>GPL-3.0</dd></div><div class="st-facts__row"><dt>Language</dt><dd>Python</dd></div><div class="st-facts__row"><dt>GPU</dt><dd>Not used</dd></div><div class="st-facts__row"><dt>Needs</dt><dd>gene expression<br>200+ cells</dd></div></dl>
         <p class="st-facts__src"><a class="pv-link" href="https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/banksy-niches">Source in the public registry<svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-external"/></svg></a></p>
       </aside>
     </div>
@@ -226,11 +229,11 @@ The authors offer it for domain segmentation, and warn against excess: it wears 
 <ol class="st-gates">
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">bundle</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">6 files, 61.5 kB packed and 288.9 kB unpacked, plugin.json at the root.</p>
+  <p class="st-gate__msg">6 files, 61.2 kB packed and 288.4 kB unpacked, plugin.json at the root.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">manifest</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">banksy-niches 2.0.0 by PointillViz reference tools; Python entry tool.py, outputs summary, labels, matrix, table.</p>
+  <p class="st-gate__msg">banksy-niches 2.0.1 by PointillViz reference tools; Python entry tool.py, outputs summary, labels, matrix, table.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">environment</code><span class="st-gate__word">pass</span></p>
@@ -238,7 +241,7 @@ The authors offer it for domain segmentation, and warn against excess: it wears 
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">entry</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">tool.py imported in 11.57 s and defines run(ds, params).</p>
+  <p class="st-gate__msg">tool.py imported in 11.60 s and defines run(ds, params).</p>
 </li>
 <li class="st-gate" data-state="pass" data-adv>
   <p class="st-gate__head"><code class="st-gate__name" translate="no">imports</code> <span class="st-gate__adv">advisory</span><span class="st-gate__word">pass</span></p>
@@ -246,7 +249,7 @@ The authors offer it for domain segmentation, and warn against excess: it wears 
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">fixture</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">ran on the 600-cell fixture in 6.59 s, returning summary, table, matrix, files, labels and 113 log lines.</p>
+  <p class="st-gate__msg">ran on the 600-cell fixture in 5.87 s, returning summary, table, matrix, files, labels and 113 log lines.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">result</code><span class="st-gate__word">pass</span></p>
@@ -254,7 +257,7 @@ The authors offer it for domain segmentation, and warn against excess: it wears 
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">edge</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">ran at the minimum corner (k_geom=5, lambda_param=0.0, max_m=0, n_top_genes=50, num_nn=10, pca_dims=5, resolution=0.05) in 6.02 s; ran at the maximum corner (k_geom=30, lambda_param=1.0, max_labels=30, n_top_genes=5000, nbr_weight_decay=&#x27;uniform&#x27;, num_nn=100, pca_dims=50, refine_iterations=5, resolution=3.0, zscore_by=&#x27;all&#x27;) in 6.76 s.</p>
+  <p class="st-gate__msg">ran at the minimum corner (k_geom=5, lambda_param=0.0, max_m=0, n_top_genes=50, num_nn=10, pca_dims=5, resolution=0.05) in 5.50 s; ran at the maximum corner (k_geom=30, lambda_param=1.0, max_labels=30, n_top_genes=5000, nbr_weight_decay=&#x27;uniform&#x27;, num_nn=100, pca_dims=50, refine_iterations=5, resolution=3.0, zscore_by=&#x27;all&#x27;) in 6.86 s.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">no_mutation</code><span class="st-gate__word">pass</span></p>
@@ -269,18 +272,18 @@ The authors offer it for domain segmentation, and warn against excess: it wears 
     <div class="st-wrap">
       <h2 class="st-more__h" id="more-h">More tools</h2>
       <ul class="st-grid">
-<li class="st-cell" data-id="seurat-niches" data-name="Seurat niches" data-author="PointillViz reference tools" data-tags="spatial|niches|cell types|neighbourhoods|R" data-outputs="summary|labels|matrix|table|files" data-published="2026-11-05" data-version="1.0.1">
+<li class="st-cell" data-id="seurat-niches" data-name="Seurat niches" data-author="PointillViz reference tools" data-tags="spatial|niches|cell types|neighbourhoods|R" data-outputs="summary|labels|matrix|table|files" data-published="2026-11-08" data-version="1.0.2">
 <a class="st-card" href="../../tools/seurat-niches/">
   <div class="st-card__art"><img src="../../assets/media/tools/seurat-niches.webp?v=934c93386b" srcset="../../assets/media/tools/seurat-niches.webp?v=934c93386b 720w, ../../assets/media/tools/seurat-niches@2x.webp?v=3400b57d40 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
   <h3 class="st-card__name">Seurat niches</h3>
-  <p class="st-card__desc">Tissue niches from the cell types around each cell, imported from the authors’ own Seurat package.</p>
+  <p class="st-card__desc">Which niches the tissue divides into, judged by the cell types around each cell.</p>
 </a>
 </li>
-<li class="st-cell" data-id="smoothie" data-name="Smoothie" data-author="PointillViz authors" data-tags="spatial|genes|modules|co-expression|network|smoothing|figure" data-outputs="summary|table|images|files" data-published="2026-11-05" data-version="1.0.1">
+<li class="st-cell" data-id="smoothie" data-name="Smoothie" data-author="PointillViz authors" data-tags="spatial|genes|modules|co-expression|network|smoothing|figure" data-outputs="summary|table|images|files" data-published="2026-11-08" data-version="1.0.2">
 <a class="st-card" href="../../tools/smoothie/">
   <div class="st-card__art"><img src="../../assets/media/tools/smoothie.webp?v=7fe65d9fac" srcset="../../assets/media/tools/smoothie.webp?v=7fe65d9fac 720w, ../../assets/media/tools/smoothie@2x.webp?v=b0e9657d1a 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
   <h3 class="st-card__name">Smoothie</h3>
-  <p class="st-card__desc">Gene modules that share a spatial pattern, found by the published Smoothie package.</p>
+  <p class="st-card__desc">Which genes share a spatial pattern across the tissue, grouped into modules.</p>
 </a>
 </li>
 <li class="st-cell" data-id="categorical-chords" data-name="Categorical Chords" data-author="PointillViz reference tools" data-tags="spatial|cell types|categorical|chord" data-outputs="chord|matrix|table|summary" data-published="2026-11-08" data-version="2.1.0">
