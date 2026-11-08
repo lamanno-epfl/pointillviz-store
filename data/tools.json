@@ -969,10 +969,188 @@
    "url": "tools/categorical-chords/"
   },
   {
+   "id": "celltype-contact-network",
+   "name": "Cell-type contact network",
+   "version": "1.0.3",
+   "author": "PointillViz reference tools",
+   "description": "Which cell types touch which, from a Delaunay triangulation of the cells, as a network and a matrix corrected for abundance.",
+   "readme_html": "<p>Answers the question: <strong>Which cell types touch which, and which of those contacts are more common, or rarer, than the types’ abundance predicts?</strong></p>\n<p>The tool runs a Delaunay triangulation on each section’s cells, in 2D or 3D, and counts every edge as one contact between two neighbouring cells. Tallying each cell’s neighbours by type gives a count matrix <math translate=\"no\"><mi>C</mi></math>, whose rows are then normalised:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"W_(ij) = (C_(ij)) / (sum over k of C_(ik))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><msub><mi>W</mi><mi>ij</mi></msub></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><msub><mi>C</mi><mi>ij</mi></msub><mrow><munder><mo>∑</mo><mi>k</mi></munder><msub><mi>C</mi><mi>ik</mi></msub></mrow></mfrac></math></span></span></div></div>\n<p><math translate=\"no\"><msub><mi>W</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math> is the fraction of type <math translate=\"no\"><mi>i</mi></math>‘s contacts that are with type <math translate=\"no\"><mi>j</mi></math>. It is not symmetric, because <em>i → j</em> and <em>j → i</em> are divided by different totals. The enrichment corrects for abundance, where <math translate=\"no\"><msub><mi>p</mi><mi>j</mi></msub></math> is the fraction of all cells that are type <math translate=\"no\"><mi>j</mi></math>:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"E_(ij) = log_2 (W_(ij) + 10^(-4)) / (p_j + 10^(-4))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><msub><mi>E</mi><mi>ij</mi></msub></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mfrac><mrow><msub><mi>W</mi><mi>ij</mi></msub><mo>+</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup></mrow><mrow><msub><mi>p</mi><mi>j</mi></msub><mo>+</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup></mrow></mfrac></math></span></span></div></div>\n<p><math translate=\"no\"><mi>E</mi></math> &gt; 0 means <math translate=\"no\"><mi>i</mi></math> touches <math translate=\"no\"><mi>j</mi></math> more than <math translate=\"no\"><mi>j</mi></math>‘s abundance predicts, and <math translate=\"no\"><mi>E</mi></math> &lt; 0 less. With several sections, <math translate=\"no\"><mi>W</mi></math> is computed per section and each row is averaged across them, weighted by how many cells of type <math translate=\"no\"><mi>i</mi></math> each has.</p>\n<p><strong>Network.</strong> One node per cell type, its area growing with its number of cells. Its place comes from a layout of the whole dataset, so nodes stay put between sections. An arrow <em>i → j</em> appears where <math translate=\"no\"><msub><mi>W</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math> reaches the cutoff, with its width growing as √<math translate=\"no\"><mi>W</mi></math> and its colour showing <math translate=\"no\"><mi>E</mi></math>, from blue (depleted) to red (enriched). The ring around a node is its self-contact: the further the ring stands from the node, the larger <math translate=\"no\"><msub><mi>W</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></math>.</p>\n<p><strong>Matrix.</strong> The same <math translate=\"no\"><mi>W</mi></math> and <math translate=\"no\"><mi>E</mi></math> with no cutoff. Colour shows <math translate=\"no\"><mi>E</mi></math>, the numbers are <math translate=\"no\"><mi>W</mi></math> in percent, and grey means no contact. Types with similar contacts sit together.</p>\n<p><strong>Table and downloads.</strong> Every contact between the types shown, the two figures as SVG, and the numbers for all types as CSV.</p>\n<p>Delaunay edges are geometric neighbours, not measured contact, and <math translate=\"no\"><mi>E</mi></math> has no p-value, so read it together with the contact count <math translate=\"no\"><mi>C</mi></math> in the table. Cells across a gap are joined unless <strong>Longest contact</strong> is set.</p>",
+   "citation": "",
+   "tags": [
+    "spatial",
+    "cell types",
+    "contacts",
+    "neighbours",
+    "network",
+    "enrichment",
+    "figure"
+   ],
+   "icon": "hub",
+   "language": "python",
+   "language_label": "Python",
+   "gpu": null,
+   "gpu_label": "",
+   "parameters": [
+    {
+     "name": "field",
+     "label": "Cell-type column",
+     "type": "categorical_field",
+     "default": null,
+     "optional": true,
+     "help": "Selects the annotation whose groups are the network’s nodes.\nCell types, unless the dataset has none or you choose another column.",
+     "type_text": "categorical_field",
+     "default_text": "optional"
+    },
+    {
+     "name": "max_distance",
+     "label": "Longest contact (microns)",
+     "type": "float",
+     "default": 0,
+     "optional": false,
+     "help": "Drops contacts longer than this, so that cells across a gap do not count as touching.\n0 keeps every contact. In the dataset’s own coordinates when it records no physical size.",
+     "min": 0.0,
+     "max": 500.0,
+     "step": 0.5,
+     "type_text": "float, 0–500",
+     "default_text": "0"
+    },
+    {
+     "name": "cutoff",
+     "label": "Arrow cutoff (%)",
+     "type": "float",
+     "default": 4,
+     "optional": false,
+     "help": "Draws an arrow from one type to another only when at least this share of the first type’s contacts are with the second.\nThe matrix has no cutoff.",
+     "min": 0.5,
+     "max": 50.0,
+     "step": 0.5,
+     "type_text": "float, 0.5–50",
+     "default_text": "4"
+    },
+    {
+     "name": "max_types",
+     "label": "Cell types shown",
+     "type": "int",
+     "default": 30,
+     "optional": false,
+     "help": "Shows only this many of the most abundant types, in the network and in the matrix.\nThe others still count in every share, and the download holds them all.",
+     "min": 5.0,
+     "max": 60.0,
+     "step": 1.0,
+     "type_text": "int, 5–60",
+     "default_text": "30"
+    }
+   ],
+   "sweep": null,
+   "outputs": [
+    "summary",
+    "images",
+    "table",
+    "files"
+   ],
+   "optional_outputs": [],
+   "output_help": {
+    "summary": "writes a summary",
+    "images": "returns figures",
+    "table": "returns a table",
+    "files": "returns files to download"
+   },
+   "requires": {
+    "genes": false,
+    "cell_types": false,
+    "categoricals": true,
+    "spatial": "any",
+    "min_cells": 20
+   },
+   "needs": [
+    "a categorical column",
+    "20+ cells"
+   ],
+   "license": "MIT",
+   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/celltype-contact-network-v1.0.3/celltype-contact-network-1.0.3.pvtool",
+   "bundle_size": "35.6 kB",
+   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/celltype-contact-network",
+   "published": "2026-11-08",
+   "published_date": "8 Nov 2026",
+   "gates": [
+    {
+     "id": "bundle",
+     "required": true,
+     "status": "pass",
+     "message": "6 files, 35.6 kB packed and 126.9 kB unpacked, plugin.json at the root."
+    },
+    {
+     "id": "manifest",
+     "required": true,
+     "status": "pass",
+     "message": "celltype-contact-network 1.0.3 by PointillViz reference tools; Python entry tool.py, outputs summary, images, table, files."
+    },
+    {
+     "id": "environment",
+     "required": true,
+     "status": "pass",
+     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
+    },
+    {
+     "id": "entry",
+     "required": true,
+     "status": "pass",
+     "message": "tool.py imported in 0.29 s and defines run(ds, params)."
+    },
+    {
+     "id": "imports",
+     "required": false,
+     "status": "warn",
+     "message": "this tool uses filesystem_write — os.makedirs() at tool.py:474; numpy.savez() at tool.py:475; os.replace() at tool.py:476 (+1 more). None of it is blocked: a tool is arbitrary code run with the privileges of whoever started PointillViz, so this is disclosure for a human to weigh, not a sandbox."
+    },
+    {
+     "id": "fixture",
+     "required": true,
+     "status": "pass",
+     "message": "ran on the 600-cell fixture in 0.28 s, returning summary, table, files, images."
+    },
+    {
+     "id": "result",
+     "required": true,
+     "status": "pass",
+     "message": "returned the declared outputs: summary, table, files, images."
+    },
+    {
+     "id": "edge",
+     "required": true,
+     "status": "pass",
+     "message": "ran at the minimum corner (cutoff=0.5, max_types=5) in 0.21 s; ran at the maximum corner (cutoff=50.0, max_distance=500.0, max_types=60) in 0.20 s."
+    },
+    {
+     "id": "no_mutation",
+     "required": true,
+     "status": "pass",
+     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
+    }
+   ],
+   "risks": [
+    {
+     "kind": "filesystem_write",
+     "label": "writes files",
+     "text": "writes to the filesystem"
+    }
+   ],
+   "art": {
+    "src": "assets/media/tools/celltype-contact-network.webp?v=db7af568c4",
+    "src2x": "assets/media/tools/celltype-contact-network@2x.webp?v=d954fa7ca0",
+    "width": 720,
+    "height": 420,
+    "alt": "A network of coloured nodes, each inside a ring, joined by pairs of curved arrows from blue to red. An illustration, not a real tissue.",
+    "generated": false
+   },
+   "social": "assets/media/social/celltype-contact-network.jpg",
+   "url": "tools/celltype-contact-network/"
+  },
+  {
    "id": "ridge-map",
    "name": "Ridge Map",
-   "version": "1.0.2",
-   "author": "PointillViz authors",
+   "version": "1.0.3",
+   "author": "PointillViz reference tools",
    "description": "How a gene, or the density of cells, rises and falls across a section, drawn as a relief of ridges.",
    "readme_html": "<p>Answers the question: <strong>How does a gene’s expression, or the density of cells, rise and fall across the section, and over which cell types?</strong></p>\n<p>The tool cuts the section into horizontal strips and draws each one as a ridge, like a joy plot laid over the tissue. Ridges are drawn from the back of the figure to the front, and each hides what stands behind it, so the tissue’s architecture reads as a relief.</p>\n<p>Heights and colors are measured with a Gaussian of width <math translate=\"no\"><mi>σ</mi></math> around each point of a strip, so the strips are cross-sections of one smooth surface. A cell <math translate=\"no\"><mi>j</mi></math> at distance <math translate=\"no\"><msub><mi>d</mi><mi>j</mi></msub></math> has the weight <math translate=\"no\"><msub><mi>w</mi><mi>j</mi></msub><mo>=</mo><mi>exp</mi><mrow><mo stretchy=\"false\">(</mo><mo>−</mo><msubsup><mi>d</mi><mi>j</mi><mn>2</mn></msubsup><mo lspace=\"0\" rspace=\"0\">/</mo><mn>2</mn><msup><mi>σ</mi><mn>2</mn></msup><mo stretchy=\"false\">)</mo></mrow></math>. With a gene selected, the height is its local mean expression, where <math translate=\"no\"><msub><mi>a</mi><mi>j</mi></msub></math> is the cell’s expression in log1p(CP10K):</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"h(x, y) = (sum over j of w_j a_j) / (sum over j of w_j)\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>h</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><msub><mi>a</mi><mi>j</mi></msub></mrow><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub></mrow></mfrac></math></span></span></div></div>\n<p>Without a gene, the height is the local cell density:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"h(x, y) = (sum over j of w_j) / (2πσ^2)\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>h</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub></mrow><mrow><mn>2</mn><mi>π</mi><msup><mi>σ</mi><mn>2</mn></msup></mrow></mfrac></math></span></span></div></div>\n<p><strong>Figure.</strong> A ridge rises up the figure from its own strip, so a peak belongs to the place where its ridge starts, not to the place where its top appears. The bar in the key shows a round value at its true height; each run has its own scale, so compare runs by these bars. Each stretch of a ridge takes the map’s color of the cell type with the most cells around it. The color therefore shows which cell type is most common at that place, not which cells express the gene, and a rare cell type may never be drawn. Ridges drop to their baseline where the tissue ends, so gaps and tears stay black. With several sections, each gets its own figure, all at one scale.</p>\n<p><strong>Summary.</strong> It reports what was drawn, the scale of the heights and the cell types under the tallest ridges, and counts the cells that were not drawn.</p>\n<p>The figure is meant for reading the shape of a tissue, not for testing it: heights carry no significance, and tall ridges can hide lower ones behind them.</p>",
    "citation": "",
@@ -1065,7 +1243,7 @@
     "200+ cells"
    ],
    "license": "MIT",
-   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/ridge-map-v1.0.2/ridge-map-1.0.2.pvtool",
+   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/ridge-map-v1.0.3/ridge-map-1.0.3.pvtool",
    "bundle_size": "34.9 kB",
    "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/ridge-map",
    "published": "2026-11-08",
@@ -1081,7 +1259,7 @@
      "id": "manifest",
      "required": true,
      "status": "pass",
-     "message": "ridge-map 1.0.2 by PointillViz authors; Python entry tool.py, outputs summary, images, files."
+     "message": "ridge-map 1.0.3 by PointillViz reference tools; Python entry tool.py, outputs summary, images, files."
     },
     {
      "id": "environment",
@@ -1093,7 +1271,7 @@
      "id": "entry",
      "required": true,
      "status": "pass",
-     "message": "tool.py imported in 0.32 s and defines run(ds, params)."
+     "message": "tool.py imported in 0.27 s and defines run(ds, params)."
     },
     {
      "id": "imports",
@@ -1105,7 +1283,7 @@
      "id": "fixture",
      "required": true,
      "status": "pass",
-     "message": "ran on the 600-cell fixture in 0.25 s, returning summary, files, images."
+     "message": "ran on the 600-cell fixture in 0.24 s, returning summary, files, images."
     },
     {
      "id": "result",
@@ -1315,8 +1493,8 @@
   {
    "id": "smoothie",
    "name": "Smoothie",
-   "version": "1.0.2",
-   "author": "PointillViz authors",
+   "version": "1.0.3",
+   "author": "PointillViz reference tools",
    "description": "Which genes share a spatial pattern across the tissue, grouped into modules.",
    "readme_html": "<p>Answers the question: <strong>Which genes share a spatial pattern in this tissue, and where does each group of genes lie?</strong></p>\n<p>The tool runs <a class=\"pv-link\" href=\"https://caholdener01.github.io/Smoothie/\" rel=\"noopener noreferrer nofollow\">Smoothie</a> with the authors’ own Python package, <code translate=\"no\">smoothie-st</code>, and the settings of their pipeline for single-cell data.</p>\n<p>First, each gene’s normalized expression is smoothed over the tissue. At each location <math translate=\"no\"><mi>u</mi></math>, nearby cells <math translate=\"no\"><mi>j</mi></math> contribute with the Gaussian weights <math translate=\"no\"><mi>w</mi><mrow><mo stretchy=\"false\">(</mo><mi>u</mi><mo>,</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow><mo>=</mo><mi>exp</mi><mrow><mo stretchy=\"false\">(</mo><mo>−</mo><mi>d</mi><msup><mrow><mo stretchy=\"false\">(</mo><mi>u</mi><mo>,</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow><mn>2</mn></msup><mo lspace=\"0\" rspace=\"0\">/</mo><mn>2</mn><msup><mi>σ</mi><mn>2</mn></msup><mo stretchy=\"false\">)</mo></mrow></math>, where <math translate=\"no\"><mi>d</mi><mrow><mo stretchy=\"false\">(</mo><mi>u</mi><mo>,</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow></math> is their distance and <math translate=\"no\"><mi>σ</mi></math> the smoothing width:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"s(u) = (sum over j of w(u,j) x(j)) / (sum over j of w(u,j))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>s</mi><mrow><mo stretchy=\"false\">(</mo><mi>u</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><mi>w</mi><mrow><mo stretchy=\"false\">(</mo><mi>u</mi><mo>,</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow><mi>x</mi><mrow><mo stretchy=\"false\">(</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow></mrow><mrow><munder><mo>∑</mo><mi>j</mi></munder><mi>w</mi><mrow><mo stretchy=\"false\">(</mo><mi>u</mi><mo>,</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow></mrow></mfrac></math></span></span></div></div>\n<p>The smoothed maps of every pair of genes <math translate=\"no\"><mi>g</mi></math> and <math translate=\"no\"><mi>h</mi></math> are then compared using the Pearson correlation <math translate=\"no\"><mi>r</mi><mrow><mo stretchy=\"false\">(</mo><mi>g</mi><mo>,</mo><mi>h</mi><mo stretchy=\"false\">)</mo></mrow></math>. Two genes are linked when <math translate=\"no\"><mi>r</mi><mrow><mo stretchy=\"false\">(</mo><mi>g</mi><mo>,</mo><mi>h</mi><mo stretchy=\"false\">)</mo></mrow></math> exceeds the cutoff <math translate=\"no\"><mi>c</mi></math>, and the clustering power <math translate=\"no\"><mi>p</mi></math> discounts weak links:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"a(g,h) = ((r(g,h) − c) / (1 − c))^p\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>a</mi><mrow><mo stretchy=\"false\">(</mo><mi>g</mi><mo>,</mo><mi>h</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mrow><mi>r</mi><mrow><mo stretchy=\"false\">(</mo><mi>g</mi><mo>,</mo><mi>h</mi><mo stretchy=\"false\">)</mo></mrow><mo>−</mo><mi>c</mi></mrow><mrow><mn>1</mn><mo>−</mo><mi>c</mi></mrow></mfrac><mo>)</mo></mrow><mi>p</mi></msup></math></span></span></div></div>\n<p>The Infomap algorithm clusters this network into modules, numbered from the largest. Genes without a link join no module.</p>\n<p><strong>Figure.</strong> One panel per module. Each location’s module score is the sum of the module’s smoothed genes, each scaled from 0 to its own highest value. Grey indicates low scores, red high scores and black the highest within each panel, so compare the patterns of different panels rather than their strengths.</p>\n<p><strong>Table.</strong> Each row represents one module. <code translate=\"no\">Genes</code> gives its size, and <code translate=\"no\">Members</code> lists its genes, the most connected first. <code translate=\"no\">Mean margin</code> averages the margins of its genes, which compare a gene’s mean link weight <math translate=\"no\"><mi>A</mi></math> within its module with its highest mean link weight <math translate=\"no\"><mi>B</mi></math> to another module:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"margin = (A − B) / (max(A, B))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>margin</mi></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><mi>A</mi><mo>−</mo><mi>B</mi></mrow><mrow><mi>max</mi><mrow><mo stretchy=\"false\">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy=\"false\">)</mo></mrow></mrow></mfrac></math></span></span></div></div>\n<p>A margin of <strong>1</strong> means that the gene is linked only within its module, <strong>0</strong> that it is equally close to another module, and negative values that it is closer to another module. A download lists every gene in a module with its network measures.</p>\n<p><strong>Summary.</strong> The package repeats the smoothing and correlations with the cell positions shuffled. The 99.9th percentile of these shuffled correlations is the authors’ lowest sensible cutoff, because weaker correlations also arise without any spatial pattern. The summary reports this bound and warns when the cutoff lies below it.</p>\n<p>A module groups correlated genes and carries no p-value. Genes of one cell type correlate wherever its cells lie, so a module can reflect shared cells rather than a pattern of the tissue.</p>",
    "citation": "Holdener C, De Vlaminck I. Smoothie: efficient inference and integration of spatial co-expression networks from denoised spatial transcriptomics data. Commun Biol 9, 459 (2026). https://doi.org/10.1038/s42003-026-09898-z",
@@ -1402,7 +1580,7 @@
     "200+ cells"
    ],
    "license": "MIT",
-   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/smoothie-v1.0.2/smoothie-1.0.2.pvtool",
+   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/smoothie-v1.0.3/smoothie-1.0.3.pvtool",
    "bundle_size": "57.1 kB",
    "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/smoothie",
    "published": "2026-11-08",
@@ -1418,7 +1596,7 @@
      "id": "manifest",
      "required": true,
      "status": "pass",
-     "message": "smoothie 1.0.2 by PointillViz authors; Python entry tool.py, outputs summary, table, images, files."
+     "message": "smoothie 1.0.3 by PointillViz reference tools; Python entry tool.py, outputs summary, table, images, files."
     },
     {
      "id": "environment",
@@ -1430,7 +1608,7 @@
      "id": "entry",
      "required": true,
      "status": "pass",
-     "message": "tool.py imported in 4.69 s and defines run(ds, params)."
+     "message": "tool.py imported in 4.65 s and defines run(ds, params)."
     },
     {
      "id": "imports",
@@ -1442,7 +1620,7 @@
      "id": "fixture",
      "required": true,
      "status": "pass",
-     "message": "ran on the 600-cell fixture in 10.80 s, returning summary, table, files, images and 57 log lines."
+     "message": "ran on the 600-cell fixture in 10.76 s, returning summary, table, files, images and 57 log lines."
     },
     {
      "id": "result",
@@ -1454,7 +1632,7 @@
      "id": "edge",
      "required": true,
      "status": "pass",
-     "message": "at the minimum corner (clustering_power=1.0, correlation_cutoff=0.1, smoothing_width=5.0) it refused in words rather than crashing: At a smoothing width of 5 µm, more than 15% of the tissue has fewer than 10 cells within 15 µm, the reach of the smoothing. Widen it to at least 7 µm. (code: too_sparse); ran at the maximum corner (clustering_power=9.0, correlation_cutoff=0.95, smoothing_width=200.0) in 10.60 s."
+     "message": "at the minimum corner (clustering_power=1.0, correlation_cutoff=0.1, smoothing_width=5.0) it refused in words rather than crashing: At a smoothing width of 5 µm, more than 15% of the tissue has fewer than 10 cells within 15 µm, the reach of the smoothing. Widen it to at least 7 µm. (code: too_sparse); ran at the maximum corner (clustering_power=9.0, correlation_cutoff=0.95, smoothing_width=200.0) in 10.56 s."
     },
     {
      "id": "no_mutation",
@@ -1940,184 +2118,6 @@
    },
    "social": "assets/media/social/vector-field.jpg",
    "url": "tools/vector-field/"
-  },
-  {
-   "id": "celltype-contact-network",
-   "name": "Cell-type contact network",
-   "version": "1.0.2",
-   "author": "PointillViz authors",
-   "description": "Which cell types touch which, from a Delaunay triangulation of the cells, as a network and a matrix corrected for abundance.",
-   "readme_html": "<p>Answers the question: <strong>Which cell types touch which, and which of those contacts are more common, or rarer, than the types’ abundance predicts?</strong></p>\n<p>The tool runs a Delaunay triangulation on each section’s cells, in 2D or 3D, and counts every edge as one contact between two neighbouring cells. Tallying each cell’s neighbours by type gives a count matrix <math translate=\"no\"><mi>C</mi></math>, whose rows are then normalised:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"W_(ij) = (C_(ij)) / (sum over k of C_(ik))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><msub><mi>W</mi><mi>ij</mi></msub></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><msub><mi>C</mi><mi>ij</mi></msub><mrow><munder><mo>∑</mo><mi>k</mi></munder><msub><mi>C</mi><mi>ik</mi></msub></mrow></mfrac></math></span></span></div></div>\n<p><math translate=\"no\"><msub><mi>W</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math> is the fraction of type <math translate=\"no\"><mi>i</mi></math>‘s contacts that are with type <math translate=\"no\"><mi>j</mi></math>. It is not symmetric, because <em>i → j</em> and <em>j → i</em> are divided by different totals. The enrichment corrects for abundance, where <math translate=\"no\"><msub><mi>p</mi><mi>j</mi></msub></math> is the fraction of all cells that are type <math translate=\"no\"><mi>j</mi></math>:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"E_(ij) = log_2 (W_(ij) + 10^(-4)) / (p_j + 10^(-4))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><msub><mi>E</mi><mi>ij</mi></msub></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mfrac><mrow><msub><mi>W</mi><mi>ij</mi></msub><mo>+</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup></mrow><mrow><msub><mi>p</mi><mi>j</mi></msub><mo>+</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup></mrow></mfrac></math></span></span></div></div>\n<p><math translate=\"no\"><mi>E</mi></math> &gt; 0 means <math translate=\"no\"><mi>i</mi></math> touches <math translate=\"no\"><mi>j</mi></math> more than <math translate=\"no\"><mi>j</mi></math>‘s abundance predicts, and <math translate=\"no\"><mi>E</mi></math> &lt; 0 less. With several sections, <math translate=\"no\"><mi>W</mi></math> is computed per section and each row is averaged across them, weighted by how many cells of type <math translate=\"no\"><mi>i</mi></math> each has.</p>\n<p><strong>Network.</strong> One node per cell type, its area growing with its number of cells. Its place comes from a layout of the whole dataset, so nodes stay put between sections. An arrow <em>i → j</em> appears where <math translate=\"no\"><msub><mi>W</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math> reaches the cutoff, with its width growing as √<math translate=\"no\"><mi>W</mi></math> and its colour showing <math translate=\"no\"><mi>E</mi></math>, from blue (depleted) to red (enriched). The ring around a node is its self-contact: the further the ring stands from the node, the larger <math translate=\"no\"><msub><mi>W</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></math>.</p>\n<p><strong>Matrix.</strong> The same <math translate=\"no\"><mi>W</mi></math> and <math translate=\"no\"><mi>E</mi></math> with no cutoff. Colour shows <math translate=\"no\"><mi>E</mi></math>, the numbers are <math translate=\"no\"><mi>W</mi></math> in percent, and grey means no contact. Types with similar contacts sit together.</p>\n<p><strong>Table and downloads.</strong> Every contact between the types shown, the two figures as SVG, and the numbers for all types as CSV.</p>\n<p>Delaunay edges are geometric neighbours, not measured contact, and <math translate=\"no\"><mi>E</mi></math> has no p-value, so read it together with the contact count <math translate=\"no\"><mi>C</mi></math> in the table. Cells across a gap are joined unless <strong>Longest contact</strong> is set.</p>",
-   "citation": "",
-   "tags": [
-    "spatial",
-    "cell types",
-    "contacts",
-    "neighbours",
-    "network",
-    "enrichment",
-    "figure"
-   ],
-   "icon": "hub",
-   "language": "python",
-   "language_label": "Python",
-   "gpu": null,
-   "gpu_label": "",
-   "parameters": [
-    {
-     "name": "field",
-     "label": "Cell-type column",
-     "type": "categorical_field",
-     "default": null,
-     "optional": true,
-     "help": "Selects the annotation whose groups are the network’s nodes.\nCell types, unless the dataset has none or you choose another column.",
-     "type_text": "categorical_field",
-     "default_text": "optional"
-    },
-    {
-     "name": "max_distance",
-     "label": "Longest contact (microns)",
-     "type": "float",
-     "default": 0,
-     "optional": false,
-     "help": "Drops contacts longer than this, so that cells across a gap do not count as touching.\n0 keeps every contact. In the dataset’s own coordinates when it records no physical size.",
-     "min": 0.0,
-     "max": 500.0,
-     "step": 0.5,
-     "type_text": "float, 0–500",
-     "default_text": "0"
-    },
-    {
-     "name": "cutoff",
-     "label": "Arrow cutoff (%)",
-     "type": "float",
-     "default": 4,
-     "optional": false,
-     "help": "Draws an arrow from one type to another only when at least this share of the first type’s contacts are with the second.\nThe matrix has no cutoff.",
-     "min": 0.5,
-     "max": 50.0,
-     "step": 0.5,
-     "type_text": "float, 0.5–50",
-     "default_text": "4"
-    },
-    {
-     "name": "max_types",
-     "label": "Cell types shown",
-     "type": "int",
-     "default": 30,
-     "optional": false,
-     "help": "Shows only this many of the most abundant types, in the network and in the matrix.\nThe others still count in every share, and the download holds them all.",
-     "min": 5.0,
-     "max": 60.0,
-     "step": 1.0,
-     "type_text": "int, 5–60",
-     "default_text": "30"
-    }
-   ],
-   "sweep": null,
-   "outputs": [
-    "summary",
-    "images",
-    "table",
-    "files"
-   ],
-   "optional_outputs": [],
-   "output_help": {
-    "summary": "writes a summary",
-    "images": "returns figures",
-    "table": "returns a table",
-    "files": "returns files to download"
-   },
-   "requires": {
-    "genes": false,
-    "cell_types": false,
-    "categoricals": true,
-    "spatial": "any",
-    "min_cells": 20
-   },
-   "needs": [
-    "a categorical column",
-    "20+ cells"
-   ],
-   "license": "MIT",
-   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/celltype-contact-network-v1.0.2/celltype-contact-network-1.0.2.pvtool",
-   "bundle_size": "35.6 kB",
-   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/celltype-contact-network",
-   "published": "2026-11-05",
-   "published_date": "5 Nov 2026",
-   "gates": [
-    {
-     "id": "bundle",
-     "required": true,
-     "status": "pass",
-     "message": "6 files, 35.6 kB packed and 126.9 kB unpacked, plugin.json at the root."
-    },
-    {
-     "id": "manifest",
-     "required": true,
-     "status": "pass",
-     "message": "celltype-contact-network 1.0.2 by PointillViz authors; Python entry tool.py, outputs summary, images, table, files."
-    },
-    {
-     "id": "environment",
-     "required": true,
-     "status": "pass",
-     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
-    },
-    {
-     "id": "entry",
-     "required": true,
-     "status": "pass",
-     "message": "tool.py imported in 0.29 s and defines run(ds, params)."
-    },
-    {
-     "id": "imports",
-     "required": false,
-     "status": "warn",
-     "message": "this tool uses filesystem_write — os.makedirs() at tool.py:474; numpy.savez() at tool.py:475; os.replace() at tool.py:476 (+1 more). None of it is blocked: a tool is arbitrary code run with the privileges of whoever started PointillViz, so this is disclosure for a human to weigh, not a sandbox."
-    },
-    {
-     "id": "fixture",
-     "required": true,
-     "status": "pass",
-     "message": "ran on the 600-cell fixture in 0.29 s, returning summary, table, files, images."
-    },
-    {
-     "id": "result",
-     "required": true,
-     "status": "pass",
-     "message": "returned the declared outputs: summary, table, files, images."
-    },
-    {
-     "id": "edge",
-     "required": true,
-     "status": "pass",
-     "message": "ran at the minimum corner (cutoff=0.5, max_types=5) in 0.22 s; ran at the maximum corner (cutoff=50.0, max_distance=500.0, max_types=60) in 0.20 s."
-    },
-    {
-     "id": "no_mutation",
-     "required": true,
-     "status": "pass",
-     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
-    }
-   ],
-   "risks": [
-    {
-     "kind": "filesystem_write",
-     "label": "writes files",
-     "text": "writes to the filesystem"
-    }
-   ],
-   "art": {
-    "src": "assets/media/tools/celltype-contact-network.webp?v=db7af568c4",
-    "src2x": "assets/media/tools/celltype-contact-network@2x.webp?v=d954fa7ca0",
-    "width": 720,
-    "height": 420,
-    "alt": "A network of coloured nodes, each inside a ring, joined by pairs of curved arrows from blue to red. An illustration, not a real tissue.",
-    "generated": false
-   },
-   "social": "assets/media/social/celltype-contact-network.jpg",
-   "url": "tools/celltype-contact-network/"
   },
   {
    "id": "celltype-cooccurrence",
