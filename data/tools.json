@@ -262,6 +262,694 @@
  ],
  "tools": [
   {
+   "id": "categorical-chords",
+   "name": "Categorical Chords",
+   "version": "2.1.0",
+   "author": "PointillViz reference tools",
+   "description": "Explore spatial contacts or shared membership between categorical annotations with count-weighted ribbons and enrichment colors.",
+   "readme_html": "<p>Answers the question: <strong>Which categorical groups occur together more or less often than expected?</strong></p>\n<p>The tool compares categorical annotations such as cell types, clusters, or spatial niches. It offers two analysis modes:</p>\n<ul><li><code translate=\"no\">Spatial contacts</code> counts pairs of cells from the same section that lie within the selected radius.</li><li><code translate=\"no\">Annotation relationships</code> compares two categorical annotations assigned to the same cells, without using spatial coordinates.</li></ul>\n<p>For each pair of groups <math translate=\"no\"><mi>A</mi></math> and <math translate=\"no\"><mi>B</mi></math>, the tool compares the observed count <math translate=\"no\"><mi>O</mi><mrow><mo stretchy=\"false\">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy=\"false\">)</mo></mrow></math> with the expected count <math translate=\"no\"><mi>E</mi><mrow><mo stretchy=\"false\">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy=\"false\">)</mo></mrow></math>:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"score(A,B) = log₂((O(A,B)+1) / (E(A,B)+1))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>score</mi><mrow><mo stretchy=\"false\">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mrow><mo>(</mo><mfrac><mrow><mi>O</mi><mrow><mo stretchy=\"false\">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy=\"false\">)</mo></mrow><mo>+</mo><mn>1</mn></mrow><mrow><mi>E</mi><mrow><mo stretchy=\"false\">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy=\"false\">)</mo></mrow><mo>+</mo><mn>1</mn></mrow></mfrac><mo>)</mo></mrow></math></span></span></div></div>\n<p>The expectation is calculated from the group frequencies within each section. In annotation mode, <math translate=\"no\"><mi>E</mi><mrow><mo stretchy=\"false\">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy=\"false\">)</mo></mrow><mo>=</mo><mi>n</mi><mrow><mo stretchy=\"false\">(</mo><mi>A</mi><mo stretchy=\"false\">)</mo></mrow><mi>n</mi><mrow><mo stretchy=\"false\">(</mo><mi>B</mi><mo stretchy=\"false\">)</mo></mrow><mo lspace=\"0\" rspace=\"0\">/</mo><mi>N</mi></math>. In spatial-contact mode, it represents the number of <math translate=\"no\"><mi>A</mi></math>-to-<math translate=\"no\"><mi>B</mi></math> pairs expected if the group labels were randomly redistributed over the observed cell positions. A score of <math translate=\"no\"><mn>0</mn></math> indicates agreement with the expectation; positive values indicate enrichment and negative values depletion.</p>\n<p><strong>Chord.</strong> Each sector represents one group. Ribbon width shows the observed number of cells or spatial pairs connecting two groups, while ribbon color shows their <math translate=\"no\"><msub><mi>log</mi><mn>2</mn></msub><mrow><mo stretchy=\"false\">(</mo><mi>O</mi><mo lspace=\"0\" rspace=\"0\">/</mo><mi>E</mi><mo stretchy=\"false\">)</mo></mrow></math> score: orange indicates enrichment and blue depletion. The display limits affect only the chord diagram, which shows the most abundant groups and best-supported relationships.</p>\n<p><strong>Matrix.</strong> Both axes list the selected groups, and each square shows the corresponding <math translate=\"no\"><msub><mi>log</mi><mn>2</mn></msub><mrow><mo stretchy=\"false\">(</mo><mi>O</mi><mo lspace=\"0\" rspace=\"0\">/</mo><mi>E</mi><mo stretchy=\"false\">)</mo></mrow></math> score. The matrix retains all group combinations, including those omitted from the chord diagram.</p>\n<p><strong>Table.</strong> Each row represents one group pair. <code translate=\"no\">Count</code> gives the observed number of cells or spatial pairs, <code translate=\"no\">Expected</code> gives the expected count, and <code translate=\"no\">log2 O/E</code> shows the enrichment or depletion.</p>",
+   "citation": "",
+   "tags": [
+    "spatial",
+    "cell types",
+    "categorical",
+    "chord"
+   ],
+   "icon": "donut_large",
+   "language": "python",
+   "language_label": "Python",
+   "gpu": null,
+   "gpu_label": "",
+   "parameters": [
+    {
+     "name": "field",
+     "label": "Grouping annotation",
+     "type": "categorical_field",
+     "default": null,
+     "optional": false,
+     "help": "Selects the categorical annotation used for the groups.\nIn annotation mode, this is the first of the two annotations.",
+     "type_text": "categorical_field",
+     "default_text": "—"
+    },
+    {
+     "name": "mode",
+     "label": "Relationship",
+     "type": "select",
+     "default": "contacts",
+     "optional": false,
+     "help": "Selects whether to analyze spatial contacts between different cells or relationships between two annotations on the same cells.",
+     "options": [
+      {
+       "label": "Spatial contacts",
+       "value": "contacts"
+      },
+      {
+       "label": "Annotation relationships",
+       "value": "annotations"
+      }
+     ],
+     "type_text": "select, 2 options",
+     "default_text": "Spatial contacts"
+    },
+    {
+     "name": "other_field",
+     "label": "Second annotation",
+     "type": "categorical_field",
+     "default": null,
+     "optional": true,
+     "help": "Selects the second annotation compared on the same cells.",
+     "type_text": "categorical_field",
+     "default_text": "optional"
+    },
+    {
+     "name": "radius",
+     "label": "Contact radius",
+     "type": "float",
+     "default": 60,
+     "optional": false,
+     "help": "Sets the maximum distance between two cells for them to count as a spatial contact, in dataset coordinate units.",
+     "min": 1.0,
+     "max": 1000.0,
+     "step": 1.0,
+     "type_text": "float, 1–1,000",
+     "default_text": "60"
+    },
+    {
+     "name": "self_links",
+     "label": "Include within-group contacts",
+     "type": "bool",
+     "default": false,
+     "optional": false,
+     "help": "Includes spatial contacts between cells belonging to the same group.",
+     "type_text": "bool",
+     "default_text": "off"
+    },
+    {
+     "name": "min_count",
+     "label": "Minimum ribbon support",
+     "type": "int",
+     "default": 1,
+     "optional": false,
+     "help": "Shows a ribbon only when the relationship contains at least this many observed cells or spatial pairs.",
+     "min": 1.0,
+     "max": 1000.0,
+     "step": 1.0,
+     "type_text": "int, 1–1,000",
+     "default_text": "1"
+    },
+    {
+     "name": "max_nodes",
+     "label": "Maximum sectors",
+     "type": "int",
+     "default": 20,
+     "optional": false,
+     "help": "Limits how many groups appear around the chord diagram to the most abundant ones.",
+     "min": 4.0,
+     "max": 60.0,
+     "step": 2.0,
+     "type_text": "int, 4–60",
+     "default_text": "20"
+    },
+    {
+     "name": "max_links",
+     "label": "Maximum ribbons",
+     "type": "int",
+     "default": 80,
+     "optional": false,
+     "help": "Sets the maximum number of relationships shown, keeping those with the highest observed counts.",
+     "min": 1.0,
+     "max": 500.0,
+     "step": 1.0,
+     "type_text": "int, 1–500",
+     "default_text": "80"
+    }
+   ],
+   "sweep": null,
+   "outputs": [
+    "chord",
+    "matrix",
+    "table",
+    "summary"
+   ],
+   "optional_outputs": [],
+   "output_help": {
+    "chord": "returns a chord diagram",
+    "matrix": "returns a heatmap",
+    "table": "returns a table",
+    "summary": "writes a summary"
+   },
+   "requires": {
+    "genes": false,
+    "cell_types": false,
+    "categoricals": true,
+    "spatial": "any",
+    "min_cells": 2
+   },
+   "needs": [
+    "a categorical column",
+    "2+ cells"
+   ],
+   "license": "MIT",
+   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/categorical-chords-v2.1.0/categorical-chords-2.1.0.pvtool",
+   "bundle_size": "18.4 kB",
+   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/categorical-chords",
+   "published": "2026-11-08",
+   "published_date": "8 Nov 2026",
+   "gates": [
+    {
+     "id": "bundle",
+     "required": true,
+     "status": "pass",
+     "message": "6 files, 18.4 kB packed and 73.0 kB unpacked, plugin.json at the root."
+    },
+    {
+     "id": "manifest",
+     "required": true,
+     "status": "pass",
+     "message": "categorical-chords 2.1.0 by PointillViz reference tools; Python entry tool.py, outputs chord, matrix, table, summary."
+    },
+    {
+     "id": "environment",
+     "required": true,
+     "status": "pass",
+     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
+    },
+    {
+     "id": "entry",
+     "required": true,
+     "status": "pass",
+     "message": "tool.py imported in 0.00 s and defines run(ds, params)."
+    },
+    {
+     "id": "imports",
+     "required": false,
+     "status": "pass",
+     "message": "1 source file, using numpy, pointillviz_tool, scipy; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
+    },
+    {
+     "id": "fixture",
+     "required": true,
+     "status": "pass",
+     "message": "ran on the 600-cell fixture in 0.20 s, returning summary, table, matrix, chord."
+    },
+    {
+     "id": "result",
+     "required": true,
+     "status": "pass",
+     "message": "returned the declared outputs: summary, table, matrix, chord."
+    },
+    {
+     "id": "edge",
+     "required": true,
+     "status": "pass",
+     "message": "at the minimum corner (max_links=1, max_nodes=4, radius=1.0) it refused in words rather than crashing: No relationships pass these controls. Reduce minimum support, increase radius for contacts, or include self-links. (code: no_links); at the maximum corner (max_links=500, max_nodes=60, min_count=1000, mode='annotations', other_field='cat_region') it refused in words rather than crashing: No relationships pass these controls. Reduce minimum support, increase radius for contacts, or include self-links. (code: no_links)."
+    },
+    {
+     "id": "no_mutation",
+     "required": true,
+     "status": "pass",
+     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
+    }
+   ],
+   "risks": [],
+   "art": {
+    "src": "assets/media/tools/categorical-chords.webp?v=1e6c2812c0",
+    "src2x": "assets/media/tools/categorical-chords@2x.webp?v=6a86392478",
+    "width": 720,
+    "height": 420,
+    "alt": "",
+    "generated": false
+   },
+   "social": "assets/media/social/categorical-chords.jpg",
+   "url": "tools/categorical-chords/"
+  },
+  {
+   "id": "tissue-permeability",
+   "name": "Tissue Permeability",
+   "version": "2.1.0",
+   "author": "PointillViz reference tools",
+   "description": "Which cells one cell type seals off from the rest of the tissue.",
+   "readme_html": "<p>Answers the question: <strong>Which cells does one population seal off from the tissue surface or from another population?</strong></p>\n<p>The tool lets the user select one population as a potential barrier and choose a destination for the remaining cells: either the exposed tissue surface or another population. It then identifies which cells can no longer reach it when the barrier is impassable.</p>\n<p>To identify possible routes through the tissue, the tool first connects the cells in each section using a Delaunay triangulation. Three cells form such a triangle if a circle can pass through all three centers without enclosing another cell center.</p>\n<p>Multi-source Dijkstra routing calculates the shortest network distance to a source with the selected population passable, <math translate=\"no\"><mi>d</mi><mrow><mo stretchy=\"false\">(</mo><mi>open</mi><mo stretchy=\"false\">)</mo></mrow><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math>, and with it treated as impassable, <math translate=\"no\"><mi>d</mi><mrow><mo stretchy=\"false\">(</mo><mi>barrier</mi><mo stretchy=\"false\">)</mo></mrow><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math>. <math translate=\"no\"><mi>d</mi><mrow><mo stretchy=\"false\">(</mo><mi>straight</mi><mo stretchy=\"false\">)</mo></mrow><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math> is the straight-line distance from cell <math translate=\"no\"><mi>i</mi></math> to the nearest source cell, ignoring the network.</p>\n<p>A cell is sealed if it loses its route when the selected population becomes impassable. For cells that remain reachable, <math translate=\"no\"><mi>extra</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math> measures the added network distance in median cell spacings <math translate=\"no\"><mi>s</mi></math>, while <math translate=\"no\"><mi>τ</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math> compares the remaining route with the straight-line distance:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"sealed(i) = [d_(open)(i) &lt; ∞ and d_(barrier)(i) = ∞]\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>sealed</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mrow><mo stretchy=\"false\">[</mo><msub><mi>d</mi><mi>open</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow><mo>&lt;</mo><mi>∞</mi><mtext> and </mtext><msub><mi>d</mi><mi>barrier</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow><mo>=</mo><mi>∞</mi><mo stretchy=\"false\">]</mo></mrow></math></span></span></div></div>\n<div class=\"st-formula\" role=\"img\" aria-label=\"extra(i) = (d_(barrier)(i) - d_(open)(i)) / (s), τ(i) = (d_(barrier)(i)) / (d_(straight)(i))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>extra</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><msub><mi>d</mi><mi>barrier</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow><mo>−</mo><msub><mi>d</mi><mi>open</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></mrow><mi>s</mi></mfrac><mo>,</mo></math></span></span><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>τ</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><msub><mi>d</mi><mi>barrier</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></mrow><mrow><msub><mi>d</mi><mi>straight</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></mrow></mfrac></math></span></span></div></div>\n<p><strong>Map.</strong> The user can choose between three display modes:</p>\n<ul><li><code translate=\"no\">Sealed compartments</code> colors only sealed cells. Dark colors indicate smaller compartments, while bright yellow indicates compartments containing more cells.</li><li><code translate=\"no\">Extra path</code> colors only reachable cells whose route becomes longer. Dark colors indicate a small additional distance, while bright yellow indicates that the barrier adds many cell spacings.</li><li><code translate=\"no\">Detour factor</code> colors only reachable cells with a valid <math translate=\"no\"><mi>τ</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow><mo>&gt;</mo><mn>1</mn></math>. Dark colors indicate a route close to the direct distance, while bright yellow indicates a much longer detour.</li></ul>\n<p><strong>Plot.</strong> The x-axis shows cell percentiles after ranking by <math translate=\"no\"><mi>τ</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math>; at percentile <math translate=\"no\"><mi>q</mi></math>, the curve gives the detour factor that <math translate=\"no\"><mi>q</mi><mo>%</mo></math> of the evaluated cells do not exceed. The y-axis shows <math translate=\"no\"><mi>τ</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math>, the network distance divided by the straight-line distance.</p>\n<p>The red curve shows detour factors when the selected population is impassable, while the dashed curve shows the same tissue with it passable. The grey band shows the results when the same number of randomly selected cells are treated as barriers. If the red curve stops before the right edge, the missing percentage corresponds to sealed cells; their detour factors are non-finite and therefore not shown.</p>\n<p><strong>Table.</strong> Each row summarizes one population with at least 25 eligible cells, and <code translate=\"no\">Cells</code> gives its total cell count. For the selected barrier and destination, <code translate=\"no\">Enclosed</code> and <code translate=\"no\">% enclosed</code> show the number and proportion of eligible cells that lose their route. Among cells that remain reachable, <code translate=\"no\">% detoured</code> shows how often the route becomes longer, while <code translate=\"no\">Extra path where detoured</code> gives the median number of cell spacings added to those longer routes. <code translate=\"no\">% enclosed, random barrier</code> gives the average expected with equally large random barriers.</p>",
+   "citation": "",
+   "tags": [
+    "spatial",
+    "cell types",
+    "geometry",
+    "barrier",
+    "connectivity"
+   ],
+   "icon": "route",
+   "language": "python",
+   "language_label": "Python",
+   "gpu": null,
+   "gpu_label": "",
+   "parameters": [
+    {
+     "name": "field",
+     "label": "Grouping column",
+     "type": "categorical_field",
+     "default": null,
+     "optional": true,
+     "help": "Selects the annotation used to define the barrier and source populations.\nDefaults to the dataset’s cell-type column.",
+     "type_text": "categorical_field",
+     "default_text": "optional"
+    },
+    {
+     "name": "barrier",
+     "label": "Barrier cell type",
+     "type": "category_value",
+     "default": null,
+     "optional": false,
+     "help": "Selects the population treated as an impassable barrier.",
+     "type_text": "category_value",
+     "default_text": "—"
+    },
+    {
+     "name": "source",
+     "label": "Route towards",
+     "type": "select",
+     "default": "surface",
+     "optional": false,
+     "help": "Selects the routing destination: the exposed tissue surface or another cell population.\nSurface cells are identified along the section boundary and beside sufficiently large gaps.",
+     "options": [
+      {
+       "label": "The tissue's exposed surface",
+       "value": "surface"
+      },
+      {
+       "label": "A second cell type",
+       "value": "type"
+      }
+     ],
+     "type_text": "select, 2 options",
+     "default_text": "The tissue’s exposed surface"
+    },
+    {
+     "name": "source_type",
+     "label": "Source cell type",
+     "type": "category_value",
+     "default": null,
+     "optional": false,
+     "help": "Selects the destination population.\nIt must differ from the barrier population.",
+     "type_text": "category_value",
+     "default_text": "—"
+    },
+    {
+     "name": "barrier_width",
+     "label": "Barrier half-width",
+     "type": "float",
+     "default": 0.75,
+     "optional": false,
+     "help": "Sets how closely a path may approach a barrier-cell centre, measured in median cell spacings.\nLarger values treat the barrier as thicker.",
+     "min": 0.0,
+     "max": 3.0,
+     "step": 0.05,
+     "type_text": "float, 0–3",
+     "default_text": "0.75"
+    },
+    {
+     "name": "max_gap",
+     "label": "Largest gap a path may cross",
+     "type": "float",
+     "default": 5.0,
+     "optional": false,
+     "help": "Drop Delaunay edges longer than this many median cell spacings, so no route crosses a lumen or tissue gap.",
+     "min": 1.5,
+     "max": 20.0,
+     "step": 0.5,
+     "type_text": "float, 1.5–20",
+     "default_text": "5"
+    },
+    {
+     "name": "paint",
+     "label": "Map shows",
+     "type": "select",
+     "default": "compartment",
+     "optional": false,
+     "help": "Selects whether the map displays sealed-compartment size, additional path length or detour factor.\nThis does not change the calculation.",
+     "options": [
+      {
+       "label": "Sealed compartments (size in cells)",
+       "value": "compartment"
+      },
+      {
+       "label": "Extra path forced by the barrier",
+       "value": "detour"
+      },
+      {
+       "label": "Detour factor (geodesic / straight line)",
+       "value": "tau"
+      }
+     ],
+     "type_text": "select, 3 options",
+     "default_text": "Sealed compartments (size in cells)"
+    },
+    {
+     "name": "n_null",
+     "label": "Random barriers",
+     "type": "int",
+     "default": 5,
+     "optional": false,
+     "help": "Sets how many equally large random barriers are used for the grey plot band and the random-barrier comparison.",
+     "min": 2.0,
+     "max": 20.0,
+     "step": 1.0,
+     "type_text": "int, 2–20",
+     "default_text": "5"
+    }
+   ],
+   "sweep": null,
+   "outputs": [
+    "summary",
+    "cells",
+    "series",
+    "table"
+   ],
+   "optional_outputs": [],
+   "output_help": {
+    "summary": "writes a summary",
+    "cells": "paints the spatial view",
+    "series": "returns a line chart",
+    "table": "returns a table"
+   },
+   "requires": {
+    "genes": false,
+    "cell_types": false,
+    "categoricals": true,
+    "spatial": "any",
+    "min_cells": 200
+   },
+   "needs": [
+    "a categorical column",
+    "200+ cells"
+   ],
+   "license": "MIT",
+   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/tissue-permeability-v2.1.0/tissue-permeability-2.1.0.pvtool",
+   "bundle_size": "34.8 kB",
+   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/tissue-permeability",
+   "published": "2026-11-08",
+   "published_date": "8 Nov 2026",
+   "gates": [
+    {
+     "id": "bundle",
+     "required": true,
+     "status": "pass",
+     "message": "6 files, 34.8 kB packed and 149.5 kB unpacked, plugin.json at the root."
+    },
+    {
+     "id": "manifest",
+     "required": true,
+     "status": "pass",
+     "message": "tissue-permeability 2.1.0 by PointillViz reference tools; Python entry tool.py, outputs summary, cells, series, table."
+    },
+    {
+     "id": "environment",
+     "required": true,
+     "status": "pass",
+     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
+    },
+    {
+     "id": "entry",
+     "required": true,
+     "status": "pass",
+     "message": "tool.py imported in 0.01 s and defines run(ds, params)."
+    },
+    {
+     "id": "imports",
+     "required": false,
+     "status": "pass",
+     "message": "1 source file, using __future__, numpy, pointillviz_tool, scipy; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
+    },
+    {
+     "id": "fixture",
+     "required": true,
+     "status": "pass",
+     "message": "ran on the 600-cell fixture in 0.23 s, returning summary, cells, table, series."
+    },
+    {
+     "id": "result",
+     "required": true,
+     "status": "pass",
+     "message": "returned the declared outputs: summary, cells, table, series."
+    },
+    {
+     "id": "edge",
+     "required": true,
+     "status": "pass",
+     "message": "at the minimum corner (barrier_width=0.0, max_gap=1.5, n_null=2) it refused in words rather than crashing: Nothing here is more than one cell spacing from a source, so there is no route to measure and nothing is enclosed. At a gap of 1.5 spacings almost every cell counts as exposed surface — raise it, or route towards a cell type instead of the surface. (code: no_interior); ran at the maximum corner (barrier_width=3.0, max_gap=20.0, n_null=20, paint='tau', source='type', source_type='Fibroblast') in 0.19 s."
+    },
+    {
+     "id": "no_mutation",
+     "required": true,
+     "status": "pass",
+     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
+    }
+   ],
+   "risks": [],
+   "art": {
+    "src": "assets/media/tools/tissue-permeability.webp?v=01d317a24b",
+    "src2x": "assets/media/tools/tissue-permeability@2x.webp?v=dacb2e9317",
+    "width": 720,
+    "height": 420,
+    "alt": "Sealed-compartment map: pockets of cells walled off by barrier cells, with no route to the edge, coloured by compartment size. An illustration, not a real tissue.",
+    "generated": false
+   },
+   "social": "assets/media/social/tissue-permeability.jpg",
+   "url": "tools/tissue-permeability/"
+  },
+  {
+   "id": "vector-field",
+   "name": "Vector Field",
+   "version": "2.1.0",
+   "author": "PointillViz reference tools",
+   "description": "Which way a quantity increases across the tissue, as arrows over the section. Gene, cell type or any annotation column — with every arrow that could be noise removed.",
+   "readme_html": "<p>Answers the question: <strong>In which direction does a selected quantity increase across the tissue, and how steeply?</strong></p>\n<p>The tool converts the selected quantity into a smoothed spatial field. Its gradient reveals the direction and strength of local changes across the tissue. Each cell <math translate=\"no\"><mi>j</mi></math> with a valid measurement receives a value <math translate=\"no\"><msub><mi>a</mi><mi>j</mi></msub></math>. This is either the selected gene expression, a continuous measurement, or—for a selected population—<math translate=\"no\"><mn>1</mn></math> for cells belonging to that population and <math translate=\"no\"><mn>0</mn></math> for other labelled cells.</p>\n<p>At regularly spaced positions <math translate=\"no\"><mi>x</mi></math> across the tissue, the tool calculates a Gaussian-weighted local mean:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"A(x) = sum over j of w_j(x)a_j, C(x) = sum over j of w_j(x), F(x) = (A(x)) / (C(x))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>A</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><msub><mi>a</mi><mi>j</mi></msub><mo>,</mo></math></span></span><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>C</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><mo>,</mo></math></span></span><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>F</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><mi>A</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></mrow><mrow><mi>C</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></mrow></mfrac></math></span></span></div></div>\n<p>The weight <math translate=\"no\"><msub><mi>w</mi><mi>j</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math> decreases with the distance between cell <math translate=\"no\"><mi>j</mi></math> and position <math translate=\"no\"><mi>x</mi></math>, so nearby cells contribute more strongly to <math translate=\"no\"><mi>F</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math> than distant cells. For a selected population, <math translate=\"no\"><mi>F</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math> represents its smoothed local proportion.</p>\n<p>From the spatial variation of this field, the tool calculates its gradient and magnitude:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"∇F(x) = ((∂F) / (∂x), (∂F) / (∂y)), g(x) = ‖∇F(x)‖ = √(((∂F) / (∂x))² + ((∂F) / (∂y))²)\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi mathvariant=\"normal\">∇</mi><mi>F</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mrow><mo>(</mo><mfrac><mrow><mi>∂</mi><mi>F</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>,</mo><mfrac><mrow><mi>∂</mi><mi>F</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mo>,</mo></math></span></span><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>g</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mo stretchy=\"false\">‖</mo><mi mathvariant=\"normal\">∇</mi><mi>F</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><mo stretchy=\"false\">‖</mo></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><msqrt><msup><mrow><mo>(</mo><mfrac><mrow><mi>∂</mi><mi>F</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mfrac><mrow><mi>∂</mi><mi>F</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mn>2</mn></msup></msqrt></math></span></span></div></div>\n<p><strong>Map.</strong> Cells are colored by the smoothed local value <math translate=\"no\"><mi>F</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math>: dark colors indicate lower values and yellow indicates higher values. The arrows show the gradient <math translate=\"no\"><mi mathvariant=\"normal\">∇</mi><mi>F</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math>: their direction indicates the steepest increase, while their length represents the strength <math translate=\"no\"><mi>g</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math> of the spatial change. For display, this strength is scaled nonlinearly as <math translate=\"no\"><mi>t</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><mo>=</mo><msqrt><mi>min</mi><mrow><mo stretchy=\"false\">(</mo><mi>g</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><mo lspace=\"0\" rspace=\"0\">/</mo><msub><mi>g</mi><mn>95</mn></msub><mo>,</mo><mn>1</mn><mo stretchy=\"false\">)</mo></mrow></msqrt></math>, where <math translate=\"no\"><msub><mi>g</mi><mn>95</mn></msub></math> is the 95th percentile of the displayed gradient magnitudes. Arrow color also represents <math translate=\"no\"><mi>F</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math>, not gradient magnitude.</p>\n<p><strong>Plot.</strong> To distinguish strong gradients from uncertain estimates, the tool calculates the effective cell count <math translate=\"no\"><mi>N</mi><mrow><mo stretchy=\"false\">(</mo><mi>eff</mi><mo stretchy=\"false\">)</mo></mrow></math>, the local variance <math translate=\"no\"><msup><mover accent=\"true\"><mi>τ</mi><mo>ˆ</mo></mover><mn>2</mn></msup></math>, and the standard error:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"N_(eff)(x) = ((sum over j of w_j(x))²) / (sum over j of w_j(x)²), τ̂²(x) = (sum over j of w_j(x)(a′_j)²) / (C(x)) − (F(x) − ā)², SE(x) = (τ̂(x)) / (σₚ√(2N_(eff)(x)))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><msub><mi>N</mi><mi>eff</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><msup><mrow><mo stretchy=\"false\">(</mo><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><mo stretchy=\"false\">)</mo></mrow><mn>2</mn></msup><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><msup><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><mn>2</mn></msup></mrow></mfrac><mo>,</mo></math></span></span><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><msup><mover accent=\"true\"><mi>τ</mi><mo>ˆ</mo></mover><mn>2</mn></msup><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><msup><mrow><mo stretchy=\"false\">(</mo><msub><mrow><mi>a</mi><mo>′</mo></mrow><mi>j</mi></msub><mo stretchy=\"false\">)</mo></mrow><mn>2</mn></msup></mrow><mrow><mi>C</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></mrow></mfrac><mo>−</mo><msup><mrow><mo stretchy=\"false\">(</mo><mi>F</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><mo>−</mo><mover accent=\"true\"><mi>a</mi><mo>¯</mo></mover><mo stretchy=\"false\">)</mo></mrow><mn>2</mn></msup><mo>,</mo></math></span></span><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>SE</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><mover accent=\"true\"><mi>τ</mi><mo>ˆ</mo></mover><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></mrow><mrow><msub><mi>σ</mi><mi>p</mi></msub><msqrt><mn>2</mn><msub><mi>N</mi><mi>eff</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></msqrt></mrow></mfrac></math></span></span></div></div>\n<p>Here, <math translate=\"no\"><msub><mrow><mi>a</mi><mo>′</mo></mrow><mi>j</mi></msub><mo>=</mo><msub><mi>a</mi><mi>j</mi></msub><mo>−</mo><mover accent=\"true\"><mi>a</mi><mo>¯</mo></mover></math> is the centered cell value, and <math translate=\"no\"><msub><mi>σ</mi><mi>p</mi></msub></math> is the spatial width of the Gaussian filter. A small effective cell count or high local variation increases the standard error. The x-axis shows a threshold <math translate=\"no\"><mi>t</mi></math>, while the y-axis shows the proportion of the <math translate=\"no\"><mi>M</mi></math> measurable positions whose standardized gradient magnitude <math translate=\"no\"><mi>z</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math> reaches that threshold:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"z(x) = (g(x)) / (SE(x)), S_(observed)(t) = (1) / (M)sum over x∈M of 1[z(x) ≥ t], S_(random)(t) = e^(−t²/2)\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>z</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><mi>g</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></mrow><mrow><mi>SE</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></mrow></mfrac><mo>,</mo></math></span></span><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><msub><mi>S</mi><mi>observed</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mn>1</mn><mi>M</mi></mfrac><munder><mo>∑</mo><mrow><mi>x</mi><mo>∈</mo><mi>M</mi></mrow></munder><mn>1</mn><mrow><mo stretchy=\"false\">[</mo><mi>z</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><mo>≥</mo><mi>t</mi><mo stretchy=\"false\">]</mo></mrow><mo>,</mo></math></span></span><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><msub><mi>S</mi><mi>random</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><msup><mi>e</mi><mrow><mo>−</mo><msup><mi>t</mi><mn>2</mn></msup><mo lspace=\"0\" rspace=\"0\">/</mo><mn>2</mn></mrow></msup></math></span></span></div></div>\n<p>The solid curve shows the observed proportion. The dashed curve shows the frequency of standardized two-dimensional gradients expected from the Rayleigh distribution under random cell values. If the observed curve lies clearly above it, strong spatial gradients occur more often than expected by chance. The line at <math translate=\"no\"><mi>z</mi><mo>=</mo><mn>3</mn></math> marks the default threshold below which arrows are hidden when filtering is enabled.</p>",
+   "citation": "",
+   "tags": [
+    "spatial",
+    "gradient",
+    "expression"
+   ],
+   "icon": "near_me",
+   "language": "python",
+   "language_label": "Python",
+   "gpu": null,
+   "gpu_label": "",
+   "parameters": [
+    {
+     "name": "source",
+     "label": "Gradient of",
+     "type": "select",
+     "default": "category",
+     "optional": false,
+     "help": "Selects the quantity whose gradient is drawn.\nFor a cell type or any other category, that is its local fraction of cells; for a gene, its local mean expression; for a continuous column, its local mean value.",
+     "options": [
+      {
+       "label": "Cell type or category",
+       "value": "category"
+      },
+      {
+       "label": "Gene",
+       "value": "gene"
+      },
+      {
+       "label": "Continuous column",
+       "value": "continuous"
+      }
+     ],
+     "type_text": "select, 3 options",
+     "default_text": "Cell type or category"
+    },
+    {
+     "name": "field",
+     "label": "Column",
+     "type": "categorical_field",
+     "default": null,
+     "optional": true,
+     "help": "Selects the categorical column the category comes from.\nDefaults to the dataset’s cell-type column.",
+     "type_text": "categorical_field",
+     "default_text": "optional"
+    },
+    {
+     "name": "level",
+     "label": "Category",
+     "type": "category_value",
+     "default": null,
+     "optional": false,
+     "help": "Selects the category whose local fraction of cells is mapped.\nCells with no label in this column are left out of the field.",
+     "type_text": "category_value",
+     "default_text": "—"
+    },
+    {
+     "name": "gene",
+     "label": "Gene",
+     "type": "gene",
+     "default": null,
+     "optional": false,
+     "help": "Selects the gene whose expression is mapped.\nValues are normalized to a total of 10,000 counts per cell.",
+     "type_text": "gene",
+     "default_text": "—"
+    },
+    {
+     "name": "column",
+     "label": "Column",
+     "type": "continuous_field",
+     "default": null,
+     "optional": false,
+     "help": "Selects the per-cell measurement whose local mean is mapped.",
+     "type_text": "continuous_field",
+     "default_text": "—"
+    },
+    {
+     "name": "sigma",
+     "label": "Smoothing",
+     "type": "float",
+     "default": 1.2,
+     "optional": false,
+     "help": "Sets the width σ of the Gaussian smoothing, in grid cells.\nLarger values produce smoother fields with broader, weaker gradients.",
+     "min": 0.6,
+     "max": 3.0,
+     "step": 0.1,
+     "type_text": "float, 0.6–3",
+     "default_text": "1.2"
+    },
+    {
+     "name": "detail",
+     "label": "Grid detail",
+     "type": "float",
+     "default": 1.0,
+     "optional": false,
+     "help": "Sets the spatial resolution of the calculation.\nHigher values capture finer but noisier spatial changes.",
+     "min": 0.5,
+     "max": 2.5,
+     "step": 0.1,
+     "type_text": "float, 0.5–2.5",
+     "default_text": "1"
+    },
+    {
+     "name": "arrows",
+     "label": "Arrows",
+     "type": "int",
+     "default": 2000,
+     "optional": false,
+     "help": "Sets the approximate number of arrows displayed.\nThis changes the display density, not the calculated field.",
+     "min": 200.0,
+     "max": 20000.0,
+     "step": 100.0,
+     "type_text": "int, 200–20,000",
+     "default_text": "2,000"
+    },
+    {
+     "name": "gate",
+     "label": "Hide arrows that are not significant",
+     "type": "bool",
+     "default": true,
+     "optional": false,
+     "help": "Shows only positions with z ≥ 3 and at least 30 effective cells.\nTurning it off also displays gradients that may reflect noise.",
+     "type_text": "bool",
+     "default_text": "on"
+    }
+   ],
+   "sweep": null,
+   "outputs": [
+    "summary",
+    "cells",
+    "vectors",
+    "series"
+   ],
+   "optional_outputs": [],
+   "output_help": {
+    "summary": "writes a summary",
+    "cells": "paints the spatial view",
+    "vectors": "draws arrows over the tissue",
+    "series": "returns a line chart"
+   },
+   "requires": {
+    "genes": false,
+    "cell_types": false,
+    "categoricals": false,
+    "spatial": "2d",
+    "min_cells": 200
+   },
+   "needs": [
+    "2D coordinates",
+    "200+ cells"
+   ],
+   "license": "MIT",
+   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/vector-field-v2.1.0/vector-field-2.1.0.pvtool",
+   "bundle_size": "42.0 kB",
+   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/vector-field",
+   "published": "2026-11-08",
+   "published_date": "8 Nov 2026",
+   "gates": [
+    {
+     "id": "bundle",
+     "required": true,
+     "status": "pass",
+     "message": "7 files, 42.0 kB packed and 170.6 kB unpacked, plugin.json at the root."
+    },
+    {
+     "id": "manifest",
+     "required": true,
+     "status": "pass",
+     "message": "vector-field 2.1.0 by PointillViz reference tools; Python entry tool.py, outputs summary, cells, vectors, series."
+    },
+    {
+     "id": "environment",
+     "required": true,
+     "status": "pass",
+     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
+    },
+    {
+     "id": "entry",
+     "required": true,
+     "status": "pass",
+     "message": "tool.py imported in 0.00 s and defines run(ds, params)."
+    },
+    {
+     "id": "imports",
+     "required": false,
+     "status": "pass",
+     "message": "2 source files, using __future__, numpy, pointillviz_tool, vfield_core; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
+    },
+    {
+     "id": "fixture",
+     "required": true,
+     "status": "pass",
+     "message": "ran on the 600-cell fixture in 0.01 s, returning summary, cells, vectors, series and 1 log line."
+    },
+    {
+     "id": "result",
+     "required": true,
+     "status": "pass",
+     "message": "returned the declared outputs: summary, cells, vectors, series."
+    },
+    {
+     "id": "edge",
+     "required": true,
+     "status": "pass",
+     "message": "ran at the minimum corner (arrows=200, detail=0.5, gate=False, sigma=0.6) in 0.01 s; at the maximum corner (arrows=20000, column='cont_cell_area', detail=2.5, field=None, level=None, sigma=3.0, source='continuous') it refused in words rather than crashing: Nothing could be measured. Of 122 grid sites inside the tissue, none were far enough from a tissue edge for the smoothing window to sit entirely on real data, so no gradient at all was computed for cont_cell_area. The grid is too coarse, or σ too large, for a region this size: lower the smoothing, raise the grid detail, or widen the selection. (code: no_measurable_sites); ran the source='gene' branch in 0.01 s."
+    },
+    {
+     "id": "no_mutation",
+     "required": true,
+     "status": "pass",
+     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
+    }
+   ],
+   "risks": [],
+   "art": {
+    "src": "assets/media/tools/vector-field.webp?v=5334709e98",
+    "src2x": "assets/media/tools/vector-field@2x.webp?v=401597386f",
+    "width": 720,
+    "height": 420,
+    "alt": "Vector field: arrows along the local gradient of a smooth expression field, over cells painted by the field. An illustration, not a real tissue.",
+    "generated": false
+   },
+   "social": "assets/media/social/vector-field.jpg",
+   "url": "tools/vector-field/"
+  },
+  {
    "id": "banksy-niches",
    "name": "BANKSY niches",
    "version": "2.0.0",
@@ -1236,472 +1924,6 @@
    "url": "tools/smoothie/"
   },
   {
-   "id": "tissue-permeability",
-   "name": "Tissue Permeability",
-   "version": "2.0.1",
-   "author": "PointillViz reference tools",
-   "description": "Which cells one cell type seals off from the rest of the tissue.",
-   "readme_html": "<p>Answers the question: <strong>Which cells does one population seal off from the tissue surface or from another population?</strong></p>\n<p>The tool lets the user select one population as a potential barrier and choose a destination for the remaining cells: either the exposed tissue surface or another population. It then identifies which cells can no longer reach it when the barrier is impassable.</p>\n<p>To identify possible routes through the tissue, the tool first connects the cells in each section using a Delaunay triangulation. Three cells form such a triangle if a circle can pass through all three centers without enclosing another cell center.</p>\n<p>Multi-source Dijkstra routing calculates the shortest network distance to a source with the selected population passable, <math translate=\"no\"><mi>d</mi><mrow><mo stretchy=\"false\">(</mo><mi>open</mi><mo stretchy=\"false\">)</mo></mrow><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math>, and with it treated as impassable, <math translate=\"no\"><mi>d</mi><mrow><mo stretchy=\"false\">(</mo><mi>barrier</mi><mo stretchy=\"false\">)</mo></mrow><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math>. <math translate=\"no\"><mi>d</mi><mrow><mo stretchy=\"false\">(</mo><mi>straight</mi><mo stretchy=\"false\">)</mo></mrow><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math> is the straight-line distance from cell <math translate=\"no\"><mi>i</mi></math> to the nearest source cell, ignoring the network.</p>\n<p>A cell is sealed if it loses its route when the selected population becomes impassable. For cells that remain reachable, <math translate=\"no\"><mi>extra</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math> measures the added network distance in median cell spacings <math translate=\"no\"><mi>s</mi></math>, while <math translate=\"no\"><mi>τ</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math> compares the remaining route with the straight-line distance:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"sealed(i) = [d_(open)(i) &lt; ∞ and d_(barrier)(i) = ∞]\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>sealed</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mrow><mo stretchy=\"false\">[</mo><msub><mi>d</mi><mi>open</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow><mo>&lt;</mo><mi>∞</mi><mtext> and </mtext><msub><mi>d</mi><mi>barrier</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow><mo>=</mo><mi>∞</mi><mo stretchy=\"false\">]</mo></mrow></math></span></span></div></div>\n<div class=\"st-formula\" role=\"img\" aria-label=\"extra(i) = (d_(barrier)(i) - d_(open)(i)) / (s), τ(i) = (d_(barrier)(i)) / (d_(straight)(i))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>extra</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><msub><mi>d</mi><mi>barrier</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow><mo>−</mo><msub><mi>d</mi><mi>open</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></mrow><mi>s</mi></mfrac><mo>,</mo></math></span></span><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>τ</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><msub><mi>d</mi><mi>barrier</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></mrow><mrow><msub><mi>d</mi><mi>straight</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></mrow></mfrac></math></span></span></div></div>\n<p><strong>Map.</strong> The user can choose between three display modes:</p>\n<ul><li><code translate=\"no\">Sealed compartments</code> colors only sealed cells. Dark colors indicate smaller compartments, while bright yellow indicates compartments containing more cells.</li><li><code translate=\"no\">Extra path</code> colors only reachable cells whose route becomes longer. Dark colors indicate a small additional distance, while bright yellow indicates that the barrier adds many cell spacings.</li><li><code translate=\"no\">Detour factor</code> colors only reachable cells with a valid <math translate=\"no\"><mi>τ</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow><mo>&gt;</mo><mn>1</mn></math>. Dark colors indicate a route close to the direct distance, while bright yellow indicates a much longer detour.</li></ul>\n<p><strong>Plot.</strong> The x-axis shows cell percentiles after ranking by <math translate=\"no\"><mi>τ</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math>; at percentile <math translate=\"no\"><mi>q</mi></math>, the curve gives the detour factor that <math translate=\"no\"><mi>q</mi><mo>%</mo></math> of the evaluated cells do not exceed. The y-axis shows <math translate=\"no\"><mi>τ</mi><mrow><mo stretchy=\"false\">(</mo><mi>i</mi><mo stretchy=\"false\">)</mo></mrow></math>, the network distance divided by the straight-line distance.</p>\n<p>The red curve shows detour factors when the selected population is impassable, while the dashed curve shows the same tissue with it passable. The grey band shows the results when the same number of randomly selected cells are treated as barriers. If the red curve stops before the right edge, the missing percentage corresponds to sealed cells; their detour factors are non-finite and therefore not shown.</p>\n<p><strong>Table.</strong> Each row summarizes one population with at least 25 eligible cells, and <code translate=\"no\">Cells</code> gives its total cell count. For the selected barrier and destination, <code translate=\"no\">Enclosed</code> and <code translate=\"no\">% enclosed</code> show the number and proportion of eligible cells that lose their route. Among cells that remain reachable, <code translate=\"no\">% detoured</code> shows how often the route becomes longer, while <code translate=\"no\">Extra path where detoured</code> gives the median number of cell spacings added to those longer routes. <code translate=\"no\">% enclosed, random barrier</code> gives the average expected with equally large random barriers.</p>",
-   "citation": "",
-   "tags": [
-    "spatial",
-    "cell types",
-    "geometry",
-    "barrier",
-    "connectivity"
-   ],
-   "icon": "route",
-   "language": "python",
-   "language_label": "Python",
-   "gpu": null,
-   "gpu_label": "",
-   "parameters": [
-    {
-     "name": "field",
-     "label": "Grouping column",
-     "type": "categorical_field",
-     "default": null,
-     "optional": true,
-     "help": "Selects the annotation used to define the barrier and source populations.\nDefaults to the dataset’s cell-type column.",
-     "type_text": "categorical_field",
-     "default_text": "optional"
-    },
-    {
-     "name": "barrier",
-     "label": "Barrier cell type",
-     "type": "category_value",
-     "default": null,
-     "optional": false,
-     "help": "Selects the population treated as an impassable barrier.",
-     "type_text": "category_value",
-     "default_text": "—"
-    },
-    {
-     "name": "source",
-     "label": "Route towards",
-     "type": "select",
-     "default": "surface",
-     "optional": false,
-     "help": "Selects the routing destination: the exposed tissue surface or another cell population.\nSurface cells are identified along the section boundary and beside sufficiently large gaps.",
-     "options": [
-      {
-       "label": "The tissue's exposed surface",
-       "value": "surface"
-      },
-      {
-       "label": "A second cell type",
-       "value": "type"
-      }
-     ],
-     "type_text": "select, 2 options",
-     "default_text": "The tissue’s exposed surface"
-    },
-    {
-     "name": "source_type",
-     "label": "Source cell type",
-     "type": "category_value",
-     "default": null,
-     "optional": true,
-     "help": "Selects the destination population when routing towards another cell type.\nIt must differ from the barrier population.",
-     "type_text": "category_value",
-     "default_text": "optional"
-    },
-    {
-     "name": "barrier_width",
-     "label": "Barrier half-width",
-     "type": "float",
-     "default": 0.75,
-     "optional": false,
-     "help": "Sets how closely a path may approach a barrier-cell centre, measured in median cell spacings.\nLarger values treat the barrier as thicker.",
-     "min": 0.0,
-     "max": 3.0,
-     "step": 0.05,
-     "type_text": "float, 0–3",
-     "default_text": "0.75"
-    },
-    {
-     "name": "max_gap",
-     "label": "Largest gap a path may cross",
-     "type": "float",
-     "default": 5.0,
-     "optional": false,
-     "help": "Drop Delaunay edges longer than this many median cell spacings, so no route crosses a lumen or tissue gap.",
-     "min": 1.5,
-     "max": 20.0,
-     "step": 0.5,
-     "type_text": "float, 1.5–20",
-     "default_text": "5"
-    },
-    {
-     "name": "paint",
-     "label": "Map shows",
-     "type": "select",
-     "default": "compartment",
-     "optional": false,
-     "help": "Selects whether the map displays sealed-compartment size, additional path length or detour factor.\nThis does not change the calculation.",
-     "options": [
-      {
-       "label": "Sealed compartments (size in cells)",
-       "value": "compartment"
-      },
-      {
-       "label": "Extra path forced by the barrier",
-       "value": "detour"
-      },
-      {
-       "label": "Detour factor (geodesic / straight line)",
-       "value": "tau"
-      }
-     ],
-     "type_text": "select, 3 options",
-     "default_text": "Sealed compartments (size in cells)"
-    },
-    {
-     "name": "n_null",
-     "label": "Random barriers",
-     "type": "int",
-     "default": 5,
-     "optional": false,
-     "help": "Sets how many equally large random barriers are used for the grey plot band and the random-barrier comparison.",
-     "min": 2.0,
-     "max": 20.0,
-     "step": 1.0,
-     "type_text": "int, 2–20",
-     "default_text": "5"
-    }
-   ],
-   "sweep": null,
-   "outputs": [
-    "summary",
-    "cells",
-    "series",
-    "table"
-   ],
-   "optional_outputs": [],
-   "output_help": {
-    "summary": "writes a summary",
-    "cells": "paints the spatial view",
-    "series": "returns a line chart",
-    "table": "returns a table"
-   },
-   "requires": {
-    "genes": false,
-    "cell_types": false,
-    "categoricals": true,
-    "spatial": "any",
-    "min_cells": 200
-   },
-   "needs": [
-    "a categorical column",
-    "200+ cells"
-   ],
-   "license": "MIT",
-   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/tissue-permeability-v2.0.1/tissue-permeability-2.0.1.pvtool",
-   "bundle_size": "34.8 kB",
-   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/tissue-permeability",
-   "published": "2026-11-03",
-   "published_date": "3 Nov 2026",
-   "gates": [
-    {
-     "id": "bundle",
-     "required": true,
-     "status": "pass",
-     "message": "6 files, 34.8 kB packed and 149.5 kB unpacked, plugin.json at the root."
-    },
-    {
-     "id": "manifest",
-     "required": true,
-     "status": "pass",
-     "message": "tissue-permeability 2.0.1 by PointillViz reference tools; Python entry tool.py, outputs summary, cells, series, table."
-    },
-    {
-     "id": "environment",
-     "required": true,
-     "status": "pass",
-     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
-    },
-    {
-     "id": "entry",
-     "required": true,
-     "status": "pass",
-     "message": "tool.py imported in 0.01 s and defines run(ds, params)."
-    },
-    {
-     "id": "imports",
-     "required": false,
-     "status": "pass",
-     "message": "1 source file, using __future__, numpy, pointillviz_tool, scipy; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
-    },
-    {
-     "id": "fixture",
-     "required": true,
-     "status": "pass",
-     "message": "ran on the 600-cell fixture in 0.30 s, returning summary, cells, table, series."
-    },
-    {
-     "id": "result",
-     "required": true,
-     "status": "pass",
-     "message": "returned the declared outputs: summary, cells, table, series."
-    },
-    {
-     "id": "edge",
-     "required": true,
-     "status": "pass",
-     "message": "at the minimum corner (barrier_width=0.0, max_gap=1.5, n_null=2) it refused in words rather than crashing: Nothing here is more than one cell spacing from a source, so there is no route to measure and nothing is enclosed. At a gap of 1.5 spacings almost every cell counts as exposed surface — raise it, or route towards a cell type instead of the surface. (code: no_interior); ran at the maximum corner (barrier_width=3.0, max_gap=20.0, n_null=20, paint='tau', source='type') in 0.23 s."
-    },
-    {
-     "id": "no_mutation",
-     "required": true,
-     "status": "pass",
-     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
-    }
-   ],
-   "risks": [],
-   "art": {
-    "src": "assets/media/tools/tissue-permeability.webp?v=01d317a24b",
-    "src2x": "assets/media/tools/tissue-permeability@2x.webp?v=dacb2e9317",
-    "width": 720,
-    "height": 420,
-    "alt": "Sealed-compartment map: pockets of cells walled off by barrier cells, with no route to the edge, coloured by compartment size. An illustration, not a real tissue.",
-    "generated": false
-   },
-   "social": "assets/media/social/tissue-permeability.jpg",
-   "url": "tools/tissue-permeability/"
-  },
-  {
-   "id": "vector-field",
-   "name": "Vector Field",
-   "version": "2.0.1",
-   "author": "PointillViz reference tools",
-   "description": "Which way a quantity increases across the tissue, as arrows over the section. Gene, cell type or any annotation column — with every arrow that could be noise removed.",
-   "readme_html": "<p>Answers the question: <strong>In which direction does a selected quantity increase across the tissue, and how steeply?</strong></p>\n<p>The tool converts the selected quantity into a smoothed spatial field. Its gradient reveals the direction and strength of local changes across the tissue. Each cell <math translate=\"no\"><mi>j</mi></math> with a valid measurement receives a value <math translate=\"no\"><msub><mi>a</mi><mi>j</mi></msub></math>. This is either the selected gene expression, a continuous measurement, or—for a selected population—<math translate=\"no\"><mn>1</mn></math> for cells belonging to that population and <math translate=\"no\"><mn>0</mn></math> for other labelled cells.</p>\n<p>At regularly spaced positions <math translate=\"no\"><mi>x</mi></math> across the tissue, the tool calculates a Gaussian-weighted local mean:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"A(x) = sum over j of w_j(x)a_j, C(x) = sum over j of w_j(x), F(x) = (A(x)) / (C(x))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>A</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><msub><mi>a</mi><mi>j</mi></msub><mo>,</mo></math></span></span><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>C</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><mo>,</mo></math></span></span><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>F</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><mi>A</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></mrow><mrow><mi>C</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></mrow></mfrac></math></span></span></div></div>\n<p>The weight <math translate=\"no\"><msub><mi>w</mi><mi>j</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math> decreases with the distance between cell <math translate=\"no\"><mi>j</mi></math> and position <math translate=\"no\"><mi>x</mi></math>, so nearby cells contribute more strongly to <math translate=\"no\"><mi>F</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math> than distant cells. For a selected population, <math translate=\"no\"><mi>F</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math> represents its smoothed local proportion.</p>\n<p>From the spatial variation of this field, the tool calculates its gradient and magnitude:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"∇F(x) = ((∂F) / (∂x), (∂F) / (∂y)), g(x) = ‖∇F(x)‖ = √(((∂F) / (∂x))² + ((∂F) / (∂y))²)\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi mathvariant=\"normal\">∇</mi><mi>F</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mrow><mo>(</mo><mfrac><mrow><mi>∂</mi><mi>F</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>,</mo><mfrac><mrow><mi>∂</mi><mi>F</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mo>,</mo></math></span></span><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>g</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mo stretchy=\"false\">‖</mo><mi mathvariant=\"normal\">∇</mi><mi>F</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><mo stretchy=\"false\">‖</mo></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><msqrt><msup><mrow><mo>(</mo><mfrac><mrow><mi>∂</mi><mi>F</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mfrac><mrow><mi>∂</mi><mi>F</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>)</mo></mrow><mn>2</mn></msup></msqrt></math></span></span></div></div>\n<p><strong>Map.</strong> Cells are colored by the smoothed local value <math translate=\"no\"><mi>F</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math>: dark colors indicate lower values and yellow indicates higher values. The arrows show the gradient <math translate=\"no\"><mi mathvariant=\"normal\">∇</mi><mi>F</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math>: their direction indicates the steepest increase, while their length represents the strength <math translate=\"no\"><mi>g</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math> of the spatial change. For display, this strength is scaled nonlinearly as <math translate=\"no\"><mi>t</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><mo>=</mo><msqrt><mi>min</mi><mrow><mo stretchy=\"false\">(</mo><mi>g</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><mo lspace=\"0\" rspace=\"0\">/</mo><msub><mi>g</mi><mn>95</mn></msub><mo>,</mo><mn>1</mn><mo stretchy=\"false\">)</mo></mrow></msqrt></math>, where <math translate=\"no\"><msub><mi>g</mi><mn>95</mn></msub></math> is the 95th percentile of the displayed gradient magnitudes. Arrow color also represents <math translate=\"no\"><mi>F</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math>, not gradient magnitude.</p>\n<p><strong>Plot.</strong> To distinguish strong gradients from uncertain estimates, the tool calculates the effective cell count <math translate=\"no\"><mi>N</mi><mrow><mo stretchy=\"false\">(</mo><mi>eff</mi><mo stretchy=\"false\">)</mo></mrow></math>, the local variance <math translate=\"no\"><msup><mover accent=\"true\"><mi>τ</mi><mo>ˆ</mo></mover><mn>2</mn></msup></math>, and the standard error:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"N_(eff)(x) = ((sum over j of w_j(x))²) / (sum over j of w_j(x)²), τ̂²(x) = (sum over j of w_j(x)(a′_j)²) / (C(x)) − (F(x) − ā)², SE(x) = (τ̂(x)) / (σₚ√(2N_(eff)(x)))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><msub><mi>N</mi><mi>eff</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><msup><mrow><mo stretchy=\"false\">(</mo><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><mo stretchy=\"false\">)</mo></mrow><mn>2</mn></msup><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><msup><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><mn>2</mn></msup></mrow></mfrac><mo>,</mo></math></span></span><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><msup><mover accent=\"true\"><mi>τ</mi><mo>ˆ</mo></mover><mn>2</mn></msup><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>w</mi><mi>j</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><msup><mrow><mo stretchy=\"false\">(</mo><msub><mrow><mi>a</mi><mo>′</mo></mrow><mi>j</mi></msub><mo stretchy=\"false\">)</mo></mrow><mn>2</mn></msup></mrow><mrow><mi>C</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></mrow></mfrac><mo>−</mo><msup><mrow><mo stretchy=\"false\">(</mo><mi>F</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><mo>−</mo><mover accent=\"true\"><mi>a</mi><mo>¯</mo></mover><mo stretchy=\"false\">)</mo></mrow><mn>2</mn></msup><mo>,</mo></math></span></span><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>SE</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><mover accent=\"true\"><mi>τ</mi><mo>ˆ</mo></mover><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></mrow><mrow><msub><mi>σ</mi><mi>p</mi></msub><msqrt><mn>2</mn><msub><mi>N</mi><mi>eff</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></msqrt></mrow></mfrac></math></span></span></div></div>\n<p>Here, <math translate=\"no\"><msub><mrow><mi>a</mi><mo>′</mo></mrow><mi>j</mi></msub><mo>=</mo><msub><mi>a</mi><mi>j</mi></msub><mo>−</mo><mover accent=\"true\"><mi>a</mi><mo>¯</mo></mover></math> is the centered cell value, and <math translate=\"no\"><msub><mi>σ</mi><mi>p</mi></msub></math> is the spatial width of the Gaussian filter. A small effective cell count or high local variation increases the standard error. The x-axis shows a threshold <math translate=\"no\"><mi>t</mi></math>, while the y-axis shows the proportion of the <math translate=\"no\"><mi>M</mi></math> measurable positions whose standardized gradient magnitude <math translate=\"no\"><mi>z</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math> reaches that threshold:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"z(x) = (g(x)) / (SE(x)), S_(observed)(t) = (1) / (M)sum over x∈M of 1[z(x) ≥ t], S_(random)(t) = e^(−t²/2)\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>z</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mrow><mi>g</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></mrow><mrow><mi>SE</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow></mrow></mfrac><mo>,</mo></math></span></span><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><msub><mi>S</mi><mi>observed</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><mfrac><mn>1</mn><mi>M</mi></mfrac><munder><mo>∑</mo><mrow><mi>x</mi><mo>∈</mo><mi>M</mi></mrow></munder><mn>1</mn><mrow><mo stretchy=\"false\">[</mo><mi>z</mi><mrow><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></mrow><mo>≥</mo><mi>t</mi><mo stretchy=\"false\">]</mo></mrow><mo>,</mo></math></span></span><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><msub><mi>S</mi><mi>random</mi></msub><mrow><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><msup><mi>e</mi><mrow><mo>−</mo><msup><mi>t</mi><mn>2</mn></msup><mo lspace=\"0\" rspace=\"0\">/</mo><mn>2</mn></mrow></msup></math></span></span></div></div>\n<p>The solid curve shows the observed proportion. The dashed curve shows the frequency of standardized two-dimensional gradients expected from the Rayleigh distribution under random cell values. If the observed curve lies clearly above it, strong spatial gradients occur more often than expected by chance. The line at <math translate=\"no\"><mi>z</mi><mo>=</mo><mn>3</mn></math> marks the default threshold below which arrows are hidden when filtering is enabled.</p>",
-   "citation": "",
-   "tags": [
-    "spatial",
-    "gradient",
-    "expression"
-   ],
-   "icon": "near_me",
-   "language": "python",
-   "language_label": "Python",
-   "gpu": null,
-   "gpu_label": "",
-   "parameters": [
-    {
-     "name": "source",
-     "label": "Differentiate",
-     "type": "select",
-     "default": "category",
-     "optional": false,
-     "help": "Selects whether the field represents the local proportion of a population, a continuous measurement, or gene expression.",
-     "options": [
-      {
-       "label": "One level of a categorical column",
-       "value": "category"
-      },
-      {
-       "label": "A gene",
-       "value": "gene"
-      },
-      {
-       "label": "A continuous column",
-       "value": "continuous"
-      }
-     ],
-     "type_text": "select, 3 options",
-     "default_text": "One level of a categorical column"
-    },
-    {
-     "name": "field",
-     "label": "Categorical column",
-     "type": "categorical_field",
-     "default": null,
-     "optional": true,
-     "help": "Selects the categorical annotation used to define the populations.\nUsed only when Differentiate is set to category.\nDefaults to the dataset’s cell-type column.",
-     "type_text": "categorical_field",
-     "default_text": "optional"
-    },
-    {
-     "name": "level",
-     "label": "Level",
-     "type": "category_value",
-     "default": null,
-     "optional": true,
-     "help": "Selects the population from the chosen categorical column whose local proportion is analyzed.",
-     "type_text": "category_value",
-     "default_text": "optional"
-    },
-    {
-     "name": "column",
-     "label": "Continuous column",
-     "type": "continuous_field",
-     "default": null,
-     "optional": true,
-     "help": "Selects the continuous measurement to analyze.\nUsed only when Differentiate is set to continuous.",
-     "type_text": "continuous_field",
-     "default_text": "optional"
-    },
-    {
-     "name": "gene",
-     "label": "Gene",
-     "type": "gene",
-     "default": null,
-     "optional": true,
-     "help": "Selects the gene whose normalized expression is analyzed.\nUsed only when Differentiate is set to gene.\nValues are normalized to a total of 10,000 counts per cell.",
-     "type_text": "gene",
-     "default_text": "optional"
-    },
-    {
-     "name": "sigma",
-     "label": "Smoothing (σ, grid cells)",
-     "type": "float",
-     "default": 1.2,
-     "optional": false,
-     "help": "Sets the width of the Gaussian smoothing in grid cells.\nLarger values produce smoother fields with broader, weaker gradients.",
-     "min": 0.6,
-     "max": 3.0,
-     "step": 0.1,
-     "type_text": "float, 0.6–3",
-     "default_text": "1.2"
-    },
-    {
-     "name": "detail",
-     "label": "Grid detail",
-     "type": "float",
-     "default": 1.0,
-     "optional": false,
-     "help": "Sets the spatial resolution of the calculation.\nHigher values capture finer but noisier spatial changes.",
-     "min": 0.5,
-     "max": 2.5,
-     "step": 0.1,
-     "type_text": "float, 0.5–2.5",
-     "default_text": "1"
-    },
-    {
-     "name": "arrows",
-     "label": "Arrows",
-     "type": "int",
-     "default": 2000,
-     "optional": false,
-     "help": "Sets the approximate number of arrows displayed.\nThis changes the display density, not the calculated field.",
-     "min": 200.0,
-     "max": 20000.0,
-     "step": 100.0,
-     "type_text": "int, 200–20,000",
-     "default_text": "2,000"
-    },
-    {
-     "name": "gate",
-     "label": "Hide arrows that are not significant",
-     "type": "bool",
-     "default": true,
-     "optional": false,
-     "help": "Shows only positions with z ≥ 3 and at least 30 effective cells.\nTurning it off also displays gradients that may reflect noise.",
-     "type_text": "bool",
-     "default_text": "on"
-    }
-   ],
-   "sweep": null,
-   "outputs": [
-    "summary",
-    "cells",
-    "vectors",
-    "series"
-   ],
-   "optional_outputs": [],
-   "output_help": {
-    "summary": "writes a summary",
-    "cells": "paints the spatial view",
-    "vectors": "draws arrows over the tissue",
-    "series": "returns a line chart"
-   },
-   "requires": {
-    "genes": false,
-    "cell_types": false,
-    "categoricals": false,
-    "spatial": "2d",
-    "min_cells": 200
-   },
-   "needs": [
-    "2D coordinates",
-    "200+ cells"
-   ],
-   "license": "MIT",
-   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/vector-field-v2.0.1/vector-field-2.0.1.pvtool",
-   "bundle_size": "42.0 kB",
-   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/vector-field",
-   "published": "2026-11-03",
-   "published_date": "3 Nov 2026",
-   "gates": [
-    {
-     "id": "bundle",
-     "required": true,
-     "status": "pass",
-     "message": "7 files, 42.0 kB packed and 170.5 kB unpacked, plugin.json at the root."
-    },
-    {
-     "id": "manifest",
-     "required": true,
-     "status": "pass",
-     "message": "vector-field 2.0.1 by PointillViz reference tools; Python entry tool.py, outputs summary, cells, vectors, series."
-    },
-    {
-     "id": "environment",
-     "required": true,
-     "status": "pass",
-     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
-    },
-    {
-     "id": "entry",
-     "required": true,
-     "status": "pass",
-     "message": "tool.py imported in 0.00 s and defines run(ds, params)."
-    },
-    {
-     "id": "imports",
-     "required": false,
-     "status": "pass",
-     "message": "2 source files, using __future__, numpy, pointillviz_tool, vfield_core; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
-    },
-    {
-     "id": "fixture",
-     "required": true,
-     "status": "pass",
-     "message": "ran on the 600-cell fixture in 0.01 s, returning summary, cells, vectors, series and 1 log line."
-    },
-    {
-     "id": "result",
-     "required": true,
-     "status": "pass",
-     "message": "returned the declared outputs: summary, cells, vectors, series."
-    },
-    {
-     "id": "edge",
-     "required": true,
-     "status": "pass",
-     "message": "ran at the minimum corner (arrows=200, detail=0.5, gate=False, sigma=0.6) in 0.01 s; at the maximum corner (arrows=20000, detail=2.5, sigma=3.0, source='continuous') it refused in words rather than crashing: Nothing could be measured. Of 122 grid sites inside the tissue, none were far enough from a tissue edge for the smoothing window to sit entirely on real data, so no gradient at all was computed for cont_cell_area. The grid is too coarse, or σ too large, for a region this size: lower the smoothing, raise the grid detail, or widen the selection. (code: no_measurable_sites)."
-    },
-    {
-     "id": "no_mutation",
-     "required": true,
-     "status": "pass",
-     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
-    }
-   ],
-   "risks": [],
-   "art": {
-    "src": "assets/media/tools/vector-field.webp?v=5334709e98",
-    "src2x": "assets/media/tools/vector-field@2x.webp?v=401597386f",
-    "width": 720,
-    "height": 420,
-    "alt": "Vector field: arrows along the local gradient of a smooth expression field, over cells painted by the field. An illustration, not a real tissue.",
-    "generated": false
-   },
-   "social": "assets/media/social/vector-field.jpg",
-   "url": "tools/vector-field/"
-  },
-  {
    "id": "beeswarm-plot",
    "name": "Beeswarm Plot",
    "version": "1.0.0",
@@ -1896,228 +2118,6 @@
    },
    "social": "assets/media/social/beeswarm-plot.jpg",
    "url": "tools/beeswarm-plot/"
-  },
-  {
-   "id": "categorical-chords",
-   "name": "Categorical Chords",
-   "version": "2.0.0",
-   "author": "PointillViz reference tools",
-   "description": "Explore spatial contacts or shared membership between categorical annotations with count-weighted ribbons and enrichment colors.",
-   "readme_html": "<p>Answers the question: <strong>Which categorical groups occur together more or less often than expected?</strong></p>\n<p>The tool compares categorical annotations such as cell types, clusters, or spatial niches. It offers two analysis modes:</p>\n<ul><li><code translate=\"no\">Spatial contacts</code> counts pairs of cells from the same section that lie within the selected radius.</li><li><code translate=\"no\">Annotation relationships</code> compares two categorical annotations assigned to the same cells, without using spatial coordinates.</li></ul>\n<p>For each pair of groups <math translate=\"no\"><mi>A</mi></math> and <math translate=\"no\"><mi>B</mi></math>, the tool compares the observed count <math translate=\"no\"><mi>O</mi><mrow><mo stretchy=\"false\">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy=\"false\">)</mo></mrow></math> with the expected count <math translate=\"no\"><mi>E</mi><mrow><mo stretchy=\"false\">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy=\"false\">)</mo></mrow></math>:</p>\n<div class=\"st-formula\" role=\"img\" aria-label=\"score(A,B) = log₂((O(A,B)+1) / (E(A,B)+1))\"><div class=\"st-formula__row\"><span class=\"st-formula__eq\"><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mi>score</mi><mrow><mo stretchy=\"false\">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy=\"false\">)</mo></mrow></math></span><span class=\"st-formula__piece\"><math translate=\"no\" displaystyle=\"true\"><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mrow><mo>(</mo><mfrac><mrow><mi>O</mi><mrow><mo stretchy=\"false\">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy=\"false\">)</mo></mrow><mo>+</mo><mn>1</mn></mrow><mrow><mi>E</mi><mrow><mo stretchy=\"false\">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy=\"false\">)</mo></mrow><mo>+</mo><mn>1</mn></mrow></mfrac><mo>)</mo></mrow></math></span></span></div></div>\n<p>The expectation is calculated from the group frequencies within each section. In annotation mode, <math translate=\"no\"><mi>E</mi><mrow><mo stretchy=\"false\">(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy=\"false\">)</mo></mrow><mo>=</mo><mi>n</mi><mrow><mo stretchy=\"false\">(</mo><mi>A</mi><mo stretchy=\"false\">)</mo></mrow><mi>n</mi><mrow><mo stretchy=\"false\">(</mo><mi>B</mi><mo stretchy=\"false\">)</mo></mrow><mo lspace=\"0\" rspace=\"0\">/</mo><mi>N</mi></math>. In spatial-contact mode, it represents the number of <math translate=\"no\"><mi>A</mi></math>-to-<math translate=\"no\"><mi>B</mi></math> pairs expected if the group labels were randomly redistributed over the observed cell positions. A score of <math translate=\"no\"><mn>0</mn></math> indicates agreement with the expectation; positive values indicate enrichment and negative values depletion.</p>\n<p><strong>Chord.</strong> Each sector represents one group. Ribbon width shows the observed number of cells or spatial pairs connecting two groups, while ribbon color shows their <math translate=\"no\"><msub><mi>log</mi><mn>2</mn></msub><mrow><mo stretchy=\"false\">(</mo><mi>O</mi><mo lspace=\"0\" rspace=\"0\">/</mo><mi>E</mi><mo stretchy=\"false\">)</mo></mrow></math> score: orange indicates enrichment and blue depletion. The display limits affect only the chord diagram, which shows the most abundant groups and best-supported relationships.</p>\n<p><strong>Matrix.</strong> Both axes list the selected groups, and each square shows the corresponding <math translate=\"no\"><msub><mi>log</mi><mn>2</mn></msub><mrow><mo stretchy=\"false\">(</mo><mi>O</mi><mo lspace=\"0\" rspace=\"0\">/</mo><mi>E</mi><mo stretchy=\"false\">)</mo></mrow></math> score. The matrix retains all group combinations, including those omitted from the chord diagram.</p>\n<p><strong>Table.</strong> Each row represents one group pair. <code translate=\"no\">Count</code> gives the observed number of cells or spatial pairs, <code translate=\"no\">Expected</code> gives the expected count, and <code translate=\"no\">log2 O/E</code> shows the enrichment or depletion.</p>",
-   "citation": "",
-   "tags": [
-    "spatial",
-    "cell types",
-    "categorical",
-    "chord"
-   ],
-   "icon": "donut_large",
-   "language": "python",
-   "language_label": "Python",
-   "gpu": null,
-   "gpu_label": "",
-   "parameters": [
-    {
-     "name": "mode",
-     "label": "Relationship",
-     "type": "select",
-     "default": "contacts",
-     "optional": false,
-     "help": "Selects whether to analyze spatial contacts between different cells or relationships between two annotations on the same cells.",
-     "options": [
-      {
-       "label": "Spatial contacts",
-       "value": "contacts"
-      },
-      {
-       "label": "Annotation relationships",
-       "value": "annotations"
-      }
-     ],
-     "type_text": "select, 2 options",
-     "default_text": "Spatial contacts"
-    },
-    {
-     "name": "field",
-     "label": "Grouping annotation",
-     "type": "categorical_field",
-     "default": null,
-     "optional": false,
-     "help": "Selects the categorical annotation used for the groups.\nIn annotation mode, this is the first of the two annotations.",
-     "type_text": "categorical_field",
-     "default_text": "—"
-    },
-    {
-     "name": "other_field",
-     "label": "Second annotation",
-     "type": "categorical_field",
-     "default": null,
-     "optional": true,
-     "help": "Selects the second annotation compared on the same cells.\nUsed only for Annotation relationships.",
-     "type_text": "categorical_field",
-     "default_text": "optional"
-    },
-    {
-     "name": "radius",
-     "label": "Contact radius",
-     "type": "float",
-     "default": 60,
-     "optional": false,
-     "help": "Sets the maximum distance between two cells for them to count as a spatial contact, in dataset coordinate units.\nUsed only for Spatial contacts.",
-     "min": 1.0,
-     "max": 1000.0,
-     "step": 1.0,
-     "type_text": "float, 1–1,000",
-     "default_text": "60"
-    },
-    {
-     "name": "min_count",
-     "label": "Minimum ribbon support",
-     "type": "int",
-     "default": 1,
-     "optional": false,
-     "help": "Shows a ribbon only when the relationship contains at least this many observed cells or spatial pairs.",
-     "min": 1.0,
-     "max": 1000.0,
-     "step": 1.0,
-     "type_text": "int, 1–1,000",
-     "default_text": "1"
-    },
-    {
-     "name": "max_nodes",
-     "label": "Maximum sectors",
-     "type": "int",
-     "default": 20,
-     "optional": false,
-     "help": "Limits how many groups appear around the chord diagram to the most abundant ones.",
-     "min": 4.0,
-     "max": 60.0,
-     "step": 2.0,
-     "type_text": "int, 4–60",
-     "default_text": "20"
-    },
-    {
-     "name": "max_links",
-     "label": "Maximum ribbons",
-     "type": "int",
-     "default": 80,
-     "optional": false,
-     "help": "Sets the maximum number of relationships shown, keeping those with the highest observed counts.",
-     "min": 1.0,
-     "max": 500.0,
-     "step": 1.0,
-     "type_text": "int, 1–500",
-     "default_text": "80"
-    },
-    {
-     "name": "self_links",
-     "label": "Include within-group contacts",
-     "type": "bool",
-     "default": false,
-     "optional": false,
-     "help": "Includes spatial contacts between cells belonging to the same group.\nUsed only for Spatial contacts.",
-     "type_text": "bool",
-     "default_text": "off"
-    }
-   ],
-   "sweep": null,
-   "outputs": [
-    "chord",
-    "matrix",
-    "table",
-    "summary"
-   ],
-   "optional_outputs": [],
-   "output_help": {
-    "chord": "returns a chord diagram",
-    "matrix": "returns a heatmap",
-    "table": "returns a table",
-    "summary": "writes a summary"
-   },
-   "requires": {
-    "genes": false,
-    "cell_types": false,
-    "categoricals": true,
-    "spatial": "any",
-    "min_cells": 2
-   },
-   "needs": [
-    "a categorical column",
-    "2+ cells"
-   ],
-   "license": "MIT",
-   "bundle_url": "https://github.com/lamanno-epfl/pointillviz-registry/releases/download/categorical-chords-v2.0.0/categorical-chords-2.0.0.pvtool",
-   "bundle_size": "18.4 kB",
-   "source_url": "https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/categorical-chords",
-   "published": "2026-10-28",
-   "published_date": "28 Oct 2026",
-   "gates": [
-    {
-     "id": "bundle",
-     "required": true,
-     "status": "pass",
-     "message": "6 files, 18.4 kB packed and 72.8 kB unpacked, plugin.json at the root."
-    },
-    {
-     "id": "manifest",
-     "required": true,
-     "status": "pass",
-     "message": "categorical-chords 2.0.0 by PointillViz reference tools; Python entry tool.py, outputs chord, matrix, table, summary."
-    },
-    {
-     "id": "environment",
-     "required": true,
-     "status": "pass",
-     "message": "pixi.lock matches pixi.toml, which declares python, numpy, scipy for linux-64, osx-64, osx-arm64, win-64; environments: default."
-    },
-    {
-     "id": "entry",
-     "required": true,
-     "status": "pass",
-     "message": "tool.py imported in 0.00 s and defines run(ds, params)."
-    },
-    {
-     "id": "imports",
-     "required": false,
-     "status": "pass",
-     "message": "1 source file, using numpy, pointillviz_tool, scipy; no network, subprocess, filesystem-write, dynamic-exec or environment use found."
-    },
-    {
-     "id": "fixture",
-     "required": true,
-     "status": "pass",
-     "message": "ran on the 600-cell fixture in 0.24 s, returning summary, table, matrix, chord."
-    },
-    {
-     "id": "result",
-     "required": true,
-     "status": "pass",
-     "message": "returned the declared outputs: summary, table, matrix, chord."
-    },
-    {
-     "id": "edge",
-     "required": true,
-     "status": "pass",
-     "message": "at the minimum corner (max_links=1, max_nodes=4, radius=1.0) it refused in words rather than crashing: No relationships pass these controls. Reduce minimum support, increase radius for contacts, or include self-links. (code: no_links); at the maximum corner (max_links=500, max_nodes=60, min_count=1000, mode='annotations', radius=1000.0, self_links=True) it refused in words rather than crashing: No relationships pass these controls. Reduce minimum support, increase radius for contacts, or include self-links. (code: no_links)."
-    },
-    {
-     "id": "no_mutation",
-     "required": true,
-     "status": "pass",
-     "message": "the fixture dataset's 4 files are byte-identical after every run (plugin_cache/, where ds.knn caches, is excluded by design)."
-    }
-   ],
-   "risks": [],
-   "art": {
-    "src": "assets/media/tools/categorical-chords.webp?v=1e6c2812c0",
-    "src2x": "assets/media/tools/categorical-chords@2x.webp?v=6a86392478",
-    "width": 720,
-    "height": 420,
-    "alt": "",
-    "generated": false
-   },
-   "social": "assets/media/social/categorical-chords.jpg",
-   "url": "tools/categorical-chords/"
   },
   {
    "id": "celltype-cooccurrence",

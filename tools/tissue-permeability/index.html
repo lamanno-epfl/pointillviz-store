@@ -6,7 +6,7 @@
 <script>(function(d){try{var w=d.clientWidth||innerWidth;d.style.setProperty('--k',Math.min(Math.max(Math.min(w/1440,innerHeight/900),1),1.6).toFixed(4))}catch(e){}})(document.documentElement)</script>
 <meta name="theme-color" content="#06070D">
 <title>Tissue Permeability · The Tool Store · PointillViz</title>
-<meta name="description" content="Which cells one cell type seals off from the rest of the tissue. A PointillViz community tool, version 2.0.1.">
+<meta name="description" content="Which cells one cell type seals off from the rest of the tissue. A PointillViz community tool, version 2.1.0.">
 <meta name="robots" content="noindex">
 <link rel="canonical" href="https://store.pointillviz.com/tools/tissue-permeability/">
 <meta property="og:site_name" content="PointillViz">
@@ -88,7 +88,7 @@
         <h1 class="st-title st-top__name">Tissue Permeability</h1>
         <p class="st-top__desc">Which cells one cell type seals off from the rest of the tissue.</p>
         <div class="st-get">
-          <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/tissue-permeability-v2.0.1/tissue-permeability-2.0.1.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 34.8 kB</span></span></a>
+          <a class="pv-btn pv-btn--primary pv-btn--lg st-get__btn" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/tissue-permeability-v2.1.0/tissue-permeability-2.1.0.pvtool" download><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span class="pv-btn__stack"><span>Download</span> <span class="pv-btn__sub">.pvtool · 34.8 kB</span></span></a>
           <p class="st-get__how"><span class="st-get__steps">In PointillViz: <b>Tools → Store → Install</b>, or <b>Install from file</b> with the download. </span><a class="pv-link" href="https://docs.pointillviz.com/tool-store/">How to install and run a tool</a></p>
           
           <p class="st-get__note">This runs as you: a tool is arbitrary code, with your privileges. <a class="pv-link" href="../../#safety">Safety note</a></p>
@@ -109,7 +109,7 @@
           <a class="st-tab" href="#outputs" data-view-link="outputs">Outputs</a>
         </nav>
         <button class="st-testbtn" id="test-summary-open" type="button" aria-haspopup="dialog" aria-controls="test-summary" data-state="pass">Tool test summary</button>
-        <a class="pv-btn pv-btn--primary st-bar__dl" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/tissue-permeability-v2.0.1/tissue-permeability-2.0.1.pvtool" download tabindex="-1"><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span>Download</span></a>
+        <a class="pv-btn pv-btn--primary st-bar__dl" href="https://github.com/lamanno-epfl/pointillviz-registry/releases/download/tissue-permeability-v2.1.0/tissue-permeability-2.1.0.pvtool" download tabindex="-1"><svg aria-hidden="true"><use href="../../assets/pv/icons.svg#i-download"/></svg><span>Download</span></a>
       </div>
     </div>
     <div class="st-wrap st-views__grid">
@@ -156,8 +156,8 @@ Surface cells are identified along the section boundary and beside sufficiently 
 </tr>
 <tr role="row" class="st-p">
   <th scope="row" role="rowheader" class="st-p__head"><span class="st-p__label">Source cell type</span> <code class="st-p__name" translate="no">source_type</code></th>
-  <td role="cell" class="st-p__val"><span class="st-p__default">optional</span><span class="st-p__kind">one of its categories</span></td>
-  <td role="cell" class="st-p__help"><span class="st-p__text">Selects the destination population when routing towards another cell type.
+  <td role="cell" class="st-p__val"><span class="st-p__default">required</span><span class="st-p__kind">one of its categories</span></td>
+  <td role="cell" class="st-p__help"><span class="st-p__text">Selects the destination population.
 It must differ from the barrier population.</span></td>
 </tr>
 <tr role="row" class="st-p">
@@ -194,7 +194,7 @@ This does not change the calculation.</span><p class="st-p__opts">Or: Extra path
       </div>
       <aside class="st-facts" aria-labelledby="facts-h">
         <h2 class="pv-sr-only" id="facts-h">Details</h2>
-        <dl class="st-facts__list"><div class="st-facts__row"><dt>Author</dt><dd>PointillViz reference tools</dd></div><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__num" translate="no">2.0.1</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-11-03">3 Nov 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Language</dt><dd>Python</dd></div><div class="st-facts__row"><dt>GPU</dt><dd>Not used</dd></div><div class="st-facts__row"><dt>Needs</dt><dd>a categorical column<br>200+ cells</dd></div></dl>
+        <dl class="st-facts__list"><div class="st-facts__row"><dt>Author</dt><dd>PointillViz reference tools</dd></div><div class="st-facts__row"><dt>Version</dt><dd><span class="st-facts__num" translate="no">2.1.0</span></dd></div><div class="st-facts__row"><dt>Published</dt><dd><time datetime="2026-11-08">8 Nov 2026</time></dd></div><div class="st-facts__row"><dt>Licence</dt><dd>MIT</dd></div><div class="st-facts__row"><dt>Language</dt><dd>Python</dd></div><div class="st-facts__row"><dt>GPU</dt><dd>Not used</dd></div><div class="st-facts__row"><dt>Needs</dt><dd>a categorical column<br>200+ cells</dd></div></dl>
         <p class="st-facts__src"><a class="pv-link" href="https://github.com/lamanno-epfl/pointillviz-registry/tree/main/tools/tissue-permeability">Source in the public registry<svg class="pv-icon" aria-hidden="true"><use href="../../assets/pv/icons.svg#i-external"/></svg></a></p>
       </aside>
     </div>
@@ -214,7 +214,7 @@ This does not change the calculation.</span><p class="st-p__opts">Or: Extra path
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">manifest</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">tissue-permeability 2.0.1 by PointillViz reference tools; Python entry tool.py, outputs summary, cells, series, table.</p>
+  <p class="st-gate__msg">tissue-permeability 2.1.0 by PointillViz reference tools; Python entry tool.py, outputs summary, cells, series, table.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">environment</code><span class="st-gate__word">pass</span></p>
@@ -230,7 +230,7 @@ This does not change the calculation.</span><p class="st-p__opts">Or: Extra path
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">fixture</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">ran on the 600-cell fixture in 0.30 s, returning summary, cells, table, series.</p>
+  <p class="st-gate__msg">ran on the 600-cell fixture in 0.23 s, returning summary, cells, table, series.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">result</code><span class="st-gate__word">pass</span></p>
@@ -238,7 +238,7 @@ This does not change the calculation.</span><p class="st-p__opts">Or: Extra path
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">edge</code><span class="st-gate__word">pass</span></p>
-  <p class="st-gate__msg">at the minimum corner (barrier_width=0.0, max_gap=1.5, n_null=2) it refused in words rather than crashing: Nothing here is more than one cell spacing from a source, so there is no route to measure and nothing is enclosed. At a gap of 1.5 spacings almost every cell counts as exposed surface — raise it, or route towards a cell type instead of the surface. (code: no_interior); ran at the maximum corner (barrier_width=3.0, max_gap=20.0, n_null=20, paint=&#x27;tau&#x27;, source=&#x27;type&#x27;) in 0.23 s.</p>
+  <p class="st-gate__msg">at the minimum corner (barrier_width=0.0, max_gap=1.5, n_null=2) it refused in words rather than crashing: Nothing here is more than one cell spacing from a source, so there is no route to measure and nothing is enclosed. At a gap of 1.5 spacings almost every cell counts as exposed surface — raise it, or route towards a cell type instead of the surface. (code: no_interior); ran at the maximum corner (barrier_width=3.0, max_gap=20.0, n_null=20, paint=&#x27;tau&#x27;, source=&#x27;type&#x27;, source_type=&#x27;Fibroblast&#x27;) in 0.19 s.</p>
 </li>
 <li class="st-gate" data-state="pass">
   <p class="st-gate__head"><code class="st-gate__name" translate="no">no_mutation</code><span class="st-gate__word">pass</span></p>
@@ -267,7 +267,7 @@ This does not change the calculation.</span><p class="st-p__opts">Or: Extra path
   <p class="st-card__desc">Whether two cell types meet along one front or in specks.</p>
 </a>
 </li>
-<li class="st-cell" data-id="categorical-chords" data-name="Categorical Chords" data-author="PointillViz reference tools" data-tags="spatial|cell types|categorical|chord" data-outputs="chord|matrix|table|summary" data-published="2026-10-28" data-version="2.0.0">
+<li class="st-cell" data-id="categorical-chords" data-name="Categorical Chords" data-author="PointillViz reference tools" data-tags="spatial|cell types|categorical|chord" data-outputs="chord|matrix|table|summary" data-published="2026-11-08" data-version="2.1.0">
 <a class="st-card" href="../../tools/categorical-chords/">
   <div class="st-card__art"><img src="../../assets/media/tools/categorical-chords.webp?v=1e6c2812c0" srcset="../../assets/media/tools/categorical-chords.webp?v=1e6c2812c0 720w, ../../assets/media/tools/categorical-chords@2x.webp?v=6a86392478 1440w" sizes="(max-width: 559.98px) 92vw, (max-width: 819.98px) 46vw, (max-width: 1099.98px) 31vw, 23vw" width="720" height="420" alt="" loading="lazy" decoding="async"></div>
   <h3 class="st-card__name">Categorical Chords</h3>
